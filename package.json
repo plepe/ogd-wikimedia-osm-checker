@@ -1,0 +1,19 @@
+{
+  "name": "osm-wikidata-bda",
+  "version": "0.0.0",
+  "description": "Vergleiche die Liste der Baudenkmäler des Bundesdenkmalamtes mit OpenStreetMap und Wikidata.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plepe/osm-wikidata-bda.git"
+  },
+  "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plepe/osm-wikidata-bda/issues"
+  },
+  "homepage": "https://github.com/plepe/osm-wikidata-bda#readme"
+}
