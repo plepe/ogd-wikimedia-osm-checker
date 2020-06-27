@@ -1,6 +1,7 @@
 const async = require('async')
 
 let data = {}
+let KGs = {}
 
 function show (k) {
   let entry = data[k]
@@ -77,6 +78,7 @@ window.onload = () => {
         .then(json => {
           json.forEach(entry => {
             add('bda', entry.ObjektID, entry)
+            KGs[entry.KG] = true
           })
 
           done()
@@ -111,8 +113,32 @@ window.onload = () => {
     }
   ],
   err => {
-    for (let k in data) {
+    let select = document.getElementById('KG')
+    KGs = Object.keys(KGs)
+    KGs = KGs.sort()
+    KGs.forEach(KG => {
+      let option = document.createElement('option')
+      option.appendChild(document.createTextNode(KG))
+      select.appendChild(option)
+    })
+
+    select.onchange = update
+    update()
+  })
+}
+
+function update () {
+  let select = document.getElementById('KG')
+  let KG = select.value
+
+  let table = document.getElementById('data')
+  while (table.rows.length > 1) {
+    table.removeChild(table.rows[1])
+  }
+
+  for (let k in data) {
+    if (data[k].bda.length && data[k].bda[0].KG === KG) {
       show(k)
     }
-  })
+  }
 }
