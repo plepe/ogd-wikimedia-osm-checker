@@ -1,0 +1,7 @@
+table#data {
+  border-collapse: collapse;
+}
+table#data > tr > th,
+table#data > tr:nth-child(odd) > td {
+  background: #ccc;
+}

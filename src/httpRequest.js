@@ -56,6 +56,12 @@ function httpRequest (url, options, callback) {
 
   function direct () {
     xhr = new XMLHttpRequest()
+    if (options.headers) {
+      for (let k in options.headers) {
+        xhr.setRequestHeader(k, options.headers[k])
+      }
+    }
+
     xhr.open(options.method || 'GET', url, true)
     xhr.responseType = parseResponseType()
     xhr.onreadystatechange = readyStateChange
