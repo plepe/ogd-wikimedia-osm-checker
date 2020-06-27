@@ -1,3 +1,4 @@
+const iconv = require('iconv-lite')
 const async = require('async')
 const csvtojson = require('csvtojson')
 const fs = require('fs')
@@ -19,11 +20,14 @@ function download_bda (callback) {
     (ids, done) => {
       let url = 'https://bda.gv.at/fileadmin/Dokumente/bda.gv.at/Publikationen/Denkmalverzeichnis/Oesterreich_CSV/_' + ids[0] + '_2020raw_ID_' + ids[1] + 'POS.csv'
 
-      httpRequest(url, {}, (err, result) => {
-        if (err) { return done(err) }
+      fetch(url, {})
+        .then(response => {
+
+        let converter = iconv.decodeStream('iso-8859-1')
+        let stream = response.body.pipe(converter)
 
         csvtojson({delimiter: ';'})
-          .fromString(result.body)
+          .fromStream(stream)
           .subscribe(line => {
             data.push(line)
           })
