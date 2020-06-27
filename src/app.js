@@ -42,6 +42,17 @@ function show (k) {
     td.appendChild(document.createElement('br'))
   })
 
+  td = document.createElement("td")
+  tr.appendChild(td)
+
+  entry.wmc.forEach(d => {
+    let a = document.createElement('a')
+    a.appendChild(document.createTextNode(d.title))
+    a.href = 'https://commons.wikimedia.org/wiki/' + d.title
+    td.appendChild(a)
+    td.appendChild(document.createElement('br'))
+  })
+
   document.getElementById("data").appendChild(tr)
 }
 
@@ -50,7 +61,8 @@ function add (type, id, entry) {
     data[id] = {
       bda: [],
       wikidata: [],
-      osm: []
+      osm: [],
+      wmc: []
     }
   }
 
@@ -84,6 +96,15 @@ window.onload = () => {
         .then(res => res.json())
         .then(json => {
           json.forEach(entry => add('osm', entry.tags["ref:at:bda"], entry))
+
+          done()
+        })
+    },
+    done => {
+      fetch('data/wikimedia_commons.json')
+        .then(res => res.json())
+        .then(json => {
+          json.forEach(entry => add('wmc', entry.id, entry))
 
           done()
         })

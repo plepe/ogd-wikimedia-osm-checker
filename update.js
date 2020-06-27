@@ -5,6 +5,7 @@ const fs = require('fs')
 const fetch = require('node-fetch')
 
 const httpRequest = require('./src/httpRequest.js')
+const wikimedia_commons_sleep = 1000
 
 global.XMLHttpRequest= require('w3c-xmlhttprequest').XMLHttpRequest
 
@@ -73,7 +74,69 @@ function download_wikidata (callback) {
     })
 }
 
+function wmc_members (data, cont, callback) {
+  console.log('Wikimedia Commons - next')
+  // remove cmtype=subcat to also include files
+  let url = 'https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&format=json&cmtitle=Category:Cultural_heritage_monuments_in_Austria_with_known_IDs&cmlimit=500&cmtype=subcat' + (cont ? '&cmcontinue=' + cont : '')
+  fetch(url)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+    .then(json => {
+      let members = json.query.categorymembers
+      members.forEach(member => data.push(member))
+
+      if (json.continue) {
+        global.setTimeout(() => {
+          wmc_members(data, json.continue.cmcontinue, callback)
+        }, wikimedia_commons_sleep)
+      } else {
+        callback()
+      }
+   })
+}
+
+function download_wikimedia_commons (callback, start = 0) {
+  let members = []
+  let data = []
+
+  wmc_members(members, null, (err) => {
+    if (err) { return callback(err) }
+
+    fs.writeFile('data/wikimedia_commons_members.json', JSON.stringify(members, null, '  '), callback)
+
+    async.eachOfLimit(members, 1,
+      (entry, i, done) => {
+        console.log(i, entry.title)
+        fetch('https://commons.wikimedia.org/w/api.php?action=parse&format=json&prop=wikitext&page=' + encodeURIComponent(entry.title))
+          .then(res => res.json())
+          .then(body => {
+            let text = body.parse.wikitext['*']
+
+            let m = text.match(/\{\{\ *(doo|Denkmalgeschütztes Objekt Österreich)\|(1=)?([0-9]+)\ *\}\}/)
+
+            if (m) {
+              data.push({
+                id: m[3],
+                title: entry.title
+              })
+            }
+
+            global.setTimeout(() => done(), wikimedia_commons_sleep)
+          })
+      },
+      (err) => {
+        console.log(data)
+        fs.writeFile('data/wikimedia_commons.json', JSON.stringify(data, null, '  '), callback)
+      }
+    )
+  })
+}
+
 download_bda((err) => {
+  if (err) { console.error(err) }
+})
+
+download_wikimedia_commons((err) => {
   if (err) { console.error(err) }
 })
 
