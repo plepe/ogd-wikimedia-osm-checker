@@ -11,7 +11,14 @@ global.XMLHttpRequest= require('w3c-xmlhttprequest').XMLHttpRequest
 
 const bda_ids = [
   [ 'W', '3354' ],
-  [ 'Stmk.', '4967' ]
+  [ 'Stmk.', '4967' ],
+  [ 'Bgld.', '2099' ],
+  [ 'Ktn.', '2878' ],
+  [ 'NOE', '10616' ],
+  [ 'OOE', '5912' ],
+  [ 'Sbg.', '2198' ],
+  [ 'Tir.', '4858' ],
+  [ 'Vbg.', '1637' ]
 ]
 
 function download_bda (callback) {
