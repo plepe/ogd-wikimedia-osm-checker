@@ -1,6 +1,7 @@
 const async = require('async')
 const csvtojson = require('csvtojson')
 const fs = require('fs')
+const fetch = require('node-fetch')
 
 const httpRequest = require('./src/httpRequest.js')
 
@@ -52,10 +53,30 @@ function download_overpass (callback) {
   )
 }
 
+function download_wikidata (callback) {
+  fetch('https://query.wikidata.org/sparql', {
+    method: 'POST',
+    body: 'SELECT ?item ?itemLabel ?ID WHERE { ?item wdt:P2951 ?ID SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }',
+    headers: {
+      'User-Agent': 'osm-wikidata-bda',
+      'Accept': 'application/json',
+      'Content-Type': 'application/sparql-query'
+    }
+  })
+    .then(res => res.json())
+    .then(json => {
+      fs.writeFile('data/wikidata.json', JSON.stringify(json, null, '  '), callback)
+    })
+}
+
 download_bda((err) => {
   if (err) { console.error(err) }
 })
 
 download_overpass((err) => {
+  if (err) { console.error(err) }
+})
+
+download_wikidata((err) => {
   if (err) { console.error(err) }
 })
