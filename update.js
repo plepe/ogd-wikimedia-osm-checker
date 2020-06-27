@@ -37,6 +37,25 @@ function download_bda (callback) {
   )
 }
 
+function download_overpass (callback) {
+  httpRequest('https://overpass-api.de/api/interpreter',
+    {
+      method: 'POST',
+      responseType: 'json',
+      body: '[out:json];nwr["ref:at:bda"];out tags;'
+    },
+    (err, result) => {
+      if (err) { return callback(err) }
+
+      fs.writeFile('data/overpass.json', JSON.stringify(result.body.elements, null, '  '), callback)
+    }
+  )
+}
+
 download_bda((err) => {
+  if (err) { console.error(err) }
+})
+
+download_overpass((err) => {
   if (err) { console.error(err) }
 })
