@@ -48,6 +48,13 @@ module.exports = function checkOSM (id, dom, callback) {
 
         let el = result.results.bindings[0]
 
+        // image
+        if (el.image) {
+          ul.innerHTML += '<li class="success">Wikidata Eintrag hat ein <a target="_blank" href="' + el.image.value + '">Bild</a></li>'
+        } else {
+          ul.innerHTML += '<li class="warning">Wikidata Eintrag hat kein Bild</li>'
+        }
+
         if (el.commonsCat) {
           ul.innerHTML += '<li class="success">Wikidata Eintrag hat Link zu Wikimedia Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + encodeURIComponent(el.commonsCat.value) + '">' + (el.commonsCat.value) + '</a></li>'
 
