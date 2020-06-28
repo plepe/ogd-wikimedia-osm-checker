@@ -44,6 +44,7 @@ function add (type, id, entry) {
 }
 
 window.onload = () => {
+  document.body.classList.add('loading')
   async.parallel([
     done => {
       fetch('data/bda.json')
@@ -97,6 +98,8 @@ window.onload = () => {
 
     select.onchange = update
     update()
+
+    document.body.classList.remove('loading')
   })
 }
 
@@ -125,8 +128,9 @@ function check (id) {
   }
 
   // Load OSM data
+  document.body.classList.add('loading')
   async.each(checker,
     (module, done) => module(id, div, done),
-    (err) => {}
+    (err) => { document.body.classList.remove('loading') }
   )
 }
