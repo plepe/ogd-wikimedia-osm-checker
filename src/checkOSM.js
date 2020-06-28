@@ -1,3 +1,5 @@
+const async = require('async')
+
 const httpRequest = require('./httpRequest.js')
 const loadWikidata = require('./loadWikidata.js')
 
@@ -25,15 +27,40 @@ module.exports = function checkOSM (id, dom, callback) {
   ul.className = 'check'
   div.appendChild(ul)
 
-  overpassQuery('nwr["ref:at:bda"=' + id + '];out tags;',
-    (err, result) => {
-      if (result.elements.length) {
-        ul.innerHTML += '<li class="success">' + result.elements.length + ' Objekt via <tt>ref:at:bda=' + id + '</tt> gefunden: ' + result.elements.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + (el.tags.name || (el.type + '/' + el.id)) + '</a>').join(', ') + '</li>'
-      } else {
-        ul.innerHTML += '<li class="error">Kein Eintrag mit <tt>ref:at:bda=' + id + '</tt> in der OpenStreetMap gefunden!</li>'
-      }
+  async.parallel([
+    done => {
+      overpassQuery('nwr["ref:at:bda"=' + id + '];out tags;',
+        (err, result) => {
+          if (result.elements.length) {
+            ul.innerHTML += '<li class="success">' + result.elements.length + ' Objekt via <tt>ref:at:bda=' + id + '</tt> gefunden: ' + result.elements.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + (el.tags.name || (el.type + '/' + el.id)) + '</a>').join(', ') + '</li>'
+          } else {
+            ul.innerHTML += '<li class="error">Kein Eintrag mit <tt>ref:at:bda=' + id + '</tt> in der OpenStreetMap gefunden!</li>'
+          }
 
-      callback()
+          done()
+        }
+      )
+    },
+    done => {
+      loadWikidata(id, (err, result) => {
+        if (result.results.bindings.length === 1) {
+          let wikidataId = result.results.bindings[0].item.value.match(/(Q[0-9]+)$/)[1]
+
+          overpassQuery('nwr[wikidata=' + wikidataId + '];out tags;',
+            (err, result) => {
+              if (result.elements.length) {
+                ul.innerHTML += '<li class="success">' + result.elements.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: ' + result.elements.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + (el.tags.name || (el.type + '/' + el.id)) + '</a>').join(', ') + '</li>'
+              } else {
+                ul.innerHTML += '<li class="error">Kein Eintrag mit <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden!</li>'
+              }
+
+              done()
+            }
+          )
+        } else {
+          done()
+        }
+      })
     }
-  )
+  ], callback)
 }
