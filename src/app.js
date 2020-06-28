@@ -1,4 +1,5 @@
 const async = require('async')
+const hash = require('sheet-router/hash')
 
 const checker = [
   require('./checkWikipedia.js'),
@@ -24,7 +25,6 @@ function show (k) {
     let a = document.createElement('a')
     a.appendChild(document.createTextNode(d.Bezeichnung))
     a.href = '#' + d.ObjektID
-    a.onclick = () => check(d.ObjektID)
     td.appendChild(a)
     td.appendChild(document.createElement('br'))
   })
@@ -98,11 +98,32 @@ window.onload = () => {
       select.appendChild(option)
     })
 
-    select.onchange = update
-    update()
-
     document.body.classList.remove('loading')
+
+    select.onchange = update
+    if (location.hash) {
+      choose(location.hash.substr(1))
+    } else {
+      update()
+    }
+
+    hash(loc => {
+      choose(loc.substr(1))
+    })
   })
+}
+
+function choose (id) {
+  if (!(id in data)) {
+    return alert(id + " nicht gefunden!")
+  }
+
+  let select = document.getElementById('KG')
+  let KG = data[id].bda[0].KG
+  select.value = KG
+  update()
+
+  check(id)
 }
 
 function update () {
