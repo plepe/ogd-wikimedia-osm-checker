@@ -2,7 +2,8 @@ const async = require('async')
 
 const checker = [
   require('./checkOSM.js'),
-  require('./checkWikidata.js')
+  require('./checkWikidata.js'),
+  require('./checkCommons.js'),
 ]
 
 let data = {}
