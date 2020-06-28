@@ -1,5 +1,16 @@
 const loadWikidata = require('./loadWikidata.js')
 
+const recommendedReferences = {
+  P31: 'ist ein(e)',
+  P84: 'Architekt_in',
+  P170: 'Urheber_in',
+  P186: 'Material',
+  P580: 'Startzeitpunkt',
+  P417: 'Patron_in',
+  P180: 'Motiv',
+  P7842: 'Wien Geschichte Wiki ID'
+}
+
 module.exports = function checkWikidata (id, dom, callback) {
   let div = document.createElement('div')
   dom.appendChild(div)
@@ -24,6 +35,17 @@ module.exports = function checkWikidata (id, dom, callback) {
         ul.innerHTML += '<li class="success">Eintrag hat Koordinaten: <a target="_blank" href="https://openstreetmap.org/#map=19/' + coords.latitude + '/' + coords.longitude + '">' + coords.latitude + ', ' + coords.longitude + '</a></li>'
       } else {
         ul.innerHTML += '<li class="warning">Eintrag hat keine Koordinaten</li>'
+      }
+
+      let recommandations = []
+      for (let k in recommendedReferences) {
+        if (!(k in el.claims)) {
+          recommandations.push(recommendedReferences[k])
+        }
+      }
+
+      if (recommandations.length) {
+        ul.innerHTML += '<li class="warning">Empfohlene weitere Angaben: ' + recommandations.join(', ') + '</li>'
       }
     } else {
       ul.innerHTML += '<li class="error">Kein Eintrag gefunden!</li>'
