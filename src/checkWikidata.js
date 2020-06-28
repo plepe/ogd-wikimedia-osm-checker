@@ -11,17 +11,17 @@ module.exports = function checkWikidata (id, dom, callback) {
   div.appendChild(ul)
 
   loadWikidata(id, (err, result) => {
-    if (result.results.bindings.length > 1) {
-      ul.innerHTML += '<li class="success">' + result.results.bindings.length + " Objekt gefunden: " + result.results.bindings.map(el => '<a target="_blank" href="' + el.item.value + '">' + el.item.value.match(/(Q[0-9]+)$/)[1] + '</a>').join(', ') + '</li>'
-    } else if (result.results.bindings.length === 1) {
-      let el = result.results.bindings[0]
-      ul.innerHTML += '<li class="success">1 Objekt gefunden: <a target="_blank" href="' + el.item.value + '">' + el.item.value.match(/(Q[0-9]+)$/)[1] + '</a></li>'
+    if (result.length > 1) {
+      ul.innerHTML += '<li class="success">' + result.length + " Objekt gefunden: " + result.map(el => '<a target="_blank" href="' + el.item.value + '">' + el.item.value.match(/(Q[0-9]+)$/)[1] + '</a>').join(', ') + '</li>'
+    } else if (result.length === 1) {
+      let el = result[0]
+      ul.innerHTML += '<li class="success">1 Objekt gefunden: <a target="_blank" href="https://wikidata.org/wiki/' + el.id + '">' + el.id + '</a></li>'
 
       // coords
-      if (el.coords) {
-        let coords = el.coords.value.match(/^Point\((\-?[0-9]+\.[0-9]+) (\-?[0-9]+\.[0-9]+)\)$/)
+      if (el.claims.P625) {
+        let coords = el.claims.P625[0].mainsnak.datavalue.value
 
-        ul.innerHTML += '<li class="success">Eintrag hat Koordinaten: <a target="_blank" href="https://openstreetmap.org/#map=19/' + coords[2] + '/' + coords[1] + '">' + el.coords.value + '</a></li>'
+        ul.innerHTML += '<li class="success">Eintrag hat Koordinaten: <a target="_blank" href="https://openstreetmap.org/#map=19/' + coords.latitude + '/' + coords.longitude + '">' + coords.latitude + ', ' + coords.longitude + '</a></li>'
       } else {
         ul.innerHTML += '<li class="warning">Eintrag hat keine Koordinaten</li>'
       }

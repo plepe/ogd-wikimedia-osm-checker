@@ -1,4 +1,5 @@
 const async = require('async')
+const escHTML = require('html-escape')
 
 const httpRequest = require('./httpRequest.js')
 const loadWikidata = require('./loadWikidata.js')
@@ -42,28 +43,30 @@ module.exports = function checkOSM (id, dom, callback) {
   async.parallel([
     done => {
       loadWikidata(id, (err, result) => {
-        if (result.results.bindings.length !== 1) {
+        if (result.length !== 1) {
           return done()
         }
 
-        let el = result.results.bindings[0]
+        let el = result[0]
 
         // image
-        if (el.images) {
-          let images = el.images.value.split(/\|/g)
+        if (el.claims.P18) {
+          let images = el.claims.P18
           if (images.length === 1) {
-            ul.innerHTML += '<li class="success">Wikidata Eintrag hat ein <a target="_blank" href="' + images[0].value + '">Bild</a></li>'
+            ul.innerHTML += '<li class="success">Wikidata Eintrag hat ein <a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(images[0].mainsnak.datavalue.value) + '">Bild</a></li>'
           } else {
-            ul.innerHTML += '<li class="success">Wikidata Eintrag hat ' + images.length + ' Bilder: ' + images.map((image, i) => '<a target="_blank" href="' + image + '">#' + (i + 1) + '</a>').join(', ') + '</li>'
+            ul.innerHTML += '<li class="success">Wikidata Eintrag hat ' + images.length + ' Bilder: ' + images.map((image, i) => '<a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(image.mainsnak.datavalue.value) + '">#' + (i + 1) + '</a>').join(', ') + '</li>'
           }
         } else {
           ul.innerHTML += '<li class="warning">Wikidata Eintrag hat kein Bild</li>'
         }
 
-        if (el.commonsCat) {
-          ul.innerHTML += '<li class="success">Wikidata Eintrag hat Link zu Wikimedia Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + encodeURIComponent(el.commonsCat.value) + '">' + (el.commonsCat.value) + '</a></li>'
+        // commons category
+        if (el.claims.P373) {
+          let data = el.claims.P373
+          ul.innerHTML += '<li class="success">Wikidata Eintrag hat Link zu Wikimedia Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + encodeURIComponent(data[0].mainsnak.datavalue.value) + '">' + escHTML(data[0].mainsnak.datavalue.value) + '</a></li>'
 
-          checkCategory(id, el.commonsCat.value, ul, done)
+          checkCategory(id, data[0].mainsnak.datavalue.value, ul, done)
         } else {
           ul.innerHTML += '<li class="warning">Wikidata Eintrag hat keinen Link zu Wikimedia Commons Kategorie</li>'
           done()

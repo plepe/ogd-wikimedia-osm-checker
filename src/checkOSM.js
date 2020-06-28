@@ -37,8 +37,8 @@ module.exports = function checkOSM (id, dom, callback) {
 
     let wikidataId
     let query = 'nwr["ref:at:bda"=' + id + '];'
-    if (result && result.results.bindings.length === 1) {
-      wikidataId = result.results.bindings[0].item.value.match(/(Q[0-9]+)$/)[1]
+    if (result && result.length === 1) {
+      wikidataId = result[0].id
       query += 'nwr[wikidata=' + wikidataId + '];'
     }
 
