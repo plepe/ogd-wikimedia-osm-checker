@@ -1,7 +1,27 @@
+#content {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+}
+#content > #selector {
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+}
 table#data {
   border-collapse: collapse;
 }
 table#data > tr > th,
 table#data > tr:nth-child(odd) > td {
   background: #ccc;
+}
+#content > #details {
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50%;
 }
