@@ -19,5 +19,7 @@ module.exports = function checkWikidata (id, dom, callback) {
     } else {
       ul.innerHTML += '<li class="error">Kein Eintrag gefunden!</li>'
     }
+
+    callback()
   })
 }
