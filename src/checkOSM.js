@@ -31,6 +31,11 @@ module.exports = function checkOSM (id, dom, callback) {
     done => {
       overpassQuery('nwr["ref:at:bda"=' + id + '];out tags;',
         (err, result) => {
+          if (err) {
+            console.error(err)
+            return callback()
+          }
+
           if (result.elements.length) {
             ul.innerHTML += '<li class="success">' + result.elements.length + ' Objekt via <tt>ref:at:bda=' + id + '</tt> gefunden: ' + result.elements.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + (el.tags.name || (el.type + '/' + el.id)) + '</a>').join(', ') + '</li>'
           } else {
@@ -48,6 +53,11 @@ module.exports = function checkOSM (id, dom, callback) {
 
           overpassQuery('nwr[wikidata=' + wikidataId + '];out tags;',
             (err, result) => {
+              if (err) {
+                console.error(err)
+                return callback()
+              }
+
               if (result.elements.length) {
                 ul.innerHTML += '<li class="success">' + result.elements.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: ' + result.elements.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + (el.tags.name || (el.type + '/' + el.id)) + '</a>').join(', ') + '</li>'
               } else {
