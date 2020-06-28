@@ -10,46 +10,13 @@ function show (k) {
   let td
 
   td = document.createElement("td")
-  td.appendChild(document.createTextNode(k))
-  tr.appendChild(td)
-
-  td = document.createElement("td")
   tr.appendChild(td)
 
   entry.bda.forEach(d => {
-    td.appendChild(document.createTextNode(d.Bezeichnung))
-    td.appendChild(document.createElement('br'))
-  })
-
-  td = document.createElement("td")
-  tr.appendChild(td)
-
-  entry.wikidata.forEach(d => {
     let a = document.createElement('a')
-    a.appendChild(document.createTextNode(d.itemLabel.value))
-    a.href = d.item.value
-    td.appendChild(a)
-    td.appendChild(document.createElement('br'))
-  })
-
-  td = document.createElement("td")
-  tr.appendChild(td)
-
-  entry.osm.forEach(d => {
-    let a = document.createElement('a')
-    a.appendChild(document.createTextNode(d.tags.name || (d.type + '/' + d.id)))
-    a.href = 'https://openstreetmap.org/' + d.type + '/' + d.id
-    td.appendChild(a)
-    td.appendChild(document.createElement('br'))
-  })
-
-  td = document.createElement("td")
-  tr.appendChild(td)
-
-  entry.wmc.forEach(d => {
-    let a = document.createElement('a')
-    a.appendChild(document.createTextNode(d.title))
-    a.href = 'https://commons.wikimedia.org/wiki/' + d.title
+    a.appendChild(document.createTextNode(d.Bezeichnung))
+    a.href = '#' + d.ObjektID
+    a.onclick = () => check(d.ObjektID)
     td.appendChild(a)
     td.appendChild(document.createElement('br'))
   })
@@ -141,4 +108,17 @@ function update () {
       show(k)
     }
   }
+}
+
+function check (id) {
+  const entry = data[id]
+  const div = document.getElementById('details')
+
+  while (div.firstChild) {
+    div.removeChild(div.firstChild)
+  }
+
+  const pre = document.createElement('pre')
+  pre.appendChild(document.createTextNode(JSON.stringify(entry, null, '  ')))
+  div.appendChild(pre)
 }
