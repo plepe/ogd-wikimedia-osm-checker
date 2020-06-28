@@ -25,3 +25,24 @@ table#data > tr:nth-child(odd) > td {
   right: 0;
   width: 50%;
 }
+
+ul.check {
+  list-style: none;
+}
+ul.check li:before {
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+li.error:before {
+  content: "✘";
+  color: red;
+}
+li.success:before {
+  content: "✔";
+  color: green;
+}
+li.warning:before {
+  content: "✘";
+  color: orange;
+}
