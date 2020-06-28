@@ -10,7 +10,7 @@ let options = queryString.parse(process.env.QUERY_STRING)
 if (options.id) {
   fetch('https://query.wikidata.org/sparql', {
     method: 'POST',
-    body: 'SELECT ?item ?itemLabel ?ID WHERE { ?item wdt:P2951 "' + options.id + '" SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }',
+    body: 'SELECT ?item ?itemLabel ?image ?coords WHERE { ?item wdt:P2951 "' + options.id + '". OPTIONAL {?item wdt:P18 ?image.} OPTIONAL {?item wdt:P625 ?coords.} SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }',
     headers: {
       'User-Agent': 'osm-wikidata-bda',
       'Accept': 'application/json',
