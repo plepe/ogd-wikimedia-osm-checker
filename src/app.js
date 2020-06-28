@@ -10,7 +10,7 @@ const checker = [
 const showBDA = require('./showBDA.js')
 
 let data = {}
-let KGs = {}
+let ortFilter = {}
 
 function show (k) {
   let entry = data[k]
@@ -39,7 +39,7 @@ window.onload = () => {
         .then(json => {
           json.forEach(entry => {
             data[entry.ObjektID] = entry
-            KGs[entry.KG] = true
+            ortFilter[entry.Gemeinde] = true
           })
 
           done()
@@ -47,12 +47,12 @@ window.onload = () => {
     }
   ],
   err => {
-    let select = document.getElementById('KG')
-    KGs = Object.keys(KGs)
-    KGs = KGs.sort()
-    KGs.forEach(KG => {
+    let select = document.getElementById('Ortfilter')
+    ortFilter = Object.keys(ortFilter)
+    ortFilter = ortFilter.sort()
+    ortFilter.forEach(ort => {
       let option = document.createElement('option')
-      option.appendChild(document.createTextNode(KG))
+      option.appendChild(document.createTextNode(ort))
       select.appendChild(option)
     })
 
@@ -76,17 +76,17 @@ function choose (id) {
     return alert(id + " nicht gefunden!")
   }
 
-  let select = document.getElementById('KG')
-  let KG = data[id].KG
-  select.value = KG
+  let select = document.getElementById('Ortfilter')
+  let ort = data[id].Gemeinde
+  select.value = ort
   update()
 
   check(id)
 }
 
 function update () {
-  let select = document.getElementById('KG')
-  let KG = select.value
+  let select = document.getElementById('Ortfilter')
+  let ort = select.value
 
   let table = document.getElementById('data')
   while (table.rows.length > 1) {
@@ -94,7 +94,7 @@ function update () {
   }
 
   for (let k in data) {
-    if (data[k].KG === KG) {
+    if (data[k].Gemeinde === ort) {
       show(k)
     }
   }
