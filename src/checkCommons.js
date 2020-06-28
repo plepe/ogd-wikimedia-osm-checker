@@ -49,8 +49,13 @@ module.exports = function checkOSM (id, dom, callback) {
         let el = result.results.bindings[0]
 
         // image
-        if (el.image) {
-          ul.innerHTML += '<li class="success">Wikidata Eintrag hat ein <a target="_blank" href="' + el.image.value + '">Bild</a></li>'
+        if (el.images) {
+          let images = el.images.value.split(/\|/g)
+          if (images.length === 1) {
+            ul.innerHTML += '<li class="success">Wikidata Eintrag hat ein <a target="_blank" href="' + images[0].value + '">Bild</a></li>'
+          } else {
+            ul.innerHTML += '<li class="success">Wikidata Eintrag hat ' + images.length + ' Bilder: ' + images.map((image, i) => '<a target="_blank" href="' + image + '">#' + (i + 1) + '</a>').join(', ') + '</li>'
+          }
         } else {
           ul.innerHTML += '<li class="warning">Wikidata Eintrag hat kein Bild</li>'
         }
