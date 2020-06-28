@@ -1,10 +1,12 @@
 const async = require('async')
 
 const checker = [
+  require('./checkWikipedia.js'),
   require('./checkWikidata.js'),
   require('./checkCommons.js'),
   require('./checkOSM.js')
 ]
+const showBDA = require('./showBDA.js')
 
 let data = {}
 let KGs = {}
@@ -129,6 +131,7 @@ function check (id) {
 
   // Load OSM data
   document.body.classList.add('loading')
+  showBDA(entry.bda[0], div)
   async.each(checker,
     (module, done) => module(id, div, done),
     (err) => { document.body.classList.remove('loading') }
