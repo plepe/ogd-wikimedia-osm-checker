@@ -1,5 +1,9 @@
 const async = require('async')
 
+const checker = [
+  require('./checkOSM.js')
+]
+
 let data = {}
 let KGs = {}
 
@@ -117,6 +121,12 @@ function check (id) {
   while (div.firstChild) {
     div.removeChild(div.firstChild)
   }
+
+  // Load OSM data
+  async.each(checker,
+    (module, done) => module(id, div, done),
+    (err) => {}
+  )
 
   const pre = document.createElement('pre')
   pre.appendChild(document.createTextNode(JSON.stringify(entry, null, '  ')))
