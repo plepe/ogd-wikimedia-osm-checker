@@ -21,28 +21,13 @@ function show (k) {
   td = document.createElement("td")
   tr.appendChild(td)
 
-  entry.bda.forEach(d => {
-    let a = document.createElement('a')
-    a.appendChild(document.createTextNode(d.Bezeichnung))
-    a.href = '#' + d.ObjektID
-    td.appendChild(a)
-    td.appendChild(document.createElement('br'))
-  })
+  let a = document.createElement('a')
+  a.appendChild(document.createTextNode(entry.Bezeichnung))
+  a.href = '#' + entry.ObjektID
+  td.appendChild(a)
+  td.appendChild(document.createElement('br'))
 
   document.getElementById("data").appendChild(tr)
-}
-
-function add (type, id, entry) {
-  if (!(id in data)) {
-    data[id] = {
-      bda: [],
-      wikidata: [],
-      osm: [],
-      wmc: []
-    }
-  }
-
-  data[id][type].push(entry)
 }
 
 window.onload = () => {
@@ -53,36 +38,9 @@ window.onload = () => {
         .then(res => res.json())
         .then(json => {
           json.forEach(entry => {
-            add('bda', entry.ObjektID, entry)
+            data[entry.ObjektID] = entry
             KGs[entry.KG] = true
           })
-
-          done()
-        })
-    },
-    done => {
-      fetch('data/wikidata.json')
-        .then(res => res.json())
-        .then(json => {
-          json.results.bindings.forEach(entry => add('wikidata', entry.ID.value, entry))
-
-          done()
-        })
-    },
-    done => {
-      fetch('data/overpass.json')
-        .then(res => res.json())
-        .then(json => {
-          json.forEach(entry => add('osm', entry.tags["ref:at:bda"], entry))
-
-          done()
-        })
-    },
-    done => {
-      fetch('data/wikimedia_commons.json')
-        .then(res => res.json())
-        .then(json => {
-          json.forEach(entry => add('wmc', entry.id, entry))
 
           done()
         })
@@ -119,7 +77,7 @@ function choose (id) {
   }
 
   let select = document.getElementById('KG')
-  let KG = data[id].bda[0].KG
+  let KG = data[id].KG
   select.value = KG
   update()
 
@@ -136,7 +94,7 @@ function update () {
   }
 
   for (let k in data) {
-    if (data[k].bda.length && data[k].bda[0].KG === KG) {
+    if (data[k].KG === KG) {
       show(k)
     }
   }
@@ -152,7 +110,7 @@ function check (id) {
 
   // Load OSM data
   document.body.classList.add('loading')
-  showBDA(entry.bda[0], div)
+  showBDA(entry, div)
   async.each(checker,
     (module, done) => module(id, div, done),
     (err) => { document.body.classList.remove('loading') }
