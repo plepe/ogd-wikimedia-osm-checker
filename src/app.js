@@ -129,8 +129,4 @@ function check (id) {
     (module, done) => module(id, div, done),
     (err) => {}
   )
-
-  const pre = document.createElement('pre')
-  pre.appendChild(document.createTextNode(JSON.stringify(entry, null, '  ')))
-  div.appendChild(pre)
 }
