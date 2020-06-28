@@ -1,7 +1,10 @@
 const async = require('async')
+const escHTML = require('html-escape')
 
 const httpRequest = require('./httpRequest.js')
 const loadWikidata = require('./loadWikidata.js')
+
+const recommendedTags = ['name', 'start_date', 'artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
 
 function overpassQuery (query, callback) {
   httpRequest('https://overpass-api.de/api/interpreter',
@@ -62,6 +65,22 @@ module.exports = function checkOSM (id, dom, callback) {
         } else {
           ul.innerHTML += '<li class="error">Kein Eintrag mit <tt>ref:at:bda=' + id + '</tt> oder <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden!</li>'
         }
+
+        result.elements.forEach(el => {
+          let text = ''
+          for (let tag in el.tags) {
+            text += escHTML(tag) + '=' + escHTML(el.tags[tag]) + '</br>'
+          }
+
+          ul.innerHTML += '<li class="success">' +
+            (result.elements.length > 1 ? '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>: ' : '') +
+            'Folgende Tags gefunden:<dl>' + text + '</dl></li>'
+
+          let missTags = recommendedTags.filter(tag => !(tag in el.tags))
+          ul.innerHTML += '<li class="warning">' +
+            (result.elements.length > 1 ? '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>: ' : '') +
+            'Folgende empfohlene Tags nicht gefunden: ' + missTags.join(', ') + '</li>'
+        })
 
         callback()
       }
