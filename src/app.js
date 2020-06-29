@@ -1,6 +1,7 @@
 const async = require('async')
 const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
+const natsort = require('natsort').default
 
 const checker = [
   require('./checkWikipedia.js'),
@@ -50,7 +51,7 @@ window.onload = () => {
   err => {
     let select = document.getElementById('Ortfilter')
     ortFilter = Object.keys(ortFilter)
-    ortFilter = ortFilter.sort()
+    ortFilter = ortFilter.sort(natsort({insensitive: true}))
     ortFilter.forEach(ort => {
       let option = document.createElement('option')
       option.appendChild(document.createTextNode(ort))
