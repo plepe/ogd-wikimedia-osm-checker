@@ -20,6 +20,8 @@ const requestListener = function (req, res) {
   let ext = 'html'
   let param = {}
 
+  console.log('* ' + req.url)
+
   if (req.url === '/') {
     file = '/index.html'
   } else {
