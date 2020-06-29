@@ -10,7 +10,7 @@ function checkCategory (id, value, ul, callback) {
     .then(body => {
       let text = body.parse.wikitext['*']
 
-      let m = text.match(/\{\{\ *(doo|Denkmalgeschütztes Objekt Österreich)\|(1=)?([0-9]+)\ *\}\}/)
+      let m = text.match(/\{\{\ *(doo|Denkmalgeschütztes Objekt Österreich)\|(1=)?([0-9]+)\ *\}\}/i)
       if (m && m[3] === id) {
         ul.innerHTML += '<li class="success">Commons Kategorie hat Verweis auf BDA ID</li>'
       } else if (m) {
@@ -19,7 +19,7 @@ function checkCategory (id, value, ul, callback) {
         ul.innerHTML += '<li class="error">Commons Kategorie hat keinen Verweis auf BDA ID. Füge <tt>{{Denkmalgeschütztes Objekt Österreich|' + id + '}}</tt> hinzu.</li>'
       }
 
-      m = text.match(/\{\{\ *Wikidata Infobox\ *(\||\}\})/)
+      m = text.match(/\{\{\ *Wikidata Infobox\ *(\||\}\})/i)
       if (m) {
         ul.innerHTML += '<li class="success">Commons Kategorie hat Wikidata Infobox</li>'
       } else {
