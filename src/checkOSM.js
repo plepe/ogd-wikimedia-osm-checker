@@ -58,7 +58,12 @@ module.exports = function checkOSM (id, dom, callback) {
           ul.innerHTML += '<li class="error">Unterschiedliche Anzahl von Objekten mit <tt>ref:at:bda=' + id + '</tt> und/oder <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden: ' + result.elements.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', ') + '</li>'
         } else if (refBdaResult.length) {
           ul.innerHTML += '<li class="success">' + refBdaResult.length + ' Objekt via <tt>ref:at:bda=' + id + '</tt> gefunden: ' + refBdaResult.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', ') + '</li>'
-          ul.innerHTML += '<li class="error">Kein Eintrag mit <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden!</li>'
+          let wrongWikidata = refBdaResult.filter(entry => !!entry.tags.wikidata)
+          if (wrongWikidata.length) {
+            ul.innerHTML += '<li class="error">Eintrag mit anderer Wikidata ID gefunden, potentielles Duplikat: <a target="_blank" href="https://wikidata.org/wiki/' + escHTML(wrongWikidata[0].tags.wikidata) + '">' + escHTML(wrongWikidata[0].tags.wikidata) + '</a></li>'
+          } else {
+            ul.innerHTML += '<li class="error">Kein Eintrag mit <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden!</li>'
+          }
         } else if (refWdResult.length) {
           ul.innerHTML += '<li class="error">Kein Eintrag mit <tt>ref:at:bda=' + id + '</tt> in der OpenStreetMap gefunden!</li>'
           ul.innerHTML += '<li class="success">' + refWdResult.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: ' + refWdResult.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', ') + '</li>'
