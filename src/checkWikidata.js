@@ -1,7 +1,6 @@
 const loadWikidata = require('./loadWikidata.js')
 
 const recommendedReferences = {
-  P31: 'ist ein(e)',
   P84: 'Architekt_in',
   P170: 'Urheber_in',
   P186: 'Material',
@@ -35,6 +34,12 @@ module.exports = function checkWikidata (id, dom, callback) {
         ul.innerHTML += '<li class="success">Eintrag hat Koordinaten: <a target="_blank" href="https://openstreetmap.org/#map=19/' + coords.latitude + '/' + coords.longitude + '">' + coords.latitude + ', ' + coords.longitude + '</a></li>'
       } else {
         ul.innerHTML += '<li class="warning">Eintrag hat keine Koordinaten</li>'
+      }
+
+      if (!el.claims.P31) {
+        ul.innerHTML += '<li class="error">Objekt hat keine "ist ein(e)" Angabe</li>'
+      } else if (el.claims.P31.length === 1 && el.claims.P31[0].mainsnak.datavalue.value.id === 'Q2065736') {
+        ul.innerHTML += '<li class="error">Objekt ist nur als Kulturgut eingetragen ("ist ein(e)").</li>'
       }
 
       let recommandations = []
