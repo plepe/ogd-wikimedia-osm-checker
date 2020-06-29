@@ -1,3 +1,7 @@
+a .Adresse {
+  float: right;
+  font-size: 0.75em;
+}
 #content {
   position: absolute;
   top: 4px; bottom: 0; left: 0; right: 0;

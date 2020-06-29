@@ -1,5 +1,6 @@
 const async = require('async')
 const hash = require('sheet-router/hash')
+const escHTML = require('html-escape')
 
 const checker = [
   require('./checkWikipedia.js'),
@@ -22,7 +23,7 @@ function show (k) {
   tr.appendChild(td)
 
   let a = document.createElement('a')
-  a.appendChild(document.createTextNode(entry.Bezeichnung))
+  a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.Bezeichnung) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
   a.href = '#' + entry.ObjektID
   td.appendChild(a)
   td.appendChild(document.createElement('br'))
