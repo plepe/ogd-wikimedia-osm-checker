@@ -1,7 +1,7 @@
 {
-  "name": "osm-wikidata-bda",
+  "name": "bundesdenkmal-checker",
   "version": "0.0.0",
-  "description": "Vergleiche die Liste der Baudenkmäler des Bundesdenkmalamtes mit OpenStreetMap und Wikidata.",
+  "description": " Vergleiche die Liste der Baudenkmäler des Österreichischen Bundesdenkmalamtes mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.",
   "main": "index.js",
   "scripts": {
     "build": "mkdir -p dist && browserify src/app.js -o dist/app.js",
@@ -11,16 +11,13 @@
     "prepare": "npm run build && npm run update",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/plepe/osm-wikidata-bda.git"
-  },
+  "repository": "https://github.com/plepe/bundesdenkmal-checker",
   "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/plepe/osm-wikidata-bda/issues"
+    "url": "https://github.com/plepe/bundesdenkmal-checker"
   },
-  "homepage": "https://github.com/plepe/osm-wikidata-bda#readme",
+  "homepage": "https://github.com/plepe/bundesdenkmal-checker",
   "dependencies": {
     "async": "^3.2.0",
     "csvtojson": "^2.0.10",
