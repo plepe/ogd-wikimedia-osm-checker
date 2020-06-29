@@ -8,7 +8,7 @@
     "watch": "mkdir -p dist && watchify --debug src/app.js -o dist/app.js -v",
     "update": "mkdir -p data && node update.js",
     "lint": "standard --fix update.js server.js src/*.js server/*.js",
-    "prepare": "npm run build && npm run update",
+    "prepare": "npm run build",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
