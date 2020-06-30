@@ -33,7 +33,7 @@ module.exports = function checkWikidata (id, dom, callback) {
       if (el.claims.P625) {
         const coords = el.claims.P625[0].mainsnak.datavalue.value
 
-        ul.innerHTML += '<li class="success">Eintrag hat Koordinaten: <a target="_blank" href="https://openstreetmap.org/#map=19/' + coords.latitude + '/' + coords.longitude + '">' + coords.latitude + ', ' + coords.longitude + '</a></li>'
+        ul.innerHTML += '<li class="success">Eintrag hat Koordinaten: <a target="_blank" href="https://openstreetmap.org/?mlat=' + coords.latitude + '&mlon=' + coords.longitude + '#map=19/' + coords.latitude + '/' + coords.longitude + '">' + coords.latitude + ', ' + coords.longitude + '</a></li>'
       } else {
         ul.innerHTML += '<li class="warning">Eintrag hat keine Koordinaten</li>'
       }
