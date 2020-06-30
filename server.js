@@ -1,5 +1,6 @@
 const http = require('http')
 const fs = require('fs')
+const path = require('path')
 const queryString = require('query-string')
 
 const cgi = {
@@ -60,7 +61,7 @@ const requestListener = function (req, res) {
     return
   }
 
-  fs.readFile(__dirname.join(file), (err, contents) => {
+  fs.readFile(path.join(__dirname, file), (err, contents) => {
     if (err) {
       res.writeHead(500)
       res.end()
