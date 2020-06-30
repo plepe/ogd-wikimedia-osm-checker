@@ -10,4 +10,5 @@ module.exports = function (options, callback) {
     .then(body => {
       callback(null, body)
     })
+    .catch(e => callback(e))
 }

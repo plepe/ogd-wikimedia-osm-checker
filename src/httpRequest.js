@@ -55,7 +55,7 @@ function httpRequest (url, options, callback) {
   }
 
   function direct () {
-    xhr = new XMLHttpRequest()
+    xhr = new global.XMLHttpRequest()
     if (options.headers) {
       for (const k in options.headers) {
         xhr.setRequestHeader(k, options.headers[k])
@@ -69,7 +69,7 @@ function httpRequest (url, options, callback) {
   }
 
   function viaServer () {
-    xhr = new XMLHttpRequest()
+    xhr = new global.XMLHttpRequest()
     xhr.open(options.method || 'GET', 'httpRequest.php?url=' + encodeURIComponent(url), true)
     xhr.responseType = parseResponseType()
     xhr.onreadystatechange = readyStateChange

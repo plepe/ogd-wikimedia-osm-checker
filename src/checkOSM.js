@@ -1,4 +1,3 @@
-const async = require('async')
 const escHTML = require('html-escape')
 
 const httpRequest = require('./httpRequest.js')

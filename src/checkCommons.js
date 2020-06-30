@@ -1,16 +1,15 @@
 const async = require('async')
 const escHTML = require('html-escape')
 
-const httpRequest = require('./httpRequest.js')
 const loadWikidata = require('./loadWikidata.js')
 
 function checkCategory (id, value, ul, callback) {
-  fetch('commons.cgi?title=' + encodeURIComponent('Category:' + value))
+  global.fetch('commons.cgi?title=' + encodeURIComponent('Category:' + value))
     .then(res => res.json())
     .then(body => {
       const text = body.parse.wikitext['*']
 
-      let m = text.match(/\{\{\ *(doo|Denkmalgeschütztes Objekt Österreich)\|(1=)?([0-9]+)\ *\}\}/i)
+      let m = text.match(/\{\{ *(doo|Denkmalgeschütztes Objekt Österreich)\|(1=)?([0-9]+) *\}\}/i)
       if (m && m[3] === id) {
         ul.innerHTML += '<li class="success">Commons Kategorie hat Verweis auf BDA ID</li>'
       } else if (m) {
@@ -19,7 +18,7 @@ function checkCategory (id, value, ul, callback) {
         ul.innerHTML += '<li class="error">Commons Kategorie hat keinen Verweis auf BDA ID. Füge <tt>{{Denkmalgeschütztes Objekt Österreich|' + id + '}}</tt> hinzu.</li>'
       }
 
-      m = text.match(/\{\{\ *Wikidata Infobox\ *(\||\}\})/i)
+      m = text.match(/\{\{ *Wikidata Infobox *(\||\}\})/i)
       if (m) {
         ul.innerHTML += '<li class="success">Commons Kategorie hat Wikidata Infobox</li>'
       } else {
@@ -28,6 +27,7 @@ function checkCategory (id, value, ul, callback) {
 
       callback()
     })
+    .catch(e => callback(e))
 }
 
 module.exports = function checkOSM (id, dom, callback) {
@@ -43,6 +43,8 @@ module.exports = function checkOSM (id, dom, callback) {
   async.parallel([
     done => {
       loadWikidata(id, (err, result) => {
+        if (err) { return done(err) }
+
         if (result.length !== 1) {
           return done()
         }

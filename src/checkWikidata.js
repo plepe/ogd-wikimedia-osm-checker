@@ -21,6 +21,8 @@ module.exports = function checkWikidata (id, dom, callback) {
   div.appendChild(ul)
 
   loadWikidata(id, (err, result) => {
+    if (err) { return callback(err) }
+
     if (result.length > 1) {
       ul.innerHTML += '<li class="success">' + result.length + ' Objekt gefunden: ' + result.map(el => '<a target="_blank" href="' + el.item.value + '">' + el.item.value.match(/(Q[0-9]+)$/)[1] + '</a>').join(', ') + '</li>'
     } else if (result.length === 1) {

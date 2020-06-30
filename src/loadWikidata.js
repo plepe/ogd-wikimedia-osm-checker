@@ -8,7 +8,7 @@ module.exports = function loadWikidata (id, callback) {
 
   callbacks[id] = [callback]
 
-  fetch('wikidata.cgi?id=' + id)
+  global.fetch('wikidata.cgi?id=' + id)
     .then(res => res.json())
     .then(result => {
       const cbs = callbacks[id]
@@ -16,4 +16,5 @@ module.exports = function loadWikidata (id, callback) {
 
       cbs.forEach(cb => cb(null, result))
     })
+    .catch(e => callback(e))
 }

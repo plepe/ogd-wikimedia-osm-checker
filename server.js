@@ -7,7 +7,7 @@ const cgi = {
   wikidata: require('./server/wikidata.js')
 }
 
-contentTypes = {
+const contentTypes = {
   html: 'text/html',
   css: 'text/css',
   js: 'application/javascript',
@@ -25,7 +25,7 @@ const requestListener = function (req, res) {
   if (req.url === '/') {
     file = '/index.html'
   } else {
-    const m = req.url.match(/^(\/([\/[0-9A-Z]+)\.([A-Z]+))(\?.*|)$/i)
+    const m = req.url.match(/^(\/([/[0-9A-Z]+)\.([A-Z]+))(\?.*|)$/i)
     if (!m) {
       res.writeHead(500)
       res.end('Invalid request')
@@ -60,7 +60,7 @@ const requestListener = function (req, res) {
     return
   }
 
-  fs.readFile(__dirname + file, (err, contents) => {
+  fs.readFile(__dirname.join(file), (err, contents) => {
     if (err) {
       res.writeHead(500)
       res.end()

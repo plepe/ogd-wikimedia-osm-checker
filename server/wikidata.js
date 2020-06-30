@@ -26,9 +26,8 @@ module.exports = function (options, callback) {
               done(null, json.entities[wikidataId])
             })
         },
-        (err, result) => {
-          callback(null, result)
-        }
+        callback
       )
     })
+    .catch(e => callback(e))
 }

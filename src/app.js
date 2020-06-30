@@ -19,9 +19,7 @@ function show (k) {
   const entry = data[k]
 
   const tr = document.createElement('tr')
-  let td
-
-  td = document.createElement('td')
+  const td = document.createElement('td')
   tr.appendChild(td)
 
   const a = document.createElement('a')
@@ -39,8 +37,14 @@ window.onload = () => {
   document.body.classList.add('loading')
   async.parallel([
     done => {
-      fetch('data/bda.json')
-        .then(res => res.json())
+      global.fetch('data/bda.json')
+        .then(res => {
+          if (!res.ok) {
+            throw Error('loading BDA data: ' + res.statusText)
+          }
+
+          return res.json()
+        })
         .then(json => {
           json.forEach(entry => {
             data[entry.ObjektID] = entry
@@ -49,9 +53,15 @@ window.onload = () => {
 
           done()
         })
+        .catch(e => done(e))
     }
   ],
   err => {
+    document.body.classList.remove('loading')
+    if (err) {
+      return global.alert(err)
+    }
+
     const select = document.getElementById('Ortfilter')
     ortFilter = Object.keys(ortFilter)
     ortFilter = ortFilter.sort(natsort({ insensitive: true }))
@@ -61,11 +71,9 @@ window.onload = () => {
       select.appendChild(option)
     })
 
-    document.body.classList.remove('loading')
-
     select.onchange = update
-    if (location.hash) {
-      choose(location.hash.substr(1))
+    if (global.location.hash) {
+      choose(global.location.hash.substr(1))
     } else {
       update()
     }
@@ -78,7 +86,7 @@ window.onload = () => {
 
 function choose (id) {
   if (!(id in data)) {
-    return alert(id + ' nicht gefunden!')
+    return global.alert(id + ' nicht gefunden!')
   }
 
   const select = document.getElementById('Ortfilter')
@@ -123,11 +131,14 @@ function check (id) {
     div.removeChild(div.firstChild)
   }
 
-  // Load OSM data
   document.body.classList.add('loading')
   showBDA(entry, div)
+
   async.each(checker,
     (module, done) => module(id, div, done),
-    (err) => { document.body.classList.remove('loading') }
+    (err) => {
+      document.body.classList.remove('loading')
+      if (err) { global.alert(err) }
+    }
   )
 }
