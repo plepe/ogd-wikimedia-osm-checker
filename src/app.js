@@ -3,12 +3,9 @@ const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const natsort = require('natsort').default
 
-const checker = [
-  require('./checkWikipedia.js'),
-  require('./checkWikidata.js'),
-  require('./checkCommons.js'),
-  require('./checkOSM.js')
-]
+const runChecks = require('./runChecks.js')
+const Examinee = require('./Examinee.js')
+
 const showBDA = require('./showBDA.js')
 
 const data = {}
@@ -53,7 +50,7 @@ window.onload = () => {
 
           done()
         })
-        .catch(e => done(e))
+        // .catch(e => done(e))
     }
   ],
   err => {
@@ -134,11 +131,10 @@ function check (id) {
   document.body.classList.add('loading')
   showBDA(entry, div)
 
-  async.each(checker,
-    (module, done) => module(id, div, done),
-    (err) => {
-      document.body.classList.remove('loading')
-      if (err) { global.alert(err) }
-    }
-  )
+  const ob = new Examinee(entry.ObjektID, entry)
+  runChecks(ob, (err, result) => {
+    if (err) { global.alert(err) }
+
+    document.body.classList.remove('loading')
+  })
 }
