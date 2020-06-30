@@ -13,6 +13,7 @@ const showBDA = require('./showBDA.js')
 
 let data = {}
 let ortFilter = {}
+let info
 
 function show (k) {
   let entry = data[k]
@@ -33,6 +34,8 @@ function show (k) {
 }
 
 window.onload = () => {
+  info = document.getElementById('content').innerHTML
+
   document.body.classList.add('loading')
   async.parallel([
     done => {
@@ -90,10 +93,20 @@ function update () {
   let select = document.getElementById('Ortfilter')
   let ort = select.value
 
-  let table = document.getElementById('data')
-  while (table.rows.length > 1) {
-    table.removeChild(table.rows[1])
+  let content = document.getElementById('content')
+  while (content.firstChild) {
+    content.removeChild(content.firstChild)
   }
+
+  if (ort === '') {
+    content.innerHTML = info
+    return
+  }
+
+  let table = document.createElement('table')
+  table.id = 'data'
+  table.innerHTML = '<tr><th>Denkmal aus Bundesdenkmalamtsliste</th></tr>'
+  content.appendChild(table)
 
   for (let k in data) {
     if (data[k].Gemeinde === ort) {
