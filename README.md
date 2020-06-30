@@ -12,6 +12,16 @@ npm start # start internal web server on port 8080
 
 Browse to http://localhost:8080
 
+### Run with docker
+```sh
+git clone https://github.com/plepe/bundesdenkmal-checker
+cd bundesdenkmal-checker
+docker build -t skunk/bundesdenkmal-checker .
+docker run -p 8080:8080 -d skunk/bundesdenkmal-checker
+```
+
+Browse to http://localhost:8080
+
 ## Development
 If you modify the code, you can run the following command. This will compile the code with debugging symbols and will re-compile as soon as the source code changed.
 ```
