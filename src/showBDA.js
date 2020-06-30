@@ -1,12 +1,12 @@
 const escHTML = require('html-escape')
 
 module.exports = function showBDA (data, dom) {
-  let div = document.createElement('div')
+  const div = document.createElement('div')
   dom.appendChild(div)
 
   div.innerHTML = '<h2>Bundesdenkmalamt</h2>'
 
-  let ul = document.createElement('ul')
+  const ul = document.createElement('ul')
   div.appendChild(ul)
 
   ul.innerHTML += '<li>ID: ' + data.ObjektID + '</li>'

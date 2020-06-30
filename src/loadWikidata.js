@@ -11,7 +11,7 @@ module.exports = function loadWikidata (id, callback) {
   fetch('wikidata.cgi?id=' + id)
     .then(res => res.json())
     .then(result => {
-      let cbs = callbacks[id]
+      const cbs = callbacks[id]
       delete callbacks[id]
 
       cbs.forEach(cb => cb(null, result))

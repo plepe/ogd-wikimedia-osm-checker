@@ -11,26 +11,26 @@ const checker = [
 ]
 const showBDA = require('./showBDA.js')
 
-let data = {}
+const data = {}
 let ortFilter = {}
 let info
 
 function show (k) {
-  let entry = data[k]
+  const entry = data[k]
 
-  let tr = document.createElement("tr")
+  const tr = document.createElement('tr')
   let td
 
-  td = document.createElement("td")
+  td = document.createElement('td')
   tr.appendChild(td)
 
-  let a = document.createElement('a')
+  const a = document.createElement('a')
   a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.Bezeichnung) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
   a.href = '#' + entry.ObjektID
   td.appendChild(a)
   td.appendChild(document.createElement('br'))
 
-  document.getElementById("data").appendChild(tr)
+  document.getElementById('data').appendChild(tr)
 }
 
 window.onload = () => {
@@ -52,11 +52,11 @@ window.onload = () => {
     }
   ],
   err => {
-    let select = document.getElementById('Ortfilter')
+    const select = document.getElementById('Ortfilter')
     ortFilter = Object.keys(ortFilter)
-    ortFilter = ortFilter.sort(natsort({insensitive: true}))
+    ortFilter = ortFilter.sort(natsort({ insensitive: true }))
     ortFilter.forEach(ort => {
-      let option = document.createElement('option')
+      const option = document.createElement('option')
       option.appendChild(document.createTextNode(ort))
       select.appendChild(option)
     })
@@ -78,11 +78,11 @@ window.onload = () => {
 
 function choose (id) {
   if (!(id in data)) {
-    return alert(id + " nicht gefunden!")
+    return alert(id + ' nicht gefunden!')
   }
 
-  let select = document.getElementById('Ortfilter')
-  let ort = data[id].Gemeinde
+  const select = document.getElementById('Ortfilter')
+  const ort = data[id].Gemeinde
   select.value = ort
   update()
 
@@ -90,10 +90,10 @@ function choose (id) {
 }
 
 function update () {
-  let select = document.getElementById('Ortfilter')
-  let ort = select.value
+  const select = document.getElementById('Ortfilter')
+  const ort = select.value
 
-  let content = document.getElementById('content')
+  const content = document.getElementById('content')
   while (content.firstChild) {
     content.removeChild(content.firstChild)
   }
@@ -103,12 +103,12 @@ function update () {
     return
   }
 
-  let table = document.createElement('table')
+  const table = document.createElement('table')
   table.id = 'data'
   table.innerHTML = '<tr><th>Denkmal aus Bundesdenkmalamtsliste</th></tr>'
   content.appendChild(table)
 
-  for (let k in data) {
+  for (const k in data) {
     if (data[k].Gemeinde === ort) {
       show(k)
     }

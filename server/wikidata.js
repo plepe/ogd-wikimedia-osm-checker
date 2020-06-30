@@ -11,7 +11,7 @@ module.exports = function (options, callback) {
     body: 'SELECT ?item ?itemLabel WHERE { ?item wdt:P2951 "' + options.id + '". SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }',
     headers: {
       'User-Agent': 'osm-wikidata-bda',
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/sparql-query'
     }
   })
@@ -19,7 +19,7 @@ module.exports = function (options, callback) {
     .then(json => {
       async.map(json.results.bindings,
         (entry, done) => {
-          let wikidataId = entry.item.value.match(/(Q[0-9]+)$/)[1]
+          const wikidataId = entry.item.value.match(/(Q[0-9]+)$/)[1]
           fetch('https://www.wikidata.org/wiki/Special:EntityData/' + wikidataId + '.json')
             .then(res => res.json())
             .then(json => {
@@ -30,6 +30,5 @@ module.exports = function (options, callback) {
           callback(null, result)
         }
       )
-
     })
 }

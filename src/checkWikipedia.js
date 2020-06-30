@@ -1,10 +1,10 @@
 module.exports = function checkWikipedia (id, dom, callback) {
-  let div = document.createElement('div')
+  const div = document.createElement('div')
   dom.appendChild(div)
 
   div.innerHTML = '<h2>Wikipedia</h2>'
 
-  let ul = document.createElement('ul')
+  const ul = document.createElement('ul')
   ul.className = 'check'
   div.appendChild(ul)
 

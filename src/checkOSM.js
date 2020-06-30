@@ -21,12 +21,12 @@ function overpassQuery (query, callback) {
 }
 
 module.exports = function checkOSM (id, dom, callback) {
-  let div = document.createElement('div')
+  const div = document.createElement('div')
   dom.appendChild(div)
 
   div.innerHTML = '<h2>OpenStreetMap</h2>'
 
-  let ul = document.createElement('ul')
+  const ul = document.createElement('ul')
   ul.className = 'check'
   div.appendChild(ul)
 
@@ -49,8 +49,8 @@ module.exports = function checkOSM (id, dom, callback) {
           return callback()
         }
 
-        let refBdaResult = result.elements.filter(el => el.tags['ref:at:bda'] === id)
-        let refWdResult = result.elements.filter(el => el.tags['wikidata'] === wikidataId)
+        const refBdaResult = result.elements.filter(el => el.tags['ref:at:bda'] === id)
+        const refWdResult = result.elements.filter(el => el.tags.wikidata === wikidataId)
 
         if (refWdResult.length && refBdaResult.length && refWdResult.length === refBdaResult.length) {
           ul.innerHTML += '<li class="success">' + refBdaResult.length + ' Objekt via <tt>ref:at:bda=' + id + '</tt> und <tt>wikidata=' + wikidataId + '</tt> gefunden: ' + refBdaResult.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', ') + '</li>'
@@ -58,7 +58,7 @@ module.exports = function checkOSM (id, dom, callback) {
           ul.innerHTML += '<li class="error">Unterschiedliche Anzahl von Objekten mit <tt>ref:at:bda=' + id + '</tt> und/oder <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden: ' + result.elements.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', ') + '</li>'
         } else if (refBdaResult.length) {
           ul.innerHTML += '<li class="success">' + refBdaResult.length + ' Objekt via <tt>ref:at:bda=' + id + '</tt> gefunden: ' + refBdaResult.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', ') + '</li>'
-          let wrongWikidata = refBdaResult.filter(entry => !!entry.tags.wikidata)
+          const wrongWikidata = refBdaResult.filter(entry => !!entry.tags.wikidata)
           if (wrongWikidata.length) {
             ul.innerHTML += '<li class="error">Eintrag mit anderer Wikidata ID gefunden, potentielles Duplikat: <a target="_blank" href="https://wikidata.org/wiki/' + escHTML(wrongWikidata[0].tags.wikidata) + '">' + escHTML(wrongWikidata[0].tags.wikidata) + '</a></li>'
           } else {
@@ -73,7 +73,7 @@ module.exports = function checkOSM (id, dom, callback) {
 
         result.elements.forEach(el => {
           let text = ''
-          for (let tag in el.tags) {
+          for (const tag in el.tags) {
             text += escHTML(tag) + '=' + escHTML(el.tags[tag]) + '</br>'
           }
 
@@ -81,7 +81,7 @@ module.exports = function checkOSM (id, dom, callback) {
             (result.elements.length > 1 ? '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>: ' : '') +
             'Folgende Tags gefunden:<dl>' + text + '</dl></li>'
 
-          let missTags = recommendedTags.filter(tag => !(tag in el.tags))
+          const missTags = recommendedTags.filter(tag => !(tag in el.tags))
           ul.innerHTML += '<li class="warning">' +
             (result.elements.length > 1 ? '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>: ' : '') +
             'Folgende empfohlene Tags nicht gefunden: ' + missTags.join(', ') + '</li>'

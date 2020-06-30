@@ -8,7 +8,7 @@ function checkCategory (id, value, ul, callback) {
   fetch('commons.cgi?title=' + encodeURIComponent('Category:' + value))
     .then(res => res.json())
     .then(body => {
-      let text = body.parse.wikitext['*']
+      const text = body.parse.wikitext['*']
 
       let m = text.match(/\{\{\ *(doo|Denkmalgeschütztes Objekt Österreich)\|(1=)?([0-9]+)\ *\}\}/i)
       if (m && m[3] === id) {
@@ -31,12 +31,12 @@ function checkCategory (id, value, ul, callback) {
 }
 
 module.exports = function checkOSM (id, dom, callback) {
-  let div = document.createElement('div')
+  const div = document.createElement('div')
   dom.appendChild(div)
 
   div.innerHTML = '<h2>Wikimedia Commons</h2>'
 
-  let ul = document.createElement('ul')
+  const ul = document.createElement('ul')
   ul.className = 'check'
   div.appendChild(ul)
 
@@ -47,11 +47,11 @@ module.exports = function checkOSM (id, dom, callback) {
           return done()
         }
 
-        let el = result[0]
+        const el = result[0]
 
         // image
         if (el.claims.P18) {
-          let images = el.claims.P18
+          const images = el.claims.P18
           if (images.length === 1) {
             ul.innerHTML += '<li class="success">Wikidata Eintrag hat ein <a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(images[0].mainsnak.datavalue.value) + '">Bild</a></li>'
           } else {
@@ -63,7 +63,7 @@ module.exports = function checkOSM (id, dom, callback) {
 
         // commons category
         if (el.claims.P373) {
-          let data = el.claims.P373
+          const data = el.claims.P373
           ul.innerHTML += '<li class="success">Wikidata Eintrag hat Link zu Wikimedia Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + encodeURIComponent(data[0].mainsnak.datavalue.value) + '">' + escHTML(data[0].mainsnak.datavalue.value) + '</a></li>'
 
           checkCategory(id, data[0].mainsnak.datavalue.value, ul, done)

@@ -57,7 +57,7 @@ function httpRequest (url, options, callback) {
   function direct () {
     xhr = new XMLHttpRequest()
     if (options.headers) {
-      for (let k in options.headers) {
+      for (const k in options.headers) {
         xhr.setRequestHeader(k, options.headers[k])
       }
     }

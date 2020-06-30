@@ -25,7 +25,7 @@ const requestListener = function (req, res) {
   if (req.url === '/') {
     file = '/index.html'
   } else {
-    let m = req.url.match(/^(\/([\/[0-9A-Z]+)\.([A-Z]+))(\?.*|)$/i)
+    const m = req.url.match(/^(\/([\/[0-9A-Z]+)\.([A-Z]+))(\?.*|)$/i)
     if (!m) {
       res.writeHead(500)
       res.end('Invalid request')
@@ -52,7 +52,7 @@ const requestListener = function (req, res) {
         return console.error(err)
       }
 
-      res.setHeader("Content-Type", 'application/json')
+      res.setHeader('Content-Type', 'application/json')
       res.writeHead(200)
       res.end(JSON.stringify(result, null, '  '))
     })
@@ -67,7 +67,7 @@ const requestListener = function (req, res) {
       return console.error(err)
     }
 
-    res.setHeader("Content-Type", ext in contentTypes ? contentTypes[ext] : 'text/plain')
+    res.setHeader('Content-Type', ext in contentTypes ? contentTypes[ext] : 'text/plain')
     res.writeHead(200)
     res.end(contents)
   })
