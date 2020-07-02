@@ -7,6 +7,7 @@ const runChecks = require('./runChecks.js')
 const Examinee = require('./Examinee.js')
 
 const showBDA = require('./showBDA.js')
+const checks = require('../datasets/bda.js')
 
 const data = {}
 let ortFilter = {}
@@ -133,7 +134,7 @@ function check (id) {
 
   const ob = new Examinee(entry.ObjektID, entry)
   ob.initMessages(div)
-  runChecks(ob, (err, result) => {
+  runChecks(ob, checks, (err, result) => {
     if (err) { global.alert(err) }
 
     document.body.classList.remove('loading')

@@ -1,8 +1,6 @@
-const checks = require('./checks')
-
-module.exports = function runChecks (ob, callback, done = null) {
+module.exports = function runChecks (ob, checks, callback, done = null) {
   if (done === null) {
-    ob.on('load', () => runChecks(ob, callback, done))
+    ob.on('load', () => runChecks(ob, checks, callback, done))
     ob.on('loadError', (err) => {
       ob.removeAllListeners()
       callback(err)
