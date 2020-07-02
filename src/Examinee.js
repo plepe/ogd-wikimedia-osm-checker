@@ -2,6 +2,7 @@ const EventEmitter = require('events')
 const forEach = require('foreach')
 
 const loader = {
+  commons: require('./loader-commons.js'),
   osm: require('./loader-osm.js'),
   wikidata: require('./loader-wikidata.js')
 }
