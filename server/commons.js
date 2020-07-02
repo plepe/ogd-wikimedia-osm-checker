@@ -33,10 +33,16 @@ function loadSearch (search, callback) {
             titles.push(hit.textContent)
           }
         })
-        console.log(titles)
 
         async.map(titles,
-          (title, done) => loadTitle(title, done),
+          (title, done) => loadTitle(title, (err, page) => {
+            if (err) { return done(err) }
+            if (page.length) {
+              done(null, page[0])
+            } else {
+              done(null, null)
+            }
+          }),
           callback
         )
       })

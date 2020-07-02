@@ -7,7 +7,7 @@ const runChecks = require('./runChecks.js')
 const Examinee = require('./Examinee.js')
 
 const showBDA = require('./showBDA.js')
-const checks = require('../datasets/bda.js')
+const checks = require('../datasets/kunstwien.js')
 
 const data = {}
 let ortFilter = {}
@@ -35,7 +35,7 @@ window.onload = () => {
   document.body.classList.add('loading')
   async.parallel([
     done => {
-      global.fetch('data/bda.json')
+      global.fetch('data/kunstwien.json')
         .then(res => {
           if (!res.ok) {
             throw Error('loading BDA data: ' + res.statusText)
@@ -45,7 +45,7 @@ window.onload = () => {
         })
         .then(json => {
           json.forEach(entry => {
-            data[entry.ObjektID] = entry
+            data[entry.ID] = entry
             ortFilter[entry.Gemeinde] = true
           })
 
