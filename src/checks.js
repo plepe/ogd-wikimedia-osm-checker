@@ -7,5 +7,6 @@ module.exports = [
   require('../checks/commonsLoad.js')(),
   require('../checks/commonsImage.js')(),
   require('../checks/commonsWikidataInfobox.js')(),
+  require('../checks/wikipediaDenkmalliste.js')(),
   require('../checks/commonsTemplate.js')()
 ]
