@@ -9,7 +9,7 @@ module.exports = function init (options) {
 // - true: check is finished
 function check (options, ob) {
   if (!ob.data.wikidata) {
-    return ob.load('wikidata', ob.id)
+    return ob.load('wikidata', {key: options, id: ob.id})
   }
 
   const result = ob.data.wikidata
