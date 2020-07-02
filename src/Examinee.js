@@ -2,7 +2,8 @@ const EventEmitter = require('events')
 const forEach = require('foreach')
 
 const loader = {
-  osm: require('./loader-osm.js')
+  osm: require('./loader-osm.js'),
+  wikidata: require('./loader-wikidata.js')
 }
 
 const modules = {
@@ -32,7 +33,7 @@ module.exports = class Examinee extends EventEmitter {
 
       div.innerHTML = '<h2>' + title + '</h2>'
 
-      let ul = document.createElement('ul')
+      const ul = document.createElement('ul')
       ul.className = 'check'
       div.appendChild(ul)
       this.messagesUl[id] = ul
@@ -48,7 +49,7 @@ module.exports = class Examinee extends EventEmitter {
   }
 
   message (module, status, message) {
-    let li = document.createElement('li')
+    const li = document.createElement('li')
     li.innerHTML = message
     li.className = status
     this.messagesUl[module].appendChild(li)

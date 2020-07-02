@@ -9,19 +9,23 @@ module.exports = function init (options) {
 // - true: check is finished
 function check (options, ob) {
   let wikidataId
-  //    if (!ob.data.wikidata && !ob.data.osm) {
-  //      return {}
-  //    }
-  //
-  //    if (!ob.data.osm && ob.data.wikidata.length) {
-  //      return [
-  //        {load: [ 'osm', 'nwr["ref:at:bda"=' + ob.data.bda.ObjektID + '];' ]},
-  //        {load: [ 'osm', 'nwr[wikidata="' + ob.data.wikidata[0] + '];' ]}
-  //      ]
-  //    }
+
+  if (!ob.data.wikidata && !ob.data.osm) {
+    // wait for wikidata info to be loaded
+    return
+  }
+
+  if (!ob.data.osm && ob.data.wikidata.length) {
+    ob.load('osm', 'nwr["ref:at:bda"=' + ob.id + '];')
+    return ob.load('osm', 'nwr[wikidata="' + ob.data.wikidata[0].id + '"];')
+  }
 
   if (!ob.data.osm) {
     return ob.load('osm', 'nwr["ref:at:bda"=' + ob.id + '];')
+  }
+
+  if (ob.data.wikidata.length) {
+    wikidataId = ob.data.wikidata[0].id
   }
 
   const refBdaResult = ob.data.osm.filter(el => el.tags['ref:at:bda'] === ob.id)

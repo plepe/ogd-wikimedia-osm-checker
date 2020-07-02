@@ -11,8 +11,8 @@ module.exports = function runChecks (ob, callback, done = null) {
     done = []
   }
 
-  checks.map((check, i) => {
-    if (check in done) {
+  checks.forEach((check, i) => {
+    if (done.includes(check)) {
       return
     }
 
