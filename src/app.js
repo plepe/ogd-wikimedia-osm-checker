@@ -132,6 +132,7 @@ function check (id) {
   showBDA(entry, div)
 
   const ob = new Examinee(entry.ObjektID, entry)
+  ob.initMessages(div)
   runChecks(ob, (err, result) => {
     if (err) { global.alert(err) }
 
