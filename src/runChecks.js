@@ -23,9 +23,7 @@ module.exports = function runChecks (ob, callback, done = null) {
 
   if (ob.needLoad()) {
     ob._load()
-  }
-
-  if (!ob.needLoad()) {
+  } else {
     ob.removeAllListeners()
     callback(null)
   }

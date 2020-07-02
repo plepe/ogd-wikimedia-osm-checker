@@ -81,7 +81,7 @@ module.exports = class Examinee extends EventEmitter {
 
       loader[module](queries,
         (err, result) => {
-          this.loading.splice(this.loading.indexOf(toLoad[module]))
+          this.loading.splice(this.loading.indexOf(toLoad[module]), 1)
           if (err) { return this.emit('loadError', err) }
           this.data[module] = result
           this.emit('load')
