@@ -1,13 +1,13 @@
 const async = require('async')
 
 module.exports = function loaderCommons (queries, callback) {
-  async.map(queries,
+  async.concat(queries,
     (query, done) => {
       let k = Object.keys(query)
       global.fetch('commons.cgi?' + k + '=' + encodeURIComponent(query[k]))
         .then(res => res.json())
         .then(body => {
-          done(null, body.length ? body[0] : null)
+          done(null, body)
         })
         .catch(e => done(e))
     },

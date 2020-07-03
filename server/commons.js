@@ -3,12 +3,10 @@ const fetch = require('node-fetch')
 const async = require('async')
 
 function loadTitle (title, callback) {
-  console.log('load title', title)
   fetch('https://commons.wikimedia.org/w/api.php?action=parse&format=json&prop=wikitext&page=' + encodeURIComponent(title))
     .then(res => res.json())
     .then(body => {
       let page = body.parse
-      console.log(page)
       callback(null, [{
         title: page.title,
         pageid: page.pageid,
@@ -38,11 +36,7 @@ function loadSearch (search, callback) {
         async.map(titles,
           (title, done) => loadTitle(title, (err, page) => {
             if (err) { return done(err) }
-            if (page.length) {
-              done(null, page[0])
-            } else {
-              done(null, null)
-            }
+            done(null, page.length ? page[0] : null)
           }),
           callback
         )
