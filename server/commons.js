@@ -8,6 +8,7 @@ function loadTitle (title, callback) {
     .then(res => res.json())
     .then(body => {
       let page = body.parse
+      console.log(page)
       callback(null, [{
         title: page.title,
         pageid: page.pageid,

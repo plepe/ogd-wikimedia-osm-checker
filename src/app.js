@@ -6,8 +6,8 @@ const natsort = require('natsort').default
 const runChecks = require('./runChecks.js')
 const Examinee = require('./Examinee.js')
 
-const showBDA = require('./showBDA.js')
-const checks = require('../datasets/kunstwien.js')
+const dataset = require('../datasets/bda.js')
+//const dataset = require('../datasets/kunstwien.js')
 
 const data = {}
 let ortFilter = {}
@@ -35,7 +35,7 @@ window.onload = () => {
   document.body.classList.add('loading')
   async.parallel([
     done => {
-      global.fetch('data/kunstwien.json')
+      global.fetch('data/' + dataset.filename)
         .then(res => {
           if (!res.ok) {
             throw Error('loading BDA data: ' + res.statusText)
@@ -45,7 +45,7 @@ window.onload = () => {
         })
         .then(json => {
           json.forEach(entry => {
-            data[entry.ID] = entry
+            data[entry[dataset.idField]] = entry
             ortFilter[entry.Gemeinde] = true
           })
 
@@ -130,11 +130,11 @@ function check (id) {
   }
 
   document.body.classList.add('loading')
-  showBDA(entry, div)
+  dataset.showEntry(entry, div)
 
-  const ob = new Examinee(entry.ObjektID, entry)
+  const ob = new Examinee(entry[dataset.idField], entry)
   ob.initMessages(div)
-  runChecks(ob, checks, (err, result) => {
+  runChecks(ob, dataset.checks, (err, result) => {
     if (err) { global.alert(err) }
 
     document.body.classList.remove('loading')
