@@ -12,7 +12,7 @@ function check (options, ob) {
     return
   }
 
-  let text = ob.data.commons[0]
+  let text = ob.data.commons[0].wikitext
   m = text.match(/\{\{ *Wikidata Infobox *(\||\}\})/i)
   if (m) {
     return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Wikidata Infobox')

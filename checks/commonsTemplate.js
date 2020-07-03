@@ -16,7 +16,7 @@ function check (options, ob) {
     return true
   }
 
-  let text = ob.data.commons[0]
+  let text = ob.data.commons[0].wikitext
   let m = text.match(/\{\{ *(?:doo|Denkmalgeschütztes Objekt Österreich)\|(?:1=)?([0-9]+) *\}\}/i)
   if (m && m[1] === ob.id) {
     return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Verweis auf BDA ID.')

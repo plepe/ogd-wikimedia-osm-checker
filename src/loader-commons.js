@@ -6,8 +6,7 @@ module.exports = function loaderCommons (queries, callback) {
       global.fetch('commons.cgi?title=' + encodeURIComponent('Category:' + value))
         .then(res => res.json())
         .then(body => {
-          const text = body.parse.wikitext['*']
-          done(null, text)
+          done(null, body.length ? body[0] : null)
         })
         .catch(e => done(e))
     },
