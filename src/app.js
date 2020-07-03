@@ -6,8 +6,8 @@ const natsort = require('natsort').default
 const runChecks = require('./runChecks.js')
 const Examinee = require('./Examinee.js')
 
-const dataset = require('../datasets/bda.js')
-//const dataset = require('../datasets/kunstwien.js')
+//const dataset = require('../datasets/bda.js')
+const dataset = require('../datasets/kunstwien.js')
 
 const data = {}
 let ortFilter = {}
