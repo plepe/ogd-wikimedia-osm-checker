@@ -1,3 +1,5 @@
+const escHTML = require('html-escape')
+
 module.exports = {
   filename: 'kunstwien.json',
 
@@ -21,6 +23,20 @@ module.exports = {
   //  require('../checks/commonsTemplate.js')()
     require('../checks/osmTags.js')()
   ],
+
+  listEntry (entry, dom) {
+    const tr = document.createElement('tr')
+    const td = document.createElement('td')
+    tr.appendChild(td)
+
+    const a = document.createElement('a')
+    a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.OBJEKTTITEL) + '</span><span class="Adresse">' + escHTML(entry.STRASSE) + '</span>'
+    a.href = '#' + entry.ID
+    td.appendChild(a)
+    td.appendChild(document.createElement('br'))
+
+    dom.appendChild(tr)
+  },
 
   showEntry (data, dom) {
     const pre = document.createElement('pre')

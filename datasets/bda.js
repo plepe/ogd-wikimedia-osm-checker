@@ -22,6 +22,20 @@ module.exports = {
     require('../checks/commonsTemplate.js')()
   ],
 
+  listEntry (entry, dom) {
+    const tr = document.createElement('tr')
+    const td = document.createElement('td')
+    tr.appendChild(td)
+
+    const a = document.createElement('a')
+    a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.Bezeichnung) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
+    a.href = '#' + entry.ObjektID
+    td.appendChild(a)
+    td.appendChild(document.createElement('br'))
+
+    dom.appendChild(tr)
+  },
+
   showEntry (data, dom) {
     const div = document.createElement('div')
     dom.appendChild(div)

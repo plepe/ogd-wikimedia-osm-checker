@@ -1,6 +1,5 @@
 const async = require('async')
 const hash = require('sheet-router/hash')
-const escHTML = require('html-escape')
 const natsort = require('natsort').default
 
 const runChecks = require('./runChecks.js')
@@ -12,22 +11,6 @@ const dataset = require('../datasets/kunstwien.js')
 const data = {}
 let ortFilter = {}
 let info
-
-function show (k) {
-  const entry = data[k]
-
-  const tr = document.createElement('tr')
-  const td = document.createElement('td')
-  tr.appendChild(td)
-
-  const a = document.createElement('a')
-  a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.Bezeichnung) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
-  a.href = '#' + entry.ObjektID
-  td.appendChild(a)
-  td.appendChild(document.createElement('br'))
-
-  document.getElementById('data').appendChild(tr)
-}
 
 window.onload = () => {
   info = document.getElementById('content').innerHTML
@@ -114,9 +97,11 @@ function update () {
   table.innerHTML = '<tr><th>Denkmal aus Bundesdenkmalamtsliste</th></tr>'
   content.appendChild(table)
 
+  let dom = document.getElementById('data')
+
   for (const k in data) {
     if (data[k][dataset.ortFilterField] === ort) {
-      show(k)
+      dataset.listEntry(data[k], dom)
     }
   }
 }
