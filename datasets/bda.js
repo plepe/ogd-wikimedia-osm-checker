@@ -8,7 +8,7 @@ module.exports = {
   checks: [
     require('../checks/osmRefBda.js')('ref:at:bda'),
     require('../checks/osmTags.js')(),
-    require('../checks/loadWikidata.js')('P2951'),
+    require('../checks/wikidataLoadViaRef.js')('P2951'),
     require('../checks/wikidataCoords.js')(),
     require('../checks/wikidataIsA.js')(),
     require('../checks/wikidataRecommendations.js')(),
