@@ -17,13 +17,14 @@ function loadById(id, callback) {
 }
 
 function next (options) {
+  //console.log('done', JSON.stringify(options))
   active.splice(active.indexOf(options), 1)
 }
 
 function _next () {
   if (!pending.length) {
     global.clearInterval(interval)
-    delete interval
+    interval = null
     return
   }
 
@@ -53,6 +54,7 @@ function request (options, callback) {
 }
 
 function _request (options, callback) {
+  //console.log('start', JSON.stringify(options))
   if (options.key === 'id') {
     return loadById(options.id,
       (err, result) => {
