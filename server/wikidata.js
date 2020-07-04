@@ -1,4 +1,3 @@
-const fetch = require('node-fetch')
 const async = require('async')
 
 const httpRequest = require('../src/httpRequest.js')
@@ -9,11 +8,14 @@ const maxActive = 1
 let interval
 
 function loadById(id, callback) {
-  fetch('https://www.wikidata.org/wiki/Special:EntityData/' + id + '.json')
-    .then(res => res.json())
-    .then(json => {
-      callback(null, json.entities[id])
-    })
+  httpRequest('https://www.wikidata.org/wiki/Special:EntityData/' + id + '.json',
+    {
+      responseType: 'json'
+    },
+    (err, result) => {
+      callback(null, result.body.entities[id])
+    }
+  )
 }
 
 function next (options) {
