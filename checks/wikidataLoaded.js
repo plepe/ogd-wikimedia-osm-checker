@@ -9,7 +9,7 @@ module.exports = function init (options) {
 // - true: check is finished
 function check (options, ob) {
   if (!ob.data.wikidata) {
-    return
+    return // wait for other check to load wikidata entry/ies
   }
 
   const result = ob.data.wikidata
