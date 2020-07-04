@@ -3,6 +3,8 @@ module.exports = {
 
   idField: 'ID',
 
+  ortFilterField: 'PLZ',
+
   checks: [
   //  require('../checks/osmRefBda.js')('ref:at:bda'),
     require('../checks/commonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),

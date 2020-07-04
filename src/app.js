@@ -46,7 +46,7 @@ window.onload = () => {
         .then(json => {
           json.forEach(entry => {
             data[entry[dataset.idField]] = entry
-            ortFilter[entry.Gemeinde] = true
+            ortFilter[entry[dataset.ortFilterField]] = true
           })
 
           done()
@@ -88,7 +88,7 @@ function choose (id) {
   }
 
   const select = document.getElementById('Ortfilter')
-  const ort = data[id].Gemeinde
+  const ort = data[id][dataset.ortFilterField]
   select.value = ort
   update()
 
@@ -115,7 +115,7 @@ function update () {
   content.appendChild(table)
 
   for (const k in data) {
-    if (data[k].Gemeinde === ort) {
+    if (data[k][dataset.ortFilterField] === ort) {
       show(k)
     }
   }

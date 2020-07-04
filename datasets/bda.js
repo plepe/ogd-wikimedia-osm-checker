@@ -5,6 +5,8 @@ module.exports = {
 
   idField: 'ObjektID',
 
+  ortFilterField: 'Gemeinde',
+
   checks: [
     require('../checks/osmRefBda.js')('ref:at:bda'),
     require('../checks/osmTags.js')(),
