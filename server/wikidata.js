@@ -3,6 +3,11 @@ const async = require('async')
 
 const httpRequest = require('../src/httpRequest.js')
 
+const active = []
+const pending = []
+const maxActive = 1
+let interval
+
 function loadById(id, callback) {
   fetch('https://www.wikidata.org/wiki/Special:EntityData/' + id + '.json')
     .then(res => res.json())
@@ -11,7 +16,27 @@ function loadById(id, callback) {
     })
 }
 
-module.exports = function (options, callback) {
+function next (options) {
+  active.splice(active.indexOf(options), 1)
+}
+
+function _next () {
+  if (!pending.length) {
+    global.clearInterval(interval)
+    delete interval
+    return
+  }
+
+  if (active.length >= maxActive) {
+    return
+  }
+
+  let req = pending.shift()
+  active.push(req[0])
+  _request(req[0], req[1])
+}
+
+function request (options, callback) {
   if (!options.key || !options.key.match(/^(id|P[0-9]+)$/)) {
     return callback(new Error('illegal key'))
   }
@@ -20,11 +45,20 @@ module.exports = function (options, callback) {
     return callback(new Error('illegal id'))
   }
 
+  pending.push([options, callback])
+
+  if (!interval) {
+    interval = global.setInterval(_next, 1000)
+  }
+}
+
+function _request (options, callback) {
   if (options.key === 'id') {
     return loadById(options.id,
       (err, result) => {
         if (err) { return callback(err) }
         callback(null, [result])
+        next(options)
       }
     )
   }
@@ -41,15 +75,23 @@ module.exports = function (options, callback) {
       responseType: 'json'
     },
     (err, result) => {
-      if (err) { return callback(err) }
+      if (err) {
+        next(options)
+        return callback(err)
+      }
 
-      async.map(result.body.results.bindings,
+      async.mapSeries(result.body.results.bindings,
         (entry, done) => {
           const wikidataId = entry.item.value.match(/(Q[0-9]+)$/)[1]
           loadById(wikidataId, done)
         },
-        callback
+        (err, results) => {
+          callback(err, results)
+          next(options)
+        }
       )
     }
   )
 }
+
+module.exports = request
