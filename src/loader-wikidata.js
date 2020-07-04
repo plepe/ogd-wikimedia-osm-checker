@@ -9,6 +9,7 @@ module.exports = function loadWikidata (queries, callback) {
         .catch(e => done(e))
     },
     (err, results) => {
+      results = results.filter(r => !!r)
       async.setImmediate(() => callback(err, results))
     }
   )
