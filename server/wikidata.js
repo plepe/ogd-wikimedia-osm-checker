@@ -75,19 +75,19 @@ function _request (options, callback) {
       responseType: 'json'
     },
     (err, result) => {
-      if (err) {
-        next(options)
-        return callback(err)
-      }
+      next(options)
+      if (err) { return callback(err) }
 
-      async.mapSeries(result.body.results.bindings,
+      async.map(result.body.results.bindings,
         (entry, done) => {
           const wikidataId = entry.item.value.match(/(Q[0-9]+)$/)[1]
-          loadById(wikidataId, done)
+          request(
+            {key: 'id', id: wikidataId},
+            (err, r) => done(err, r.length ? r[0] : null)
+          )
         },
         (err, results) => {
           callback(err, results)
-          next(options)
         }
       )
     }
