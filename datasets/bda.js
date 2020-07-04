@@ -1,6 +1,10 @@
 const escHTML = require('html-escape')
 
 module.exports = {
+  title: 'Bundesdenkmalamt',
+
+  listTitle: 'Denkmal aus Bundesdenkmalamtsliste',
+
   filename: 'bda.json',
 
   idField: 'ObjektID',

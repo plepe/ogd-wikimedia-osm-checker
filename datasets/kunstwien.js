@@ -1,6 +1,10 @@
 const escHTML = require('html-escape')
 
 module.exports = {
+  title: 'Kunstwerke im öff. Raum (Kulturgut Wien)',
+
+  listTitle: 'Kunstwerke im öff. Raum (Kulturgut Wien)',
+
   filename: 'kunstwien.json',
 
   idField: 'ID',

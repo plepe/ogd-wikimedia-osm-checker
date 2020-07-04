@@ -1,6 +1,7 @@
 const async = require('async')
 const hash = require('sheet-router/hash')
 const natsort = require('natsort').default
+const escHTML = require('html-escape')
 
 const runChecks = require('./runChecks.js')
 const Examinee = require('./Examinee.js')
@@ -94,7 +95,7 @@ function update () {
 
   const table = document.createElement('table')
   table.id = 'data'
-  table.innerHTML = '<tr><th>Denkmal aus Bundesdenkmalamtsliste</th></tr>'
+  table.innerHTML = '<tr><th>' + escHTML(dataset.listTitle) + '</th></tr>'
   content.appendChild(table)
 
   let dom = document.getElementById('data')
