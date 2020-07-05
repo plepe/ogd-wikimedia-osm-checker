@@ -22,7 +22,7 @@ module.exports = {
   //  require('../checks/commonsLoad.js')(),
     require('../checks/commonsImage.js')(),
     require('../checks/commonsWikidataInfobox.js')(),
-  //  require('../checks/wikipediaDenkmalliste.js')(),
+    require('../checks/wikipediaKunstwerkliste.js')(),
     require('../checks/osmLoadFromWikidata.js')(),
   //  require('../checks/commonsTemplate.js')()
     require('../checks/osmTags.js')()
