@@ -4,7 +4,8 @@ const forEach = require('foreach')
 const loader = {
   commons: require('./loader-commons.js'),
   osm: require('./loader-osm.js'),
-  wikidata: require('./loader-wikidata.js')
+  wikidata: require('./loader-wikidata.js'),
+  wikipedia: require('./loader-wikipedia.js')
 }
 
 const modules = {

@@ -7,6 +7,7 @@ global.XMLHttpRequest = require('w3c-xmlhttprequest').XMLHttpRequest
 
 const cgi = {
   commons: require('./server/commons.js'),
+  wikipedia: require('./server/wikipedia.js'),
   wikidata: require('./server/wikidata.js')
 }
 
