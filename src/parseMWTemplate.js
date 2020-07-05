@@ -13,9 +13,13 @@ module.exports = function parseMWTemplate (str, templateId) {
 
     let rows = templateText.split(/\n\|/g)
     rows.forEach(row => {
-      let m1 = row.match(/^ *([^\s]+) *= *(.*) *$/i)
+      if (row.substr(-1) === '\n') {
+        row = row.substr(0, row.length - 1)
+      }
+
+      let m1 = row.match(/^([^=]+)=(.*)$/i)
       if (m1) {
-        d[m1[1]] = m1[2]
+        d[m1[1].trim()] = m1[2].trim()
       } else {
         console.log('cant parse', row)
       }
