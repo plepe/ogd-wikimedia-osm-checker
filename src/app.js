@@ -1,6 +1,4 @@
-const async = require('async')
 const hash = require('sheet-router/hash')
-const natsort = require('natsort').default
 const escHTML = require('html-escape')
 const forEach = require('foreach')
 
@@ -10,8 +8,6 @@ const Examinee = require('./Examinee.js')
 const datasets = require('../datasets/index.js')
 let dataset
 
-let data = {}
-let ortFilter = {}
 let info
 
 window.onload = () => {
@@ -55,41 +51,12 @@ function updateDataset () {
     select.removeChild(select.firstChild.nextSibling)
   }
 
-  data = {}
-  ortFilter = {}
-
   document.body.classList.add('loading')
-  async.parallel([
-    done => {
-      global.fetch('data/' + dataset.filename)
-        .then(res => {
-          if (!res.ok) {
-            throw Error('loading BDA data: ' + res.statusText)
-          }
-
-          return res.json()
-        })
-        .then(json => {
-          json.forEach(entry => {
-            data[entry[dataset.idField]] = entry
-            ortFilter[entry[dataset.ortFilterField]] = true
-          })
-
-          done()
-        })
-        // .catch(e => done(e))
-    }
-  ],
-  err => {
+  dataset.load((err) => {
     document.body.classList.remove('loading')
-    if (err) {
-      return global.alert(err)
-    }
+    if (err) { global.alert(err) }
 
-    const select = document.getElementById('Ortfilter')
-    ortFilter = Object.keys(ortFilter)
-    ortFilter = ortFilter.sort(natsort({ insensitive: true }))
-    ortFilter.forEach(ort => {
+    dataset.ortFilter.forEach(ort => {
       const option = document.createElement('option')
       option.appendChild(document.createTextNode(ort))
       select.appendChild(option)
@@ -124,12 +91,12 @@ function choose (path) {
     return
   }
 
-  if (!(id in data)) {
+  if (!(id in dataset.data)) {
     return global.alert(id + ' nicht gefunden!')
   }
 
   const select = document.getElementById('Ortfilter')
-  const ort = data[id][dataset.ortFilterField]
+  const ort = dataset.data[id][dataset.ortFilterField]
   select.value = ort
   update()
 
@@ -157,15 +124,15 @@ function update () {
 
   let dom = document.getElementById('data')
 
-  for (const k in data) {
-    if (data[k][dataset.ortFilterField] === ort) {
-      dataset.listEntry(data[k], dom)
+  for (const k in dataset.data) {
+    if (dataset.data[k][dataset.ortFilterField] === ort) {
+      dataset.listEntry(dataset.data[k], dom)
     }
   }
 }
 
 function check (id) {
-  const entry = data[id]
+  const entry = dataset.data[id]
   const div = document.getElementById('details')
 
   while (div.firstChild) {
