@@ -30,7 +30,8 @@ function check (options, ob) {
 
   ob.data.commons.forEach(page => {
     if (page.title.match(/^File:/)) {
-      ob.load('wikidata', {key: 'P18', id: page.title.substr(5)})
+      // Disable, as this query does not work
+      // ob.load('wikidata', {key: 'P18', id: page.title.substr(5)})
     } else if (page.title.match(/^Category:/)) {
       ob.load('wikidata', {key: 'P373', id: page.title.substr(9)})
     }
