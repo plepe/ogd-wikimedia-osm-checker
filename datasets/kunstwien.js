@@ -1,34 +1,34 @@
 const escHTML = require('html-escape')
 
-module.exports = {
-  id: 'kunstwien',
+const Dataset = require('../src/Dataset')
 
-  title: 'Kunstwerke im öff. Raum (Kulturgut Wien)',
+const checks = [
+  require('../checks/commonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
+  require('../checks/wikidataLoaded.js')(),
+  require('../checks/wikidataCoords.js')(),
+  require('../checks/wikidataIsA.js')(),
+  require('../checks/wikidataRecommendations.js')(),
+  require('../checks/commonsImage.js')(),
+  require('../checks/commonsWikidataInfobox.js')(),
+  require('../checks/wikipediaKunstwerkliste.js')(),
+  require('../checks/osmLoadFromWikidata.js')(),
+  require('../checks/osmTags.js')()
+]
 
-  listTitle: 'Kunstwerke im öff. Raum (Kulturgut Wien)',
+class DatasetKunstWien extends Dataset {
+  id = 'kunstwien'
 
-  filename: 'kunstwien.json',
+  title = 'Kunstwerke im öff. Raum (Kulturgut Wien)'
 
-  idField: 'ID',
+  listTitle = 'Kunstwerke im öff. Raum (Kulturgut Wien)'
 
-  ortFilterField: 'PLZ',
+  filename = 'kunstwien.json'
 
-  checks: [
-  //  require('../checks/osmRefBda.js')('ref:at:bda'),
-    require('../checks/commonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
-    require('../checks/wikidataLoaded.js')(),
-  //  require('../checks/loadWikidata.js')('P2951'),
-    require('../checks/wikidataCoords.js')(),
-    require('../checks/wikidataIsA.js')(),
-    require('../checks/wikidataRecommendations.js')(),
-  //  require('../checks/commonsLoad.js')(),
-    require('../checks/commonsImage.js')(),
-    require('../checks/commonsWikidataInfobox.js')(),
-    require('../checks/wikipediaKunstwerkliste.js')(),
-    require('../checks/osmLoadFromWikidata.js')(),
-  //  require('../checks/commonsTemplate.js')()
-    require('../checks/osmTags.js')()
-  ],
+  idField = 'ID'
+
+  ortFilterField = 'PLZ'
+
+  checks = checks
 
   listEntry (entry, dom) {
     const tr = document.createElement('tr')
@@ -42,7 +42,7 @@ module.exports = {
     td.appendChild(document.createElement('br'))
 
     dom.appendChild(tr)
-  },
+  }
 
   showEntry (data, dom) {
     const div = document.createElement('div')
@@ -74,3 +74,5 @@ module.exports = {
     //pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
   }
 }
+
+module.exports = new DatasetKunstWien()

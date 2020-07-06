@@ -1,32 +1,36 @@
 const escHTML = require('html-escape')
 
-module.exports = {
-  id : 'bda',
+const Dataset = require('../src/Dataset')
 
-  title: 'Bundesdenkmalamt',
+const checks = [
+  require('../checks/osmRefBda.js')('ref:at:bda'),
+  require('../checks/osmTags.js')(),
+  require('../checks/wikidataLoadViaRef.js')('P2951'),
+  require('../checks/wikidataLoaded.js')(),
+  require('../checks/wikidataCoords.js')(),
+  require('../checks/wikidataIsA.js')(),
+  require('../checks/wikidataRecommendations.js')(),
+  require('../checks/commonsLoad.js')(),
+  require('../checks/commonsImage.js')(),
+  require('../checks/commonsWikidataInfobox.js')(),
+  require('../checks/wikipediaDenkmalliste.js')(),
+  require('../checks/commonsTemplate.js')()
+]
 
-  listTitle: 'Denkmal aus Bundesdenkmalamtsliste',
+class DatasetBDA extends Dataset {
+  id = 'bda'
 
-  filename: 'bda.json',
+  title = 'Bundesdenkmalamt'
 
-  idField: 'ObjektID',
+  listTitle = 'Denkmal aus Bundesdenkmalamtsliste'
 
-  ortFilterField: 'Gemeinde',
+  filename = 'bda.json'
 
-  checks: [
-    require('../checks/osmRefBda.js')('ref:at:bda'),
-    require('../checks/osmTags.js')(),
-    require('../checks/wikidataLoadViaRef.js')('P2951'),
-    require('../checks/wikidataLoaded.js')(),
-    require('../checks/wikidataCoords.js')(),
-    require('../checks/wikidataIsA.js')(),
-    require('../checks/wikidataRecommendations.js')(),
-    require('../checks/commonsLoad.js')(),
-    require('../checks/commonsImage.js')(),
-    require('../checks/commonsWikidataInfobox.js')(),
-    require('../checks/wikipediaDenkmalliste.js')(),
-    require('../checks/commonsTemplate.js')()
-  ],
+  idField = 'ObjektID'
+
+  ortFilterField = 'Gemeinde'
+
+  checks = checks
 
   listEntry (entry, dom) {
     const tr = document.createElement('tr')
@@ -40,7 +44,7 @@ module.exports = {
     td.appendChild(document.createElement('br'))
 
     dom.appendChild(tr)
-  },
+  }
 
   showEntry (data, dom) {
     const div = document.createElement('div')
@@ -60,3 +64,5 @@ module.exports = {
     ul.innerHTML += '<li>Status: ' + escHTML(data.Status) + '</li>'
   }
 }
+
+module.exports = new DatasetBDA()
