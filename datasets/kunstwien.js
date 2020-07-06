@@ -1,6 +1,8 @@
 const escHTML = require('html-escape')
 
 module.exports = {
+  id: 'kunstwien',
+
   title: 'Kunstwerke im öff. Raum (Kulturgut Wien)',
 
   listTitle: 'Kunstwerke im öff. Raum (Kulturgut Wien)',
@@ -35,7 +37,7 @@ module.exports = {
 
     const a = document.createElement('a')
     a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.OBJEKTTITEL) + '</span><span class="Adresse">' + escHTML(entry.STRASSE) + '</span>'
-    a.href = '#' + entry.ID
+    a.href = '#' + this.id + '/' + entry.ID
     td.appendChild(a)
     td.appendChild(document.createElement('br'))
 

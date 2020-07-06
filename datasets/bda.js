@@ -1,6 +1,8 @@
 const escHTML = require('html-escape')
 
 module.exports = {
+  id : 'bda',
+
   title: 'Bundesdenkmalamt',
 
   listTitle: 'Denkmal aus Bundesdenkmalamtsliste',
@@ -33,7 +35,7 @@ module.exports = {
 
     const a = document.createElement('a')
     a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.Bezeichnung) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
-    a.href = '#' + entry.ObjektID
+    a.href = '#' + this.id + '/' + entry.ObjektID
     td.appendChild(a)
     td.appendChild(document.createElement('br'))
 

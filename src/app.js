@@ -2,19 +2,61 @@ const async = require('async')
 const hash = require('sheet-router/hash')
 const natsort = require('natsort').default
 const escHTML = require('html-escape')
+const forEach = require('foreach')
 
 const runChecks = require('./runChecks.js')
 const Examinee = require('./Examinee.js')
 
-//const dataset = require('../datasets/bda.js')
-const dataset = require('../datasets/kunstwien.js')
+const datasets = require('../datasets/index.js')
+let dataset
 
-const data = {}
+let data = {}
 let ortFilter = {}
 let info
 
 window.onload = () => {
   info = document.getElementById('content').innerHTML
+
+  let selectDataset = document.getElementById('Dataset')
+  forEach(datasets, (_dataset, id) => {
+    let option = document.createElement('option')
+    option.value = id
+    option.appendChild(document.createTextNode(_dataset.title))
+
+    selectDataset.appendChild(option)
+  })
+
+  selectDataset.onchange = chooseDataset
+
+  if (global.location.hash) {
+    choose(global.location.hash.substr(1))
+  }
+}
+
+function chooseDataset () {
+  let selectDataset = document.getElementById('Dataset')
+
+  location.hash = selectDataset.value
+  updateDataset()
+}
+
+function updateDataset () {
+  let selectDataset = document.getElementById('Dataset')
+
+  if (!selectDataset.value) {
+    content.innerHTML = info
+    return
+  }
+
+  dataset = datasets[selectDataset.value]
+
+  const select = document.getElementById('Ortfilter')
+  while (select.firstChild.nextSibling) {
+    select.removeChild(select.firstChild.nextSibling)
+  }
+
+  data = {}
+  ortFilter = {}
 
   document.body.classList.add('loading')
   async.parallel([
@@ -66,7 +108,22 @@ window.onload = () => {
   })
 }
 
-function choose (id) {
+function choose (path) {
+  let [_dataset, id] = path.split(/\//)
+
+  if (!dataset || _dataset !== dataset.id) {
+    content.innerHTML = info
+
+    let selectDataset = document.getElementById('Dataset')
+    selectDataset.value = _dataset
+    return updateDataset()
+  }
+
+  if (!id) {
+    content.innerHTML = info
+    return
+  }
+
   if (!(id in data)) {
     return global.alert(id + ' nicht gefunden!')
   }
