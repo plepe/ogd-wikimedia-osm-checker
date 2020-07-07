@@ -10,7 +10,7 @@
     "lint": "standard --fix update.js server.js src/*.js server/*.js checks/*.js",
     "prepare": "npm run build",
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --bail"
   },
   "repository": "https://github.com/plepe/bundesdenkmal-checker",
   "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "browserify": "^16.5.1",
+    "mocha": "^8.0.1",
     "standard": "^14.3.4",
     "watchify": "^3.11.1"
   }

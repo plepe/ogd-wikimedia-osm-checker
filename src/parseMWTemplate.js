@@ -7,7 +7,7 @@ module.exports = function parseMWTemplate (str, templateId) {
   while (m) {
     let d = {}
 
-    str = str.substr(m.index)
+    str = str.substr(m.index + m[1].length + 1)
     m = str.match(regexEnd)
     templateText = str.substr(0, m.index)
 
