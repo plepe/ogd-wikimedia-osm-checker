@@ -6,9 +6,9 @@ module.exports = function init (options) {
 
 function check (options, ob) {
   if (!ob.data.wikidata) {
-    return // wait for other check to load wikidata 
+    return // wait for other check to load wikidata
   }
-  
+
   if (ob.data.wikidata.length === 0) {
     return true // loaded, but no wikidata entry found
   }

@@ -11,7 +11,7 @@ function loadTitle (title, callback) {
     (err, result) => {
       if (err) { return callback(err) }
 
-      let page = result.body.parse
+      const page = result.body.parse
       callback(null, [{
         title: page.title,
         pageid: page.pageid,
@@ -26,8 +26,8 @@ function loadSearch (search, callback) {
     {},
     (err, result) => {
       const dom = new JSDOM(result.body)
-      let hits = dom.window.document.querySelectorAll('li.mw-search-result a')
-      let titles = []
+      const hits = dom.window.document.querySelectorAll('li.mw-search-result a')
+      const titles = []
 
       hits.forEach(hit => {
         if (hit.textContent) {

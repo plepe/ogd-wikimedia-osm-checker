@@ -46,7 +46,7 @@ function downloadBda (callback) {
 }
 
 function downloadKunstwerkeWien (callback) {
-  let data = []
+  const data = []
 
   fetch('https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:KUNSTWERKOGD&srsName=EPSG:4326&outputFormat=csv')
     .then(response => {
@@ -58,7 +58,7 @@ function downloadKunstwerkeWien (callback) {
         .on('done', () => {
           fs.writeFile('data/kunstwien.json', JSON.stringify(data, null, '  '), callback)
         })
-      })
+    })
 }
 
 downloadBda(err => {

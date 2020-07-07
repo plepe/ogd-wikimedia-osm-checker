@@ -17,13 +17,13 @@ function check (options, ob) {
   }
 
   // image
-  let el = ob.data.wikidata[0]
+  const el = ob.data.wikidata[0]
   if (el.claims.P18) {
     const images = el.claims.P18
     if (images.length === 1) {
       return ob.message('commons', STATUS.SUCCESS, 'Wikidata Eintrag hat ein <a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(images[0].mainsnak.datavalue.value) + '">Bild</a>')
     }
-    
+
     return ob.message('commons', STATUS.SUCCESS, 'Wikidata Eintrag hat ' + images.length + ' Bilder: ' + images.map((image, i) => '<a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(image.mainsnak.datavalue.value) + '">#' + (i + 1) + '</a>').join(', '))
   }
 

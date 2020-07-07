@@ -7,7 +7,7 @@ module.exports = function init (options) {
   return check.bind(this, options)
 }
 
-let bezirke = {
+const bezirke = {
   1010: 'Innere Stadt',
   1020: 'Leopoldstadt',
   1030: 'Landstraße',
@@ -37,20 +37,20 @@ let bezirke = {
 // - null/false: not finished yet
 // - true: check is finished
 function check (options, ob) {
-  let title = 'Liste der ' +
+  const title = 'Liste der ' +
     (['Gedenktafeln', 'Gedenksteine'].includes(ob.refData.TYP) ? 'Gedenktafeln und Gedenksteine' : 'Kunstwerke im öffentlichen Raum') +
     ' in Wien/' + bezirke[ob.refData.PLZ]
 
   if (!ob.data.wikipedia) {
-    return ob.load('wikipedia', {title})
+    return ob.load('wikipedia', { title })
   }
 
   if (ob.data.wikipedia.length === 0) {
     return ob.message('wikipedia', STATUS.ERROR, 'Seite nicht gefunden')
   }
 
-  let listEntries = parseMWTemplate(ob.data.wikipedia[0].wikitext, 'WLPA-AT-Zeile')
-  let found = listEntries.filter(e => e.ID === ob.id)
+  const listEntries = parseMWTemplate(ob.data.wikipedia[0].wikitext, 'WLPA-AT-Zeile')
+  const found = listEntries.filter(e => e.ID === ob.id)
 
   if (found.length) {
     let msg = '<a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '#id-' + ob.id + '">Wikipedia Liste</a>:<ul>'

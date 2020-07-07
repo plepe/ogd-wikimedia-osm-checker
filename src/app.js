@@ -13,9 +13,9 @@ let info
 window.onload = () => {
   info = document.getElementById('content').innerHTML
 
-  let selectDataset = document.getElementById('Dataset')
+  const selectDataset = document.getElementById('Dataset')
   forEach(datasets, (_dataset, id) => {
-    let option = document.createElement('option')
+    const option = document.createElement('option')
     option.value = id
     option.appendChild(document.createTextNode(_dataset.title))
 
@@ -30,14 +30,14 @@ window.onload = () => {
 }
 
 function chooseDataset () {
-  let selectDataset = document.getElementById('Dataset')
+  const selectDataset = document.getElementById('Dataset')
 
   location.hash = selectDataset.value
   updateDataset()
 }
 
 function updateDataset () {
-  let selectDataset = document.getElementById('Dataset')
+  const selectDataset = document.getElementById('Dataset')
 
   if (!selectDataset.value) {
     content.innerHTML = info
@@ -76,12 +76,12 @@ function updateDataset () {
 }
 
 function choose (path) {
-  let [_dataset, id] = path.split(/\//)
+  const [_dataset, id] = path.split(/\//)
 
   if (!dataset || _dataset !== dataset.id) {
     content.innerHTML = info
 
-    let selectDataset = document.getElementById('Dataset')
+    const selectDataset = document.getElementById('Dataset')
     selectDataset.value = _dataset
     return updateDataset()
   }
@@ -122,7 +122,7 @@ function update () {
   table.innerHTML = '<tr><th>' + escHTML(dataset.listTitle) + '</th></tr>'
   content.appendChild(table)
 
-  let dom = document.getElementById('data')
+  const dom = document.getElementById('data')
 
   for (const k in dataset.data) {
     if (dataset.data[k][dataset.ortFilterField] === ort) {

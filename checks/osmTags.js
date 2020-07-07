@@ -23,14 +23,14 @@ function check (options, ob) {
     return true
   }
 
-  let results = ob.data.osm
+  const results = ob.data.osm
   results.forEach(el => {
     let text = ''
     for (const tag in el.tags) {
       text += escHTML(tag) + '=' + escHTML(el.tags[tag]) + '</br>'
     }
 
-    ob.message('osm', STATUS.SUCCESS, 
+    ob.message('osm', STATUS.SUCCESS,
       (results.length > 1 ? '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>: ' : '') +
       'Folgende Tags gefunden:<dl>' + text + '</dl>'
     )

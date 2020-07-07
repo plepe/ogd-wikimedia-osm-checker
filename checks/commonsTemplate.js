@@ -21,10 +21,10 @@ function check (options, ob) {
   if (m && m[1] === ob.id) {
     return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Verweis auf BDA ID.')
   }
-  
+
   if (m) {
     return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat Verweis auf falsche BDA ID: ' + m[1])
   }
-  
+
   return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keinen Verweis auf BDA ID. Füge <tt>{{Denkmalgeschütztes Objekt Österreich|' + ob.id + '}}</tt> hinzu.')
 }

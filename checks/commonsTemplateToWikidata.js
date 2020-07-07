@@ -11,11 +11,11 @@ module.exports = function init (options) {
 // - true: check is finished
 function check (options, ob) {
   if (!ob.data.commons) {
-    return ob.load('commons', {search: options.replace(/\$1/g, ob.id)})
+    return ob.load('commons', { search: options.replace(/\$1/g, ob.id) })
   }
 
-  let files = ob.data.commons.filter(page => page.title.match(/^File:/))
-  let categories = ob.data.commons.filter(page => page.title.match(/^Category:/))
+  const files = ob.data.commons.filter(page => page.title.match(/^File:/))
+  const categories = ob.data.commons.filter(page => page.title.match(/^Category:/))
   if (files.length) {
     ob.message('commons', STATUS.SUCCESS, files.length + ' Bild(er) gefunden, die auf das Objekt verweisen: ' + files.map((page, i) => '<a target="_blank" href="https://commons.wikimedia.org/wiki/' + escHTML(page.title) + '">#' + (i + 1) + '</a>').join(', ') + '.')
   }
@@ -33,7 +33,7 @@ function check (options, ob) {
       // Disable, as this query does not work
       // ob.load('wikidata', {key: 'P18', id: page.title.substr(5)})
     } else if (page.title.match(/^Category:/)) {
-      ob.load('wikidata', {key: 'P373', id: page.title.substr(9)})
+      ob.load('wikidata', { key: 'P373', id: page.title.substr(9) })
     }
   })
 

@@ -7,7 +7,7 @@ const pending = []
 const maxActive = 1
 let interval
 
-function loadById(id, callback) {
+function loadById (id, callback) {
   httpRequest('https://www.wikidata.org/wiki/Special:EntityData/' + id + '.json',
     {
       responseType: 'json'
@@ -19,7 +19,7 @@ function loadById(id, callback) {
 }
 
 function next (options) {
-  //console.log('done', JSON.stringify(options))
+  // console.log('done', JSON.stringify(options))
   active.splice(active.indexOf(options), 1)
 }
 
@@ -34,7 +34,7 @@ function _next () {
     return
   }
 
-  let req = pending.shift()
+  const req = pending.shift()
   active.push(req[0])
   _request(req[0], req[1])
 }
@@ -56,7 +56,7 @@ function request (options, callback) {
 }
 
 function _request (options, callback) {
-  //console.log('start', JSON.stringify(options))
+  // console.log('start', JSON.stringify(options))
   if (options.key === 'id') {
     return loadById(options.id,
       (err, result) => {
@@ -67,7 +67,7 @@ function _request (options, callback) {
     )
   }
 
-  let query = 'SELECT ?item ?itemLabel WHERE { ?item wdt:' + options.key + ' "' + options.id.replace(/"/g, '\\"') + '". SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }'
+  const query = 'SELECT ?item ?itemLabel WHERE { ?item wdt:' + options.key + ' "' + options.id.replace(/"/g, '\\"') + '". SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }'
   httpRequest('https://query.wikidata.org/sparql?query=' + encodeURIComponent(query),
     {
       headers: {
@@ -86,7 +86,7 @@ function _request (options, callback) {
         (entry, done) => {
           const wikidataId = entry.item.value.match(/(Q[0-9]+)$/)[1]
           request(
-            {key: 'id', id: wikidataId},
+            { key: 'id', id: wikidataId },
             (err, r) => done(err, r.length ? r[0] : null)
           )
         },

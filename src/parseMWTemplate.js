@@ -1,11 +1,11 @@
 module.exports = function parseMWTemplate (str, templateId) {
-  let results = []
+  const results = []
 
-  let regexStart = new RegExp('(\{\{' + templateId + ')\s*', 'i')
-  let regexEnd = new RegExp('\}\}')
+  const regexStart = new RegExp('(\{\{' + templateId + ')\s*', 'i')
+  const regexEnd = new RegExp('\}\}')
   let m = str.match(regexStart)
   while (m) {
-    let d = {}
+    const d = {}
     let numIndex = 1
 
     str = str.substr(m.index + m[1].length)
@@ -16,9 +16,9 @@ module.exports = function parseMWTemplate (str, templateId) {
     m = str.match(regexEnd)
     templateText = str.substr(0, m.index)
 
-    let rows = templateText.split(/\|/g)
+    const rows = templateText.split(/\|/g)
     rows.forEach(row => {
-      let mw = row.match(/^(.*)\n\s*$/m)
+      const mw = row.match(/^(.*)\n\s*$/m)
       if (mw) {
         row = mw[1]
       }
@@ -26,7 +26,7 @@ module.exports = function parseMWTemplate (str, templateId) {
         return
       }
 
-      let m1 = row.match(/^([^=]+)=(.*)$/i)
+      const m1 = row.match(/^([^=]+)=(.*)$/i)
       if (m1) {
         d[m1[1].trim()] = m1[2].trim()
       } else {

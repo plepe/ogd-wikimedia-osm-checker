@@ -7,7 +7,7 @@ class Dataset {
       return callback(null)
     }
 
-    let ortFilter = {}
+    const ortFilter = {}
     this.data = {}
 
     async.parallel([

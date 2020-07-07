@@ -12,12 +12,12 @@ function check (options, ob) {
     return
   }
 
-  let categories = ob.data.commons.filter(page => page.title.match(/^Category:/))
+  const categories = ob.data.commons.filter(page => page.title.match(/^Category:/))
   if (!categories.length) {
     return true
   }
 
-  let text = categories[0].wikitext
+  const text = categories[0].wikitext
   m = text.match(/\{\{ *Wikidata Infobox *(\||\}\})/i)
   if (m) {
     return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Wikidata Infobox')

@@ -25,7 +25,7 @@ function check (options, ob) {
     return ob.message('osm', STATUS.ERROR, 'Kein Eintrag in der OpenStreetMap gefunden!')
   }
 
-  let results = ob.data.osm
+  const results = ob.data.osm
   if (results.length) {
     return ob.message('osm', STATUS.SUCCESS, results.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: ' + results.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', '))
   }
