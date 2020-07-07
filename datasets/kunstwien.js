@@ -2,6 +2,33 @@ const escHTML = require('html-escape')
 
 const Dataset = require('../src/Dataset')
 
+const bezirke = {
+  1010: 'Innere Stadt',
+  1020: 'Leopoldstadt',
+  1030: 'Landstraße',
+  1040: 'Wieden',
+  1050: 'Margareten',
+  1060: 'Mariahilf',
+  1070: 'Neubau',
+  1080: 'Josefstadt',
+  1090: 'Alsergrund',
+  1100: 'Favoriten',
+  1110: 'Simmering',
+  1120: 'Meidling',
+  1130: 'Hietzing',
+  1140: 'Penzing',
+  1150: 'Rudolfsheim-Fünfhaus',
+  1160: 'Ottakring',
+  1170: 'Hernals',
+  1180: 'Währing',
+  1190: 'Döbling',
+  1200: 'Brigittenau',
+  1210: 'Floridsdorf',
+  1220: 'Donaustadt',
+  1230: 'Liesing'
+}
+
+
 const checks = [
   require('../checks/commonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
   require('../checks/wikidataLoaded.js')(),
@@ -73,6 +100,13 @@ class DatasetKunstWien extends Dataset {
     //dom.appendChild(pre)
     //pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
   }
+
+  wikipediaListeTitle (ob) {
+    return 'Liste der ' +
+      (['Gedenktafeln', 'Gedenksteine'].includes(ob.refData.TYP) ? 'Gedenktafeln und Gedenksteine' : 'Kunstwerke im öffentlichen Raum') +
+      ' in Wien/' + bezirke[ob.refData.PLZ]
+  }
+
 }
 
 module.exports = new DatasetKunstWien()

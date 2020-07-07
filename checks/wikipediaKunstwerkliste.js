@@ -7,39 +7,11 @@ module.exports = function init (options) {
   return check.bind(this, options)
 }
 
-const bezirke = {
-  1010: 'Innere Stadt',
-  1020: 'Leopoldstadt',
-  1030: 'Landstraße',
-  1040: 'Wieden',
-  1050: 'Margareten',
-  1060: 'Mariahilf',
-  1070: 'Neubau',
-  1080: 'Josefstadt',
-  1090: 'Alsergrund',
-  1100: 'Favoriten',
-  1110: 'Simmering',
-  1120: 'Meidling',
-  1130: 'Hietzing',
-  1140: 'Penzing',
-  1150: 'Rudolfsheim-Fünfhaus',
-  1160: 'Ottakring',
-  1170: 'Hernals',
-  1180: 'Währing',
-  1190: 'Döbling',
-  1200: 'Brigittenau',
-  1210: 'Floridsdorf',
-  1220: 'Donaustadt',
-  1230: 'Liesing'
-}
-
 // result:
 // - null/false: not finished yet
 // - true: check is finished
 function check (options, ob) {
-  const title = 'Liste der ' +
-    (['Gedenktafeln', 'Gedenksteine'].includes(ob.refData.TYP) ? 'Gedenktafeln und Gedenksteine' : 'Kunstwerke im öffentlichen Raum') +
-    ' in Wien/' + bezirke[ob.refData.PLZ]
+  const title = ob.dataset.wikipediaListeTitle(ob)
 
   if (!ob.data.wikipedia) {
     return ob.load('wikipedia', { title })
