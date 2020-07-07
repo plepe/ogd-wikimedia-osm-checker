@@ -1,3 +1,4 @@
+const parseMWTemplate = require('../src/parseMWTemplate.js')
 const STATUS = require('../src/status.js')
 
 module.exports = function init (options) {
@@ -16,14 +17,15 @@ function check (options, ob) {
     return true
   }
 
-  let text = ob.data.commons[0].wikitext
-  let m = text.match(/\{\{ *(?:doo|Denkmalgeschütztes Objekt Österreich)\|(?:1=)?([0-9]+) *\}\}/i)
-  if (m && m[1] === ob.id) {
+  const text = ob.data.commons[0].wikitext
+  let dooTemplates = parseMWTemplate(text, '(doo|Denkmalgeschütztes Objekt Österreich)')
+  console.log(dooTemplates)
+  if (dooTemplates.filter(r => r[1] === ob.id).length) {
     return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Verweis auf BDA ID.')
   }
 
   if (m) {
-    return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat Verweis auf falsche BDA ID: ' + m[1])
+    return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat Verweis auf falsche BDA ID(s): ' + dooTemplates.map(r => r[1]).join(', '))
   }
 
   return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keinen Verweis auf BDA ID. Füge <tt>{{Denkmalgeschütztes Objekt Österreich|' + ob.id + '}}</tt> hinzu.')
