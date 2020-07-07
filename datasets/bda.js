@@ -14,6 +14,10 @@ const checks = [
   require('../checks/commonsImage.js')(),
   require('../checks/commonsWikidataInfobox.js')(),
   require('../checks/wikipediaDenkmalliste.js')(),
+  require('../checks/wikipediaKunstwerkliste.js')({
+    template: 'Denkmalliste Österreich Tabellenzeile',
+    idField: 'ObjektID'
+  }),
   require('../checks/commonsTemplate.js')()
 ]
 
@@ -62,6 +66,10 @@ class DatasetBDA extends Dataset {
     ul.innerHTML += '<li>Adresse: ' + escHTML(data.Adresse) + '</li>'
     ul.innerHTML += '<li>Grundstücknr.: ' + escHTML(data.GdstNr) + '</li>'
     ul.innerHTML += '<li>Status: ' + escHTML(data.Status) + '</li>'
+  }
+
+  wikipediaListeTitle (ob) {
+    return 'Liste der denkmalgeschützten Objekte in ' + ob.refData.Gemeinde
   }
 }
 

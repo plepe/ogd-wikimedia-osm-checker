@@ -37,7 +37,10 @@ const checks = [
   require('../checks/wikidataRecommendations.js')(),
   require('../checks/commonsImage.js')(),
   require('../checks/commonsWikidataInfobox.js')(),
-  require('../checks/wikipediaKunstwerkliste.js')(),
+  require('../checks/wikipediaKunstwerkliste.js')({
+    template: 'WLPA-AT-Zeile',
+    idField: 'ID'
+  }),
   require('../checks/osmLoadFromWikidata.js')(),
   require('../checks/osmTags.js')()
 ]

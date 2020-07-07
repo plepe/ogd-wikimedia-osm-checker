@@ -18,7 +18,7 @@ function check (options, ob) {
   }
 
   const text = ob.data.commons[0].wikitext
-  let dooTemplates = parseMWTemplate(text, '(doo|Denkmalgeschütztes Objekt Österreich)')
+  const dooTemplates = parseMWTemplate(text, '(doo|Denkmalgeschütztes Objekt Österreich)')
   console.log(dooTemplates)
   if (dooTemplates.filter(r => r[1] === ob.id).length) {
     return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Verweis auf BDA ID.')

@@ -21,8 +21,8 @@ function check (options, ob) {
     return ob.message('wikipedia', STATUS.ERROR, 'Seite nicht gefunden')
   }
 
-  const listEntries = parseMWTemplate(ob.data.wikipedia[0].wikitext, 'WLPA-AT-Zeile')
-  const found = listEntries.filter(e => e.ID === ob.id)
+  const listEntries = parseMWTemplate(ob.data.wikipedia[0].wikitext, options.template)
+  const found = listEntries.filter(e => e[options.idField] === ob.id)
 
   if (found.length) {
     let msg = '<a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '#id-' + ob.id + '">Wikipedia Liste</a>:<ul>'
