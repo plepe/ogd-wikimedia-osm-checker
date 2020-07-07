@@ -7,7 +7,7 @@
     "build": "mkdir -p dist && browserify src/app.js -o dist/app.js",
     "watch": "mkdir -p dist && watchify --debug src/app.js -o dist/app.js -v",
     "update": "mkdir -p data && node update.js",
-    "lint": "standard --fix update.js server.js src/*.js server/*.js checks/*.js",
+    "lint": "standard --fix update.js server.js src/*.js server/*.js checks/*.js datasets/*.js test/*.js",
     "prepare": "npm run build",
     "start": "node server.js",
     "test": "mocha --bail"
