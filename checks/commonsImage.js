@@ -27,5 +27,5 @@ function check (options, ob) {
     return ob.message('commons', STATUS.SUCCESS, 'Wikidata Eintrag hat ' + images.length + ' Bilder: ' + images.map((image, i) => '<a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(image.mainsnak.datavalue.value) + '">#' + (i + 1) + '</a>').join(', '))
   }
 
-  ob.message('commons', STATUS.WARNING, 'Wikidata Eintrag hat kein Bild')
+  return ob.message('commons', STATUS.WARNING, 'Wikidata Eintrag hat kein Bild')
 }
