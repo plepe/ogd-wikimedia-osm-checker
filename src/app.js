@@ -142,7 +142,7 @@ function check (id) {
   document.body.classList.add('loading')
   dataset.showEntry(entry, div)
 
-  const ob = new Examinee(entry[dataset.idField], entry)
+  const ob = new Examinee(entry[dataset.idField], entry, dataset)
   ob.initMessages(div)
   runChecks(ob, dataset.checks, (err, result) => {
     if (err) { global.alert(err) }

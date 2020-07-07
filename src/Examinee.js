@@ -16,10 +16,11 @@ const modules = {
 }
 
 module.exports = class Examinee extends EventEmitter {
-  constructor (id, refData) {
+  constructor (id, refData, dataset) {
     super()
     this.id = id
     this.refData = refData
+    this.dataset = dataset
     this.data = {}
     this.toLoad = {}
     this.loading = []
