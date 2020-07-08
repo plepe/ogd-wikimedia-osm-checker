@@ -39,7 +39,8 @@ const checks = [
   require('../checks/commonsWikidataInfobox.js')(),
   require('../checks/wikipediaKunstwerkliste.js')({
     template: 'WLPA-AT-Zeile',
-    idField: 'ID'
+    idField: 'ID',
+    showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
   require('../checks/osmLoadFromWikidata.js')(),
   require('../checks/osmTags.js')()

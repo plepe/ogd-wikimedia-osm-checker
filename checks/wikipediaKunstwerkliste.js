@@ -26,9 +26,12 @@ function check (options, ob) {
 
   if (found.length) {
     let msg = '<a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '#id-' + ob.id + '">Wikipedia Liste</a>:<ul>'
-    msg += '<li>Beschreibung: ' + escHTML(found[0].Beschreibung) + '</li>'
-    msg += '<li>Datierung: ' + escHTML(found[0].Datierung) + '</li>'
-    msg += '<li>Koordinaten: <a target="_blank" href="https://openstreetmap.org/?mlat=' + found[0].Breitengrad + '&mlon=' + found[0].Längengrad + '#map=19/' + found[0].Breitengrad + '/' + found[0].Längengrad + '">' + parseFloat(found[0].Breitengrad).toFixed(5) + ', ' + parseFloat(found[0].Längengrad).toFixed(5) + '</a></li>'
+    msg += options.showFields.map(
+      fieldId => found[0][fieldId] ? '<li>' + escHTML(fieldId) + ': ' + escHTML(found[0][fieldId]) + '</li>' : ''
+    ).join('')
+    if (found[0].Breitengrad && found[0].Längengrad) {
+      msg += '<li>Koordinaten: <a target="_blank" href="https://openstreetmap.org/?mlat=' + found[0].Breitengrad + '&mlon=' + found[0].Längengrad + '#map=19/' + found[0].Breitengrad + '/' + found[0].Längengrad + '">' + parseFloat(found[0].Breitengrad).toFixed(5) + ', ' + parseFloat(found[0].Längengrad).toFixed(5) + '</a></li>'
+    }
     msg += '</ul>'
     ob.message('wikipedia', STATUS.SUCCESS, msg)
 
