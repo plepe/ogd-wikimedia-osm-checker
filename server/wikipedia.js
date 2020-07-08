@@ -26,7 +26,8 @@ function loadTitle (title, callback) {
 }
 
 function loadSearch (search, callback) {
-  httpRequest('https://commons.wikimedia.org/w/index.php?sort=relevance&search=insource%3A' + encodeURIComponent(search) + '&title=Special:Search&profile=advanced&fulltext=1&ns6=1&ns14=1',
+  let url = 'https://de.wikipedia.org/w/index.php?sort=relevance&search=' + encodeURIComponent(search) + '&title=Special:Search&profile=advanced&fulltext=1&ns0=1'
+  httpRequest(url,
     {},
     (err, result) => {
       const dom = new JSDOM(result.body)

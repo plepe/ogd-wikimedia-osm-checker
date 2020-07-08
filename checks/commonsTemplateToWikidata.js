@@ -11,7 +11,7 @@ module.exports = function init (options) {
 // - true: check is finished
 function check (options, ob) {
   if (!ob.data.commons) {
-    return ob.load('commons', { search: options.replace(/\$1/g, ob.id) })
+    return ob.load('commons', { search: 'insource:' + options.replace(/\$1/g, ob.id) })
   }
 
   const files = ob.data.commons.filter(page => page.title.match(/^File:/))
