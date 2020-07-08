@@ -33,6 +33,8 @@ class DatasetBDA extends Dataset {
 
   idField = 'ObjektID'
 
+  wikipediaListeSearchTitle = 'Liste der denkmalgeschützten Objekte in'
+
   ortFilterField = 'Gemeinde'
 
   checks = checks
@@ -69,8 +71,8 @@ class DatasetBDA extends Dataset {
     ul.innerHTML += '<li>Status: ' + escHTML(data.Status) + '</li>'
   }
 
-  wikipediaListeTitle (ob) {
-    return 'Liste der denkmalgeschützten Objekte in ' + ob.refData.Gemeinde
+  wikipediaListeAnchor (ob) {
+    return 'objektid-' + ob.id
   }
 }
 

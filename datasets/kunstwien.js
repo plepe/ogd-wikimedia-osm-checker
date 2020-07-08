@@ -111,6 +111,9 @@ class DatasetKunstWien extends Dataset {
       ' in Wien/' + bezirke[ob.refData.PLZ]
   }
 
+  wikipediaListeAnchor (ob) {
+    return 'id-' + ob.id
+  }
 }
 
 module.exports = new DatasetKunstWien()
