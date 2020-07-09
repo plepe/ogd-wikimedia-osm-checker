@@ -1,4 +1,5 @@
 const STATUS = require('../src/status.js')
+const osmFormat = require('../src/osmFormat.js')
 
 module.exports = function init (options) {
   return check.bind(this, options)
@@ -15,19 +16,21 @@ function check (options, ob) {
     return
   }
 
-  if (!ob.data.osm && ob.data.wikidata.length) {
-    return ob.load('osm', 'nwr[wikidata="' + ob.data.wikidata[0].id + '"];')
-  }
-
   if (ob.data.wikidata.length) {
     wikidataId = ob.data.wikidata[0].id
-  } else {
-    return ob.message('osm', STATUS.ERROR, 'Kein Eintrag in der OpenStreetMap gefunden!')
   }
 
-  const results = ob.data.osm
+  if (!ob.data.osm) {
+    if (ob.data.wikidata.length) {
+      return ob.load('osm', 'nwr[wikidata="' + wikidataId + '"];')
+    } else {
+      return true
+    }
+  }
+
+  const results = ob.data.osm.filter(el => el.tags.wikidata === wikidataId)
   if (results.length) {
-    return ob.message('osm', STATUS.SUCCESS, results.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: ' + results.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', '))
+    return ob.message('osm', STATUS.SUCCESS, results.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: <ul>' + results.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
   }
 
   return ob.message('osm', STATUS.ERROR, 'Kein Eintrag <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden!')

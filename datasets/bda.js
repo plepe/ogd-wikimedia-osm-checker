@@ -4,7 +4,6 @@ const Dataset = require('../src/Dataset')
 
 const checks = [
   require('../checks/osmRefBda.js')('ref:at:bda'),
-  require('../checks/osmTags.js')(),
   require('../checks/wikidataLoadViaRef.js')('P2951'),
   require('../checks/wikidataLoaded.js')(),
   require('../checks/wikidataCoords.js')(),
@@ -72,6 +71,10 @@ class DatasetBDA extends Dataset {
 
   wikipediaListeAnchor (ob) {
     return 'objektid-' + ob.id
+  }
+
+  recommendedTags (ob) {
+    return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
   }
 }
 

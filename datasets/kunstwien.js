@@ -42,8 +42,7 @@ const checks = [
     idField: 'ID',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
-  require('../checks/osmLoadFromWikidata.js')(),
-  require('../checks/osmTags.js')()
+  require('../checks/osmLoadFromWikidata.js')()
 ]
 
 class DatasetKunstWien extends Dataset {
@@ -113,6 +112,10 @@ class DatasetKunstWien extends Dataset {
 
   wikipediaListeAnchor (ob) {
     return 'id-' + ob.id
+  }
+
+  recommendedTags (ob) {
+    return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
   }
 }
 
