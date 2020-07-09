@@ -68,6 +68,11 @@ function check (options, ob) {
 
   let osmPoss = ob.data.osm.filter(el => stringSimilarity.compareTwoStrings(ob.refData[options.nameField], el.tags.name || '') > 0.4)
 
+  // No objects with similar names found, return objects without a name
+  if (osmPoss.length === 0) {
+    osmPoss = ob.data.osm.filter(el => !el.tags.name)
+  }
+
   // Order objects by distance
   osmPoss.sort((a, b) => a.distance - b.distance)
 
