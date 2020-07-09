@@ -44,6 +44,14 @@ module.exports = class Examinee extends EventEmitter {
   }
 
   load (module, query) {
+    if (!(module in this.doneLoading)) {
+      this.doneLoading[module] = []
+    }
+
+    if (this.doneLoading[module].includes(JSON.stringify(query))) {
+      return
+    }
+
     if (!(module in this.toLoad)) {
       this.toLoad[module] = []
     }
@@ -70,10 +78,6 @@ module.exports = class Examinee extends EventEmitter {
     this.toLoad = {}
 
     for (const module in toLoad) {
-      if (!(module in this.doneLoading)) {
-        this.doneLoading[module] = []
-      }
-
       const queries = toLoad[module].filter(query => !this.doneLoading[module].includes(JSON.stringify(query)))
       queries.forEach(query => this.doneLoading[module].push(JSON.stringify(query)))
 
