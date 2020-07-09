@@ -10,6 +10,11 @@ a .Adresse {
   left: 0;
   width: 50%;
 }
+#selector > div > select {
+  width: 49%;
+  box-sizing: border-box;
+  display: inline-block;
+}
 table#data {
   border-collapse: collapse;
 }
