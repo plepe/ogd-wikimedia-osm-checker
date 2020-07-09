@@ -86,4 +86,5 @@ function check (options, ob) {
   } else {
     ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden.')
   }
+  return true
 }

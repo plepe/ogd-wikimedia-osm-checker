@@ -30,7 +30,10 @@ function check (options, ob) {
   }
 
   const refBdaResult = ob.data.osm.filter(el => el.tags[options] === ob.id)
-  const refWdResult = ob.data.osm.filter(el => el.tags.wikidata === wikidataId)
+  let refWdResult = []
+  if (wikidataId) {
+    refWdResult = ob.data.osm.filter(el => el.tags.wikidata === wikidataId)
+  }
 
   if (refWdResult.length && refBdaResult.length && refWdResult.length === refBdaResult.length) {
     return ob.message('osm', STATUS.SUCCESS, refBdaResult.length + ' Objekt via <tt>' + options + '=' + ob.id + '</tt> und <tt>wikidata=' + wikidataId + '</tt> gefunden:<ul>' + refBdaResult.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
