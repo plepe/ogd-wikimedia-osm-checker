@@ -83,5 +83,7 @@ function check (options, ob) {
     ]
 
     ob.message('osm', STATUS.SUCCESS, (osmPoss.length === 1 ? msg[0] : osmPoss.length + ' ' + msg[1]) + ':<ul>' + osmPoss.map(el => '<li>' + osmFormat(el, ob, ' (Entfernung: ' + Math.round(el.distance * 1000) + 'm)') + '</li>').join('') + '</ul>')
+  } else {
+    ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden.')
   }
 }
