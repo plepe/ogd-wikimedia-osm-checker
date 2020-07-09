@@ -13,8 +13,7 @@ const checks = [
   require('../checks/commonsLoad.js')(),
   require('../checks/commonsImage.js')(),
   require('../checks/commonsWikidataInfobox.js')(),
-  require('../checks/wikipediaDenkmalliste.js')(),
-  require('../checks/wikipediaKunstwerkliste.js')({
+  require('../checks/wikipediaListe.js')({
     template: 'Denkmalliste Österreich Tabellenzeile',
     idField: 'ObjektID',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
