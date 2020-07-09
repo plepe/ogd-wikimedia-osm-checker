@@ -28,6 +28,16 @@ const bezirke = {
   1230: 'Liesing'
 }
 
+const typ2OverpassQuery = {
+  'Gedenktafeln': 'nwr[memorial=plaque](filter);',
+  'Denkmäler': 'nwr[historic=memorial](filter);',
+  'Sakrale Kleindenkmäler': null,
+  'Brunnen': 'nwr[amenity=fountain](filter);',
+  'Profanplastiken/Kunst am Bau freistehend': 'nwr[tourism=artwork](filter);',
+  'Kunst am Bau wandgebunden': 'nwr[tourism=artwork](filter);',
+  'Grabmäler/Grabhaine': null,
+  '': null
+}
 
 const checks = [
   require('../checks/commonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
@@ -42,7 +52,8 @@ const checks = [
     idField: 'ID',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
-  require('../checks/osmLoadFromWikidata.js')()
+  require('../checks/osmLoadFromWikidata.js')(),
+  require('../checks/osmLoadSimilar.js')()
 ]
 
 class DatasetKunstWien extends Dataset {
@@ -116,6 +127,10 @@ class DatasetKunstWien extends Dataset {
 
   recommendedTags (ob) {
     return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
+  }
+
+  compileOverpassQuery (ob, filter) {
+    return typ2OverpassQuery[ob.refData.TYP]
   }
 }
 
