@@ -1,9 +1,9 @@
 const escHTML = require('html-escape')
 
-const recommendedTags = ['name', 'start_date']
+const recommendedTags = ['name', 'start_date', 'wikidata']
 
-module.exports = function osmFormat (el, ob) {
-  let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name) + ' (' + el.type + '/' + el.id + ')</a>'
+module.exports = function osmFormat (el, ob, appendTitle = '') {
+  let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + appendTitle
 
   let tagKeys = Object.keys(el.tags || {})
   ret += '<ul class="attrList">' +

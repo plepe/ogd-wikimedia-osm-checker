@@ -1,7 +1,7 @@
 const httpRequest = require('./httpRequest.js')
 
 module.exports = function loaderOSM (queries, callback) {
-  const body = '[out:json];(' + queries.join('') + ');out tags;'
+  const body = '[out:json];(' + queries.join('') + ');out tags geom;'
 
   httpRequest('https://overpass-api.de/api/interpreter',
     {

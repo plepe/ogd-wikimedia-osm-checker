@@ -5,6 +5,6 @@ module.exports = function getCoords (data, field) {
 
   if (field.type === 'shape') {
     let m = data[field.id].match(/POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/)
-    return {lat: m[2], lon: m[1]}
+    return {latitude: m[2], longitude: m[1]}
   }
 }
