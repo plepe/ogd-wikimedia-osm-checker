@@ -52,7 +52,7 @@ const checks = [
     idField: 'ID',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
-  require('../checks/osmLoadFromWikidata.js')(),
+  require('../checks/osmRef.js')('ref:wien:kultur'),
   require('../checks/osmLoadSimilar.js')({
     coordField: {
       type: 'shape',

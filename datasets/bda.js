@@ -4,7 +4,7 @@ const Dataset = require('../src/Dataset')
 
 const checks = [
   require('../checks/commonsTemplateToWikidata.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
-  require('../checks/osmRefBda.js')('ref:at:bda'),
+  require('../checks/osmRef.js')('ref:at:bda'),
   require('../checks/wikidataLoadViaRef.js')('P2951'),
   require('../checks/wikidataLoaded.js')(),
   require('../checks/wikidataCoords.js')(),
