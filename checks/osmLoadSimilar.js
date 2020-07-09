@@ -68,13 +68,4 @@ function check (options, ob) {
 
     ob.message('osm', STATUS.SUCCESS, (osmPoss.length === 1 ? msg[0] : osmPoss.length + ' ' + msg[1]) + ':<ul>' + osmPoss.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
   }
-
-return
-
-  const results = ob.data.osm
-  if (results.length) {
-    return ob.message('osm', STATUS.SUCCESS, results.length + ' Objekt via query gefunden: ' + results.map(el => '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a>').join(', '))
-  }
-
-  return ob.message('osm', STATUS.ERROR, 'Kein Eintrag <tt>wikidata=</tt> in der OpenStreetMap gefunden!')
 }
