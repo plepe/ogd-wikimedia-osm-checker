@@ -17,16 +17,25 @@ function check (options, ob) {
     return true
   }
 
-  const text = ob.data.commons[0].wikitext
-  const dooTemplates = parseMWTemplate(text, '(doo|Denkmalgeschütztes Objekt Österreich)')
-  console.log(dooTemplates)
-  if (dooTemplates.filter(r => r[1] === ob.id).length) {
-    return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Verweis auf BDA ID.')
+  let categories = ob.data.commons.filter(el => el.title.match(/Category:/))
+  if (!categories.length) {
+    return true
   }
 
-  if (m) {
-    return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat Verweis auf falsche BDA ID(s): ' + dooTemplates.map(r => r[1]).join(', '))
+  let categoriesWithTemplateID = categories.filter(el => {
+    if (!el.title.match(/Category:/)) {
+      return false
+    }
+
+    let templates = parseMWTemplate(el.wikitext, '(doo|Denkmalgeschütztes Objekt Österreich)')
+    return !!templates.filter(r => r[1] === ob.id).length
+  })
+
+  if (categoriesWithTemplateID.length) {
+    ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Referenz auf Datensatz.')
+  } else {
+    ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>{{Denkmalgeschütztes Objekt Österreich|' + ob.id + '}}</tt> hinzu.')
   }
 
-  return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keinen Verweis auf BDA ID. Füge <tt>{{Denkmalgeschütztes Objekt Österreich|' + ob.id + '}}</tt> hinzu.')
+  return true
 }
