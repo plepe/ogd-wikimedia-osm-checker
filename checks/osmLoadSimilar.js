@@ -2,6 +2,7 @@ const stringSimilarity = require('string-similarity')
 
 const STATUS = require('../src/status.js')
 const osmFormat = require('../src/osmFormat.js')
+const getCoords = require('../src/getCoords.js')
 
 module.exports = function init (options) {
   return check.bind(this, options)
@@ -21,9 +22,25 @@ function check (options, ob) {
       return true
     }
 
-    let coords = ob.refData.SHAPE.match(/POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/)
-    query = query.replace(/\(filter\)/g, '(around:30,' + coords[2] + ',' + coords[1] + ')')
-    return ob.load('osm', query)
+    let coords = getCoords(ob.refData, options.coordField)
+    if (coords) {
+      ob.load('osm', query.replace(/\(filter\)/g, '(around:30,' + coords.lat + ',' + coords.lon + ')'))
+    }
+
+    ob.data.wikidata.forEach(
+      wikidata => {
+        if (wikidata.claims.P625) {
+          wikidata.claims.P625.forEach(
+            P625 => {
+              coords = P625.mainsnak.datavalue.value
+              ob.load('osm', query.replace(/\(filter\)/g, '(around:30,' + coords.latitude + ',' + coords.longitude + ')'))
+            }
+          )
+        }
+      }
+    )
+
+    return
   }
 
   // if one of the OSM objects has a matching wikidata tag, we are happy
@@ -34,7 +51,15 @@ function check (options, ob) {
     }
   }
 
-  let osmPoss = ob.data.osm.filter(el => stringSimilarity.compareTwoStrings(ob.refData.OBJEKTTITEL, el.tags.name || '') > 0.4)
+  // if one of the OSM objects has a matching refField tag (e.g. ref:at:bda), we are happy
+  if (ob.dataset.osmRefField) {
+    let match = ob.data.osm.filter(el => el.tags[ob.dataset.osmRefField] === ob.id)
+    if (match.length) {
+      return true
+    }
+  }
+
+  let osmPoss = ob.data.osm.filter(el => stringSimilarity.compareTwoStrings(ob.refData[options.nameField], el.tags.name || '') > 0.4)
   if (osmPoss.length) {
     let msg = [
       'Ein Objekt in der Nähe gefunden, das passen könnte',

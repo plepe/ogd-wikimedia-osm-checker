@@ -17,7 +17,11 @@ const checks = [
     idField: 'ObjektID',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
-  require('../checks/commonsTemplate.js')()
+  require('../checks/commonsTemplate.js')(),
+  require('../checks/osmLoadSimilar.js')({
+    coordField: null,
+    nameField: 'Bezeichnung'
+  })
 ]
 
 class DatasetBDA extends Dataset {
@@ -30,6 +34,8 @@ class DatasetBDA extends Dataset {
   filename = 'bda.json'
 
   idField = 'ObjektID'
+
+  osmRefField = 'ref:at:bda'
 
   wikipediaListeSearchTitle = 'Liste der denkmalgeschützten Objekte in'
 
@@ -75,6 +81,10 @@ class DatasetBDA extends Dataset {
 
   recommendedTags (ob) {
     return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
+  }
+
+  compileOverpassQuery (ob) {
+    return '(nwr[building](filter);nwr[amenity=fountain](filter);nwr[landuse=cemetery](filter););'
   }
 }
 
