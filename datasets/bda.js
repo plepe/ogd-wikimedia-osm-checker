@@ -10,7 +10,7 @@ const checks = [
   require('../checks/wikidataIsA.js')(),
   require('../checks/wikidataRecommendations.js')(),
   require('../checks/commonsLoad.js')(),
-  require('../checks/commonsImage.js')(),
+  require('../checks/wikidataImage.js')(),
   require('../checks/commonsWikidataInfobox.js')(),
   require('../checks/wikipediaListe.js')({
     template: 'Denkmalliste Österreich Tabellenzeile',

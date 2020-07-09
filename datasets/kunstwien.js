@@ -45,7 +45,7 @@ const checks = [
   require('../checks/wikidataCoords.js')(),
   require('../checks/wikidataIsA.js')(),
   require('../checks/wikidataRecommendations.js')(),
-  require('../checks/commonsImage.js')(),
+  require('../checks/wikidataImage.js')(),
   require('../checks/commonsWikidataInfobox.js')(),
   require('../checks/wikipediaListe.js')({
     template: 'WLPA-AT-Zeile',

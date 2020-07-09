@@ -1,5 +1,3 @@
-const escHTML = require('html-escape')
-
 const STATUS = require('../src/status.js')
 
 module.exports = function init (options) {
@@ -24,8 +22,7 @@ function check (options, ob) {
   if (el.claims.P373) {
     const data = el.claims.P373
     ob.load('commons', { title: 'Category:' + data[0].mainsnak.datavalue.value })
-    return ob.message('commons', STATUS.SUCCESS, 'Wikidata Eintrag hat Link zu Wikimedia Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + encodeURIComponent(data[0].mainsnak.datavalue.value) + '">' + escHTML(data[0].mainsnak.datavalue.value) + '</a>')
   }
 
-  return ob.message('commons', STATUS.WARNING, 'Wikidata Eintrag hat keinen Link zu Wikimedia Commons Kategorie')
+  return true
 }
