@@ -26,9 +26,13 @@ function check (options, ob) {
 
   if (files.length + categories.length === 0) {
     ob.message('commons', STATUS.ERROR, 'Weder Bilder noch Kategorien gefunden, die auf dieses Objekt verweisen.')
+    if (!ob.data.wikidata) {
+      ob.message('wikidata', STATUS.WARNING, 'Ohne Verweis von Wikimedia Commons Kategorie kann kein Wikidata Eintrag gefunden werden.')
+      ob.data.wikidata = []
+    }
   }
 
-  ob.data.commons.forEach(page => {
+  let wikiDataLoading = ob.data.commons.filter(page => {
     if (page.title.match(/^File:/)) {
       // Disable, as this query does not work
       // ob.load('wikidata', {key: 'P18', id: page.title.substr(5)})

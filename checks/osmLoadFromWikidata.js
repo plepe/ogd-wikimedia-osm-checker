@@ -10,6 +10,10 @@ module.exports = function init (options) {
 function check (options, ob) {
   let wikidataId
 
+  if (ob.data.osm) {
+    return true
+  }
+
   if (!ob.data.wikidata && !ob.data.osm) {
     // wait for wikidata info to be loaded
     return

@@ -30,6 +30,7 @@
     "node-fetch": "^2.6.0",
     "query-string": "^6.13.1",
     "sheet-router": "^4.2.3",
+    "string-similarity": "^4.0.1",
     "w3c-xmlhttprequest": "^2.1.3"
   },
   "devDependencies": {
