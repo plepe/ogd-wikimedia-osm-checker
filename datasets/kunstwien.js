@@ -48,7 +48,7 @@ const checks = [
   require('../checks/wikidataImage.js')(),
   require('../checks/commonsWikidataInfobox.js')(),
   require('../checks/wikipediaListe.js')({
-    template: 'WLPA-AT-Zeile',
+    template: '(WLPA-AT-Zeile|Gedenktafel Österreich Tabellenzeile)',
     idField: 'ID',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
