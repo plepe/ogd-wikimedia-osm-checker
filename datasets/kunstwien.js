@@ -47,6 +47,10 @@ const checks = [
   require('../checks/wikidataRecommendations.js')(),
   require('../checks/wikidataImage.js')(),
   require('../checks/commonsWikidataInfobox.js')(),
+  require('../checks/commonsTemplate.js')({
+    template: 'Public Art Austria',
+    insert: '{{Public Art Austria|$1|AT-9}}'
+  }),
   require('../checks/wikipediaListe.js')({
     template: '(WLPA-AT-Zeile|Gedenktafel Österreich Tabellenzeile)',
     idField: 'ID',

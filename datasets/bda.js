@@ -18,7 +18,10 @@ const checks = [
     idField: 'ObjektID',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
-  require('../checks/commonsTemplate.js')(),
+  require('../checks/commonsTemplate.js')({
+    template: '(doo|Denkmalgeschütztes Objekt Österreich)',
+    insert: '{{Denkmalgeschütztes Objekt Österreich|$1}}'
+  }),
   require('../checks/osmLoadSimilar.js')({
     coordField: null,
     nameField: 'Bezeichnung'
