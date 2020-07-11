@@ -27,6 +27,10 @@ window.onload = () => {
   if (global.location.hash) {
     choose(global.location.hash.substr(1))
   }
+
+  hash(loc => {
+    choose(loc.substr(1))
+  })
 }
 
 function chooseDataset () {
@@ -37,6 +41,7 @@ function chooseDataset () {
 }
 
 function updateDataset () {
+  const content = document.getElementById('content')
   const selectDataset = document.getElementById('Dataset')
 
   if (!selectDataset.value) {
@@ -45,6 +50,8 @@ function updateDataset () {
   }
 
   dataset = datasets[selectDataset.value]
+
+  content.innerHTML = '<h1>' + dataset.title + '</h1><p>' + dataset.ogdInfo + '</p><p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
 
   const select = document.getElementById('Ortfilter')
   while (select.firstChild.nextSibling) {
@@ -68,27 +75,25 @@ function updateDataset () {
     } else {
       update()
     }
-
-    hash(loc => {
-      choose(loc.substr(1))
-    })
   })
 }
 
 function choose (path) {
   const [_dataset, id] = path.split(/\//)
 
-  if (!dataset || _dataset !== dataset.id) {
+  if (!_dataset && !id) {
+    const content = document.getElementById('content')
     content.innerHTML = info
+  }
 
+  if (!dataset || (_dataset !== dataset.id)) {
     const selectDataset = document.getElementById('Dataset')
     selectDataset.value = _dataset
     return updateDataset()
   }
 
   if (!id) {
-    content.innerHTML = info
-    return
+    return null
   }
 
   if (!(id in dataset.data)) {

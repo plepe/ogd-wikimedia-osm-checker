@@ -35,6 +35,10 @@ class DatasetBDA extends Dataset {
 
   listTitle = 'Denkmal aus Bundesdenkmalamtsliste'
 
+  ogdURL = 'https://bda.gv.at/denkmalverzeichnis/#denkmalliste-gemaess-3-dmsg'
+
+  ogdInfo = 'Liste der unter Denkmalschutz stehenden unbeweglichen Denkmale in Österreich.'
+
   filename = 'bda.json'
 
   idField = 'ObjektID'
