@@ -1,36 +1,44 @@
 {
-  "name": "bundesdenkmal-checker",
+  "name": "ogd-wikimedia-osm-checker",
   "version": "0.0.0",
-  "description": "Vergleiche die Liste der Baudenkmäler des Österreichischen Bundesdenkmalamtes mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.",
+  "description": "Vergleiche die Einträge verschiedener OGD Datensätze mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.",
   "main": "index.js",
   "scripts": {
     "build": "mkdir -p dist && browserify src/app.js -o dist/app.js",
     "watch": "mkdir -p dist && watchify --debug src/app.js -o dist/app.js -v",
     "update": "mkdir -p data && node update.js",
-    "lint": "standard --fix update.js server.js src/*.js server/*.js",
+    "lint": "standard --fix update.js server.js src/*.js server/*.js checks/*.js datasets/*.js test/*.js",
     "prepare": "npm run build",
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --bail"
   },
-  "repository": "https://github.com/plepe/bundesdenkmal-checker",
+  "repository": "https://github.com/plepe/ogd-wikimedia-osm-checker",
   "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/plepe/bundesdenkmal-checker"
+    "url": "https://github.com/plepe/ogd-wikimedia-osm-checker"
   },
-  "homepage": "https://github.com/plepe/bundesdenkmal-checker",
+  "homepage": "https://github.com/plepe/ogd-wikimedia-osm-checker",
   "dependencies": {
+    "@turf/point-to-line-distance": "^6.0.0",
+    "@turf/points-within-polygon": "^5.1.5",
     "async": "^3.2.0",
+    "boundingbox": "^1.2.3",
     "csvtojson": "^2.0.10",
+    "foreach": "^2.0.5",
     "html-escape": "^2.0.0",
     "iconv-lite": "^0.6.0",
+    "jsdom": "^16.2.2",
     "natsort": "^2.0.2",
     "node-fetch": "^2.6.0",
     "query-string": "^6.13.1",
-    "sheet-router": "^4.2.3"
+    "sheet-router": "^4.2.3",
+    "string-similarity": "^4.0.1",
+    "w3c-xmlhttprequest": "^2.1.3"
   },
   "devDependencies": {
     "browserify": "^16.5.1",
+    "mocha": "^8.0.1",
     "standard": "^14.3.4",
     "watchify": "^3.11.1"
   }

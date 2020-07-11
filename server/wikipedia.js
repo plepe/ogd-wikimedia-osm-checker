@@ -4,12 +4,16 @@ const async = require('async')
 const httpRequest = require('../src/httpRequest.js')
 
 function loadTitle (title, callback) {
-  httpRequest('https://commons.wikimedia.org/w/api.php?action=parse&format=json&prop=wikitext&page=' + encodeURIComponent(title),
+  httpRequest('https://de.wikipedia.org/w/api.php?action=parse&format=json&prop=wikitext&page=' + encodeURIComponent(title),
     {
       responseType: 'json'
     },
     (err, result) => {
       if (err) { return callback(err) }
+
+      if (result.body.error) {
+        return callback(result.body.error)
+      }
 
       const page = result.body.parse
       callback(null, [{
@@ -22,7 +26,7 @@ function loadTitle (title, callback) {
 }
 
 function loadSearch (search, callback) {
-  let url = 'https://commons.wikimedia.org/w/index.php?sort=relevance&search=' + encodeURIComponent(search) + '&title=Special:Search&profile=advanced&fulltext=1&ns6=1&ns14=1'
+  let url = 'https://de.wikipedia.org/w/index.php?sort=relevance&search=' + encodeURIComponent(search) + '&title=Special:Search&profile=advanced&fulltext=1&ns0=1'
   httpRequest(url,
     {},
     (err, result) => {

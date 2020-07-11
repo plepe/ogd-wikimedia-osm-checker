@@ -10,6 +10,11 @@ a .Adresse {
   left: 0;
   width: 50%;
 }
+#selector > div > select {
+  width: 49%;
+  box-sizing: border-box;
+  display: inline-block;
+}
 table#data {
   border-collapse: collapse;
 }
@@ -34,6 +39,12 @@ ul.check li:before {
   width: 1em;
   margin-left: -1em;
 }
+ul ul.check {
+  padding-left: 1em;
+}
+ul ul.check li:before {
+  margin-left: -1em;
+}
 li.error:before {
   content: "✘";
   color: red;
@@ -45,6 +56,14 @@ li.success:before {
 li.warning:before {
   content: "✘";
   color: orange;
+}
+
+ul.attrList {
+  font-size: 0.8em;
+  padding-left: 1em;
+}
+ul.attrList li {
+  list-style: disc;
 }
 
 #loadingIndicator {

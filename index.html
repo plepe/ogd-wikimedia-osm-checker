@@ -8,15 +8,21 @@
 <body>
 <div id="loadingIndicator"></div>
 <div id="selector">
-<select id="Ortfilter">
-<option value="">Wähle Gemeinde ...</option>
-</select>
+<div id="filter">
+<select id="Dataset"><option value="">Wähle Datensatz ...</option></select>
+<select id="Ortfilter"><option value="">Wähle Ort ...</option></select>
+</div>
 <div id="content">
-<h1>bundesdenkmal-checker</h1>
-Vergleiche die Liste der Baudenkmäler des Österreichischen Bundesdenkmalamtes mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.
+<h1>ogd-wikimedia-osm-checker</h1>
+Vergleiche die Einträge verschiedener OGD Datensätze mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.
+
+Aktuell verfügbare Datensätze:<ul>
+<li><a href='#bda'>Denkmalliste des österr. Bundesdenkmalamtes</a></li>
+<li><a href='#kunstwien'>Kunstwerke im öff. Raum (Kulturgut Wien)</a></li>
+</ul>
 
 <h2>Code</h2>
-<a href='https://github.com/plepe/bundesdenkmal-checker'>Source Code auf Github</a><br>
+<a href='https://github.com/plepe/ogd-wikimedia-osm-checker'>Source Code auf Github</a><br>
 Ich freue mich über Verbesserungsvorschläge und Pull Requests!
 
 <h2>Autor</h2>

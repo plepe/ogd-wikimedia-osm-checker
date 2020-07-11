@@ -3,6 +3,7 @@
  * @param {Object} options - Options
  * @param {string} options.method=GET - Method of the request (e.g. POST, DELETE).
  * @param {string} options.body=null - Body of the request.
+ * @param {Object} options.headers - Additional request headers
  * @param {boolean} options.enableServerLoad=false - Try to pass the request via the httpRequest.php server script to avoid CORS problems (when direct request does not work)
  * @param {boolean} options.forceServerLoad=false - Pass the request via the httpRequest.php server script to avoid CORS problems.
  * @param {string} options.responseType=text - a string defining the XMLHttpRequestResponseType
@@ -56,13 +57,14 @@ function httpRequest (url, options, callback) {
 
   function direct () {
     xhr = new global.XMLHttpRequest()
+    xhr.open(options.method || 'GET', url, true)
+
     if (options.headers) {
       for (const k in options.headers) {
         xhr.setRequestHeader(k, options.headers[k])
       }
     }
 
-    xhr.open(options.method || 'GET', url, true)
     xhr.responseType = parseResponseType()
     xhr.onreadystatechange = readyStateChange
     xhr.send(options.body)

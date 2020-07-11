@@ -1,71 +1,69 @@
-const async = require('async')
 const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
-const natsort = require('natsort').default
+const forEach = require('foreach')
 
-const checker = [
-  require('./checkWikipedia.js'),
-  require('./checkWikidata.js'),
-  require('./checkCommons.js'),
-  require('./checkOSM.js')
-]
-const showBDA = require('./showBDA.js')
+const runChecks = require('./runChecks.js')
+const Examinee = require('./Examinee.js')
 
-const data = {}
-let ortFilter = {}
+const datasets = require('../datasets/index.js')
+let dataset
+
 let info
-
-function show (k) {
-  const entry = data[k]
-
-  const tr = document.createElement('tr')
-  const td = document.createElement('td')
-  tr.appendChild(td)
-
-  const a = document.createElement('a')
-  a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.Bezeichnung) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
-  a.href = '#' + entry.ObjektID
-  td.appendChild(a)
-  td.appendChild(document.createElement('br'))
-
-  document.getElementById('data').appendChild(tr)
-}
 
 window.onload = () => {
   info = document.getElementById('content').innerHTML
 
+  const selectDataset = document.getElementById('Dataset')
+  forEach(datasets, (_dataset, id) => {
+    const option = document.createElement('option')
+    option.value = id
+    option.appendChild(document.createTextNode(_dataset.title))
+
+    selectDataset.appendChild(option)
+  })
+
+  selectDataset.onchange = chooseDataset
+
+  if (global.location.hash) {
+    choose(global.location.hash.substr(1))
+  }
+
+  hash(loc => {
+    choose(loc.substr(1))
+  })
+}
+
+function chooseDataset () {
+  const selectDataset = document.getElementById('Dataset')
+
+  location.hash = selectDataset.value
+  updateDataset()
+}
+
+function updateDataset () {
+  const content = document.getElementById('content')
+  const selectDataset = document.getElementById('Dataset')
+
+  if (!selectDataset.value) {
+    content.innerHTML = info
+    return
+  }
+
+  dataset = datasets[selectDataset.value]
+
+  content.innerHTML = '<h1>' + dataset.title + '</h1><p>' + dataset.ogdInfo + '</p><p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
+
+  const select = document.getElementById('Ortfilter')
+  while (select.firstChild.nextSibling) {
+    select.removeChild(select.firstChild.nextSibling)
+  }
+
   document.body.classList.add('loading')
-  async.parallel([
-    done => {
-      global.fetch('data/bda.json')
-        .then(res => {
-          if (!res.ok) {
-            throw Error('loading BDA data: ' + res.statusText)
-          }
-
-          return res.json()
-        })
-        .then(json => {
-          json.forEach(entry => {
-            data[entry.ObjektID] = entry
-            ortFilter[entry.Gemeinde] = true
-          })
-
-          done()
-        })
-        .catch(e => done(e))
-    }
-  ],
-  err => {
+  dataset.load((err) => {
     document.body.classList.remove('loading')
-    if (err) {
-      return global.alert(err)
-    }
+    if (err) { global.alert(err) }
 
-    const select = document.getElementById('Ortfilter')
-    ortFilter = Object.keys(ortFilter)
-    ortFilter = ortFilter.sort(natsort({ insensitive: true }))
-    ortFilter.forEach(ort => {
+    dataset.ortFilter.forEach(ort => {
       const option = document.createElement('option')
       option.appendChild(document.createTextNode(ort))
       select.appendChild(option)
@@ -77,20 +75,33 @@ window.onload = () => {
     } else {
       update()
     }
-
-    hash(loc => {
-      choose(loc.substr(1))
-    })
   })
 }
 
-function choose (id) {
-  if (!(id in data)) {
+function choose (path) {
+  const [_dataset, id] = path.split(/\//)
+
+  if (!_dataset && !id) {
+    const content = document.getElementById('content')
+    content.innerHTML = info
+  }
+
+  if (!dataset || (_dataset !== dataset.id)) {
+    const selectDataset = document.getElementById('Dataset')
+    selectDataset.value = _dataset
+    return updateDataset()
+  }
+
+  if (!id) {
+    return null
+  }
+
+  if (!(id in dataset.data)) {
     return global.alert(id + ' nicht gefunden!')
   }
 
   const select = document.getElementById('Ortfilter')
-  const ort = data[id].Gemeinde
+  const ort = dataset.data[id][dataset.ortFilterField]
   select.value = ort
   update()
 
@@ -113,18 +124,20 @@ function update () {
 
   const table = document.createElement('table')
   table.id = 'data'
-  table.innerHTML = '<tr><th>Denkmal aus Bundesdenkmalamtsliste</th></tr>'
+  table.innerHTML = '<tr><th>' + escHTML(dataset.listTitle) + '</th></tr>'
   content.appendChild(table)
 
-  for (const k in data) {
-    if (data[k].Gemeinde === ort) {
-      show(k)
+  const dom = document.getElementById('data')
+
+  for (const k in dataset.data) {
+    if (dataset.data[k][dataset.ortFilterField] === ort) {
+      dataset.listEntry(dataset.data[k], dom)
     }
   }
 }
 
 function check (id) {
-  const entry = data[id]
+  const entry = dataset.data[id]
   const div = document.getElementById('details')
 
   while (div.firstChild) {
@@ -132,13 +145,13 @@ function check (id) {
   }
 
   document.body.classList.add('loading')
-  showBDA(entry, div)
+  dataset.showEntry(entry, div)
 
-  async.each(checker,
-    (module, done) => module(id, div, done),
-    (err) => {
-      document.body.classList.remove('loading')
-      if (err) { global.alert(err) }
-    }
-  )
+  const ob = new Examinee(entry[dataset.idField], entry, dataset)
+  ob.initMessages(div)
+  runChecks(ob, dataset.checks, (err, result) => {
+    if (err) { global.alert(err) }
+
+    document.body.classList.remove('loading')
+  })
 }
