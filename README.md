@@ -1,10 +1,14 @@
-# bundesdenkmal-checker
- Vergleiche die Liste der Baudenkmäler des Österreichischen Bundesdenkmalamtes mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.
+# ogd-wikimedia-osm-checker
+Vergleiche die Einträge verschiedener OGD (Open Government Data) Datensätze mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.
+
+Aktuell verfügbare Datensätze:
+* [Denkmalliste des österr. Bundesdenkmalamtes](https://bda.gv.at/denkmalverzeichnis/#denkmalliste-gemaess-3-dmsg)
+* [Kunstwerke im öff. Raum (Kulturgut Wien)](https://www.data.gv.at/katalog/dataset/stadt-wien_kunstwerkeimffentlichenraumwien)
 
 ## Installation
 ```
-git clone https://github.com/plepe/bundesdenkmal-checker
-cd bundesdenkmal-checker
+git clone https://github.com/plepe/ogd-wikimedia-osm-checker
+cd ogd-wikimedia-osm-checker
 npm install # install dependencies, link code
 npm run update # download current list of memorial sites to data/bda.json
 npm start # start internal web server on port 8080
@@ -14,10 +18,10 @@ Browse to http://localhost:8080
 
 ### Run with docker
 ```sh
-git clone https://github.com/plepe/bundesdenkmal-checker
-cd bundesdenkmal-checker
-docker build -t skunk/bundesdenkmal-checker .
-docker run -p 8080:8080 -d skunk/bundesdenkmal-checker
+git clone https://github.com/plepe/ogd-wikimedia-osm-checker
+cd ogd-wikimedia-osm-checker
+docker build -t skunk/ogd-wikimedia-osm-checker .
+docker run -p 8080:8080 -d skunk/ogd-wikimedia-osm-checker
 ```
 
 Browse to http://localhost:8080

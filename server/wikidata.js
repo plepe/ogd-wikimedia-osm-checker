@@ -73,7 +73,7 @@ function _request (options, callback) {
       headers: {
         // lower case to avoid forbidden request headers, see:
         // https://github.com/ykzts/node-xmlhttprequest/pull/18/commits/7f73611dc3b0dd15b0869b566f60b64cd7aa3201
-        'user-agent': 'bundesdenkmal-checker',
+        'user-agent': 'ogd-wikimedia-osm-checker',
         accept: 'application/json'
       },
       responseType: 'json'
