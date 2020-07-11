@@ -41,6 +41,14 @@ const typ2OverpassQuery = {
 
 const checks = [
   require('../checks/commonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
+  require('../checks/osmLoadSimilar.js')({
+    coordField: {
+      type: 'shape',
+      id: 'SHAPE'
+    },
+    nameField: 'OBJEKTTITEL'
+  }),
+  require('../checks/commonsLoad.js')(),
   require('../checks/wikidataLoaded.js')(),
   require('../checks/wikidataCoords.js')(),
   require('../checks/wikidataIsA.js')(),
@@ -56,14 +64,7 @@ const checks = [
     idField: 'ID',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
-  require('../checks/osmRef.js')('ref:wien:kultur'),
-  require('../checks/osmLoadSimilar.js')({
-    coordField: {
-      type: 'shape',
-      id: 'SHAPE'
-    },
-    nameField: 'OBJEKTTITEL'
-  })
+  require('../checks/osmRef.js')('ref:wien:kultur')
 ]
 
 class DatasetKunstWien extends Dataset {

@@ -11,6 +11,12 @@ module.exports = function init (options) {
 function check (options, ob) {
   let wikidataId
 
+  // OSM object has been loaded by 'osmLoadSimilar'. When re-showing data, let
+  // that module do it.
+  if (ob.osmSimilar) {
+    return
+  }
+
   if (!ob.data.wikidata && !ob.data.osm) {
     // wait for wikidata info to be loaded
     return

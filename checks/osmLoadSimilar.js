@@ -17,6 +17,10 @@ function check (options, ob) {
     return
   }
 
+  if (ob.osmSimilar) {
+    ob.message('wikidata', STATUS.WARNING, 'Bitte kontrollieren, ob dies der richtige WIkidata Eintrag ist. Er wurde von möglichem OpenStreetMap Objekt geladen.')
+  }
+
   let allCoords = []
   let coords = getCoords(ob.refData, options.coordField)
   if (coords) {
@@ -46,7 +50,7 @@ function check (options, ob) {
   }
 
   // if one of the OSM objects has a matching wikidata tag, we are happy
-  if (ob.data.wikidata.length) {
+  if (!ob.osmSimilar && ob.data.wikidata.length) {
     let match = ob.data.osm.filter(el => el.tags.wikidata === ob.data.wikidata[0].id)
     if (match.length) {
       return true
@@ -54,7 +58,7 @@ function check (options, ob) {
   }
 
   // if one of the OSM objects has a matching refField tag (e.g. ref:at:bda), we are happy
-  if (ob.dataset.osmRefField) {
+  if (!ob.osmSimilar && ob.dataset.osmRefField) {
     let match = ob.data.osm.filter(el => el.tags[ob.dataset.osmRefField] === ob.id)
     if (match.length) {
       return true
@@ -83,6 +87,12 @@ function check (options, ob) {
     ]
 
     ob.message('osm', STATUS.SUCCESS, (osmPoss.length === 1 ? msg[0] : osmPoss.length + ' ' + msg[1]) + ':<ul>' + osmPoss.map(el => '<li>' + osmFormat(el, ob, ' (Entfernung: ' + Math.round(el.distance * 1000) + 'm)') + '</li>').join('') + '</ul>')
+
+    if (osmPoss.length === 1 && osmPoss[0].tags.wikidata && ob.data.wikidata.length === 0) {
+      ob.load('wikidata', {key: 'id', id: osmPoss[0].tags.wikidata})
+      ob.message('wikidata', STATUS.WARNING, 'Bitte kontrollieren, ob dies der richtige WIkidata Eintrag ist. Er wurde von möglichem OpenStreetMap Objekt geladen.')
+      ob.osmSimilar = true
+    }
   } else {
     ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden.')
   }
