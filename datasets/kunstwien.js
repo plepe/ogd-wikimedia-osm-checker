@@ -64,7 +64,7 @@ const checks = [
     idField: 'ID',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
-  require('../checks/osmRef.js')('ref:wien:kultur')
+  require('../checks/osmLoadFromRefOrWikidata.js')()
 ]
 
 class DatasetKunstWien extends Dataset {
@@ -77,6 +77,8 @@ class DatasetKunstWien extends Dataset {
   filename = 'kunstwien.json'
 
   idField = 'ID'
+
+  osmRefField = 'ref:wien:kultur'
 
   ortFilterField = 'PLZ'
 
