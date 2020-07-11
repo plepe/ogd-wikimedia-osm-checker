@@ -43,6 +43,12 @@ module.exports = class Examinee extends EventEmitter {
     })
   }
 
+  clearMessages () {
+    forEach(this.messagesUl,
+      ul => ul.innerHTML = ''
+    )
+  }
+
   load (module, query) {
     if (!(module in this.doneLoading)) {
       this.doneLoading[module] = []

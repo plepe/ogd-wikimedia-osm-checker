@@ -1,23 +1,14 @@
-module.exports = function runChecks (ob, checks, callback, done = null) {
-  if (done === null) {
-    ob.on('load', () => runChecks(ob, checks, callback, done))
+module.exports = function runChecks (ob, checks, callback, init = false) {
+  if (!init) {
+    ob.on('load', () => runChecks(ob, checks, callback, true))
     ob.on('loadError', (err) => {
       ob.removeAllListeners()
       callback(err)
     })
-
-    done = []
   }
 
-  checks.forEach((check, i) => {
-    if (done.includes(check)) {
-      return
-    }
-
-    if (check(ob)) {
-      done.push(check)
-    }
-  })
+  ob.clearMessages()
+  checks.forEach((check, i) => check(ob))
 
   if (ob.needLoad()) {
     ob._load()
