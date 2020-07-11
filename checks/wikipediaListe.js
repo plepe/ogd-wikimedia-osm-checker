@@ -19,7 +19,7 @@ function check (options, ob) {
         return ob.load('wikipedia', { title })
       }
     } else {
-      return ob.load('wikipedia', { search: 'insource:/' + ob.dataset.idField + ' *= *' + ob.id + '[^0-9]/ intitle:"' + ob.dataset.wikipediaListeSearchTitle + '"' })
+      return ob.load('wikipedia', { search: 'insource:/' + ob.dataset.idField + ' *= *' + ob.id + '[^0-9]/ intitle:' + ob.dataset.wikipediaListeSearchTitle })
     }
   }
 

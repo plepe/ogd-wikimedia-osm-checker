@@ -41,7 +41,7 @@ class DatasetBDA extends Dataset {
 
   osmRefField = 'ref:at:bda'
 
-  wikipediaListeSearchTitle = 'Liste der denkmalgeschützten Objekte in'
+  wikipediaListeSearchTitle = '"Liste der denkmalgeschützten Objekte in"'
 
   ortFilterField = 'Gemeinde'
 

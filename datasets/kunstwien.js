@@ -80,6 +80,8 @@ class DatasetKunstWien extends Dataset {
 
   osmRefField = 'ref:wien:kultur'
 
+  wikipediaListeSearchTitle = '/Liste der (Gedenktafeln und Gedenksteine|Kunstwerke im öffentlichen Raum) in Wien/'
+
   ortFilterField = 'PLZ'
 
   checks = checks
@@ -126,12 +128,6 @@ class DatasetKunstWien extends Dataset {
     //const pre = document.createElement('pre')
     //dom.appendChild(pre)
     //pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
-  }
-
-  wikipediaListeTitle (ob) {
-    return 'Liste der ' +
-      (['Gedenktafeln', 'Gedenksteine'].includes(ob.refData.TYP) ? 'Gedenktafeln und Gedenksteine' : 'Kunstwerke im öffentlichen Raum') +
-      ' in Wien/' + bezirke[ob.refData.PLZ]
   }
 
   wikipediaListeAnchor (ob) {
