@@ -14,6 +14,7 @@ function check (options, ob) {
   // OSM object has been loaded by 'osmLoadSimilar'. When re-showing data, let
   // that module do it.
   if (ob.osmSimilar) {
+    return ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> in der OpenStreetMap gefunden!')
     return
   }
 
