@@ -39,6 +39,12 @@ ul.check li:before {
   width: 1em;
   margin-left: -1em;
 }
+ul ul.check {
+  padding-left: 1em;
+}
+ul ul.check li:before {
+  margin-left: -1em;
+}
 li.error:before {
   content: "✘";
   color: red;

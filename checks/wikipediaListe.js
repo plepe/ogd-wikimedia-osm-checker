@@ -32,7 +32,7 @@ function check (options, ob) {
   const found = listEntries.filter(e => e[options.idField] === ob.id)
 
   if (found.length) {
-    let msg = '<a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '#' + ob.dataset.wikipediaListeAnchor(ob) + '">Wikipedia Liste</a>:<ul>'
+    let msg = '<a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '#' + ob.dataset.wikipediaListeAnchor(ob) + '">Wikipedia Liste</a>:<ul class="attrList">'
     msg += options.showFields.map(
       fieldId => found[0][fieldId] ? '<li>' + escHTML(fieldId) + ': ' + escHTML(found[0][fieldId]) + '</li>' : ''
     ).join('')
