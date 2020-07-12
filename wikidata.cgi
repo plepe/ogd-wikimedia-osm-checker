@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const queryString = require('query-string')
+global.XMLHttpRequest = require('w3c-xmlhttprequest').XMLHttpRequest
 
 const proc = require('./server/wikidata.js')
 
