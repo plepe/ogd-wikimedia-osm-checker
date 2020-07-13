@@ -14,5 +14,10 @@ module.exports = {
         async.setImmediate(() => callback(err, results))
       }
     )
+  },
+
+  includes (arr, el) {
+    return !arr.filter(e => e.id === el.id)
   }
+
 }

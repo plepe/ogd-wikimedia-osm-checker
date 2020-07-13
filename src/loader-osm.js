@@ -15,5 +15,9 @@ module.exports = {
         callback(null, result.body.elements)
       }
     )
+  },
+
+  includes (arr, el) {
+    return !arr.filter(e => e.type === el.type && e.id === el.id)
   }
 }

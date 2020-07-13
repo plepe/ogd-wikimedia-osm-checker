@@ -96,11 +96,14 @@ module.exports = class Examinee extends EventEmitter {
         (err, result) => {
           this.loading.splice(this.loading.indexOf(toLoad[module]), 1)
           if (err) { return this.emit('loadError', err) }
-          if (module in this.data) {
-            this.data[module] = this.data[module].concat(result)
-          } else {
-            this.data[module] = result
-          }
+          this.data[module] = []
+
+          result.forEach(e => {
+            if (!loader[module].includes(this.data[module], e)) {
+              this.data[module].push(e)
+            }
+          })
+
           this.emit('load')
         }
       )
