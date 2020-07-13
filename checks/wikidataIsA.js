@@ -22,4 +22,8 @@ function check (options, ob) {
   if (data.length === 1 && data[0].mainsnak.datavalue.value.id === 'Q2065736') {
     return ob.message('wikidata', STATUS.ERROR, 'Objekt ist nur als Kulturgut eingetragen ("ist ein(e)").')
   }
+
+  if (data.filter(el => el.mainsnak.datavalue.value.id === 'Q13406463').length) {
+    return ob.message('wikidata', STATUS.ERROR, 'Verdacht auf falsches Objekt: ist eine Wikimedia-Liste.')
+  }
 }
