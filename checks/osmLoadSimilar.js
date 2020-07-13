@@ -17,10 +17,6 @@ function check (options, ob) {
     return
   }
 
-  if (ob.osmSimilar) {
-    ob.message('wikidata', STATUS.WARNING, 'Bitte kontrollieren, ob dies der richtige WIkidata Eintrag ist. Er wurde von möglichem OpenStreetMap Objekt geladen.')
-  }
-
   let allCoords = []
   let coords = getCoords(ob.refData, options.coordField)
   if (coords) {
@@ -90,7 +86,7 @@ function check (options, ob) {
 
     if (osmPoss.length === 1 && osmPoss[0].tags.wikidata && ob.data.wikidata.length === 0) {
       ob.load('wikidata', {key: 'id', id: osmPoss[0].tags.wikidata})
-      ob.message('wikidata', STATUS.WARNING, 'Bitte kontrollieren, ob dies der richtige WIkidata Eintrag ist. Er wurde von möglichem OpenStreetMap Objekt geladen.')
+      ob.message('wikidata', STATUS.WARNING, 'Bitte kontrollieren, ob <a target="_blank" href="https://wikidata.org/wiki/' + osmPoss[0].tags.wikidata + '">' + osmPoss[0].tags.wikidata + '</a> der richtige Wikidata Eintrag ist. Er wurde von möglicherweise passendem OpenStreetMap Objekt <a target="_blank" href="https://openstreetmap.org/' + osmPoss[0].type + '/' + osmPoss[0].id + '">' + osmPoss[0].type + '/' + osmPoss[0].id + '</a> geladen.')
       ob.osmSimilar = true
     }
   } else {
