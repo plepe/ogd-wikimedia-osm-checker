@@ -15,7 +15,6 @@ function check (options, ob) {
   // that module do it.
   if (ob.osmSimilar) {
     return ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> in der OpenStreetMap gefunden!')
-    return
   }
 
   if (!ob.data.wikidata && !ob.data.osm) {
@@ -51,6 +50,12 @@ function check (options, ob) {
   }
 
   if (refBdaResult.length) {
+    refBdaResult.forEach(el => {
+      if (el.tags.wikidata && ob.data.wikidata.length === 0) {
+        ob.load('wikidata', {key: 'id', id: el.tags.wikidata})
+      }
+    })
+
     return ob.message('osm', STATUS.SUCCESS, refBdaResult.length + ' Objekt via <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> gefunden: ' + refBdaResult.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
   }
 

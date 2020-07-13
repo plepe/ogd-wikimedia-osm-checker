@@ -14,7 +14,7 @@ function check (options, ob) {
 
   const result = ob.data.wikidata
   if (result.length > 1) {
-    return ob.message('wikidata', STATUS.ERROR, result.length + ' Objekte gefunden: ' + result.map(el => '<a target="_blank" href="' + el.item.value + '">' + el.item.value.match(/(Q[0-9]+)$/)[1] + '</a>').join(', '))
+    return ob.message('wikidata', STATUS.ERROR, result.length + ' Objekte gefunden: ' + result.map(el => '<a target="_blank" href="https://wikidata.org/wiki/' + el.id + '">' + el.id + '</a>').join(', '))
   }
 
   if (result.length === 1) {
