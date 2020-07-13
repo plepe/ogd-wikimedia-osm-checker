@@ -1,6 +1,6 @@
 {
   "name": "bundesdenkmal-checker",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Vergleiche die Liste der Baudenkmäler des Österreichischen Bundesdenkmalamtes mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.",
   "main": "index.js",
   "scripts": {
