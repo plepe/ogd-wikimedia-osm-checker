@@ -49,6 +49,7 @@ const checks = [
     nameField: 'OBJEKTTITEL'
   }),
   require('../checks/commonsLoad.js')(),
+  require('../checks/wikidataLoadViaRef.js')(['P8430', 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID']),
   require('../checks/wikidataLoaded.js')(),
   require('../checks/wikidataCoords.js')(),
   require('../checks/wikidataIsA.js')(),
