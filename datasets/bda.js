@@ -5,7 +5,7 @@ const Dataset = require('../src/Dataset')
 const checks = [
   require('../checks/commonsTemplateToWikidata.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
   require('../checks/osmLoadFromRefOrWikidata.js')(),
-  require('../checks/wikidataLoadViaRef.js')('P2951'),
+  require('../checks/wikidataLoadViaRef.js')(['P2951', 'Objekt-ID der Datenbank österreichischer Kulturdenkmale']),
   require('../checks/wikidataLoaded.js')(),
   require('../checks/wikidataCoords.js')(),
   require('../checks/wikidataIsA.js')(),
