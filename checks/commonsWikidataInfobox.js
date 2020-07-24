@@ -23,5 +23,5 @@ function check (options, ob) {
     return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Wikidata Infobox')
   }
 
-  return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Wikidata Infobox. Füge <tt>{{Wikidata Infobox}}</tt> hinzu.')
+  return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Wikidata Infobox. Füge <tt>{{Wikidata Infobox|qid=' + (ob.wikidata && ob.wikidata.length ? ob.wikidata[0].id : '*') + '}}</tt> hinzu.')
 }
