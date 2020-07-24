@@ -22,9 +22,8 @@ function check (options, ob) {
     return
   }
 
-  if (!ob.data.osm && ob.data.wikidata.length) {
-    ob.load('osm', 'nwr["' + ob.dataset.osmRefField + '"=' + ob.id + '];')
-    return ob.load('osm', 'nwr[wikidata="' + ob.data.wikidata[0].id + '"];')
+  if (ob.data.wikidata.length) {
+    ob.data.wikidata.forEach(entry => ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
   }
 
   if (!ob.data.osm) {
