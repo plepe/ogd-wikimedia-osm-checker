@@ -133,4 +133,15 @@ module.exports = class Examinee extends EventEmitter {
       callback(null)
     }
   }
+
+  /**
+   * return true if the check with the name has been finished (or is not added to the dataset
+   */
+  isDone (checkName) {
+    if (!(checkName in this.checks)) {
+      return true
+    }
+
+    return this.checks[checkName]
+  }
 }
