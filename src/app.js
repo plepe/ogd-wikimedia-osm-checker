@@ -2,7 +2,6 @@ const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const forEach = require('foreach')
 
-const runChecks = require('./runChecks.js')
 const Examinee = require('./Examinee.js')
 
 const datasets = require('../datasets/index.js')
@@ -149,7 +148,7 @@ function check (id) {
 
   const ob = new Examinee(entry[dataset.idField], entry, dataset)
   ob.initMessages(div)
-  runChecks(ob, dataset.checks, (err, result) => {
+  ob.runChecks(dataset, (err, result) => {
     if (err) { global.alert(err) }
 
     document.body.classList.remove('loading')

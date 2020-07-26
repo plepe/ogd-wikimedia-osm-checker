@@ -109,4 +109,24 @@ module.exports = class Examinee extends EventEmitter {
       )
     }
   }
+
+  runChecks (dataset, callback, init = false) {
+    if (!init) {
+      this.on('load', () => this.runChecks(dataset, callback, true))
+      this.on('loadError', (err) => {
+        this.removeAllListeners()
+        callback(err)
+      })
+    }
+
+    this.clearMessages()
+    dataset.checks.forEach((check, i) => check.check(this))
+
+    if (this.needLoad()) {
+      this._load()
+    } else {
+      this.removeAllListeners()
+      callback(null)
+    }
+  }
 }
