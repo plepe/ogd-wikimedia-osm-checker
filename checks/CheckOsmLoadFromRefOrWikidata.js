@@ -20,6 +20,10 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       return
     }
 
+    if (!ob.isDone('CheckWikidataLoadViaRef') && !ob.isDone('CheckCommonsTemplateToWikidata')) {
+      return
+    }
+
     if (ob.data.wikidata.length) {
       ob.data.wikidata.forEach(entry => ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
     }

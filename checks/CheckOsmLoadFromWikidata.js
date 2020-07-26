@@ -20,6 +20,10 @@ class CheckOsmLoadFromWikidata extends Check {
       return
     }
 
+    if (!ob.isDone('CheckWikidataLoadViaRef') && !ob.isDone('CheckCommonsTemplateToWikidata')) {
+      return
+    }
+
     if (ob.data.wikidata.length) {
       wikidataId = ob.data.wikidata[0].id
     }

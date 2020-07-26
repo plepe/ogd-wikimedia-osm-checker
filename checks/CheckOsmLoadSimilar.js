@@ -15,6 +15,10 @@ class CheckOsmLoadSimilar extends Check {
       return
     }
 
+    if (!ob.isDone('CheckWikidataLoadViaRef') && !ob.isDone('CheckCommonsTemplateToWikidata')) {
+      return
+    }
+
     let allCoords = []
     let coords = getCoords(ob.refData, this.options.coordField)
     if (coords) {
