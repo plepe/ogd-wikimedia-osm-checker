@@ -114,7 +114,7 @@ module.exports = class Examinee extends EventEmitter {
   runChecks (dataset, callback, init = false) {
     if (!init) {
       dataset.checks.forEach(check => {
-        this.checksStatus[check.constructor.name] = false
+        this.checksStatus[check.id] = false
       })
 
       this.on('load', () => this.runChecks(dataset, callback, true))
@@ -127,7 +127,7 @@ module.exports = class Examinee extends EventEmitter {
     this.clearMessages()
 
     dataset.checks.forEach(check => {
-      this.checksStatus[check.constructor.name] = check.check(this)
+      this.checksStatus[check.id] = check.check(this)
     })
 
     if (this.needLoad()) {
@@ -141,11 +141,11 @@ module.exports = class Examinee extends EventEmitter {
   /**
    * return true if the check with the name has been finished (or is not added to the dataset
    */
-  isDone (checkName) {
-    if (!(checkName in this.checksStatus)) {
+  isDone (checkId) {
+    if (!(checkId in this.checksStatus)) {
       return true
     }
 
-    return this.checksStatus[checkName]
+    return this.checksStatus[checkId]
   }
 }
