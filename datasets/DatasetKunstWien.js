@@ -40,7 +40,7 @@ const typ2OverpassQuery = {
 }
 
 const checks = [
-  require('../checks/CheckCommonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
+  require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
   require('../checks/CheckOsmLoadSimilar.js')({
     coordField: {
       type: 'shape',
@@ -48,8 +48,10 @@ const checks = [
     },
     nameField: 'OBJEKTTITEL'
   }),
+  require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckCommonsLoad.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(['P8430', 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID']),
+  require('../checks/CheckWikidataLoadFromCommons.js')(),
   require('../checks/CheckWikidataLoaded.js')(),
   require('../checks/CheckWikidataCoords.js')(),
   require('../checks/CheckWikidataIsA.js')(),

@@ -3,9 +3,11 @@ const escHTML = require('html-escape')
 const Dataset = require('../src/Dataset')
 
 const checks = [
-  require('../checks/CheckCommonsTemplateToWikidata.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
+  require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
+  require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(['P2951', 'Objekt-ID der Datenbank österreichischer Kulturdenkmale']),
+  require('../checks/CheckWikidataLoadFromCommons.js')(),
   require('../checks/CheckWikidataLoaded.js')(),
   require('../checks/CheckWikidataCoords.js')(),
   require('../checks/CheckWikidataIsA.js')(),
