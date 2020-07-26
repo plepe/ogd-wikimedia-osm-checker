@@ -139,9 +139,19 @@ module.exports = class Examinee extends EventEmitter {
   }
 
   /**
-   * return true if the check with the name has been finished (or is not added to the dataset
+   * return true if the check with the name has been finished (or is not added to the dataset. if checkId is a regular expression, check if all checks with a matching id are done.
    */
   isDone (checkId) {
+    if (checkId instanceof RegExp) {
+      for (let k in this.checksStatus) {
+        if (k.match(checkId) && !this.checksStatus[k]) {
+          return false
+        }
+      }
+
+      return true
+    }
+
     if (!(checkId in this.checksStatus)) {
       return true
     }
