@@ -1,43 +1,44 @@
 const STATUS = require('../src/status.js')
 const osmFormat = require('../src/osmFormat.js')
+const Check =  require('../src/Check.js')
 
-module.exports = function init (options) {
-  return check.bind(this, options)
-}
+class CheckOsmLoadFromWikidata extends Check {
+  // result:
+  // - null/false: not finished yet
+  // - true: check is finished
+  check (ob) {
+    let wikidataId
 
-// result:
-// - null/false: not finished yet
-// - true: check is finished
-function check (options, ob) {
-  let wikidataId
-
-  // OSM object has been loaded by 'osmLoadSimilar'. When re-showing data, let
-  // that module do it.
-  if (ob.osmSimilar) {
-    return
-  }
-
-  if (!ob.data.wikidata && !ob.data.osm) {
-    // wait for wikidata info to be loaded
-    return
-  }
-
-  if (ob.data.wikidata.length) {
-    wikidataId = ob.data.wikidata[0].id
-  }
-
-  if (!ob.data.osm) {
-    if (ob.data.wikidata.length) {
-      return ob.load('osm', 'nwr[wikidata="' + wikidataId + '"];')
-    } else {
-      return true
+    // OSM object has been loaded by 'osmLoadSimilar'. When re-showing data, let
+    // that module do it.
+    if (ob.osmSimilar) {
+      return
     }
-  }
 
-  const results = ob.data.osm.filter(el => el.tags.wikidata === wikidataId)
-  if (results.length) {
-    return ob.message('osm', STATUS.SUCCESS, results.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: <ul>' + results.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
-  }
+    if (!ob.data.wikidata && !ob.data.osm) {
+      // wait for wikidata info to be loaded
+      return
+    }
 
-  return ob.message('osm', STATUS.ERROR, 'Kein Eintrag <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden!')
+    if (ob.data.wikidata.length) {
+      wikidataId = ob.data.wikidata[0].id
+    }
+
+    if (!ob.data.osm) {
+      if (ob.data.wikidata.length) {
+        return ob.load('osm', 'nwr[wikidata="' + wikidataId + '"];')
+      } else {
+        return true
+      }
+    }
+
+    const results = ob.data.osm.filter(el => el.tags.wikidata === wikidataId)
+    if (results.length) {
+      return ob.message('osm', STATUS.SUCCESS, results.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: <ul>' + results.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
+    }
+
+    return ob.message('osm', STATUS.ERROR, 'Kein Eintrag <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden!')
+  }
 }
+
+module.exports = options => new CheckOsmLoadFromWikidata(options)

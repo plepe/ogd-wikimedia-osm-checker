@@ -8,7 +8,7 @@ module.exports = function runChecks (ob, checks, callback, init = false) {
   }
 
   ob.clearMessages()
-  checks.forEach((check, i) => check(ob))
+  checks.forEach((check, i) => check.check(ob))
 
   if (ob.needLoad()) {
     ob._load()

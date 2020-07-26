@@ -1,4 +1,5 @@
 const STATUS = require('../src/status.js')
+const Check =  require('../src/Check.js')
 
 const recommendedReferences = {
   P84: 'Architekt_in',
@@ -10,29 +11,29 @@ const recommendedReferences = {
   P7842: 'Wien Geschichte Wiki ID'
 }
 
-module.exports = function init (options) {
-  return check.bind(this, options)
-}
+class CheckWikidataRecommendations extends Check {
+  check (ob) {
+    if (!ob.data.wikidata) {
+      return // wait for other check to load wikidata
+    }
 
-function check (options, ob) {
-  if (!ob.data.wikidata) {
-    return // wait for other check to load wikidata
-  }
+    if (ob.data.wikidata.length === 0) {
+      return true // loaded, but no wikidata entry found
+    }
 
-  if (ob.data.wikidata.length === 0) {
-    return true // loaded, but no wikidata entry found
-  }
+    const el = ob.data.wikidata[0]
 
-  const el = ob.data.wikidata[0]
+    const recommendations = []
+    for (const k in recommendedReferences) {
+      if (!(k in el.claims)) {
+        recommendations.push(recommendedReferences[k])
+      }
+    }
 
-  const recommendations = []
-  for (const k in recommendedReferences) {
-    if (!(k in el.claims)) {
-      recommendations.push(recommendedReferences[k])
+    if (recommendations.length) {
+      return ob.message('wikidata', STATUS.WARNING, 'Empfohlene weitere Angaben: ' + recommendations.join(', '))
     }
   }
-
-  if (recommendations.length) {
-    return ob.message('wikidata', STATUS.WARNING, 'Empfohlene weitere Angaben: ' + recommendations.join(', '))
-  }
 }
+
+module.exports = options => new CheckWikidataRecommendations(options)
