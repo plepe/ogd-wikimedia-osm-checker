@@ -25,6 +25,7 @@ module.exports = class Examinee extends EventEmitter {
     this.toLoad = {}
     this.loading = []
     this.doneLoading = {}
+    this.checks = {}
   }
 
   initMessages (dom) {
@@ -120,7 +121,10 @@ module.exports = class Examinee extends EventEmitter {
     }
 
     this.clearMessages()
-    dataset.checks.forEach((check, i) => check.check(this))
+
+    dataset.checks.forEach(check => {
+      this.checks[check.constructor.name] = check.check(this)
+    })
 
     if (this.needLoad()) {
       this._load()
