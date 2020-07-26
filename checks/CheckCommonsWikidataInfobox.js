@@ -16,7 +16,7 @@ class CheckCommonsWikidataInfobox extends Check {
     }
 
     const text = categories[0].wikitext
-    m = text.match(/\{\{ *Wikidata Infobox *(\||\}\})/i)
+    const m = text.match(/\{\{ *Wikidata Infobox *(\||\}\})/i)
     if (m) {
       return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Wikidata Infobox')
     }
