@@ -52,7 +52,7 @@ const checks = [
   require('../checks/CheckCommonsLoad.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(['P8430', 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID']),
   require('../checks/CheckWikidataLoadFromCommons.js')(),
-  require('../checks/CheckWikidataLoaded.js')(),
+  require('../checks/CheckWikidataShow.js')(),
   require('../checks/CheckWikidataCoords.js')(),
   require('../checks/CheckWikidataIsA.js')(),
   require('../checks/CheckWikidataRecommendations.js')(),

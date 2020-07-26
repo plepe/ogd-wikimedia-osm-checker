@@ -8,7 +8,7 @@ const checks = [
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(['P2951', 'Objekt-ID der Datenbank österreichischer Kulturdenkmale']),
   require('../checks/CheckWikidataLoadFromCommons.js')(),
-  require('../checks/CheckWikidataLoaded.js')(),
+  require('../checks/CheckWikidataShow.js')(),
   require('../checks/CheckWikidataCoords.js')(),
   require('../checks/CheckWikidataIsA.js')(),
   require('../checks/CheckWikidataRecommendations.js')(),
