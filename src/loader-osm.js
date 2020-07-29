@@ -18,6 +18,6 @@ module.exports = {
   },
 
   includes (arr, el) {
-    return !arr.filter(e => e.type === el.type && e.id === el.id)
+    return !!arr.filter(e => e.type === el.type && e.id === el.id).length
   }
 }
