@@ -15,7 +15,8 @@ class CheckOsmLoadSimilar extends Check {
       return
     }
 
-    if (!ob.isDone('CheckWikidataLoadViaRef') && !ob.isDone('CheckWikidataLoadFromCommons')) {
+    if (!ob.isDone(/^CheckWikidataLoad/)) {
+      // wait for all wikidata loaders to finish
       return
     }
 

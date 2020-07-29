@@ -28,6 +28,8 @@ class CheckWikidataLoadViaRef extends Check {
     } else {
       ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + this.options[1] + ' (' + this.options[0] + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
     }
+
+    return true
   }
 }
 

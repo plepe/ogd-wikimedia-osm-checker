@@ -41,13 +41,6 @@ const typ2OverpassQuery = {
 
 const checks = [
   require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
-  require('../checks/CheckOsmLoadSimilar.js')({
-    coordField: {
-      type: 'shape',
-      id: 'SHAPE'
-    },
-    nameField: 'OBJEKTTITEL'
-  }),
   require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckCommonsLoad.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(['P8430', 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID']),
@@ -66,6 +59,13 @@ const checks = [
     template: '(WLPA-AT-Zeile|Gedenktafel Österreich Tabellenzeile)',
     idField: 'ID',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
+  }),
+  require('../checks/CheckOsmLoadSimilar.js')({
+    coordField: {
+      type: 'shape',
+      id: 'SHAPE'
+    },
+    nameField: 'OBJEKTTITEL'
   }),
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')()
 ]
