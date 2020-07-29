@@ -40,32 +40,32 @@ const typ2OverpassQuery = {
 }
 
 const checks = [
-  require('../checks/commonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
-  require('../checks/osmLoadSimilar.js')({
+  require('../checks/CheckCommonsTemplateToWikidata.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
+  require('../checks/CheckOsmLoadSimilar.js')({
     coordField: {
       type: 'shape',
       id: 'SHAPE'
     },
     nameField: 'OBJEKTTITEL'
   }),
-  require('../checks/commonsLoad.js')(),
-  require('../checks/wikidataLoadViaRef.js')(['P8430', 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID']),
-  require('../checks/wikidataLoaded.js')(),
-  require('../checks/wikidataCoords.js')(),
-  require('../checks/wikidataIsA.js')(),
-  require('../checks/wikidataRecommendations.js')(),
-  require('../checks/wikidataImage.js')(),
-  require('../checks/commonsWikidataInfobox.js')(),
-  require('../checks/commonsTemplate.js')({
+  require('../checks/CheckCommonsLoad.js')(),
+  require('../checks/CheckWikidataLoadViaRef.js')(['P8430', 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID']),
+  require('../checks/CheckWikidataLoaded.js')(),
+  require('../checks/CheckWikidataCoords.js')(),
+  require('../checks/CheckWikidataIsA.js')(),
+  require('../checks/CheckWikidataRecommendations.js')(),
+  require('../checks/CheckWikidataImage.js')(),
+  require('../checks/CheckCommonsWikidataInfobox.js')(),
+  require('../checks/CheckCommonsTemplate.js')({
     template: 'Public Art Austria',
     insert: '{{Public Art Austria|$1|AT-9}}'
   }),
-  require('../checks/wikipediaListe.js')({
+  require('../checks/CheckWikipediaListe.js')({
     template: '(WLPA-AT-Zeile|Gedenktafel Österreich Tabellenzeile)',
     idField: 'ID',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
-  require('../checks/osmLoadFromRefOrWikidata.js')()
+  require('../checks/CheckOsmLoadFromRefOrWikidata.js')()
 ]
 
 class DatasetKunstWien extends Dataset {
