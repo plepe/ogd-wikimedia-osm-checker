@@ -19,7 +19,7 @@ class CheckCommonsLoad extends Check {
     const el = ob.data.wikidata[0]
     if (el.claims.P373) {
       const data = el.claims.P373
-      ob.load('commons', { title: 'Category:' + data[0].mainsnak.datavalue.value })
+      return ob.load('commons', { title: 'Category:' + data[0].mainsnak.datavalue.value })
     }
 
     return true

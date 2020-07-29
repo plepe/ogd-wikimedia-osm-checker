@@ -6,8 +6,8 @@ class CheckWikidataLoadViaRef extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob) {
-    if (!ob.data.wikidata) {
-      return ob.load('wikidata', { key: this.options[0], id: ob.id })
+    if (!ob.load('wikidata', { key: this.options[0], id: ob.id })) {
+      return false
     }
 
     if (!ob.data.wikidata.length) {

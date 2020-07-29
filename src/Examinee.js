@@ -50,13 +50,16 @@ module.exports = class Examinee extends EventEmitter {
     )
   }
 
+  /**
+   * @return return true if query has already been loaded
+   */
   load (module, query) {
     if (!(module in this.doneLoading)) {
       this.doneLoading[module] = []
     }
 
     if (this.doneLoading[module].includes(JSON.stringify(query))) {
-      return
+      return true
     }
 
     if (!(module in this.toLoad)) {
@@ -64,6 +67,7 @@ module.exports = class Examinee extends EventEmitter {
     }
 
     this.toLoad[module].push(query)
+    return false
   }
 
   message (module, status, message) {

@@ -12,16 +12,17 @@ class CheckWikidataLoadFromCommons extends Check {
       return
     }
 
-    ob.data.commons.forEach(page => {
+    let loading = ob.data.commons.filter(page => {
       if (page.title.match(/^File:/)) {
         // Disable, as this query does not work
         // ob.load('wikidata', {key: 'P18', id: page.title.substr(5)})
+        return false
       } else if (page.title.match(/^Category:/)) {
-        ob.load('wikidata', { key: 'P373', id: page.title.substr(9) })
+        return !ob.load('wikidata', { key: 'P373', id: page.title.substr(9) })
       }
     })
 
-    return true
+    return loading.length === 0
   }
 }
 

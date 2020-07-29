@@ -29,10 +29,9 @@ class CheckOsmLoadFromWikidata extends Check {
     }
 
     if (!ob.data.osm) {
-      if (ob.data.wikidata.length) {
-        return ob.load('osm', 'nwr[wikidata="' + wikidataId + '"];')
-      } else {
-        return true
+      let loading = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
+      if (loading.length) {
+        return
       }
     }
 

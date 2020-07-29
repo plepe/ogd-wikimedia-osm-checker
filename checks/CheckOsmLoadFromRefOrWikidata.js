@@ -24,12 +24,12 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       return
     }
 
-    if (ob.data.wikidata.length) {
-      ob.data.wikidata.forEach(entry => ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
-    }
+    const loadingWikidata = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
 
-    if (!ob.data.osm) {
-      return ob.load('osm', 'nwr["' + ob.dataset.osmRefField + '"=' + ob.id + '];')
+    const loadingRef = !ob.load('osm', 'nwr["' + ob.dataset.osmRefField + '"=' + ob.id + '];')
+
+    if (loadingWikidata.length || loadingRef) {
+      return false
     }
 
     if (ob.data.wikidata.length) {
