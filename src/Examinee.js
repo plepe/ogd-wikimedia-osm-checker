@@ -23,7 +23,7 @@ module.exports = class Examinee extends EventEmitter {
     this.dataset = dataset
     this.data = {}
     this.toLoad = {}
-    this.loading = []
+    this.loading = {}
     this.doneLoading = {}
     this.checksStatus = {}
   }
@@ -54,12 +54,18 @@ module.exports = class Examinee extends EventEmitter {
    * @return return true if query has already been loaded
    */
   load (module, query) {
-    if (!(module in this.doneLoading)) {
-      this.doneLoading[module] = []
+    const queryId = JSON.stringify(query)
+
+    if (module in this.doneLoading && this.doneLoading[module].includes(queryId)) {
+      return true
     }
 
-    if (this.doneLoading[module].includes(JSON.stringify(query))) {
-      return true
+    if (module in this.loading && this.loading[module].includes(queryId)) {
+      return false
+    }
+
+    if (module in this.toLoad && this.toLoad[module].includes(queryId)) {
+      return false
     }
 
     if (!(module in this.toLoad)) {
@@ -85,23 +91,37 @@ module.exports = class Examinee extends EventEmitter {
 
   _load () {
     const toLoad = this.toLoad
-    this.loading = this.loading.concat(Object.values(this.toLoad))
     this.toLoad = {}
 
     for (const module in toLoad) {
-      const queries = toLoad[module].filter(query => !this.doneLoading[module].includes(JSON.stringify(query)))
-      queries.forEach(query => this.doneLoading[module].push(JSON.stringify(query)))
-
-      if (!queries.length) {
-        this.loading.splice(this.loading.indexOf(toLoad[module]))
-        continue
+      if (!(module in this.doneLoading)) {
+        this.doneLoading[module] = []
       }
+
+      const queries = toLoad[module]
+
+      if (!(module in this.loading)) {
+        this.loading[module] = []
+      }
+
+      queries.forEach(query => this.loading[module].push(JSON.stringify(query)))
 
       loader[module].load(queries,
         (err, result) => {
-          this.loading.splice(this.loading.indexOf(toLoad[module]), 1)
+          queries.forEach(query => {
+            this.loading[module].splice(this.loading[module].indexOf(JSON.stringify(query)), 1)
+            this.doneLoading[module].push(JSON.stringify(query))
+          })
+
+          if (this.loading[module].length === 0) {
+            delete this.loading[module]
+          }
+
           if (err) { return this.emit('loadError', err) }
-          this.data[module] = []
+
+          if (!(module in this.data)) {
+            this.data[module] = []
+          }
 
           result.forEach(e => {
             if (!loader[module].includes(this.data[module], e)) {
