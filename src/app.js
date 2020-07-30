@@ -3,6 +3,7 @@ const escHTML = require('html-escape')
 const forEach = require('foreach')
 
 const Examinee = require('./Examinee.js')
+const httpRequest = require('./httpRequest.js')
 
 const datasets = require('../datasets/index.js')
 let dataset
@@ -98,6 +99,8 @@ function choose (path) {
   if (!(id in dataset.data)) {
     return global.alert(id + ' nicht gefunden!')
   }
+
+  httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
   const select = document.getElementById('Ortfilter')
   const ort = dataset.data[id][dataset.ortFilterField]
