@@ -23,8 +23,9 @@ module.exports = class Examinee extends EventEmitter {
     this.dataset = dataset
     this.data = {}
     this.toLoad = {}
-    this.loading = []
+    this.loading = {}
     this.doneLoading = {}
+    this.checksStatus = {}
   }
 
   initMessages (dom) {
@@ -49,13 +50,22 @@ module.exports = class Examinee extends EventEmitter {
     )
   }
 
+  /**
+   * @return return true if query has already been loaded
+   */
   load (module, query) {
-    if (!(module in this.doneLoading)) {
-      this.doneLoading[module] = []
+    const queryId = JSON.stringify(query)
+
+    if (module in this.doneLoading && this.doneLoading[module].includes(queryId)) {
+      return true
     }
 
-    if (this.doneLoading[module].includes(JSON.stringify(query))) {
-      return
+    if (module in this.loading && this.loading[module].includes(queryId)) {
+      return false
+    }
+
+    if (module in this.toLoad && this.toLoad[module].includes(queryId)) {
+      return false
     }
 
     if (!(module in this.toLoad)) {
@@ -63,6 +73,7 @@ module.exports = class Examinee extends EventEmitter {
     }
 
     this.toLoad[module].push(query)
+    return false
   }
 
   message (module, status, message) {
@@ -80,23 +91,37 @@ module.exports = class Examinee extends EventEmitter {
 
   _load () {
     const toLoad = this.toLoad
-    this.loading = this.loading.concat(Object.values(this.toLoad))
     this.toLoad = {}
 
     for (const module in toLoad) {
-      const queries = toLoad[module].filter(query => !this.doneLoading[module].includes(JSON.stringify(query)))
-      queries.forEach(query => this.doneLoading[module].push(JSON.stringify(query)))
-
-      if (!queries.length) {
-        this.loading.splice(this.loading.indexOf(toLoad[module]))
-        continue
+      if (!(module in this.doneLoading)) {
+        this.doneLoading[module] = []
       }
+
+      const queries = toLoad[module]
+
+      if (!(module in this.loading)) {
+        this.loading[module] = []
+      }
+
+      queries.forEach(query => this.loading[module].push(JSON.stringify(query)))
 
       loader[module].load(queries,
         (err, result) => {
-          this.loading.splice(this.loading.indexOf(toLoad[module]), 1)
+          queries.forEach(query => {
+            this.loading[module].splice(this.loading[module].indexOf(JSON.stringify(query)), 1)
+            this.doneLoading[module].push(JSON.stringify(query))
+          })
+
+          if (this.loading[module].length === 0) {
+            delete this.loading[module]
+          }
+
           if (err) { return this.emit('loadError', err) }
-          this.data[module] = []
+
+          if (!(module in this.data)) {
+            this.data[module] = []
+          }
 
           result.forEach(e => {
             if (!loader[module].includes(this.data[module], e)) {
@@ -108,5 +133,53 @@ module.exports = class Examinee extends EventEmitter {
         }
       )
     }
+  }
+
+  runChecks (dataset, callback, init = false) {
+    if (!init) {
+      dataset.checks.forEach(check => {
+        this.checksStatus[check.id] = false
+      })
+
+      this.on('load', () => this.runChecks(dataset, callback, true))
+      this.on('loadError', (err) => {
+        this.removeAllListeners()
+        callback(err)
+      })
+    }
+
+    this.clearMessages()
+
+    dataset.checks.forEach(check => {
+      this.checksStatus[check.id] = check.check(this)
+    })
+
+    if (this.needLoad()) {
+      this._load()
+    } else {
+      this.removeAllListeners()
+      callback(null)
+    }
+  }
+
+  /**
+   * return true if the check with the name has been finished (or is not added to the dataset. if checkId is a regular expression, check if all checks with a matching id are done.
+   */
+  isDone (checkId) {
+    if (checkId instanceof RegExp) {
+      for (let k in this.checksStatus) {
+        if (k.match(checkId) && !this.checksStatus[k]) {
+          return false
+        }
+      }
+
+      return true
+    }
+
+    if (!(checkId in this.checksStatus)) {
+      return true
+    }
+
+    return this.checksStatus[checkId]
   }
 }

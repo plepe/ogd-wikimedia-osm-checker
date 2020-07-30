@@ -1,4 +1,4 @@
 module.exports = {
-  bda: require('./bda.js'),
-  kunstwien: require('./kunstwien.js')
+  bda: require('./DatasetBDA.js'),
+  kunstwien: require('./DatasetKunstWien.js')
 }

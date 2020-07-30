@@ -3,26 +3,28 @@ const escHTML = require('html-escape')
 const Dataset = require('../src/Dataset')
 
 const checks = [
-  require('../checks/commonsTemplateToWikidata.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
-  require('../checks/osmLoadFromRefOrWikidata.js')(),
-  require('../checks/wikidataLoadViaRef.js')(['P2951', 'Objekt-ID der Datenbank österreichischer Kulturdenkmale']),
-  require('../checks/wikidataLoaded.js')(),
-  require('../checks/wikidataCoords.js')(),
-  require('../checks/wikidataIsA.js')(),
-  require('../checks/wikidataRecommendations.js')(),
-  require('../checks/commonsLoad.js')(),
-  require('../checks/wikidataImage.js')(),
-  require('../checks/commonsWikidataInfobox.js')(),
-  require('../checks/wikipediaListe.js')({
+  require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
+  require('../checks/CheckCommonsShowItems.js')(),
+  require('../checks/CheckWikidataLoadViaRef.js')(['P2951', 'Objekt-ID der Datenbank österreichischer Kulturdenkmale']),
+  require('../checks/CheckWikidataLoadFromCommons.js')(),
+  require('../checks/CheckWikidataShow.js')(),
+  require('../checks/CheckWikidataCoords.js')(),
+  require('../checks/CheckWikidataIsA.js')(),
+  require('../checks/CheckWikidataRecommendations.js')(),
+  require('../checks/CheckCommonsLoad.js')(),
+  require('../checks/CheckWikidataImage.js')(),
+  require('../checks/CheckCommonsWikidataInfobox.js')(),
+  require('../checks/CheckWikipediaListe.js')({
     template: 'Denkmalliste Österreich Tabellenzeile',
     idField: 'ObjektID',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
-  require('../checks/commonsTemplate.js')({
+  require('../checks/CheckCommonsTemplate.js')({
     template: '(doo|Denkmalgeschütztes Objekt Österreich)',
     insert: '{{Denkmalgeschütztes Objekt Österreich|$1}}'
   }),
-  require('../checks/osmLoadSimilar.js')({
+  require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
+  require('../checks/CheckOsmLoadSimilar.js')({
     coordField: null,
     nameField: 'Bezeichnung'
   })

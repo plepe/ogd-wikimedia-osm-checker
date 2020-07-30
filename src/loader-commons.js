@@ -19,6 +19,6 @@ module.exports = {
   },
 
   includes (arr, el) {
-    return !arr.filter(e => e.title === el.title)
+    return !!arr.filter(e => e.title === el.title).length
   }
 }
