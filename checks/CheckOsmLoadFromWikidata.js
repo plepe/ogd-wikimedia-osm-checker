@@ -27,6 +27,8 @@ class CheckOsmLoadFromWikidata extends Check {
 
     if (ob.data.wikidata.length) {
       wikidataId = ob.data.wikidata[0].id
+    } else {
+      return true
     }
 
     let refWdResult = []

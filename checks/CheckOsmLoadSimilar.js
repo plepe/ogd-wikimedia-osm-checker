@@ -40,11 +40,11 @@ class CheckOsmLoadSimilar extends Check {
 
     if (!ob.data.osm && ob.data.wikidata) {
       let query = ob.dataset.compileOverpassQuery(ob)
-      if (query === null) {
+      if (!query) {
         return true
       }
 
-      allCoords.forEach(coords => ob.load('osm', query.replace(/\(filter\)/g, '(around:30,' + coords.latitude + ',' + coords.longitude + ')')))
+      allCoords.forEach(coords => ob.load('osm', query.replace(/\(filter\)/g, '(around:100,' + coords.latitude + ',' + coords.longitude + ')')))
       return
     }
 
@@ -69,7 +69,7 @@ class CheckOsmLoadSimilar extends Check {
       el.distance = Math.min.apply(null, distances)
     })
 
-    let osmPoss = ob.data.osm.filter(el => stringSimilarity.compareTwoStrings(ob.refData[this.options.nameField], el.tags.name || '') > 0.4)
+    let osmPoss = ob.data.osm//.filter(el => stringSimilarity.compareTwoStrings(ob.refData[this.options.nameField], el.tags.name || '') > 0.4)
 
     // No objects with similar names found, return objects without a name
     if (osmPoss.length === 0) {

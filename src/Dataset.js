@@ -9,6 +9,7 @@ class Dataset {
 
     const ortFilter = {}
     this.data = {}
+    let foo = {}
 
     async.parallel([
       done => {

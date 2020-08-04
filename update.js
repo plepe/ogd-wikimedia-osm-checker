@@ -77,19 +77,19 @@ function downloadWienGeschichteWiki (callback) {
     })
 }
 
-//downloadBda(err => {
-//  if (err) {
-//    console.error(err)
-//    process.exit(1)
-//  }
-//})
-//
-//downloadKunstwerkeWien(err => {
-//  if (err) {
-//    console.error(err)
-//    process.exit(1)
-//  }
-//})
+downloadBda(err => {
+  if (err) {
+    console.error(err)
+    process.exit(1)
+  }
+})
+
+downloadKunstwerkeWien(err => {
+  if (err) {
+    console.error(err)
+    process.exit(1)
+  }
+})
 
 downloadWienGeschichteWiki(err => {
   if (err) {
