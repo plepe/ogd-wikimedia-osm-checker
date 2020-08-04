@@ -2,9 +2,9 @@ const stringSimilarity = require('string-similarity')
 
 const STATUS = require('../src/status.js')
 const osmFormat = require('../src/osmFormat.js')
-const getCoords = require('../src/getCoords.js')
 const calcDistance = require('../src/calcDistance.js')
 const Check =  require('../src/Check.js')
+const getAllCoords = require('../src/getAllCoords.js')
 
 class CheckOsmLoadSimilar extends Check {
   // result:
@@ -20,23 +20,7 @@ class CheckOsmLoadSimilar extends Check {
       return
     }
 
-    let allCoords = []
-    let coords = getCoords(ob.refData, this.options.coordField)
-    if (coords) {
-      allCoords.push(coords)
-    }
-
-    ob.data.wikidata.forEach(
-      wikidata => {
-        if (wikidata.claims.P625) {
-          wikidata.claims.P625.forEach(
-            P625 => {
-              allCoords.push(P625.mainsnak.datavalue.value)
-            }
-          )
-        }
-      }
-    )
+    let allCoords = getAllCoords(ob)
 
     if (!ob.data.osm && ob.data.wikidata) {
       let query = ob.dataset.compileOverpassQuery(ob)

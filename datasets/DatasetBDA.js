@@ -25,7 +25,6 @@ const checks = [
   }),
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
   require('../checks/CheckOsmLoadSimilar.js')({
-    coordField: null,
     nameField: 'Bezeichnung'
   })
 ]

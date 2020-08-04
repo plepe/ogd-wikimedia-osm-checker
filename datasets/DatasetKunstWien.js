@@ -61,10 +61,6 @@ const checks = [
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
   require('../checks/CheckOsmLoadSimilar.js')({
-    coordField: {
-      type: 'shape',
-      id: 'SHAPE'
-    },
     nameField: 'OBJEKTTITEL'
   }),
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')()
@@ -86,6 +82,11 @@ class DatasetKunstWien extends Dataset {
   idField = 'ID'
 
   osmRefField = 'ref:wien:kultur'
+
+  coordField = {
+    type: 'shape',
+    id: 'SHAPE'
+  }
 
   wikipediaListeSearchTitle = '/Liste der (Gedenktafeln und Gedenksteine|Kunstwerke im öffentlichen Raum) in Wien/'
 
