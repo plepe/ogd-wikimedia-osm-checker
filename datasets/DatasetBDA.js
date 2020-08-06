@@ -89,7 +89,7 @@ class DatasetBDA extends Dataset {
   }
 
   recommendedTags (ob) {
-    return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
+    return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic', 'heritage=2', 'heritage:operator=bda']
   }
 
   compileOverpassQuery (ob) {
