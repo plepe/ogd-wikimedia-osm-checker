@@ -17,7 +17,15 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
     recTags = recTags.concat(ob.dataset.recommendedTags(ob))
   }
 
-  const missTags = recTags.filter(tag => !(tag in el.tags))
+  const missTags = recTags.filter(tag => {
+    let [k, v] = tag.split(/=/)
+
+    if (!(k in el.tags)) {
+      return true
+    }
+
+    return !(el.tags[k] === v)
+  })
 
   if (missTags.length) {
     ret += '<ul class="check"><li class="warning">Empfohlene weitere Tags: ' + missTags.map(t => '<tt>' + escHTML(t) + '</tt>').join(', ') + '</li></ul>'
