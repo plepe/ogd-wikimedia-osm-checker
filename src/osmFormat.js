@@ -5,7 +5,7 @@ const editLink = require('./editLink.js')
 const recommendedTags = ['name', 'start_date', 'wikidata']
 
 module.exports = function osmFormat (el, ob, appendTitle = '') {
-  let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el) + ' ' + appendTitle
+  let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el) + appendTitle
 
   let tagKeys = Object.keys(el.tags || {})
   ret += '<ul class="attrList">' +
