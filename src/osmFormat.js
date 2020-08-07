@@ -14,12 +14,31 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
     ).join('') +
     '</ul>'
 
+  if (ob.dataset.missingTags) {
+    let missTags = ob.dataset.missingTags(ob)
+
+    missTags = missTags.filter(tag => {
+      let [k, v] = tag.split(/=/)
+
+      if (!(k in el.tags)) {
+        return true
+      }
+
+      return !(el.tags[k] === v)
+    })
+
+    if (missTags.length) {
+      ret += '<ul class="check"><li class="error">Fehlende Tags: ' + missTags.map(t => '<tt>' + escHTML(t) + '</tt>').join(', ') + '</li></ul>'
+    }
+  }
+
+
   let recTags = recommendedTags.concat()
   if (ob && ob.dataset.recommendedTags) {
     recTags = recTags.concat(ob.dataset.recommendedTags(ob))
   }
 
-  const missTags = recTags.filter(tag => {
+  recTags = recTags.filter(tag => {
     let [k, v] = tag.split(/=/)
 
     if (!(k in el.tags)) {
@@ -29,8 +48,8 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
     return !(el.tags[k] === v)
   })
 
-  if (missTags.length) {
-    ret += '<ul class="check"><li class="warning">Empfohlene weitere Tags: ' + missTags.map(t => '<tt>' + escHTML(t) + '</tt>').join(', ') + '</li></ul>'
+  if (recTags.length) {
+    ret += '<ul class="check"><li class="warning">Empfohlene weitere Tags: ' + recTags.map(t => '<tt>' + escHTML(t) + '</tt>').join(', ') + '</li></ul>'
   }
 
   return ret

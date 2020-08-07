@@ -146,6 +146,17 @@ class DatasetKunstWien extends Dataset {
     return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
   }
 
+  missingTags (ob) {
+    let result = []
+
+    result.push('ref:wien:kultur=' + ob.id)
+    if (ob.data.wikidata.length) {
+      result.push('wikidata=' + ob.data.wikidata[0].id)
+    }
+
+    return result
+  }
+
   compileOverpassQuery (ob, filter) {
     return typ2OverpassQuery[ob.refData.TYP]
   }
