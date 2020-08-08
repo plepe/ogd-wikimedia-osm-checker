@@ -1,3 +1,5 @@
+const escHTML = require('html-escape')
+
 global.osmEdit = function (param) {
   let url = 'http://127.0.0.1:8111/load_and_zoom?' + param
 
@@ -7,7 +9,7 @@ global.osmEdit = function (param) {
   xhr.send()
 }
 
-module.exports = function editLink (ob, osmOb=null, tagChange={}) {
+module.exports = function editLink (ob, osmOb=null, tagChange=null) {
   let bounds = osmOb.bounds
   if (osmOb.type === 'node') {
     bounds = {
@@ -24,7 +26,16 @@ module.exports = function editLink (ob, osmOb=null, tagChange={}) {
         '&bottom=' + (bounds.minlat - 0.0001).toFixed(5) +
         '&select=' + osmOb.type + osmOb.id
 
-  let text = ' <a href=\'javascript:osmEdit("' + url + '")\' title="Edit in JOSM with remote control enabled">✎</a> '
+  if (tagChange) {
+    url += '&addtags=' + tagChange
+      .map(kv => {
+        let [k, v] = kv.split(/=/)
+        return encodeURIComponent(k) + '=' + encodeURIComponent(v)
+      })
+      .join('%7C')
+  }
+
+  let text = ' <a href=\'javascript:osmEdit("' + encodeURI(url) + '")\' title="Edit in JOSM with remote control enabled">✎</a> '
 
   return text
 }
