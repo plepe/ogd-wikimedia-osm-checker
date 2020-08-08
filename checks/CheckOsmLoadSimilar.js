@@ -1,5 +1,6 @@
 const stringSimilarity = require('string-similarity')
 
+const editLink = require('../src/editLink.js')
 const STATUS = require('../src/status.js')
 const osmFormat = require('../src/osmFormat.js')
 const calcDistance = require('../src/calcDistance.js')
@@ -77,7 +78,7 @@ class CheckOsmLoadSimilar extends Check {
         ob.osmSimilar = true
       }
     } else {
-      ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden.')
+      ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden' + editLink(ob, null, ob.dataset.missingTags ? ob.dataset.missingTags(ob) : []) + '.')
     }
     return true
   }
