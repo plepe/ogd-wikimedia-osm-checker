@@ -104,7 +104,7 @@ class DatasetBDA extends Dataset {
   }
 
   compileOverpassQuery (ob) {
-    return '(nwr[building](filter);nwr[amenity=fountain](filter);nwr[landuse=cemetery](filter);nwr[historic](filter););'
+    return '(nwr[building](filter);nwr[amenity~"^(grave_yard|fountain)$"](filter);nwr[landuse=cemetery](filter);nwr[historic](filter););'
   }
 }
 
