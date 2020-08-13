@@ -27,18 +27,18 @@
     "csvtojson": "^2.0.10",
     "foreach": "^2.0.5",
     "html-escape": "^2.0.0",
-    "iconv-lite": "^0.6.0",
-    "jsdom": "^16.2.2",
+    "iconv-lite": "^0.6.2",
+    "jsdom": "^16.4.0",
     "natsort": "^2.0.2",
     "node-fetch": "^2.6.0",
     "query-string": "^6.13.1",
     "sheet-router": "^4.2.3",
-    "string-similarity": "^4.0.1",
-    "w3c-xmlhttprequest": "^2.1.3"
+    "string-similarity": "^4.0.2",
+    "w3c-xmlhttprequest": "^2.2.0"
   },
   "devDependencies": {
-    "browserify": "^16.5.1",
-    "mocha": "^8.0.1",
+    "browserify": "^16.5.2",
+    "mocha": "^8.1.1",
     "standard": "^14.3.4",
     "watchify": "^3.11.1"
   }
