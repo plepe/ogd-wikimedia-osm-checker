@@ -46,7 +46,7 @@ module.exports = class Examinee extends EventEmitter {
 
   clearMessages () {
     forEach(this.messagesUl,
-      ul => ul.innerHTML = ''
+      ul => { ul.innerHTML = '' }
     )
   }
 
@@ -167,7 +167,7 @@ module.exports = class Examinee extends EventEmitter {
    */
   isDone (checkId) {
     if (checkId instanceof RegExp) {
-      for (let k in this.checksStatus) {
+      for (const k in this.checksStatus) {
         if (k.match(checkId) && !this.checksStatus[k]) {
           return false
         }

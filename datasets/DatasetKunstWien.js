@@ -2,37 +2,11 @@ const escHTML = require('html-escape')
 
 const Dataset = require('../src/Dataset')
 
-const bezirke = {
-  1010: 'Innere Stadt',
-  1020: 'Leopoldstadt',
-  1030: 'Landstraße',
-  1040: 'Wieden',
-  1050: 'Margareten',
-  1060: 'Mariahilf',
-  1070: 'Neubau',
-  1080: 'Josefstadt',
-  1090: 'Alsergrund',
-  1100: 'Favoriten',
-  1110: 'Simmering',
-  1120: 'Meidling',
-  1130: 'Hietzing',
-  1140: 'Penzing',
-  1150: 'Rudolfsheim-Fünfhaus',
-  1160: 'Ottakring',
-  1170: 'Hernals',
-  1180: 'Währing',
-  1190: 'Döbling',
-  1200: 'Brigittenau',
-  1210: 'Floridsdorf',
-  1220: 'Donaustadt',
-  1230: 'Liesing'
-}
-
 const typ2OverpassQuery = {
-  'Gedenktafeln': 'nwr[memorial=plaque](filter);',
-  'Denkmäler': 'nwr[historic=memorial](filter);',
+  Gedenktafeln: 'nwr[memorial=plaque](filter);',
+  Denkmäler: 'nwr[historic=memorial](filter);',
   'Sakrale Kleindenkmäler': 'nwr[historic~"^wayside_(cross|shrine)$"](filter);',
-  'Brunnen': 'nwr[amenity=fountain](filter);',
+  Brunnen: 'nwr[amenity=fountain](filter);',
   'Profanplastiken/Kunst am Bau freistehend': 'nwr[tourism=artwork](filter);',
   'Kunst am Bau wandgebunden': 'nwr[tourism=artwork](filter);',
   'Grabmäler/Grabhaine': '(nwr[amenity=graveyard](filter);nwr[cemetery=grave](filter);nwr[historic=tomb](filter););',
@@ -122,7 +96,7 @@ class DatasetKunstWien extends Dataset {
     ul.innerHTML += '<li>Vulgonamen: ' + escHTML(data.VULGONAMEN) + '</li>'
     ul.innerHTML += '<li>Typ: ' + escHTML(data.TYP) + '</li>'
     ul.innerHTML += '<li>Adresse: ' + escHTML(data.STRASSE) + ', ' + escHTML(data.PLZ) + ' ' + escHTML(data.ORT) + '</li>'
-    let coords = data.SHAPE.match(/POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/)
+    const coords = data.SHAPE.match(/POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/)
     if (coords) {
       ul.innerHTML += '<li>Koordinaten: <a target="_blank" href="https://openstreetmap.org/?mlat=' + coords[2] + '&mlon=' + coords[1] + '#map=19/' + coords[2] + '/' + coords[1] + '">' + parseFloat(coords[2]).toFixed(5) + ', ' + parseFloat(coords[1]).toFixed(5) + '</a></li>'
     }
@@ -133,9 +107,9 @@ class DatasetKunstWien extends Dataset {
     ul.innerHTML += '<li>Künstler*in: ' + escHTML(data.KUENSTLER) + '</li>'
     ul.innerHTML += '<li>Material: ' + escHTML(data.MATERIAL) + '</li>'
 
-    //const pre = document.createElement('pre')
-    //dom.appendChild(pre)
-    //pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
+    // const pre = document.createElement('pre')
+    // dom.appendChild(pre)
+    // pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
   }
 
   wikipediaListeAnchor (ob) {
@@ -147,7 +121,7 @@ class DatasetKunstWien extends Dataset {
   }
 
   missingTags (ob) {
-    let result = []
+    const result = []
 
     result.push('ref:wien:kultur=' + ob.id)
     if (ob.data.wikidata.length) {

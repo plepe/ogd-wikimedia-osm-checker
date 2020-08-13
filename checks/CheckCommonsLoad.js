@@ -1,13 +1,10 @@
-const STATUS = require('../src/status.js')
-const Check =  require('../src/Check.js')
+const Check = require('../src/Check.js')
 
 class CheckCommonsLoad extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
   check (ob) {
-    let wikidataId
-
     if (!ob.data.wikidata) {
       return
     }

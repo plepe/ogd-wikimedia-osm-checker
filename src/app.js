@@ -36,7 +36,7 @@ window.onload = () => {
 function chooseDataset () {
   const selectDataset = document.getElementById('Dataset')
 
-  location.hash = selectDataset.value
+  global.location.hash = selectDataset.value
   updateDataset()
 }
 

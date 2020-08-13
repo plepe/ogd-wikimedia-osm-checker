@@ -1,6 +1,6 @@
 const regexKey = new RegExp('^\\s*([^=|{}\\[\\]]*)=', '')
 const regexNextField = new RegExp('\\|', 'm')
-const regexEnd = new RegExp('\}\}', 'm')
+const regexEnd = new RegExp('}}', 'm')
 const regexNest = new RegExp('(\\[\\[|\\{\\{)', 'm')
 
 function findNested (str) {

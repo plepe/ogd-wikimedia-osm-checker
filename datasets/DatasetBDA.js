@@ -93,7 +93,7 @@ class DatasetBDA extends Dataset {
   }
 
   missingTags (ob) {
-    let result = ['heritage=2', 'heritage:operator=bda']
+    const result = ['heritage=2', 'heritage:operator=bda']
 
     result.push('ref:at:bda=' + ob.id)
     if (ob.data.wikidata.length) {

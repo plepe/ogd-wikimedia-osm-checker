@@ -1,5 +1,3 @@
-const escHTML = require('html-escape')
-
 const getAllCoords = require('../src/getAllCoords.js')
 
 const editTooltips = [
@@ -11,19 +9,19 @@ const editTooltips = [
 
 global.osmEdit = function (param) {
   param.split(/;/).forEach(p => {
-    let url = 'http://127.0.0.1:8111/' + p
+    const url = 'http://127.0.0.1:8111/' + p
 
-    let xhr = new XMLHttpRequest()
+    const xhr = new global.XMLHttpRequest()
     xhr.open('get', url, true)
     xhr.responseType = 'text'
     xhr.send()
   })
 }
 
-module.exports = function editLink (ob, osmOb=null, tagChange=null) {
+module.exports = function editLink (ob, osmOb = null, tagChange = null) {
   let bounds
   let buffer = 0.0001
-  let url = []
+  const url = []
 
   if (osmOb) {
     bounds = osmOb.bounds
@@ -38,7 +36,7 @@ module.exports = function editLink (ob, osmOb=null, tagChange=null) {
 
     url[0] = 'load_and_zoom?select=' + osmOb.type + osmOb.id
   } else {
-    let allCoords = getAllCoords(ob)
+    const allCoords = getAllCoords(ob)
 
     if (!allCoords.length) {
       return ''
@@ -65,7 +63,7 @@ module.exports = function editLink (ob, osmOb=null, tagChange=null) {
   if (tagChange && tagChange.length) {
     url[url.length - 1] += '&addtags=' + tagChange
       .map(kv => {
-        let [k, v] = kv.split(/=/)
+        const [k, v] = kv.split(/=/)
         return encodeURIComponent(k) + '=' + encodeURIComponent(v)
       })
       .join('%7C')

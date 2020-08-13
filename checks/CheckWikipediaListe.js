@@ -2,7 +2,7 @@ const escHTML = require('html-escape')
 
 const STATUS = require('../src/status.js')
 const parseMWTemplate = require('../src/parseMWTemplate.js')
-const Check =  require('../src/Check.js')
+const Check = require('../src/Check.js')
 
 class CheckWikipediaListe extends Check {
   // result:

@@ -1,6 +1,6 @@
 const STATUS = require('../src/status.js')
 const osmFormat = require('../src/osmFormat.js')
-const Check =  require('../src/Check.js')
+const Check = require('../src/Check.js')
 
 class CheckOsmLoadFromRefOrWikidata extends Check {
   // result:
@@ -54,7 +54,7 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
     if (refBdaResult.length) {
       refBdaResult.forEach(el => {
         if (el.tags.wikidata && ob.data.wikidata.length === 0) {
-          ob.load('wikidata', {key: 'id', id: el.tags.wikidata})
+          ob.load('wikidata', { key: 'id', id: el.tags.wikidata })
         }
       })
 

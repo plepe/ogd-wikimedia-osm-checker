@@ -22,10 +22,12 @@ function loadTitle (title, callback) {
 }
 
 function loadSearch (search, callback) {
-  let url = 'https://commons.wikimedia.org/w/index.php?sort=relevance&search=' + encodeURIComponent(search) + '&title=Special:Search&profile=advanced&fulltext=1&ns6=1&ns14=1'
+  const url = 'https://commons.wikimedia.org/w/index.php?sort=relevance&search=' + encodeURIComponent(search) + '&title=Special:Search&profile=advanced&fulltext=1&ns6=1&ns14=1'
   httpRequest(url,
     {},
     (err, result) => {
+      if (err) { return callback(err) }
+
       const dom = new JSDOM(result.body)
       const hits = dom.window.document.querySelectorAll('li.mw-search-result a')
       const titles = []

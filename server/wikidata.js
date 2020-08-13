@@ -13,6 +13,8 @@ function loadById (id, callback) {
       responseType: 'json'
     },
     (err, result) => {
+      if (err) { return callback(err) }
+
       callback(null, result.body.entities[id])
     }
   )

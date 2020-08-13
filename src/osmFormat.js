@@ -10,7 +10,7 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
     missTags = ob.dataset.missingTags(ob)
 
     missTags = missTags.filter(tag => {
-      let [k, v] = tag.split(/=/)
+      const [k, v] = tag.split(/=/)
 
       if (!(k in el.tags)) {
         return true
@@ -22,7 +22,7 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
 
   let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el, missTags) + appendTitle
 
-  let tagKeys = Object.keys(el.tags || {})
+  const tagKeys = Object.keys(el.tags || {})
   ret += '<ul class="attrList">' +
     tagKeys.map(
       (key) => '<li>' + escHTML(key) + '=' + escHTML(el.tags[key]) + '</li>'
@@ -41,7 +41,7 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
   }
 
   recTags = recTags.filter(tag => {
-    let [k, v] = tag.split(/=/)
+    const [k, v] = tag.split(/=/)
 
     if (!(k in el.tags)) {
       return true

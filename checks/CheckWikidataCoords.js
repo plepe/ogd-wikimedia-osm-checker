@@ -1,5 +1,5 @@
 const STATUS = require('../src/status.js')
-const Check =  require('../src/Check.js')
+const Check = require('../src/Check.js')
 
 class CheckWikidataCoords extends Check {
   check (ob) {

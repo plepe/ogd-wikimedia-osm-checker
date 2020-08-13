@@ -1,7 +1,4 @@
-const escHTML = require('html-escape')
-
-const STATUS = require('../src/status.js')
-const Check =  require('../src/Check.js')
+const Check = require('../src/Check.js')
 
 class CheckWikidataLoadFromCommons extends Check {
   // result:
@@ -12,7 +9,7 @@ class CheckWikidataLoadFromCommons extends Check {
       return
     }
 
-    let loading = ob.data.commons.filter(page => {
+    const loading = ob.data.commons.filter(page => {
       if (page.title.match(/^File:/)) {
         // Disable, as this query does not work
         // ob.load('wikidata', {key: 'P18', id: page.title.substr(5)})

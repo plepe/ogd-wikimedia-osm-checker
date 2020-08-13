@@ -23,6 +23,7 @@
     "@turf/point-to-line-distance": "^6.0.0",
     "@turf/points-within-polygon": "^5.1.5",
     "async": "^3.2.0",
+    "babel-eslint": "^10.1.0",
     "boundingbox": "^1.2.3",
     "csvtojson": "^2.0.10",
     "foreach": "^2.0.5",
@@ -41,5 +42,8 @@
     "mocha": "^8.1.1",
     "standard": "^14.3.4",
     "watchify": "^3.11.1"
+  },
+  "standard": {
+    "parser": "babel-eslint"
   }
 }

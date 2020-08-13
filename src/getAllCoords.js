@@ -4,7 +4,7 @@ module.exports = function getAllCoords (ob) {
   const allCoords = []
 
   if (ob.dataset.coordField) {
-    let coords = getCoords(ob.refData, ob.dataset.coordField)
+    const coords = getCoords(ob.refData, ob.dataset.coordField)
     if (coords) {
       allCoords.push(coords)
     }

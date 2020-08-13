@@ -1,6 +1,6 @@
 const parseMWTemplate = require('../src/parseMWTemplate.js')
 const STATUS = require('../src/status.js')
-const Check =  require('../src/Check.js')
+const Check = require('../src/Check.js')
 
 class CheckCommonsTemplate extends Check {
   // result:
@@ -15,17 +15,17 @@ class CheckCommonsTemplate extends Check {
       return true
     }
 
-    let categories = ob.data.commons.filter(el => el.title.match(/Category:/))
+    const categories = ob.data.commons.filter(el => el.title.match(/Category:/))
     if (!categories.length) {
       return true
     }
 
-    let categoriesWithTemplateID = categories.filter(el => {
+    const categoriesWithTemplateID = categories.filter(el => {
       if (!el.title.match(/Category:/)) {
         return false
       }
 
-      let templates = parseMWTemplate(el.wikitext, this.options.template)
+      const templates = parseMWTemplate(el.wikitext, this.options.template)
       return !!templates.filter(r => r[1] === ob.id).length
     })
 

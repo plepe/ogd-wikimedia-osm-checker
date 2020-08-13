@@ -1,6 +1,6 @@
 const STATUS = require('../src/status.js')
 const osmFormat = require('../src/osmFormat.js')
-const Check =  require('../src/Check.js')
+const Check = require('../src/Check.js')
 
 class CheckOsmLoadFromWikidata extends Check {
   // result:
@@ -30,7 +30,7 @@ class CheckOsmLoadFromWikidata extends Check {
     }
 
     if (!ob.data.osm) {
-      let loading = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
+      const loading = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
       if (loading.length) {
         return
       }
