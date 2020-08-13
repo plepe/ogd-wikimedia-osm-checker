@@ -2,6 +2,13 @@ const escHTML = require('html-escape')
 
 const getAllCoords = require('../src/getAllCoords.js')
 
+const editTooltips = [
+  'Lege Knoten in JOSM mit Fernsteuerung an',
+  'Lege Knoten mit Tags in JOSM mit Fernsteuerung an',
+  'Bearbeite Objekt in JOSM mit Fernsteuerung',
+  'Bearbeite Objekt in JOSM mit Fernsteuerung und füge Tags hinzu'
+]
+
 global.osmEdit = function (param) {
   param.split(/;/).forEach(p => {
     let url = 'http://127.0.0.1:8111/' + p
@@ -55,7 +62,7 @@ module.exports = function editLink (ob, osmOb=null, tagChange=null) {
         '&top=' + (bounds.maxlat + buffer).toFixed(5) +
         '&bottom=' + (bounds.minlat - buffer).toFixed(5)
 
-  if (tagChange) {
+  if (tagChange && tagChange.length) {
     url[url.length - 1] += '&addtags=' + tagChange
       .map(kv => {
         let [k, v] = kv.split(/=/)
@@ -64,7 +71,6 @@ module.exports = function editLink (ob, osmOb=null, tagChange=null) {
       .join('%7C')
   }
 
-  let text = ' <a href=\'javascript:osmEdit("' + url.map(u => encodeURI(u)).join(';') + '")\' title="Edit in JOSM with remote control enabled">✎</a> '
-
-  return text
+  const title = editTooltips[(url.length === 2 ? 0 : 2) + (tagChange && tagChange.length ? 1 : 0)]
+  return ' <a href=\'javascript:osmEdit("' + url.map(u => encodeURI(u)).join(';') + '")\' title="' + title + '">✎</a>'
 }
