@@ -89,11 +89,22 @@ class DatasetBDA extends Dataset {
   }
 
   recommendedTags (ob) {
-    return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic', 'heritage=2', 'heritage:operator=bda']
+    return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
+  }
+
+  missingTags (ob) {
+    let result = ['heritage=2', 'heritage:operator=bda']
+
+    result.push('ref:at:bda=' + ob.id)
+    if (ob.data.wikidata.length) {
+      result.push('wikidata=' + ob.data.wikidata[0].id)
+    }
+
+    return result
   }
 
   compileOverpassQuery (ob) {
-    return '(nwr[building](filter);nwr[amenity=fountain](filter);nwr[landuse=cemetery](filter);nwr[historic](filter););'
+    return '(nwr[building](filter);nwr[amenity~"^(grave_yard|fountain)$"](filter);nwr[landuse=cemetery](filter);nwr[historic](filter););'
   }
 }
 

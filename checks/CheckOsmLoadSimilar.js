@@ -1,5 +1,6 @@
 const stringSimilarity = require('string-similarity')
 
+const editLink = require('../src/editLink.js')
 const STATUS = require('../src/status.js')
 const osmFormat = require('../src/osmFormat.js')
 const calcDistance = require('../src/calcDistance.js')
@@ -53,15 +54,20 @@ class CheckOsmLoadSimilar extends Check {
       el.distance = Math.min.apply(null, distances)
     })
 
-    let osmPoss = ob.data.osm.filter(el => stringSimilarity.compareTwoStrings(ob.refData[this.options.nameField], el.tags.name || '') > 0.4)
+    let osmPoss = ob.data.osm.concat()
 
-    // No objects with similar names found, return objects without a name
-    if (osmPoss.length === 0) {
-      osmPoss = ob.data.osm.filter(el => !el.tags.name)
-    }
+    // Order objects by name similarity or distance
+    osmPoss.sort((a, b) => {
+      let simmA = stringSimilarity.compareTwoStrings(ob.refData[this.options.nameField], a.tags.name || '')
+      let simmB = stringSimilarity.compareTwoStrings(ob.refData[this.options.nameField], b.tags.name || '')
 
-    // Order objects by distance
-    osmPoss.sort((a, b) => a.distance - b.distance)
+      console.log(simmA, simmB)
+      if (simmA > 0.1 || simmB > 0.1) {
+        return simmA > simmB ? -1 : 1
+      }
+
+      return a.distance - b.distance
+    })
 
     if (osmPoss.length) {
       let msg = [
@@ -77,7 +83,7 @@ class CheckOsmLoadSimilar extends Check {
         ob.osmSimilar = true
       }
     } else {
-      ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden.')
+      ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden' + editLink(ob, null, ob.dataset.missingTags ? ob.dataset.missingTags(ob) : []) + '.')
     }
     return true
   }
