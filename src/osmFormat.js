@@ -47,6 +47,10 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
       return true
     }
 
+    if (v === undefined) {
+      return false
+    }
+
     return !(el.tags[k] === v)
   })
 
