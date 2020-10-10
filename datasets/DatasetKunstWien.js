@@ -3,7 +3,7 @@ const escHTML = require('html-escape')
 const Dataset = require('../src/Dataset')
 
 const typ2OverpassQuery = {
-  Gedenktafeln: 'nwr[memorial=plaque](filter);',
+  Gedenktafeln: 'nwr[historic=memorial](filter);',
   Denkmäler: 'nwr[historic=memorial](filter);',
   'Sakrale Kleindenkmäler': 'nwr[historic~"^wayside_(cross|shrine)$"](filter);',
   Brunnen: 'nwr[amenity=fountain](filter);',
