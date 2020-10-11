@@ -1,16 +1,34 @@
 const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const forEach = require('foreach')
+const async = require('async')
 
 const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 
 const datasets = require('../datasets/index.js')
+const modules = [
+]
+
 let dataset
 
 let info
 
 window.onload = () => {
+  document.body.classList.add('loading')
+
+  async.each(modules, (module, done) => module.init(done), (err) => {
+    document.body.classList.remove('loading')
+
+    if (err) {
+      return alert(err)
+    }
+
+    init()
+  })
+}
+
+function init () {
   info = document.getElementById('content').innerHTML
 
   const selectDataset = document.getElementById('Dataset')
