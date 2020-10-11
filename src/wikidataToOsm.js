@@ -30,8 +30,14 @@ module.exports = {
 
         if (wikidata.claims[k]) {
           missTags.push(d.tag += "=" + wikidata.claims[k].map(v => {
-            return v.mainsnak.datavalue.value.id
-          }).join(';'))
+            if (d.mapping) {
+              if (v.mainsnak.datavalue.value.id in d.mapping) {
+                return d.mapping[v.mainsnak.datavalue.value.id].tag
+              }
+            } else {
+              return v.mainsnak.datavalue.value.id
+            }
+          }).filter(v => v).join(';'))
         }
       }
     }

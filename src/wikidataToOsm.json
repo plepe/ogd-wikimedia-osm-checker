@@ -4,5 +4,9 @@
   },
   "P138": {
     "tag": "name:etymology:wikidata"
+  },
+  "P149": {
+    "tag": "building:architecture",
+    "file": "building_architecture.json"
   }
 }
