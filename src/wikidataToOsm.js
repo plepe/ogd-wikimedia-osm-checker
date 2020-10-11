@@ -35,10 +35,26 @@ module.exports = {
                 return d.mapping[v.mainsnak.datavalue.value.id].tag
               }
             } else {
-              if (v.mainsnak.datavalue.type === 'wikibase-entityid') {
-                return v.mainsnak.datavalue.value.id
-              } else {
-                return v.mainsnak.datavalue.value
+              switch (v.mainsnak.datavalue.type) {
+                case 'wikibase-entityid':
+                  return v.mainsnak.datavalue.value.id
+                case 'time':
+                  switch (v.mainsnak.datavalue.value.precision) {
+                    case 7:
+                      return 'C' + parseInt(v.mainsnak.datavalue.value.time.substr(1, 2)) + 1
+                    case 8:
+                      return v.mainsnak.datavalue.value.time.substr(1, 4) + 's'
+                    case 9:
+                      return v.mainsnak.datavalue.value.time.substr(1, 4)
+                    case 10:
+                      return v.mainsnak.datavalue.value.time.substr(1, 7)
+                    case 11:
+                      return v.mainsnak.datavalue.value.time.substr(1, 10)
+                    default:
+                      null
+                  }
+                default:
+                  return v.mainsnak.datavalue.value
               }
             }
           }).filter(v => v).join(';'))

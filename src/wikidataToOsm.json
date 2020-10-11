@@ -15,6 +15,12 @@
   "P547": {
     "tag": "subject:wikidata"
   },
+  "P571": {
+    "tag": "start_date"
+  },
+  "P580": {
+    "tag": "start_date"
+  },
   "P2951": {
     "tag": "ref:at:bda"
   },
