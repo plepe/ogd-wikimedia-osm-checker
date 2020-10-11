@@ -8,6 +8,7 @@ const httpRequest = require('./httpRequest.js')
 
 const datasets = require('../datasets/index.js')
 const modules = [
+  require('./wikidataToOsm.js')
 ]
 
 let dataset

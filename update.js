@@ -61,6 +61,11 @@ function downloadKunstwerkeWien (callback) {
     })
 }
 
+function downloadWikidataLists (callback) {
+  async.parallel([
+  ], callback)
+}
+
 downloadBda(err => {
   if (err) {
     console.error(err)
@@ -69,6 +74,13 @@ downloadBda(err => {
 })
 
 downloadKunstwerkeWien(err => {
+  if (err) {
+    console.error(err)
+    process.exit(1)
+  }
+})
+
+downloadWikidataLists(err => {
   if (err) {
     console.error(err)
     process.exit(1)
