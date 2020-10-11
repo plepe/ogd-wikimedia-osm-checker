@@ -17,5 +17,25 @@ module.exports = {
       }
     },
     callback)
+  },
+
+  getMissingTags (ob) {
+    let missTags = []
+
+    if (ob.data.wikidata && ob.data.wikidata.length) {
+      let wikidata = ob.data.wikidata[0]
+
+      for (let k in wikidataToOsm) {
+        let d = wikidataToOsm[k]
+
+        if (wikidata.claims[k]) {
+          missTags.push(d.tag += "=" + wikidata.claims[k].map(v => {
+            return v.mainsnak.datavalue.value.id
+          }).join(';'))
+        }
+      }
+    }
+
+    return missTags
   }
 }
