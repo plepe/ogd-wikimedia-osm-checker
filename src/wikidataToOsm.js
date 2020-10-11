@@ -35,7 +35,11 @@ module.exports = {
                 return d.mapping[v.mainsnak.datavalue.value.id].tag
               }
             } else {
-              return v.mainsnak.datavalue.value.id
+              if (v.mainsnak.datavalue.type === 'wikibase-entityid') {
+                return v.mainsnak.datavalue.value.id
+              } else {
+                return v.mainsnak.datavalue.value
+              }
             }
           }).filter(v => v).join(';'))
         }

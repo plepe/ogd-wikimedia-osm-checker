@@ -1,4 +1,7 @@
 {
+  "P84": {
+    "tag": "architect:wikidata"
+  },
   "P170": {
     "tag": "artist:wikidata"
   },
@@ -8,5 +11,14 @@
   "P149": {
     "tag": "building:architecture",
     "file": "building_architecture.json"
+  },
+  "P547": {
+    "tag": "subject:wikidata"
+  },
+  "P2951": {
+    "tag": "ref:at:bda"
+  },
+  "P8430": {
+    "tag": "ref:wien:kultur"
   }
 }
