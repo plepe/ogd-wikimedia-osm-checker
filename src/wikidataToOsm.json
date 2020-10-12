@@ -1,12 +1,15 @@
 {
   "P84": {
-    "tag": "architect:wikidata"
+    "tag": "architect:wikidata",
+    "tagLabel": "architect"
   },
   "P170": {
-    "tag": "artist:wikidata"
+    "tag": "artist:wikidata",
+    "tagLabel": "artist_name"
   },
   "P138": {
-    "tag": "name:etymology:wikidata"
+    "tag": "name:etymology:wikidata",
+    "tagLabel": "name:etymology"
   },
   "P149": {
     "tag": "building:architecture",

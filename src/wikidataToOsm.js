@@ -58,6 +58,14 @@ module.exports = {
               }
             }
           }).filter(v => v).join(';'))
+
+          if (d.tagLabel) {
+            missTags.push(d.tagLabel + "=" + wikidata.claims[k]
+              .map(v => v.text)
+              .filter(v => v)
+              .join(';')
+            )
+          }
         }
       }
     }
