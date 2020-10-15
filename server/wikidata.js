@@ -1,4 +1,5 @@
 const async = require('async')
+const JSDOM = require('jsdom').JSDOM
 
 const httpRequest = require('../src/httpRequest.js')
 
@@ -8,16 +9,56 @@ const maxActive = 1
 let interval
 
 function loadById (id, callback) {
-  httpRequest('https://www.wikidata.org/wiki/Special:EntityData/' + id + '.json',
-    {
-      responseType: 'json'
-    },
-    (err, result) => {
-      if (err) { return callback(err) }
+  async.parallel([
+    done => {
+      httpRequest('https://www.wikidata.org/wiki/Special:EntityData/' + id + '.json',
+        {
+          responseType: 'json'
+        },
+        (err, result) => {
+          if (err) { return done(err) }
 
-      callback(null, result.body.entities[id])
+          done(null, result.body.entities[id])
+        }
+      )
+    },
+    done => {
+      httpRequest('https://www.wikidata.org/wiki/' + id + '?uselang=de',
+        {
+        },
+        (err, result) => {
+          if (err) { return done(err) }
+
+          const dom = new JSDOM(result.body)
+
+          done(null, dom)
+        }
+      )
     }
-  )
+  ], (err, [result, dom]) => {
+    if (err) {
+      return callback(err)
+    }
+
+    result.claimsTitle = {}
+
+    const properties = dom.window.document.querySelectorAll('div.wikibase-statementgrouplistview > div.wikibase-listview > div')
+    properties.forEach(prop => {
+      const id = prop.getAttribute('id')
+
+      const propTitle = prop.querySelector('div.wikibase-statementgroupview-property-label > a').textContent
+
+      result.claimsTitle[id] = propTitle
+
+      let text = prop.querySelectorAll('.wikibase-statementview-mainsnak > .wikibase-snakview > .wikibase-snakview-value-container > .wikibase-snakview-body > .wikibase-snakview-value')
+      text = Array.from(text)
+      text.forEach((v, i) => {
+        result.claims[id][i].text = v.textContent
+      })
+    })
+
+    callback(null, result)
+  })
 }
 
 function next (options) {

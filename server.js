@@ -30,7 +30,7 @@ const requestListener = function (req, res) {
   if (req.url === '/') {
     file = '/index.html'
   } else {
-    const m = req.url.match(/^(\/([/[0-9A-Z]+)\.([A-Z]+))(\?.*|)$/i)
+    const m = req.url.match(/^(\/([/[0-9A-Z-_]+)\.([A-Z]+))(\?.*|)$/i)
     if (!m) {
       res.writeHead(500)
       res.end('Invalid request')

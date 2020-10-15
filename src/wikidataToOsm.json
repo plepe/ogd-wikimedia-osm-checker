@@ -1,0 +1,33 @@
+{
+  "P84": {
+    "tag": "architect:wikidata",
+    "tagLabel": "architect"
+  },
+  "P170": {
+    "tag": "artist:wikidata",
+    "tagLabel": "artist_name"
+  },
+  "P138": {
+    "tag": "name:etymology:wikidata",
+    "tagLabel": "name:etymology"
+  },
+  "P149": {
+    "tag": "building:architecture",
+    "file": "building_architecture.json"
+  },
+  "P547": {
+    "tag": "subject:wikidata"
+  },
+  "P571": {
+    "tag": "start_date"
+  },
+  "P580": {
+    "tag": "start_date"
+  },
+  "P2951": {
+    "tag": "ref:at:bda"
+  },
+  "P8430": {
+    "tag": "ref:wien:kultur"
+  }
+}

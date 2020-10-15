@@ -1,24 +1,30 @@
 const escHTML = require('html-escape')
 
 const editLink = require('./editLink.js')
+const wikidataToOsm = require('./wikidataToOsm.js')
 
 const recommendedTags = ['name', 'start_date', 'wikidata']
 
 module.exports = function osmFormat (el, ob, appendTitle = '') {
   let missTags = []
+
   if (ob.dataset.missingTags) {
-    missTags = ob.dataset.missingTags(ob)
-
-    missTags = missTags.filter(tag => {
-      const [k, v] = tag.split(/=/)
-
-      if (!(k in el.tags)) {
-        return true
-      }
-
-      return !(el.tags[k] === v)
-    })
+    missTags = missTags.concat(ob.dataset.missingTags(ob))
   }
+
+  missTags = missTags.concat(wikidataToOsm.getMissingTags(ob))
+
+  missTags = Array.from(new Set(missTags)) // unique
+
+  missTags = missTags.filter(tag => {
+    const [k, v] = tag.split(/=/)
+
+    if (!(k in el.tags)) {
+      return true
+    }
+
+    return !(el.tags[k] === v)
+  })
 
   let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el, missTags) + appendTitle
 
