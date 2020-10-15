@@ -6,6 +6,7 @@ const osmFormat = require('../src/osmFormat.js')
 const calcDistance = require('../src/calcDistance.js')
 const Check = require('../src/Check.js')
 const getAllCoords = require('../src/getAllCoords.js')
+const wikidataToOsm = require('../src/wikidataToOsm.js')
 
 class CheckOsmLoadSimilar extends Check {
   // result:
@@ -83,7 +84,17 @@ class CheckOsmLoadSimilar extends Check {
         ob.osmSimilar = true
       }
     } else {
-      ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden' + editLink(ob, null, ob.dataset.missingTags ? ob.dataset.missingTags(ob) : []) + '.')
+      let missTags = []
+
+      if (ob.dataset.missingTags) {
+        missTags = missTags.concat(ob.dataset.missingTags(ob))
+      }
+
+      missTags = missTags.concat(wikidataToOsm.getMissingTags(ob))
+
+      missTags = Array.from(new Set(missTags)) // unique
+
+      ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden' + editLink(ob, null, missTags) + '.')
     }
     return true
   }
