@@ -70,13 +70,24 @@ class CheckOsmLoadSimilar extends Check {
       return a.distance - b.distance
     })
 
+    let missTags = []
+    if (ob.dataset.missingTags) {
+      missTags = missTags.concat(ob.dataset.missingTags(ob))
+    }
+    missTags = missTags.concat(wikidataToOsm.getMissingTags(ob))
+    missTags = Array.from(new Set(missTags)) // unique
+
     if (osmPoss.length) {
       const msg = [
         'Ein Objekt in der Nähe gefunden, das passen könnte',
         'Objekte in der Nähe gefunden, die passen könnten'
       ]
 
-      ob.message('osm', STATUS.SUCCESS, (osmPoss.length === 1 ? msg[0] : osmPoss.length + ' ' + msg[1]) + ':<ul>' + osmPoss.map(el => '<li>' + osmFormat(el, ob, ' (Entfernung: ' + Math.round(el.distance * 1000) + 'm)') + '</li>').join('') + '</ul>')
+      ob.message('osm', STATUS.SUCCESS,
+        (osmPoss.length === 1 ? msg[0] : osmPoss.length + ' ' + msg[1]) + ':<ul>' + osmPoss.map(el => '<li>' + osmFormat(el, ob, ' (Entfernung: ' + Math.round(el.distance * 1000) + 'm)') + '</li>').join('') +
+        '<li>Neues Objekt anlegen ' + editLink(ob, null, missTags) + '.</li>' +
+        '</ul>'
+      )
 
       if (osmPoss.length === 1 && osmPoss[0].tags.wikidata && ob.data.wikidata.length === 0) {
         ob.load('wikidata', { key: 'id', id: osmPoss[0].tags.wikidata })
@@ -84,16 +95,6 @@ class CheckOsmLoadSimilar extends Check {
         ob.osmSimilar = true
       }
     } else {
-      let missTags = []
-
-      if (ob.dataset.missingTags) {
-        missTags = missTags.concat(ob.dataset.missingTags(ob))
-      }
-
-      missTags = missTags.concat(wikidataToOsm.getMissingTags(ob))
-
-      missTags = Array.from(new Set(missTags)) // unique
-
       ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden' + editLink(ob, null, missTags) + '.')
     }
     return true
