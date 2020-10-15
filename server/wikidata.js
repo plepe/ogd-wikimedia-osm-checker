@@ -44,9 +44,9 @@ function loadById (id, callback) {
 
     const properties = dom.window.document.querySelectorAll('div.wikibase-statementgrouplistview > div.wikibase-listview > div')
     properties.forEach(prop => {
-      let id = prop.getAttribute('id')
+      const id = prop.getAttribute('id')
 
-      let propTitle = prop.querySelector('div.wikibase-statementgroupview-property-label > a').textContent
+      const propTitle = prop.querySelector('div.wikibase-statementgroupview-property-label > a').textContent
 
       result.claimsTitle[id] = propTitle
 

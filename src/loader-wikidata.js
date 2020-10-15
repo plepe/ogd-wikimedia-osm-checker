@@ -19,5 +19,4 @@ module.exports = {
   includes (arr, el) {
     return !!arr.filter(e => e.id === el.id).length
   }
-
 }

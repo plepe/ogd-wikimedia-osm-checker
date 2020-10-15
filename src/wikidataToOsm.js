@@ -20,16 +20,16 @@ module.exports = {
   },
 
   getMissingTags (ob) {
-    let missTags = []
+    const missTags = []
 
     if (ob.data.wikidata && ob.data.wikidata.length) {
-      let wikidata = ob.data.wikidata[0]
+      const wikidata = ob.data.wikidata[0]
 
-      for (let k in wikidataToOsm) {
-        let d = wikidataToOsm[k]
+      for (const k in wikidataToOsm) {
+        const d = wikidataToOsm[k]
 
         if (wikidata.claims[k]) {
-          missTags.push(d.tag + "=" + wikidata.claims[k].map(v => {
+          missTags.push(d.tag + '=' + wikidata.claims[k].map(v => {
             if (d.mapping) {
               if (v.mainsnak.datavalue.value.id in d.mapping) {
                 return d.mapping[v.mainsnak.datavalue.value.id].tag
@@ -60,7 +60,7 @@ module.exports = {
           }).filter(v => v).join(';'))
 
           if (d.tagLabel) {
-            missTags.push(d.tagLabel + "=" + wikidata.claims[k]
+            missTags.push(d.tagLabel + '=' + wikidata.claims[k]
               .map(v => v.text)
               .filter(v => v)
               .join(';')

@@ -71,16 +71,16 @@ function downloadWikidataLists (callback) {
           headers: {
             'Content-Type': 'application/sparql-query',
             'User-Agent': 'ogd-wikimedia-osm-checker',
-            'Accept': 'application/json'
+            Accept: 'application/json'
           }
         }
       )
         .then(res => res.json())
         .then(json => {
-          let data = {}
+          const data = {}
           json.results.bindings.forEach(d => {
-            let k = d.item.value.match(/\/(Q[0-9]+)$/)[1]
-            let v = d.osmTag.value.match(/^(Key|Tag):building:architecture=(.*)$/)
+            const k = d.item.value.match(/\/(Q[0-9]+)$/)[1]
+            const v = d.osmTag.value.match(/^(Key|Tag):building:architecture=(.*)$/)
             if (!(k in data) && v) {
               data[k] = {
                 tag: v[2],
