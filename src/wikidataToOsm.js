@@ -41,7 +41,7 @@ module.exports = {
                 case 'time':
                   switch (v.mainsnak.datavalue.value.precision) {
                     case 7:
-                      return 'C' + parseInt(v.mainsnak.datavalue.value.time.substr(1, 2)) + 1
+                      return 'C' + v.mainsnak.datavalue.value.time.substr(1, 2)
                     case 8:
                       return v.mainsnak.datavalue.value.time.substr(1, 4) + 's'
                     case 9:
