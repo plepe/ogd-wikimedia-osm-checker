@@ -28,8 +28,9 @@ module.exports = {
       for (const k in wikidataToOsm) {
         const d = wikidataToOsm[k]
 
-        if (wikidata.claims[k]) {
-          missTags.push(d.tag + '=' + wikidata.claims[k].map(v => {
+        let values = wikidata.claims[k]
+        if (values) {
+          missTags.push(d.tag + '=' + values.map(v => {
             if (d.mapping) {
               if (v.mainsnak.datavalue.value.id in d.mapping) {
                 return d.mapping[v.mainsnak.datavalue.value.id].tag
