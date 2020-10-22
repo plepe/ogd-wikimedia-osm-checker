@@ -90,6 +90,12 @@ body.loading > #loadingIndicator:before {
   background: red;
   animation: loading 2s linear infinite;
 }
+.reload {
+  float: right;
+  color: black;
+  text-decoration: none;
+  font-size: 2em;
+}
 
 @keyframes loading {
   0% {

@@ -165,6 +165,17 @@ function check (id) {
     div.removeChild(div.firstChild)
   }
 
+  const reload = document.createElement('a')
+  reload.href = '#'
+  reload.className = 'reload'
+  reload.innerHTML = '↻'
+  reload.title = 'Nochmal prüfen'
+  reload.onclick = () => {
+    check(id)
+    return false
+  }
+  div.appendChild(reload)
+
   document.body.classList.add('loading')
   dataset.showEntry(entry, div)
 
