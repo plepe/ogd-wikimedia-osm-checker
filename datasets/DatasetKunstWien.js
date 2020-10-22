@@ -7,7 +7,7 @@ const typ2OverpassQuery = {
   Denkmäler: 'nwr[historic=memorial](filter);',
   'Sakrale Kleindenkmäler': 'nwr[historic~"^wayside_(cross|shrine)$"](filter);',
   Brunnen: 'nwr[amenity=fountain](filter);',
-  'Profanplastiken/Kunst am Bau freistehend': 'nwr[tourism=artwork](filter);',
+  'Profanplastiken/Kunst am Bau freistehend': '(nwr[tourism=artwork](filter);nwr[amenity=fountain](filter););',
   'Kunst am Bau wandgebunden': 'nwr[tourism=artwork](filter);',
   'Grabmäler/Grabhaine': '(nwr[amenity=graveyard](filter);nwr[cemetery=grave](filter);nwr[historic=tomb](filter););',
   '': null
