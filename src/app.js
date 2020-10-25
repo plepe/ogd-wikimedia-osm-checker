@@ -103,6 +103,7 @@ function choose (path) {
   if (!_dataset && !id) {
     const content = document.getElementById('content')
     content.innerHTML = info
+    document.title = 'ogd-wikimedia-osm-checker'
   }
 
   if (!dataset || (_dataset !== dataset.id)) {
@@ -186,4 +187,6 @@ function check (id) {
 
     document.body.classList.remove('loading')
   })
+
+  document.title = dataset.title + '/' + ob.id + ' - ogd-wikimedia-osm-checker'
 }
