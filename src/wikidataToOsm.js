@@ -1,4 +1,5 @@
 const async = require('async')
+const forEach = require('foreach')
 
 const wikidataToOsm = require('./wikidataToOsm.json')
 
@@ -66,6 +67,12 @@ module.exports = {
               .filter(v => v)
               .join(';')
             )
+          }
+
+          if (d.additionalTags) {
+            forEach(d.additionalTags, (v, k) => {
+              missTags.push(k + '=' + v)
+            })
           }
         }
       }
