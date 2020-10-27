@@ -14,9 +14,15 @@
   "P138.P580": {
     "tag": "name:start_date"
   },
+  "P1448.P580": {
+    "tag": "name:start_date"
+  },
   "P149": {
     "tag": "building:architecture",
     "file": "building_architecture.json"
+  },
+  "P180": {
+    "tag": "subject:wikidata"
   },
   "P547": {
     "tag": "subject:wikidata"
@@ -25,6 +31,9 @@
     "tag": "start_date"
   },
   "P580": {
+    "tag": "start_date"
+  },
+  "P1619": {
     "tag": "start_date"
   },
   "P2951": {
