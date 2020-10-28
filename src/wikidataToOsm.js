@@ -7,7 +7,7 @@ module.exports = {
   init (callback) {
     async.eachOf(wikidataToOsm, (d, property, done) => {
       if (d.file) {
-        fetch('data/' + d.file)
+        global.fetch('data/' + d.file)
           .then(res => res.json())
           .then(json => {
             d.mapping = json
@@ -29,7 +29,7 @@ module.exports = {
       for (const k in wikidataToOsm) {
         const d = wikidataToOsm[k]
 
-        let values = wikidata.claims[k]
+        const values = wikidata.claims[k]
         if (values) {
           missTags.push(d.tag + '=' + values.map(v => {
             if (d.mapping) {
@@ -53,7 +53,7 @@ module.exports = {
                     case 11:
                       return v.mainsnak.datavalue.value.time.substr(1, 10)
                     default:
-                      null
+                      return v.mainsnak.datavalue.value
                   }
                 default:
                   return v.mainsnak.datavalue.value

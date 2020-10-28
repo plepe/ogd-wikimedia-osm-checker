@@ -22,7 +22,7 @@ window.onload = () => {
     document.body.classList.remove('loading')
 
     if (err) {
-      return alert(err)
+      return global.alert(err)
     }
 
     init()
