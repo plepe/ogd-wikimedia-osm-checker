@@ -31,7 +31,7 @@
     "iconv-lite": "^0.6.2",
     "jsdom": "^16.4.0",
     "natsort": "^2.0.2",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "query-string": "^6.13.1",
     "sheet-router": "^4.2.3",
     "string-similarity": "^4.0.2",
