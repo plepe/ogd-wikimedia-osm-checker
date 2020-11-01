@@ -29,7 +29,19 @@ module.exports = {
       for (const k in wikidataToOsm) {
         const d = wikidataToOsm[k]
 
-        const values = wikidata.claims[k]
+        let values = wikidata.claims[k]
+        const kPath = k.split(/\./)
+        if (kPath.length == 2 && kPath[0] in wikidata.claims) {
+          values = []
+          wikidata.claims[kPath[0]].forEach(e => {
+            if (e.qualifiers && kPath[1] in e.qualifiers) {
+              e.qualifiers[kPath[1]].forEach(v => {
+                values.push({mainsnak: v})
+              })
+            }
+          })
+        }
+
         if (values) {
           missTags.push(d.tag + '=' + values.map(v => {
             if (d.mapping) {
