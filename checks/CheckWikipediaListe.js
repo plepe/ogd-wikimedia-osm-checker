@@ -67,7 +67,14 @@ class CheckWikipediaListe extends Check {
       if (found[0].Commonscat) {
         ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf eine Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + escHTML(found[0].Commonscat.replace(/ /g, '_')) + '">' + escHTML(found[0].Commonscat) + '</a>')
       } else {
-        ob.message('wikipedia', STATUS.WARNING, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
+        const categories = ob.data.commons && ob.data.commons.filter(page => page.title.match(/^Category:/))
+        if (!categories || !categories.length) {
+          ob.message('wikipedia', STATUS.WARNING, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
+        } else if (categories.length === 1) {
+          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie, sollte sein: ' + categories[0].title.slice(9))
+        } else if (categories.length) {
+          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
+        }
       }
 
       if (found[0].Artikel) {
