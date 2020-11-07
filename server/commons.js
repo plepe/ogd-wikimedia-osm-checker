@@ -12,6 +12,10 @@ function loadTitle (title, callback) {
       if (err) { return callback(err) }
 
       const page = result.body.parse
+      if (!page) {
+        return callback(null, [])
+      }
+
       callback(null, [{
         title: page.title,
         pageid: page.pageid,
