@@ -1,5 +1,6 @@
 const STATUS = require('../src/status.js')
 const Check = require('../src/Check.js')
+const wikidataFormat = require('../src/wikidataFormat.js')
 
 class CheckWikidataShow extends Check {
   // result:
@@ -17,7 +18,8 @@ class CheckWikidataShow extends Check {
 
     if (result.length === 1) {
       const el = ob.data.wikidata[0]
-      return ob.message('wikidata', STATUS.SUCCESS, '1 Objekt gefunden: <a target="_blank" href="https://wikidata.org/wiki/' + el.id + '">' + el.id + '</a>')
+      return ob.message('wikidata', STATUS.SUCCESS, '1 Objekt gefunden: <a target="_blank" href="https://wikidata.org/wiki/' + el.id + '">' + el.id + '</a>:\n' + wikidataFormat(el)
+      )
     }
 
     return ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag gefunden!')
