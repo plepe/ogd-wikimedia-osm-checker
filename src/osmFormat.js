@@ -31,8 +31,14 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
 
   const tagKeys = Object.keys(el.tags || {})
 
-  const attrList = {}
-  tagKeys.forEach(key => { attrList[key] = el.tags[key] })
+  const attrList = tagKeys.map(key => {
+    return {
+      key,
+      title: key,
+      value: el.tags[key],
+      text: el.tags[key]
+    }
+  })
   ret += printAttrList(attrList)
 
   ret += '<ul class="check">'

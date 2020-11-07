@@ -12,15 +12,30 @@ function label (labels) {
 }
 
 module.exports = function wikidataFormat (ob) {
-  let attrList = {}
+  let attrList = []
 
-  attrList['Name'] = label(ob.labels)
-  attrList['Beschreibung'] = label(ob.descriptions)
+  attrList.push({
+    key: 'label',
+    title: 'Name',
+    value: ob.labels,
+    text: label(ob.labels)
+  })
+  attrList.push({
+    key: 'descriptions',
+    title: 'Beschreibung',
+    value: ob.descriptions,
+    text: label(ob.descriptions)
+  })
 
   forEach(ob.claims, (values, key) => {
-    attrList[ob.claimsTitle[key]] = values
+    attrList.push({
+      key: key,
+      title: ob.claimsTitle[key],
+      value: values,
+      text: values
         .map((value) => value.text)
         .join(', ')
+    })
   })
 
   return printAttrList(attrList) // + '<pre>' + JSON.stringify(ob, null, '  ') + '</pre>'
