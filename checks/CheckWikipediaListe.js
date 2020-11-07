@@ -3,6 +3,7 @@ const escHTML = require('html-escape')
 const STATUS = require('../src/status.js')
 const parseMWTemplate = require('../src/parseMWTemplate.js')
 const Check = require('../src/Check.js')
+const printAttrList = require('../src/printAttrList.js')
 
 class CheckWikipediaListe extends Check {
   // result:
@@ -30,14 +31,29 @@ class CheckWikipediaListe extends Check {
     const found = listEntries.filter(e => e[this.options.idField] === ob.id)
 
     if (found.length) {
-      let msg = '<a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '#' + ob.dataset.wikipediaListeAnchor(ob) + '">Wikipedia Liste</a>:<ul class="attrList">'
-      msg += this.options.showFields.map(
-        fieldId => found[0][fieldId] ? '<li>' + escHTML(fieldId) + ': ' + escHTML(found[0][fieldId]) + '</li>' : ''
-      ).join('')
+      let msg = '<a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '#' + ob.dataset.wikipediaListeAnchor(ob) + '">Wikipedia Liste</a>:'
+
+      const attrList = this.options.showFields.map(
+        fieldId => {
+          if (found[0][fieldId]) {
+            return {
+              title: fieldId,
+              text: found[0][fieldId]
+            }
+          }
+        }
+      )
+
       if (found[0].Breitengrad && found[0].Längengrad) {
-        msg += '<li>Koordinaten: <a target="_blank" href="https://openstreetmap.org/?mlat=' + found[0].Breitengrad + '&mlon=' + found[0].Längengrad + '#map=19/' + found[0].Breitengrad + '/' + found[0].Längengrad + '">' + parseFloat(found[0].Breitengrad).toFixed(5) + ', ' + parseFloat(found[0].Längengrad).toFixed(5) + '</a></li>'
+        attrList.push({
+          key: 'coordinates',
+          title: 'Koordinaten',
+          text: parseFloat(found[0].Breitengrad).toFixed(5) + ', ' + parseFloat(found[0].Längengrad).toFixed(5),
+          value: {latitude: found[0].Breitengrad, longitude: found[0].Längengrad},
+          link: 'https://openstreetmap.org/?mlat=' + found[0].Breitengrad + '&mlon=' + found[0].Längengrad + '#map=19/' + found[0].Breitengrad + '/' + found[0].Längengrad
+        })
       }
-      msg += '</ul>'
+      msg += printAttrList(attrList)
       ob.message('wikipedia', STATUS.SUCCESS, msg)
 
       if (found[0].Foto && found[0].Bilderwunsch) {
