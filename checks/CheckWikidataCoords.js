@@ -12,12 +12,10 @@ class CheckWikidataCoords extends Check {
     }
 
     if (ob.data.wikidata[0].claims.P625) {
-      const coords = ob.data.wikidata[0].claims.P625[0].mainsnak.datavalue.value
-
-      return ob.message('wikidata', STATUS.SUCCESS, 'Eintrag hat Koordinaten: <a target="_blank" href="https://openstreetmap.org/?mlat=' + coords.latitude + '&mlon=' + coords.longitude + '#map=19/' + coords.latitude + '/' + coords.longitude + '">' + coords.latitude + ', ' + coords.longitude + '</a>')
+      return true // has coordinates - will be printed by WikidataShow anyway
     }
 
-    return ob.message('wikidata', STATUS.WARNING, 'Eintrag hat keine Koordinaten')
+    return ob.message('wikidata', STATUS.ERROR, 'Eintrag hat keine Koordinaten')
   }
 }
 
