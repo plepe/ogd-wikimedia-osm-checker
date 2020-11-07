@@ -25,14 +25,14 @@ class CheckCommonsTemplate extends Check {
         return false
       }
 
-      const templates = parseMWTemplate(el.wikitext, this.options.template)
+      const templates = parseMWTemplate(el.wikitext, ob.dataset.commonsTemplateRegexp)
       return !!templates.filter(r => r[1] === ob.id).length
     })
 
     if (categoriesWithTemplateID.length) {
       ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Referenz auf Datensatz.')
     } else {
-      ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>' + this.options.insert.replace(/\$1/g, ob.id) + '</tt> hinzu.')
+      ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>' + ob.dataset.commonsTemplate.replace(/\$1/g, ob.id) + '</tt> hinzu.')
     }
 
     return true

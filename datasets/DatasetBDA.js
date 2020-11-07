@@ -19,10 +19,7 @@ const checks = [
     idField: 'ObjektID',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
-  require('../checks/CheckCommonsTemplate.js')({
-    template: '(doo|Denkmalgeschütztes Objekt Österreich)',
-    insert: '{{Denkmalgeschütztes Objekt Österreich|$1}}'
-  }),
+  require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
   require('../checks/CheckOsmLoadSimilar.js')({
     nameField: 'Bezeichnung'
@@ -49,6 +46,10 @@ class DatasetBDA extends Dataset {
   wikipediaListeSearchTitle = '"Liste der denkmalgeschützten Objekte in"'
 
   ortFilterField = 'Gemeinde'
+
+  commonsTemplateRegexp = '(doo|Denkmalgeschütztes Objekt Österreich)'
+
+  commonsTemplate = '{{Denkmalgeschütztes Objekt Österreich|$1}}'
 
   checks = checks
 

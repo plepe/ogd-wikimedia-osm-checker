@@ -25,10 +25,7 @@ const checks = [
   require('../checks/CheckWikidataRecommendations.js')(),
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
-  require('../checks/CheckCommonsTemplate.js')({
-    template: 'Public Art Austria',
-    insert: '{{Public Art Austria|$1|AT-9}}'
-  }),
+  require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')({
     template: '(WLPA-AT-Zeile|Gedenktafel Österreich Tabellenzeile)',
     idField: 'ID',
@@ -65,6 +62,10 @@ class DatasetKunstWien extends Dataset {
   wikipediaListeSearchTitle = '/Liste der (Gedenktafeln und Gedenksteine|Kunstwerke im öffentlichen Raum) in Wien/'
 
   ortFilterField = 'PLZ'
+
+  commonsTemplateRegexp = 'Public Art Austria'
+
+  commonsTemplate = '{{Public Art Austria|$1|AT-9}}'
 
   checks = checks
 
