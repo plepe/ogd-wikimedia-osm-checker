@@ -62,8 +62,11 @@ ul.attrList {
   font-size: 0.8em;
   padding-left: 1em;
 }
-ul.attrList li {
+ul.attrList > li {
   list-style: disc;
+}
+ul.attrList > li a {
+  text-decoration: none;
 }
 
 #loadingIndicator {
