@@ -13,7 +13,7 @@ class CheckWikidataShow extends Check {
 
     const result = ob.data.wikidata
     if (result.length > 1) {
-      return ob.message('wikidata', STATUS.ERROR, result.length + ' Objekte gefunden: ' + result.map(el => '<a target="_blank" href="https://wikidata.org/wiki/' + el.id + '">' + el.id + '</a>').join(', '))
+      return ob.message('wikidata', STATUS.ERROR, result.length + ' Objekte gefunden: ' + result.map(el => '<a target="_blank" href="https://wikidata.org/wiki/' + el.id + '">' + el.id + '</a>:\n' + wikidataFormat(el)).join(', '))
     }
 
     if (result.length === 1) {
