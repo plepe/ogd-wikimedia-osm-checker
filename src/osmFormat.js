@@ -2,6 +2,7 @@ const escHTML = require('html-escape')
 
 const editLink = require('./editLink.js')
 const wikidataToOsm = require('./wikidataToOsm.js')
+const printAttrList = require('./printAttrList.js')
 
 const recommendedTags = ['name', 'start_date', 'wikidata']
 
@@ -29,11 +30,10 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
   let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el, missTags) + appendTitle
 
   const tagKeys = Object.keys(el.tags || {})
-  ret += '<ul class="attrList">' +
-    tagKeys.map(
-      (key) => '<li>' + escHTML(key) + '=' + escHTML(el.tags[key]) + '</li>'
-    ).join('') +
-    '</ul>'
+
+  const attrList = {}
+  tagKeys.forEach(key => { attrList[key] = el.tags[key] })
+  ret += printAttrList(attrList)
 
   ret += '<ul class="check">'
 

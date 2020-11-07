@@ -1,5 +1,7 @@
 const forEach = require('foreach')
 
+const printAttrList = require('./printAttrList.js')
+
 function label (labels) {
   let lang = ['de-at', 'de', 'en'].filter(l => labels[l])
   if (!lang.length) {
@@ -10,19 +12,16 @@ function label (labels) {
 }
 
 module.exports = function wikidataFormat (ob) {
-  let result = '<ul class="attrList">'
-  
-  result += '<li>Name: ' + label(ob.labels) + '</li>\n'
-  result += '<li>Beschreibung: ' + label(ob.descriptions) + '</li>\n'
+  let attrList = {}
+
+  attrList['Name'] = label(ob.labels)
+  attrList['Beschreibung'] = label(ob.descriptions)
 
   forEach(ob.claims, (values, key) => {
-    result += '<li>' + ob.claimsTitle[key] + ': ' +
-      values
+    attrList[ob.claimsTitle[key]] = values
         .map((value) => value.text)
-        .join(', ') + '</li>\n'
+        .join(', ')
   })
 
-  result += '</ul>\n'
-
-  return result// + '<pre>' + JSON.stringify(ob, null, '  ') + '</pre>'
+  return printAttrList(attrList) // + '<pre>' + JSON.stringify(ob, null, '  ') + '</pre>'
 }
