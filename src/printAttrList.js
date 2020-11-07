@@ -24,7 +24,17 @@ module.exports = function (list) {
 
     result += '<li><span' + (entry.key ? ' title="' + escHTML(entry.key) + '"' : '') + ' class="key">' + escHTML(entry.title) + '</span>: '
 
-    result += formatValue(entry)
+    if (Array.isArray(entry.text)) {
+      result += entry.text
+        .map((v, k) => formatValue({
+          value: entry.value ? entry.value[k] : null,
+          link: entry.link ? entry.link[k] : null,
+          text: v
+        }))
+        .join(',\n')
+    } else {
+      result += formatValue(entry)
+    }
 
     result += '</li>'
   })
