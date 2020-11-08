@@ -1,6 +1,6 @@
 {
   "name": "ogd-wikimedia-osm-checker",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "Vergleiche die Einträge verschiedener OGD Datensätze mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.",
   "main": "index.js",
   "scripts": {
