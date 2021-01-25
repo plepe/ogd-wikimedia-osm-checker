@@ -79,6 +79,13 @@ class CheckWikipediaListe extends Check {
 
       if (found[0].Artikel) {
         ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf einen Wikipedia Artikel: <a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(found[0].Artikel.replace(/ /g, '_')) + '">' + escHTML(found[0].Artikel) + '</a>')
+      } else {
+        if (ob.data.wikidata && ob.data.wikidata.length) {
+          let wikidataEntry = ob.data.wikidata[0]
+          if (wikidataEntry.sitelinks && 'dewiki' in wikidataEntry.sitelinks) {
+            ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf einen Wikipedia Artikel, sollte sein: <a target="_blank" href="' + escHTML(wikidataEntry.sitelinks.dewiki.url) + '">' + escHTML(wikidataEntry.sitelinks.dewiki.title) + '</a>')
+          }
+        }
       }
 
       return true
