@@ -12,7 +12,7 @@
  * @param {Object} callback.result - The result.
  * @param {string} callback.result.body - The result body.
  */
-function httpRequest (url, options, callback) {
+function httpRequest (url, options, callback, redirects=[]) {
   let corsRetry = true
   var xhr
 
@@ -37,6 +37,13 @@ function httpRequest (url, options, callback) {
         }
 
         callback(null, xhr)
+      } else if (xhr.status === 302) {
+        let redirectUrl = xhr.getResponseHeader('location')
+        if (redirects.includes(redirectUrl)) {
+          return callback(new Error('Page keeps redirecting: ' + redirectUrl))
+        }
+
+        httpRequest(redirectUrl, options, callback, redirects.concat(redirectUrl))
       } else {
         callback(new Error(xhr.statusText), xhr)
       }
