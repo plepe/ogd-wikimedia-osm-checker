@@ -41,7 +41,7 @@
     "browserify": "^16.5.2",
     "mocha": "^8.4.0",
     "standard": "^14.3.4",
-    "watchify": "^3.11.1"
+    "watchify": "^4.0.0"
   },
   "standard": {
     "parser": "babel-eslint"
