@@ -1,4 +1,4 @@
-const parseMWTemplate = require('../src/parseMWTemplate.js')
+const parseMediawikiTemplate = require('parse-mediawiki-template')
 const STATUS = require('../src/status.js')
 const Check = require('../src/Check.js')
 
@@ -25,7 +25,7 @@ class CheckCommonsTemplate extends Check {
         return false
       }
 
-      const templates = parseMWTemplate(el.wikitext, ob.dataset.commonsTemplateRegexp)
+      const templates = parseMediawikiTemplate(el.wikitext, ob.dataset.commonsTemplateRegexp)
       return !!templates.filter(r => r[1] === ob.id).length
     })
 

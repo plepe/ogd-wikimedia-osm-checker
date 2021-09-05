@@ -32,6 +32,7 @@
     "jsdom": "^16.6.0",
     "natsort": "^2.0.2",
     "node-fetch": "^2.6.1",
+    "parse-mediawiki-template": "^0.1.0",
     "query-string": "^6.14.1",
     "sheet-router": "^4.2.3",
     "string-similarity": "^4.0.4",

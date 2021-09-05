@@ -1,7 +1,7 @@
 const escHTML = require('html-escape')
 
 const STATUS = require('../src/status.js')
-const parseMWTemplate = require('../src/parseMWTemplate.js')
+const parseMediawikiTemplate = require('parse-mediawiki-template')
 const Check = require('../src/Check.js')
 const printAttrList = require('../src/printAttrList.js')
 
@@ -27,7 +27,7 @@ class CheckWikipediaListe extends Check {
     }
 
     title = ob.data.wikipedia[0].title
-    const listEntries = parseMWTemplate(ob.data.wikipedia[0].wikitext, this.options.template)
+    const listEntries = parseMediawikiTemplate(ob.data.wikipedia[0].wikitext, this.options.template)
     const found = listEntries.filter(e => e[this.options.idField] === ob.id)
 
     if (found.length) {
