@@ -9,6 +9,12 @@ class CheckWikidataLoadFromCommons extends Check {
       return
     }
 
+    // wait for wikidata to load; if none found, try to find via commons category
+    if (!ob.data.wikidata || ob.data.wikidata.length > 0) {
+      return
+
+    }
+
     const loading = ob.data.commons.filter(page => {
       if (page.title.match(/^File:/)) {
         // Disable, as this query does not work
