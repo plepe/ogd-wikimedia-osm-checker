@@ -21,7 +21,9 @@ class CheckCommonsWikidataInfobox extends Check {
       return ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Wikidata Infobox')
     }
 
-    return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Wikidata Infobox. Füge <tt>{{Wikidata Infobox|qid=' + (ob.data.wikidata && ob.data.wikidata.length ? ob.data.wikidata[0].id : '*') + '}}</tt> hinzu.')
+    if (ob.data.wikidata && ob.data.wikidata.length) {
+      return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Wikidata Infobox. Füge <tt>{{Wikidata Infobox|qid=' + (ob.data.wikidata && ob.data.wikidata.length ? ob.data.wikidata[0].id : '*') + '}}</tt> hinzu.')
+    }
   }
 }
 
