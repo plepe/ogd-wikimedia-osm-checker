@@ -9,10 +9,14 @@ class CheckWikidataLoadFromCommons extends Check {
       return
     }
 
-    // wait for wikidata to load; if none found, try to find via commons category
-    if (!ob.data.wikidata || ob.data.wikidata.length > 0) {
+    // wait for wikidata to load
+    if (!ob.data.wikidata) {
       return
+    }
 
+    // already found wikidata objects, we are done
+    if (ob.data.wikidata.length > 0) {
+      return true
     }
 
     const loading = ob.data.commons.filter(page => {
