@@ -22,7 +22,12 @@ class CheckCommonsWikidataInfobox extends Check {
     }
 
     if (ob.data.wikidata && ob.data.wikidata.length) {
-      return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Wikidata Infobox. Füge <tt>{{Wikidata Infobox|qid=' + (ob.data.wikidata && ob.data.wikidata.length ? ob.data.wikidata[0].id : '*') + '}}</tt> hinzu.')
+      console.log(categories[0])
+      if (ob.data.wikidata[0].sitelinks && ob.data.wikidata[0].sitelinks.commonswiki && ob.data.wikidata[0].sitelinks.commonswiki.title === categories[0].title) {
+        return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Wikidata Infobox. Füge <tt>{{Wikidata Infobox}}</tt> hinzu.')
+      } else {
+        return ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Wikidata Infobox. Füge <tt>{{Wikidata Infobox|qid=' + (ob.data.wikidata && ob.data.wikidata.length ? ob.data.wikidata[0].id : '*') + '}}</tt> hinzu.')
+      }
     }
   }
 }
