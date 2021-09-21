@@ -88,6 +88,27 @@ class CheckWikipediaListe extends Check {
         }
       }
 
+      if (this.options.wikidataField) {
+        if (!ob.data.wikidata) {
+          // no wikidata entry loaded -> try this
+          if (found[0][this.options.wikidataField]) {
+            ob.load('wikidata', { key: 'id', id: found[0][this.options.wikidataField] })
+          }
+        }
+        else if (!ob.data.wikidata.length) {
+          // no wikidata entry found
+        }
+        else if (found[0][this.options.wikidataField] === ob.data.wikidata[0].id) {
+          ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen gültigen Verweis auf den Wikidata Eintrag.')
+        }
+        else if (found[0][this.options.wikidataField]) {
+          ob.message('wikipedia', STATUS.ERROR, 'Liste hat einen ungültigen Verweis auf einen Wikidata Eintrag: <tt>' + escHTML(found[0][this.options.wikidataField]) + '</tt>')
+        }
+        else {
+          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf den Wikidata Eintrag, sollte sein: <tt>' + escHTML(this.options.wikidataField) + ' = ' + escHTML(ob.data.wikidata[0].id) + '</tt>')
+        }
+      }
+
       return true
     } else {
       return ob.message('wikipedia', STATUS.ERROR, 'Nicht gefunden in: <a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '">Wikipedia Liste</a>')

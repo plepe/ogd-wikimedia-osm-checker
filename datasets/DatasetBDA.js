@@ -17,6 +17,7 @@ const checks = [
   require('../checks/CheckWikipediaListe.js')({
     template: 'Denkmalliste Österreich Tabellenzeile',
     idField: 'ObjektID',
+    wikidataField: 'WD-Item',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
   require('../checks/CheckCommonsTemplate.js')(),
