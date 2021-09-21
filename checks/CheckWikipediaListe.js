@@ -66,6 +66,7 @@ class CheckWikipediaListe extends Check {
 
       if (found[0].Commonscat) {
         ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf eine Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + escHTML(found[0].Commonscat.replace(/ /g, '_')) + '">' + escHTML(found[0].Commonscat) + '</a>')
+        ob.load('commons', { title: 'Category:' + found[0].Commonscat })
       } else {
         const categories = ob.data.commons && ob.data.commons.filter(page => page.title.match(/^Category:/))
         if (!categories || !categories.length) {
