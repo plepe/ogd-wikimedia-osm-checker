@@ -30,6 +30,9 @@ table#data > tr:nth-child(odd) > td {
   right: 0;
   width: 50%;
 }
+tt {
+  white-space: nowrap;
+}
 
 ul.check {
   list-style: none;

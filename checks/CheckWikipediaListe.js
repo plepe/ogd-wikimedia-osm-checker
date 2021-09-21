@@ -71,7 +71,7 @@ class CheckWikipediaListe extends Check {
         if (!categories || !categories.length) {
           ob.message('wikipedia', STATUS.WARNING, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
         } else if (categories.length === 1) {
-          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie, sollte sein: ' + categories[0].title.slice(9))
+          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie, sollte sein: <tt>Commonscat = ' + escHTML(categories[0].title.slice(9)) + '</tt>')
         } else if (categories.length) {
           ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
         }
@@ -83,7 +83,7 @@ class CheckWikipediaListe extends Check {
         if (ob.data.wikidata && ob.data.wikidata.length) {
           let wikidataEntry = ob.data.wikidata[0]
           if (wikidataEntry.sitelinks && 'dewiki' in wikidataEntry.sitelinks) {
-            ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf einen Wikipedia Artikel, sollte sein: <a target="_blank" href="' + escHTML(wikidataEntry.sitelinks.dewiki.url) + '">' + escHTML(wikidataEntry.sitelinks.dewiki.title) + '</a>')
+            ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf einen Wikipedia Artikel, sollte sein: <tt>Artikel = ' + escHTML(wikidataEntry.sitelinks.dewiki.title) + '</tt>')
           }
         }
       }
