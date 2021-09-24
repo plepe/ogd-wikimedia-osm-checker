@@ -87,7 +87,11 @@ class DatasetBDA extends Dataset {
   }
 
   wikipediaListeAnchor (ob) {
-    return 'objektid-' + ob.id
+    if (ob.data.wikidata && ob.data.wikidata.length) {
+      return ob.data.wikidata[0].id
+    }
+
+    return ''
   }
 
   recommendedTags (ob) {
