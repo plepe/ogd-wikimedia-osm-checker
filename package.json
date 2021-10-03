@@ -36,7 +36,8 @@
     "query-string": "^6.14.1",
     "sheet-router": "^4.2.3",
     "string-similarity": "^4.0.4",
-    "w3c-xmlhttprequest": "^2.2.0"
+    "w3c-xmlhttprequest": "^2.2.0",
+    "wikipedia-list-extractor": "git+https://github.com/plepe/wikipedia-list-extractor.git"
   },
   "devDependencies": {
     "browserify": "^16.5.2",

@@ -4,11 +4,16 @@ module.exports = {
   load (queries, callback) {
     async.concat(queries,
       (query, done) => {
-        const k = Object.keys(query)
-        global.fetch('wikipedia.cgi?' + k + '=' + encodeURIComponent(query[k]))
+        global.fetch('wikipedia.cgi?list=' + encodeURIComponent(query.list) + '&id=' + encodeURIComponent(query.id))
           .then(res => res.json())
           .then(body => {
-            done(null, body)
+            if (body.length) {
+              let data = body[0].raw
+              data.url = body[0].url
+              done(null, [data])
+            } else {
+              done(null, [])
+            }
           })
           .catch(e => done(e))
       },

@@ -12,26 +12,17 @@ class CheckWikipediaListe extends Check {
   check (ob) {
     let title
     if (!ob.data.wikipedia) {
-      if (ob.dataset.wikipediaListeTitle) {
-        title = ob.dataset.wikipediaListeTitle(ob)
-        if (!ob.data.wikipedia) {
-          return ob.load('wikipedia', { title })
-        }
-      } else {
-        return ob.load('wikipedia', { search: 'insource:/' + ob.dataset.idField + ' *= *' + ob.id + '[^0-9]/ intitle:' + ob.dataset.wikipediaListeSearchTitle })
-      }
+      return ob.load('wikipedia', { list: ob.dataset.wikipediaList, id: ob.id })
     }
 
     if (ob.data.wikipedia.length === 0) {
       return ob.message('wikipedia', STATUS.ERROR, 'Seite nicht gefunden')
     }
 
-    title = ob.data.wikipedia[0].title
-    const listEntries = parseMediawikiTemplate(ob.data.wikipedia[0].wikitext, this.options.template)
-    const found = listEntries.filter(e => e[this.options.idField] === ob.id)
+    const found = ob.data.wikipedia
 
     if (found.length) {
-      let msg = '<a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '#' + ob.dataset.wikipediaListeAnchor(ob) + '">Wikipedia Liste</a>:'
+      let msg = '<a target="_blank" href="' + escHTML(found[0].url) + '">Wikipedia Liste</a>:'
 
       const attrList = this.options.showFields.map(
         fieldId => {
@@ -112,7 +103,7 @@ class CheckWikipediaListe extends Check {
 
       return true
     } else {
-      return ob.message('wikipedia', STATUS.ERROR, 'Nicht gefunden in: <a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(title.replace(/ /g, '_')) + '">Wikipedia Liste</a>')
+      return ob.message('wikipedia', STATUS.ERROR, 'Nicht gefunden')
     }
   }
 }
