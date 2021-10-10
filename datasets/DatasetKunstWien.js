@@ -60,7 +60,9 @@ class DatasetKunstWien extends Dataset {
     id: 'SHAPE'
   }
 
-  wikipediaListeSearchTitle = '/Liste der (Gedenktafeln und Gedenksteine|Kunstwerke im öffentlichen Raum) in Wien/'
+  wikipediaList = 'AT-Wien-Kultur'
+
+  wikipediaListPrefix = 'id-'
 
   ortFilterField = 'PLZ'
 
@@ -112,10 +114,6 @@ class DatasetKunstWien extends Dataset {
     // const pre = document.createElement('pre')
     // dom.appendChild(pre)
     // pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
-  }
-
-  wikipediaListeAnchor (ob) {
-    return 'id-' + ob.id
   }
 
   recommendedTags (ob) {
