@@ -12,7 +12,7 @@ class CheckWikipediaListe extends Check {
   check (ob) {
     let title
     if (!ob.data.wikipedia) {
-      return ob.load('wikipedia', { list: ob.dataset.wikipediaList, id: ob.id })
+      return ob.load('wikipedia', { list: ob.dataset.wikipediaList, id: (ob.dataset.wikipediaListPrefix ? ob.dataset.wikipediaListPrefix : '') + ob.id })
     }
 
     if (ob.data.wikipedia.length === 0) {

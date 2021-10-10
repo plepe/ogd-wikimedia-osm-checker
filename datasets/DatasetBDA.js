@@ -44,7 +44,9 @@ class DatasetBDA extends Dataset {
 
   osmRefField = 'ref:at:bda'
 
-  wikipediaList = 'AT-BDA-objid'
+  wikipediaList = 'AT-BDA'
+
+  wikipediaListPrefix = 'objid-'
 
   ortFilterField = 'Gemeinde'
 
