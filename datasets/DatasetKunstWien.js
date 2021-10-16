@@ -27,9 +27,6 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    template: '(WLPA-AT-Zeile|Gedenktafel Österreich Tabellenzeile)',
-    idField: 'ID',
-    wikidataField: 'WD-Item',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
   }),
   require('../checks/CheckOsmLoadSimilar.js')({
