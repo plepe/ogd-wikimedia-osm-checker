@@ -110,7 +110,7 @@ function _request (options, callback) {
     )
   }
 
-  const query = 'SELECT ?item ?itemLabel WHERE { ?item wdt:' + options.key + ' "' + options.id.replace(/"/g, '\\"') + '". SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }'
+  const query = 'SELECT ?item WHERE { ?item wdt:' + options.key + ' "' + options.id.replace(/"/g, '\\"') + '".}'
   httpRequest('https://query.wikidata.org/sparql?query=' + encodeURIComponent(query),
     {
       headers: {
