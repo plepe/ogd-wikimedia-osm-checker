@@ -113,6 +113,12 @@ class DatasetKunstWien extends Dataset {
     // pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
   }
 
+  wikidataRecommendedProperties (ob) {
+    const list = ['P84', 'P170', 'P186', 'P580', 'P417', 'P180', 'P7842']
+
+    return list
+  }
+
   recommendedTags (ob) {
     return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
   }

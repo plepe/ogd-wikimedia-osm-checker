@@ -102,6 +102,12 @@ class DatasetBDA extends Dataset {
     return ''
   }
 
+  wikidataRecommendedProperties (ob) {
+    const list = ['P84', 'P170', 'P186', 'P580', 'P417', 'P180']
+
+    return list
+  }
+
   recommendedTags (ob) {
     return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
   }
