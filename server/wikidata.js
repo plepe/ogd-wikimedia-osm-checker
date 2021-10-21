@@ -2,6 +2,7 @@ const async = require('async')
 const JSDOM = require('jsdom').JSDOM
 
 const httpRequest = require('../src/httpRequest.js')
+const findWikidataItems = require('wikipedia-list-extractor/src/findWikidataItems')
 
 const active = []
 const pending = []
@@ -110,35 +111,26 @@ function _request (options, callback) {
     )
   }
 
-  const query = 'SELECT ?item WHERE { ?item wdt:' + options.key + ' "' + options.id.replace(/"/g, '\\"') + '".}'
-  httpRequest('https://query.wikidata.org/sparql?query=' + encodeURIComponent(query),
-    {
-      headers: {
-        // lower case to avoid forbidden request headers, see:
-        // https://github.com/ykzts/node-xmlhttprequest/pull/18/commits/7f73611dc3b0dd15b0869b566f60b64cd7aa3201
-        'user-agent': 'ogd-wikimedia-osm-checker',
-        accept: 'application/json'
-      },
-      responseType: 'json'
-    },
-    (err, result) => {
-      next(options)
-      if (err) { return callback(err) }
+  let query = {}
+  query[options.key] = options.id
 
-      async.map(result.body.results.bindings,
-        (entry, done) => {
-          const wikidataId = entry.item.value.match(/(Q[0-9]+)$/)[1]
-          request(
-            { key: 'id', id: wikidataId },
-            (err, r) => done(err, r.length ? r[0] : null)
-          )
-        },
-        (err, results) => {
-          callback(err, results)
-        }
-      )
-    }
-  )
+  findWikidataItems([query], (err, results) => {
+    if (err) { return callback(err) }
+
+    async.map(results[0],
+      (id, done) => {
+        next(options)
+
+        request(
+          { key: 'id', id },
+          (err, r) => done(err, r.length ? r[0] : null)
+        )
+      },
+      (err, results) => {
+        callback(err, results)
+      }
+    )
+  })
 }
 
 module.exports = request
