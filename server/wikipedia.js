@@ -21,5 +21,9 @@ module.exports = function (options, callback) {
     return
   }
 
+  if (options.reload) {
+    lists[options.list].cacheClear(options.id)
+  }
+
   lists[options.list].get(options.id, extractorOptions, callback)
 }

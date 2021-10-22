@@ -172,6 +172,7 @@ function check (id, options={}) {
   reload.innerHTML = '↻'
   reload.title = 'Nochmal prüfen'
   reload.onclick = () => {
+    options.reload = true
     check(id, options)
     return false
   }

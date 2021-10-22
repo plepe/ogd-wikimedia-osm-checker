@@ -4,7 +4,7 @@ module.exports = {
   load (queries, options, callback) {
     async.concat(queries,
       (query, done) => {
-        global.fetch('wikipedia.cgi?list=' + encodeURIComponent(query.list) + '&id=' + encodeURIComponent(query.id))
+        global.fetch('wikipedia.cgi?list=' + encodeURIComponent(query.list) + '&id=' + encodeURIComponent(query.id) + (options.reload ? '&reload=true' : ''))
           .then(res => res.json())
           .then(body => {
             if (body.length) {
