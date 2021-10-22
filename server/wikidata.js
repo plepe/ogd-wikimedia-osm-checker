@@ -114,15 +114,23 @@ function _request (options, callback) {
   let query = {}
   query[options.key] = options.id
 
-  findWikidataItems([query], (err, results) => {
+  const _options = JSON.parse(JSON.stringify(options))
+  delete _options.key
+  delete _options.id
+
+  findWikidataItems([query], _options, (err, results) => {
     if (err) { return callback(err) }
 
     async.map(results[0],
       (id, done) => {
         next(options)
 
+        let _options = JSON.parse(JSON.stringify(options))
+        _options.key = 'id'
+        _options.id = id
+
         request(
-          { key: 'id', id },
+          _options,
           (err, r) => done(err, r.length ? r[0] : null)
         )
       },
