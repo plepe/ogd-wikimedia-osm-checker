@@ -27,7 +27,7 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
+    showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
   }),
   require('../checks/CheckOsmLoadSimilar.js')({
     nameField: 'OBJEKTTITEL'
@@ -95,6 +95,7 @@ class DatasetKunstWien extends Dataset {
     ul.innerHTML += '<li>ID: ' + data.ID + '</li>'
     ul.innerHTML += '<li>Titel: ' + escHTML(data.OBJEKTTITEL) + '</li>'
     ul.innerHTML += '<li>Vulgonamen: ' + escHTML(data.VULGONAMEN) + '</li>'
+    ul.innerHTML += '<li>Inschrift: ' + escHTML(data.INSCHRIFT) + '</li>'
     ul.innerHTML += '<li>Typ: ' + escHTML(data.TYP) + '</li>'
     ul.innerHTML += '<li>Adresse: ' + escHTML(data.STRASSE) + ', ' + escHTML(data.PLZ) + ' ' + escHTML(data.ORT) + '</li>'
     const coords = data.SHAPE.match(/POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/)
