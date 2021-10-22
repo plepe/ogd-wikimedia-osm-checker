@@ -120,11 +120,10 @@ function _request (options, callback) {
 
   findWikidataItems([query], _options, (err, results) => {
     if (err) { return callback(err) }
+    next(options)
 
     async.map(results[0],
       (id, done) => {
-        next(options)
-
         let _options = JSON.parse(JSON.stringify(options))
         _options.key = 'id'
         _options.id = id
