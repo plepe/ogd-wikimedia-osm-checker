@@ -158,7 +158,7 @@ function update () {
   }
 }
 
-function check (id) {
+function check (id, options={}) {
   const entry = dataset.data[id]
   const div = document.getElementById('details')
 
@@ -172,7 +172,7 @@ function check (id) {
   reload.innerHTML = '↻'
   reload.title = 'Nochmal prüfen'
   reload.onclick = () => {
-    check(id)
+    check(id, options)
     return false
   }
   div.appendChild(reload)
@@ -182,7 +182,7 @@ function check (id) {
 
   const ob = new Examinee(entry[dataset.idField], entry, dataset)
   ob.initMessages(div)
-  ob.runChecks(dataset, (err, result) => {
+  ob.runChecks(dataset, options, (err, result) => {
     if (err) { global.alert(err) }
 
     document.body.classList.remove('loading')

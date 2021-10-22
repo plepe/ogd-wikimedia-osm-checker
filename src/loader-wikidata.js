@@ -1,7 +1,7 @@
 const async = require('async')
 
 module.exports = {
-  load (queries, callback) {
+  load (queries, options, callback) {
     async.map(queries,
       (query, done) => {
         global.fetch('wikidata.cgi?key=' + query.key + '&id=' + query.id)
