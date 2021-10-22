@@ -8,7 +8,9 @@ const properties = {
   P580: 'Startzeitpunkt',
   P417: 'Patron_in',
   P180: 'Motiv',
-  P7842: 'Wien Geschichte Wiki ID'
+  P1684: 'Inschrift',
+  P7842: 'Wien Geschichte Wiki ID',
+  P8231: 'Wiener Wohnen ID'
 }
 
 class CheckWikidataRecommendations extends Check {

@@ -103,7 +103,12 @@ class DatasetBDA extends Dataset {
   }
 
   wikidataRecommendedProperties (ob) {
-    const list = ['P84', 'P170', 'P186', 'P580', 'P417', 'P180']
+    const list = ['P84', 'P170', 'P580', 'P417', 'P180']
+
+    if (ob.refData.Gemeinde === 'Wien') {
+      list.push('P7842') // Wien Geschichte Wiki ID (siehe Seiteninformationen)
+      list.push('P8231') // Wiener Wohnen ID (numerische ID in URL)
+    }
 
     return list
   }

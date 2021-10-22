@@ -114,7 +114,23 @@ class DatasetKunstWien extends Dataset {
   }
 
   wikidataRecommendedProperties (ob) {
-    const list = ['P84', 'P170', 'P186', 'P580', 'P417', 'P180', 'P7842']
+    const list = ['P170', 'P580', 'P417', 'P180', 'P7842']
+
+    if (ob.refData.INSCHRIFT) {
+      list.push('P1684')
+    }
+
+    if (ob.refData.MATERIAL) {
+      list.push('P186')
+    }
+
+    if (ob.data.wikipedia && ob.data.wikipedia.length) {
+      const el = ob.data.wikipedia[0]
+
+      if (el.Inschrift) {
+        list.push('P1684')
+      }
+    }
 
     return list
   }
