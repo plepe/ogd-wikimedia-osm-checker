@@ -27,6 +27,7 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')({
+    wikidataField: 'WD-Item',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
   }),
   require('../checks/CheckOsmLoadSimilar.js')({

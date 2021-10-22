@@ -19,6 +19,7 @@ const checks = [
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckWikipediaListe.js')({
+    wikidataField: 'WD-Item',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
   require('../checks/CheckCommonsTemplate.js')({
