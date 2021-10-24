@@ -27,10 +27,8 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    template: '(WLPA-AT-Zeile|Gedenktafel Österreich Tabellenzeile)',
-    idField: 'ID',
     wikidataField: 'WD-Item',
-    showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler']
+    showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
   }),
   require('../checks/CheckOsmLoadSimilar.js')({
     nameField: 'OBJEKTTITEL'
@@ -60,7 +58,9 @@ class DatasetKunstWien extends Dataset {
     id: 'SHAPE'
   }
 
-  wikipediaListeSearchTitle = '/Liste der (Gedenktafeln und Gedenksteine|Kunstwerke im öffentlichen Raum) in Wien/'
+  wikipediaList = 'AT-Wien-Kultur'
+
+  wikipediaListPrefix = 'id-'
 
   ortFilterField = 'PLZ'
 
@@ -96,6 +96,7 @@ class DatasetKunstWien extends Dataset {
     ul.innerHTML += '<li>ID: ' + data.ID + '</li>'
     ul.innerHTML += '<li>Titel: ' + escHTML(data.OBJEKTTITEL) + '</li>'
     ul.innerHTML += '<li>Vulgonamen: ' + escHTML(data.VULGONAMEN) + '</li>'
+    ul.innerHTML += '<li>Inschrift: ' + escHTML(data.INSCHRIFT) + '</li>'
     ul.innerHTML += '<li>Typ: ' + escHTML(data.TYP) + '</li>'
     ul.innerHTML += '<li>Adresse: ' + escHTML(data.STRASSE) + ', ' + escHTML(data.PLZ) + ' ' + escHTML(data.ORT) + '</li>'
     const coords = data.SHAPE.match(/POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/)
@@ -114,8 +115,26 @@ class DatasetKunstWien extends Dataset {
     // pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
   }
 
-  wikipediaListeAnchor (ob) {
-    return 'id-' + ob.id
+  wikidataRecommendedProperties (ob) {
+    const list = ['P170', 'P580', 'P417', 'P180', 'P7842']
+
+    if (ob.refData.INSCHRIFT) {
+      list.push('P1684')
+    }
+
+    if (ob.refData.MATERIAL) {
+      list.push('P186')
+    }
+
+    if (ob.data.wikipedia && ob.data.wikipedia.length) {
+      const el = ob.data.wikipedia[0]
+
+      if (el.Inschrift) {
+        list.push('P1684')
+      }
+    }
+
+    return list
   }
 
   recommendedTags (ob) {

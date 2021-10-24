@@ -9,10 +9,29 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
   check (ob) {
     let wikidataId
 
+    let id = ob.id
+    if (this.options && this.options.wikidataValueProperty) {
+      if (!ob.data.wikidata || !ob.data.wikidata.length) {
+        return true
+      }
+
+      const data = ob.data.wikidata[0].claims[this.options.wikidataValueProperty]
+      if (!data || !data.length) {
+        id = null
+      } else {
+        id = data[0].mainsnak.datavalue.value
+      }
+    }
+
+    let osmRefField = ob.dataset.osmRefField
+    if (this.options && this.options.osmRefField) {
+      osmRefField = this.options.osmRefField
+    }
+
     // OSM object has been loaded by 'osmLoadSimilar'. When re-showing data, let
     // that module do it.
-    if (ob.osmSimilar) {
-      return ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> in der OpenStreetMap gefunden!')
+    if (ob.osmSimilar && id) {
+      return ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + osmRefField + '=' + id + '</tt> in der OpenStreetMap gefunden!')
     }
 
     if (!ob.data.wikidata && !ob.data.osm) {
@@ -27,7 +46,10 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
 
     const loadingWikidata = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
 
-    const loadingRef = !ob.load('osm', 'nwr["' + ob.dataset.osmRefField + '"=' + ob.id + '];')
+    let loadingRef = false
+    if (id !== null) {
+      loadingRef = !ob.load('osm', 'nwr["' + osmRefField + '"=' + id + '];')
+    }
 
     if (loadingWikidata.length || loadingRef) {
       return false
@@ -37,18 +59,18 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       wikidataId = ob.data.wikidata[0].id
     }
 
-    const refBdaResult = ob.data.osm.filter(el => el.tags[ob.dataset.osmRefField] === ob.id)
+    const refBdaResult = ob.data.osm.filter(el => el.tags[osmRefField] === id)
     let refWdResult = []
     if (wikidataId) {
       refWdResult = ob.data.osm.filter(el => el.tags.wikidata === wikidataId)
     }
 
     if (refWdResult.length && refBdaResult.length && refWdResult.length === refBdaResult.length) {
-      return ob.message('osm', STATUS.SUCCESS, refBdaResult.length + ' Objekt via <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> und <tt>wikidata=' + wikidataId + '</tt> gefunden:<ul>' + refBdaResult.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
+      return ob.message('osm', STATUS.SUCCESS, refBdaResult.length + ' Objekt via <tt>' + osmRefField + '=' + id + '</tt> und <tt>wikidata=' + wikidataId + '</tt> gefunden:<ul>' + refBdaResult.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
     }
 
     if (refBdaResult.length && refWdResult.length && refBdaResult.length !== refWdResult.length) {
-      return ob.message('osm', STATUS.ERROR, 'Unterschiedliche Anzahl von Objekten mit <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> und/oder <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden: ' + ob.data.osm.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
+      return ob.message('osm', STATUS.ERROR, 'Unterschiedliche Anzahl von Objekten mit <tt>' + osmRefField + '=' + id + '</tt> und/oder <tt>wikidata=' + wikidataId + '</tt> in der OpenStreetMap gefunden: ' + ob.data.osm.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
     }
 
     if (refBdaResult.length) {
@@ -58,7 +80,7 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
         }
       })
 
-      return ob.message('osm', STATUS.SUCCESS, refBdaResult.length + ' Objekt via <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> gefunden: ' + refBdaResult.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
+      return ob.message('osm', STATUS.SUCCESS, refBdaResult.length + ' Objekt via <tt>' + osmRefField + '=' + id + '</tt> gefunden: ' + refBdaResult.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
     }
 
     //      const wrongWikidata = refBdaResult.filter(entry => !!entry.tags.wikidata)
@@ -69,12 +91,19 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
     //      }
 
     if (refWdResult.length) {
-      ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> in der OpenStreetMap gefunden!')
+      if (id !== null) {
+        ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + osmRefField + '=' + id + '</tt> in der OpenStreetMap gefunden!')
+      }
+
       ob.message('osm', STATUS.SUCCESS, refWdResult.length + ' Objekt via <tt>wikidata=' + wikidataId + '</tt> gefunden: ' + refWdResult.map(el => '<li>' + osmFormat(el, ob) + '</li>').join('') + '</ul>')
       return true
     }
 
-    return ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + ob.dataset.osmRefField + '=' + ob.id + '</tt> ' + (wikidataId ? 'oder <tt>wikidata=' + wikidataId : '') + '</tt> in der OpenStreetMap gefunden!')
+    if (id === null) {
+      return ob.message('osm', STATUS.ERROR, 'Kein Eintrag ' + (wikidataId ? 'mit <tt>wikidata=' + wikidataId + '</tt>': '') + ' in der OpenStreetMap gefunden!')
+    } else {
+      return ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + osmRefField + '=' + id + '</tt> ' + (wikidataId ? 'oder <tt>wikidata=' + wikidataId + '</tt>' : '') + ' in der OpenStreetMap gefunden!')
+    }
   }
 }
 

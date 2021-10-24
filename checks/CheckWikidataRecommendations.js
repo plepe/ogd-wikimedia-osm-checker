@@ -1,14 +1,16 @@
 const STATUS = require('../src/status.js')
 const Check = require('../src/Check.js')
 
-const recommendedReferences = {
+const properties = {
   P84: 'Architekt_in',
   P170: 'Urheber_in',
   P186: 'Material',
   P580: 'Startzeitpunkt',
   P417: 'Patron_in',
   P180: 'Motiv',
-  P7842: 'Wien Geschichte Wiki ID'
+  P1684: 'Inschrift',
+  P7842: 'Wien Geschichte Wiki ID',
+  P8231: 'Wiener Wohnen ID'
 }
 
 class CheckWikidataRecommendations extends Check {
@@ -23,15 +25,19 @@ class CheckWikidataRecommendations extends Check {
 
     const el = ob.data.wikidata[0]
 
-    const recommendations = []
-    for (const k in recommendedReferences) {
-      if (!(k in el.claims)) {
-        recommendations.push(recommendedReferences[k])
-      }
+    let recommendations = []
+
+    if (ob.dataset.wikidataRecommendedProperties) {
+      recommendations = recommendations.concat(ob.dataset.wikidataRecommendedProperties(ob))
     }
 
+    // unique
+    recommendations = [...new Set(recommendations)]
+    // filter all recommendations which are already set
+    recommendations = recommendations.filter(r => !(r in el.claims))
+
     if (recommendations.length) {
-      return ob.message('wikidata', STATUS.WARNING, 'Empfohlene weitere Angaben: ' + recommendations.join(', '))
+      return ob.message('wikidata', STATUS.WARNING, 'Empfohlene weitere Angaben: ' + recommendations.map(r => r in properties ? properties[r] : r).join(', '))
     }
   }
 }

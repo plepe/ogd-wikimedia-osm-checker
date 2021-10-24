@@ -89,7 +89,7 @@ module.exports = class Examinee extends EventEmitter {
     return Object.keys(this.toLoad).length + Object.keys(this.loading).length
   }
 
-  _load () {
+  _load (options) {
     const toLoad = this.toLoad
     this.toLoad = {}
 
@@ -107,6 +107,7 @@ module.exports = class Examinee extends EventEmitter {
       queries.forEach(query => this.loading[module].push(JSON.stringify(query)))
 
       loader[module].load(queries,
+        options,
         (err, result) => {
           queries.forEach(query => {
             this.loading[module].splice(this.loading[module].indexOf(JSON.stringify(query)), 1)
@@ -135,13 +136,13 @@ module.exports = class Examinee extends EventEmitter {
     }
   }
 
-  runChecks (dataset, callback, init = false) {
+  runChecks (dataset, options, callback, init = false) {
     if (!init) {
       dataset.checks.forEach(check => {
         this.checksStatus[check.id] = false
       })
 
-      this.on('load', () => this.runChecks(dataset, callback, true))
+      this.on('load', () => this.runChecks(dataset, options, callback, true))
       this.on('loadError', (err) => {
         this.removeAllListeners()
         callback(err)
@@ -155,7 +156,7 @@ module.exports = class Examinee extends EventEmitter {
     })
 
     if (this.needLoad()) {
-      this._load()
+      this._load(options)
     } else {
       this.removeAllListeners()
       callback(null)

@@ -1,7 +1,7 @@
 const async = require('async')
 
 module.exports = {
-  load (queries, callback) {
+  load (queries, options, callback) {
     async.concat(queries,
       (query, done) => {
         const k = Object.keys(query)

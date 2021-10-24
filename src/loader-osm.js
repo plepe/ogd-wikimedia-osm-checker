@@ -1,7 +1,7 @@
 const httpRequest = require('./httpRequest.js')
 
 module.exports = {
-  load (queries, callback) {
+  load (queries, options, callback) {
     const body = '[out:json];(' + queries.join('') + ');out tags bb;'
 
     httpRequest('https://overpass-api.de/api/interpreter',

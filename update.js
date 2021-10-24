@@ -3,6 +3,7 @@ const async = require('async')
 const csvtojson = require('csvtojson')
 const fs = require('fs')
 const fetch = require('node-fetch')
+const JSDOM = require('jsdom').JSDOM
 
 const BdaIDs = [
   ['W', '3354'],
@@ -17,15 +18,26 @@ const BdaIDs = [
 ]
 
 function downloadBda (callback) {
+  fetch('https://bda.gv.at/denkmalverzeichnis/')
+    .then(response => response.text())
+    .then(result => {
+      const dom = new JSDOM(result)
+      let list = dom.window.document.querySelectorAll('#download-als-csv li a')
+      list = Array.from(list)
+      list = list.map(entry => entry.getAttribute('href'))
+
+      downloadBdaFiles(list, callback)
+    })
+}
+
+function downloadBdaFiles (urls, callback) {
   const data = []
 
-  async.each(BdaIDs,
-    (ids, done) => {
-      const url = 'https://bda.gv.at/fileadmin/Dokumente/bda.gv.at/Publikationen/Denkmalverzeichnis/Oesterreich_CSV/_' + ids[0] + '_2020raw_ID_' + ids[1] + 'POS.csv'
-
+  async.each(urls,
+    (url, done) => {
       fetch(url, {})
         .then(response => {
-          const converter = iconv.decodeStream('iso-8859-1')
+          const converter = iconv.decodeStream('utf-8')
           const stream = response.body.pipe(converter)
 
           csvtojson({ delimiter: ';' })
@@ -102,16 +114,16 @@ downloadBda(err => {
   }
 })
 
-downloadKunstwerkeWien(err => {
-  if (err) {
-    console.error(err)
-    process.exit(1)
-  }
-})
-
-downloadWikidataLists(err => {
-  if (err) {
-    console.error(err)
-    process.exit(1)
-  }
-})
+//downloadKunstwerkeWien(err => {
+//  if (err) {
+//    console.error(err)
+//    process.exit(1)
+//  }
+//})
+//
+//downloadWikidataLists(err => {
+//  if (err) {
+//    console.error(err)
+//    process.exit(1)
+//  }
+//})

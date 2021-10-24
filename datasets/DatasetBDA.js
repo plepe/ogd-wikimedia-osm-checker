@@ -3,10 +3,14 @@ const escHTML = require('html-escape')
 const Dataset = require('../src/Dataset')
 
 const checks = [
-  require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
+  //require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
+  require('../checks/CheckCommonsLoadFromWikidata.js')({
+    template: '/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/',
+    property: 'P2951'
+  }),
   require('../checks/CheckCommonsShowItems.js')(),
-  require('../checks/CheckWikidataLoadViaRef.js')(['P2951', 'Objekt-ID der Datenbank österreichischer Kulturdenkmale']),
-  require('../checks/CheckWikidataLoadFromCommons.js')(),
+  require('../checks/CheckWikidataLoadViaRef.js')(['P9154', 'HERIS-ID der Datenbank österreichischer Kulturdenkmale']),
+  //require('../checks/CheckWikidataLoadFromCommons.js')(),
   require('../checks/CheckWikidataShow.js')(),
   require('../checks/CheckWikidataCoords.js')(),
   require('../checks/CheckWikidataIsA.js')(),
@@ -15,15 +19,18 @@ const checks = [
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    template: 'Denkmalliste Österreich Tabellenzeile',
-    idField: 'ObjektID',
     wikidataField: 'WD-Item',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
-  require('../checks/CheckCommonsTemplate.js')(),
-  require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
+  require('../checks/CheckCommonsTemplate.js')({
+    wikidataValueProperty: 'P2951'
+  }),
+  require('../checks/CheckOsmLoadFromRefOrWikidata.js')({
+    wikidataValueProperty: 'P2951',
+    osmRefField: 'ref:at:bda'
+  }),
   require('../checks/CheckOsmLoadSimilar.js')({
-    nameField: 'Bezeichnung'
+    nameField: 'Katalogtitel'
   })
 ]
 
@@ -40,11 +47,13 @@ class DatasetBDA extends Dataset {
 
   filename = 'bda.json'
 
-  idField = 'ObjektID'
+  idField = 'HERIS-ID'
 
-  osmRefField = 'ref:at:bda'
+  //osmRefField = 'ref:at:bda'
 
-  wikipediaListeSearchTitle = '"Liste der denkmalgeschützten Objekte in"'
+  wikipediaList = 'AT-BDA'
+
+  wikipediaListPrefix = 'id-'
 
   ortFilterField = 'Gemeinde'
 
@@ -60,8 +69,8 @@ class DatasetBDA extends Dataset {
     tr.appendChild(td)
 
     const a = document.createElement('a')
-    a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.Bezeichnung) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
-    a.href = '#' + this.id + '/' + entry.ObjektID
+    a.innerHTML = '<span class="Katalogtitel">' + escHTML(entry.Katalogtitel) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
+    a.href = '#' + this.id + '/' + entry['HERIS-ID']
     td.appendChild(a)
     td.appendChild(document.createElement('br'))
 
@@ -77,13 +86,13 @@ class DatasetBDA extends Dataset {
     const ul = document.createElement('ul')
     div.appendChild(ul)
 
-    ul.innerHTML += '<li>ID: ' + data.ObjektID + '</li>'
-    ul.innerHTML += '<li>Bezeichnung: ' + escHTML(data.Bezeichnung) + '</li>'
+    ul.innerHTML += '<li>ID: ' + data['HERIS-ID'] + '</li>'
+    ul.innerHTML += '<li>Katalogtitel: ' + escHTML(data.Katalogtitel) + '</li>'
     ul.innerHTML += '<li>Gemeinde: ' + escHTML(data.Gemeinde) + '</li>'
     ul.innerHTML += '<li>Kat.gemeinde: ' + escHTML(data.KG) + '</li>'
     ul.innerHTML += '<li>Adresse: ' + escHTML(data.Adresse) + '</li>'
-    ul.innerHTML += '<li>Grundstücknr.: ' + escHTML(data.GdstNr) + '</li>'
-    ul.innerHTML += '<li>Status: ' + escHTML(data.Status) + '</li>'
+    ul.innerHTML += '<li>Grundstücknr.: ' + escHTML(data['GSTK-Nr.']) + '</li>'
+    ul.innerHTML += '<li>Status: ' + escHTML(data.Denkmalschutzstatus) + '</li>'
   }
 
   wikipediaListeAnchor (ob) {
@@ -94,6 +103,17 @@ class DatasetBDA extends Dataset {
     return ''
   }
 
+  wikidataRecommendedProperties (ob) {
+    const list = ['P84', 'P170', 'P580', 'P417', 'P180']
+
+    if (ob.refData.Gemeinde === 'Wien') {
+      list.push('P7842') // Wien Geschichte Wiki ID (siehe Seiteninformationen)
+      list.push('P8231') // Wiener Wohnen ID (numerische ID in URL)
+    }
+
+    return list
+  }
+
   recommendedTags (ob) {
     return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
   }
@@ -101,7 +121,7 @@ class DatasetBDA extends Dataset {
   missingTags (ob) {
     const result = ['heritage=2', 'heritage:operator=bda']
 
-    result.push('ref:at:bda=' + ob.id)
+    //result.push('ref:at:bda=' + ob.id)
     if (ob.data.wikidata.length) {
       result.push('wikidata=' + ob.data.wikidata[0].id)
     }
