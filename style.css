@@ -22,6 +22,12 @@ table#data > tr > th,
 table#data > tr:nth-child(odd) > td {
   background: #ccc;
 }
+table#data > tr.active > td {
+  background: blue;
+}
+table#data > tr.active a {
+  color: white;
+}
 #details {
   overflow: auto;
   position: absolute;

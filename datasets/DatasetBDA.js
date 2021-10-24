@@ -65,6 +65,8 @@ class DatasetBDA extends Dataset {
 
   listEntry (entry, dom) {
     const tr = document.createElement('tr')
+    tr.id = this.id + '-' + entry['HERIS-ID']
+
     const td = document.createElement('td')
     tr.appendChild(td)
 

@@ -190,4 +190,12 @@ function check (id, options={}) {
   })
 
   document.title = dataset.title + '/' + ob.id + ' - ogd-wikimedia-osm-checker'
+
+  const table = document.getElementById('data')
+  Array.from(table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
+
+  const listEntry = document.getElementById(dataset.id + '-' + ob.id)
+  if (listEntry) {
+    listEntry.classList.add('active')
+  }
 }

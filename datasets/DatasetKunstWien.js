@@ -72,6 +72,8 @@ class DatasetKunstWien extends Dataset {
 
   listEntry (entry, dom) {
     const tr = document.createElement('tr')
+    tr.id = this.id + '-' + entry.ID
+
     const td = document.createElement('td')
     tr.appendChild(td)
 
