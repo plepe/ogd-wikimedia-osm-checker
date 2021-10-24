@@ -114,16 +114,16 @@ downloadBda(err => {
   }
 })
 
-//downloadKunstwerkeWien(err => {
-//  if (err) {
-//    console.error(err)
-//    process.exit(1)
-//  }
-//})
-//
-//downloadWikidataLists(err => {
-//  if (err) {
-//    console.error(err)
-//    process.exit(1)
-//  }
-//})
+downloadKunstwerkeWien(err => {
+  if (err) {
+    console.error(err)
+    process.exit(1)
+  }
+})
+
+downloadWikidataLists(err => {
+  if (err) {
+    console.error(err)
+    process.exit(1)
+  }
+})
