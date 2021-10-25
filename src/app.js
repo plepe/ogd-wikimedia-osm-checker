@@ -33,12 +33,20 @@ function init () {
   info = document.getElementById('content').innerHTML
 
   const selectDataset = document.getElementById('Dataset')
+  const listDatasets = document.getElementById('datasets')
+
   forEach(datasets, (_dataset, id) => {
     const option = document.createElement('option')
     option.value = id
     option.appendChild(document.createTextNode(_dataset.title))
-
     selectDataset.appendChild(option)
+
+    const li = document.createElement('li')
+    const a = document.createElement('a')
+    a.href = '#' + id
+    a.appendChild(document.createTextNode(_dataset.titleLong))
+    li.appendChild(a)
+    listDatasets.appendChild(li)
   })
 
   selectDataset.onchange = chooseDataset

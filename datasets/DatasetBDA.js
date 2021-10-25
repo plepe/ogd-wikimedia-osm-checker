@@ -37,6 +37,8 @@ const checks = [
 class DatasetBDA extends Dataset {
   id = 'bda'
 
+  titleLong = 'Denkmalliste des österr. Bundesdenkmalamtes'
+
   title = 'Bundesdenkmalamt'
 
   listTitle = 'Denkmal aus Bundesdenkmalamtsliste'

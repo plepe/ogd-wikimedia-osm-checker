@@ -41,6 +41,8 @@ class DatasetKunstWien extends Dataset {
 
   title = 'Kunstwerke im öff. Raum (Kulturgut Wien)'
 
+  titleLong = 'Kunstwerke im öff. Raum (Kulturgut Wien)'
+
   listTitle = 'Kunstwerke im öff. Raum (Kulturgut Wien)'
 
   ogdURL = 'https://www.wien.gv.at/kultur/kulturgut/kunstwerke/'
