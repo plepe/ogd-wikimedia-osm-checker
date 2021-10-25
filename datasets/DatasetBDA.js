@@ -45,7 +45,18 @@ class DatasetBDA extends Dataset {
 
   ogdURL = 'https://bda.gv.at/denkmalverzeichnis/#denkmalliste-gemaess-3-dmsg'
 
-  ogdInfo = 'Liste der unter Denkmalschutz stehenden unbeweglichen Denkmale in Österreich.'
+  ogdInfo = `Liste der unter Denkmalschutz stehenden unbeweglichen Denkmale in Österreich.
+
+<p>
+<b>Im Jahr 2021 wurden die denkmalgeschützten Objekte in ein neues "Heritage Information System" übertragen und damit neue IDs (genannt "HERIS-ID") vergeben. Also passt gut auf, dass diese nicht mit den alten "Objekt-IDs" verwechselt werden.</b>
+</p>
+
+<ul>
+<li>In der Wikipedia gibt es für jede österreichische Gemeinde Seiten mit Listen zu denkmalgeschützten Objekten, welche via Bot aktualisiert werden. Die neuen HERIS-IDs stehen allerdings nicht im Source-Code, sondern werden aus Wikidata geladen. Dafür hat jedes Objekt ein "WD-Item" Feld mit der Wikidata-ID.
+<li>In Wikidata gibt es für jedes Objekt einen Eintrag (via Bot gepflegt), erkennbar am Property "Heritage Information System ID der Datenbank österreichischer Kulturdenkmale" (P9154) welches die ID aus dem Katalog enthält. Objekte mit alter Objekt-ID haben außerdem ein Property "Objekt-ID der Datenbank österreichischer Kulturdenkmale" (P2951).</li>
+<li>In Wikimedia Commons sollte es zumindest ein Bild für jedes Objekt geben. Gibt es mehrere Bilder (oder andere Medien), sollten diese in eine Kategorie zusammengefasst werden, die dann von Wikipedia Liste und Wikidata verlinkt werden. Es gibt die Vorlage <tt>{{Denkmalgeschütztes Objekt Österreich|1=12345}}</tt>, diese enthält aber die alte Objekt-ID. Für die HERIS-ID gibt es (noch?) keine Vorlage. Außerdem kriegt die Kategorie eine "Infobox".</li>
+<li>In OpenStreetMap sollten die meisten Objekte erfasst sein (zumindest wenn es sich um Gebäude oder Denkmäler handelt). Es gibt ein Tag "ref:at:bda", welches die Objekt-ID des Objektes enthält, für die HERIS-ID gibt es (noch?) kein Tag (siehe <a href="https://wiki.openstreetmap.org/wiki/Talk:Key:ref:at:bda">diese Diskussion</a>. Es sollte auf jeden fall ein Verweis auf das Wikidata-Objekt eingetragen sein (Tag "wikidata").</li>
+</ul> `
 
   filename = 'bda.json'
 
