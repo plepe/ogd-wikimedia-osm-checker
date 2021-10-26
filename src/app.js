@@ -30,8 +30,6 @@ window.onload = () => {
 }
 
 function init () {
-  info = document.getElementById('content').innerHTML
-
   const selectDataset = document.getElementById('Dataset')
   const listDatasets = document.getElementById('datasets')
 
@@ -48,6 +46,8 @@ function init () {
     li.appendChild(a)
     listDatasets.appendChild(li)
   })
+
+  info = document.getElementById('content').innerHTML
 
   selectDataset.onchange = chooseDataset
 
