@@ -61,6 +61,38 @@ function downloadKunstwerkeWien (callback) {
     })
 }
 
+function downloadWienerWohnen (callback) {
+  const data = []
+
+  fetch('https://www.wienerwohnen.at/wiener-gemeindebau/gemeindebaubeschreibungen.json')
+    .then(response => response.json())
+    .then(body => {
+      const data = body.aaData.map(entry => {
+        let m1 = entry[1].match(/^<a href='(\/hof\/([0-9]+)\/.*)'>(.*)<\/a>$/)
+        let m3 = entry[3].match(/^([0-9]{4})-([0-9]{4})$/)
+
+        if (!m1) {
+          console.log(entry[1])
+          return
+        }
+
+        return {
+          id: m1[2],
+          image: entry[0].match(/^<img src='([^']*)'/)[1],
+          url: m1[1],
+          name: m1[3],
+          address: entry[2],
+          startYear: m3 ? m3[1] : entry[3],
+          endYear: m3 ? m3[2] : entry[3],
+          pdf: entry[4].match(/^<a href='([^']*)'/)[1],
+          description: entry[5]
+        }
+      })
+
+      fs.writeFile('data/wiener_wohnen.json', JSON.stringify(data, null, '  '), callback)
+    })
+}
+
 function downloadWikidataLists (callback) {
   async.parallel([
     done => {
@@ -103,6 +135,13 @@ downloadBda(err => {
 })
 
 downloadKunstwerkeWien(err => {
+  if (err) {
+    console.error(err)
+    process.exit(1)
+  }
+})
+
+downloadWienerWohnen (err => {
   if (err) {
     console.error(err)
     process.exit(1)
