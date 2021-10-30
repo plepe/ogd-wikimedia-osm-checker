@@ -8,7 +8,8 @@ a .Adresse {
   top: 4px;
   bottom: 0;
   left: 0;
-  width: 50%;
+  width: calc(50% - 1px);
+  border-right: 1px solid black;
 }
 #selector > div > select {
   width: 49%;
@@ -16,7 +17,11 @@ a .Adresse {
   display: inline-block;
 }
 table#data {
+  width: 100%;
   border-collapse: collapse;
+}
+table#data > tr > td {
+  padding: 0.125em 0.25em;
 }
 table#data > tr > th,
 table#data > tr:nth-child(odd) > td {
@@ -35,6 +40,8 @@ table#data > tr.active a {
   bottom: 0;
   right: 0;
   width: 50%;
+  padding: 0 0.5em;
+  box-sizing: border-box;
 }
 tt {
   white-space: nowrap;
