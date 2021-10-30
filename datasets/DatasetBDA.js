@@ -76,20 +76,11 @@ class DatasetBDA extends Dataset {
 
   checks = checks
 
-  listEntry (entry, dom) {
-    const tr = document.createElement('tr')
-    tr.id = this.id + '-' + entry['HERIS-ID']
-
-    const td = document.createElement('td')
-    tr.appendChild(td)
-
-    const a = document.createElement('a')
-    a.innerHTML = '<span class="Katalogtitel">' + escHTML(entry.Katalogtitel) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
-    a.href = '#' + this.id + '/' + entry['HERIS-ID']
-    td.appendChild(a)
-    td.appendChild(document.createElement('br'))
-
-    dom.appendChild(tr)
+  listEntry (entry) {
+    return {
+      id: entry['HERIS-ID'],
+      text: '<span class="Katalogtitel">' + escHTML(entry.Katalogtitel) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
+    }
   }
 
   showEntry (data, dom) {

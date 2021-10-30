@@ -79,20 +79,11 @@ class DatasetKunstWien extends Dataset {
 
   checks = checks
 
-  listEntry (entry, dom) {
-    const tr = document.createElement('tr')
-    tr.id = this.id + '-' + entry.ID
-
-    const td = document.createElement('td')
-    tr.appendChild(td)
-
-    const a = document.createElement('a')
-    a.innerHTML = '<span class="Bezeichnung">' + escHTML(entry.OBJEKTTITEL) + '</span><span class="Adresse">' + escHTML(entry.STRASSE) + '</span>'
-    a.href = '#' + this.id + '/' + entry.ID
-    td.appendChild(a)
-    td.appendChild(document.createElement('br'))
-
-    dom.appendChild(tr)
+  listEntry (entry) {
+    return {
+      id: entry.ID,
+      text: '<span class="Bezeichnung">' + escHTML(entry.OBJEKTTITEL) + '</span><span class="Adresse">' + escHTML(entry.STRASSE) + '</span>'
+    }
   }
 
   showEntry (data, dom) {

@@ -161,7 +161,20 @@ function update () {
 
   for (const k in dataset.data) {
     if (dataset.data[k][dataset.ortFilterField] === ort) {
-      dataset.listEntry(dataset.data[k], dom)
+      const entry = dataset.listEntry(dataset.data[k])
+
+      const tr = document.createElement('tr')
+      tr.id = dataset.id + '-' + entry.id
+
+      const td = document.createElement('td')
+      tr.appendChild(td)
+
+      const a = document.createElement('a')
+      a.innerHTML = entry.text
+      a.href = '#' + dataset.id + '/' + entry.id
+
+      td.appendChild(a)
+      dom.appendChild(tr)
     }
   }
 }
