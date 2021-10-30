@@ -31,12 +31,12 @@ module.exports = {
 
         let values = wikidata.claims[k]
         const kPath = k.split(/\./)
-        if (kPath.length == 2 && kPath[0] in wikidata.claims) {
+        if (kPath.length === 2 && kPath[0] in wikidata.claims) {
           values = []
           wikidata.claims[kPath[0]].forEach(e => {
             if (e.qualifiers && kPath[1] in e.qualifiers) {
               e.qualifiers[kPath[1]].forEach(v => {
-                values.push({mainsnak: v})
+                values.push({ mainsnak: v })
               })
             }
           })

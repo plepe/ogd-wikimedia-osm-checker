@@ -16,7 +16,7 @@ const links = {
 }
 
 function label (labels) {
-  let lang = ['de-at', 'de', 'en'].filter(l => labels[l])
+  const lang = ['de-at', 'de', 'en'].filter(l => labels[l])
   if (!lang.length) {
     return ''
   }
@@ -25,7 +25,7 @@ function label (labels) {
 }
 
 module.exports = function wikidataFormat (ob) {
-  let attrList = []
+  const attrList = []
 
   attrList.push({
     key: 'label',

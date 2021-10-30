@@ -5,18 +5,6 @@ const fs = require('fs')
 const fetch = require('node-fetch')
 const JSDOM = require('jsdom').JSDOM
 
-const BdaIDs = [
-  ['W', '3354'],
-  ['Stmk.', '4967'],
-  ['Bgld.', '2099'],
-  ['Ktn.', '2878'],
-  ['NOE', '10616'],
-  ['OOE', '5912'],
-  ['Sbg.', '2198'],
-  ['Tir.', '4858'],
-  ['Vbg.', '1637']
-]
-
 function downloadBda (callback) {
   fetch('https://bda.gv.at/denkmalverzeichnis/')
     .then(response => response.text())

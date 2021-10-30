@@ -3,14 +3,14 @@ const escHTML = require('html-escape')
 const Dataset = require('../src/Dataset')
 
 const checks = [
-  //require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
+  // require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
   require('../checks/CheckCommonsLoadFromWikidata.js')({
     template: '/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/',
     property: 'P2951'
   }),
   require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(['P9154', 'HERIS-ID der Datenbank österreichischer Kulturdenkmale']),
-  //require('../checks/CheckWikidataLoadFromCommons.js')(),
+  // require('../checks/CheckWikidataLoadFromCommons.js')(),
   require('../checks/CheckWikidataShow.js')(),
   require('../checks/CheckWikidataCoords.js')(),
   require('../checks/CheckWikidataIsA.js')(),
@@ -62,7 +62,7 @@ class DatasetBDA extends Dataset {
 
   idField = 'HERIS-ID'
 
-  //osmRefField = 'ref:at:bda'
+  // osmRefField = 'ref:at:bda'
 
   wikipediaList = 'AT-BDA'
 
@@ -127,7 +127,7 @@ class DatasetBDA extends Dataset {
   missingTags (ob) {
     const result = ['heritage=2', 'heritage:operator=bda']
 
-    //result.push('ref:at:bda=' + ob.id)
+    // result.push('ref:at:bda=' + ob.id)
     if (ob.data.wikidata.length) {
       result.push('wikidata=' + ob.data.wikidata[0].id)
     }

@@ -3,7 +3,7 @@ const WikipediaListExtractor = require('wikipedia-list-extractor')
 const yaml = require('yaml')
 
 const lists = {}
-const extractorOptions = {loadRendered: true}
+const extractorOptions = { loadRendered: true }
 
 module.exports = function (options, callback) {
   if (!(options.list in lists)) {

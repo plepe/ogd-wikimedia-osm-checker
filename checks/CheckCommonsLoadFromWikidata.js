@@ -17,7 +17,7 @@ class CheckCommonsLoadFromWikidata extends Check {
       }
 
       data.forEach(d => {
-        let id = d.mainsnak.datavalue.value
+        const id = d.mainsnak.datavalue.value
 
         ob.load('commons', { search: 'insource:' + this.options.template.replace(/\$1/g, id) })
       })
