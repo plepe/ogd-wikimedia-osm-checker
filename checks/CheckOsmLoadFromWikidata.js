@@ -31,9 +31,7 @@ class CheckOsmLoadFromWikidata extends Check {
 
     if (!ob.data.osm) {
       const loading = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
-      if (loading.length) {
-        return
-      }
+      return !loading.length
     }
 
     const results = ob.data.osm.filter(el => el.tags.wikidata === wikidataId)
