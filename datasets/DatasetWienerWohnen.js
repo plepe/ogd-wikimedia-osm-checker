@@ -15,13 +15,13 @@ const checks = [
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
-//  require('../checks/CheckWikipediaListe.js')({
-//    wikidataField: 'WD-Item',
-//    showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
-//  }),
-//  require('../checks/CheckOsmLoadSimilar.js')({
-//    nameField: 'name'
-//  }),
+  require('../checks/CheckWikipediaListe.js')({
+    wikidataField: 'WD-Item',
+    showFields: ['Name', 'Adresse', 'Baujahr', 'Architekt', 'Wohnungen', 'Kunstobjekte', 'Anmerkung']
+  }),
+  require('../checks/CheckOsmLoadSimilar.js')({
+    nameField: 'name'
+  }),
   require('../checks/CheckOsmLoadFromWikidata.js')()
 ]
 
@@ -42,7 +42,7 @@ class DatasetWienerWohnen extends Dataset {
 
   idField = 'id'
 
-  wikipediaList = 'AT-Wien-Kultur'
+  wikipediaList = 'AT-Wien-Gemeindebauten'
 
   wikipediaListPrefix = 'id-'
 
@@ -75,6 +75,7 @@ class DatasetWienerWohnen extends Dataset {
     ul.innerHTML += '<li>Adresse: ' + escHTML(data.address) + '</li>'
     ul.innerHTML += '<li>Bauzeit: ' + escHTML(data.constructionStartYear) + '-' + escHTML(data.constructionEndYear) + '</li>'
     ul.innerHTML += '<li>Architekt_innen: ' + escHTML(data.architects || '') + '</li>'
+    ul.innerHTML += '<li>Kunst am Bau: ' + (data.publicArt ? 'ja' : 'nein') + '</li>'
     ul.innerHTML += '<li>Wohnungen: ' + escHTML('flats' in data ? data.flats : 'unbekannt') + '</li>'
     ul.innerHTML += '<li>Lokale: ' + escHTML('commercialSpaces' in data ? data.commercialSpaces : 'unbekannt') + '</li>'
     ul.innerHTML += '<li><a target="_blank" href="https://www.wienerwohnen.at' + escHTML(data.url) + '">Website</a></li>'
@@ -105,7 +106,7 @@ class DatasetWienerWohnen extends Dataset {
   }
 
   compileOverpassQuery (ob, filter) {
-    return '(nwr[building];nwr[landuse=residential];);'
+    return '(nwr[building](filter);nwr[landuse=residential](filter););'
   }
 }
 
