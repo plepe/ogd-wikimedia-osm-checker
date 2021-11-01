@@ -98,7 +98,16 @@ class DatasetWienerWohnen extends Dataset {
   }
 
   missingTags (ob) {
-    const result = ['architect', 'architect:wikidata', 'historic']
+    const result = [
+      'operator=Stadt Wien – Wiener Wohnen',
+      'ownership=municipal'
+    ]
+
+    result.push('website=' + ob.refData.url)
+
+    if (ob.refData.name !== ob.refData.address) {
+      result.push('name=' + ob.refData.name)
+    }
 
     if (ob.data.wikidata.length) {
       result.push('wikidata=' + ob.data.wikidata[0].id)
