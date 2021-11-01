@@ -20,6 +20,9 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckWikipediaListe.js')({
     wikidataField: 'WD-Item',
+    latitudeField: 'Breitengrad',
+    longitudeField: 'Längengrad',
+    articleField: 'Artikel',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
   require('../checks/CheckCommonsTemplate.js')({

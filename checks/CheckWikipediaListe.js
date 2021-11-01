@@ -33,15 +33,18 @@ class CheckWikipediaListe extends Check {
         }
       )
 
-      if (found[0].Breitengrad && found[0].Längengrad) {
-        attrList.push({
-          key: 'coordinates',
-          title: 'Koordinaten',
-          text: parseFloat(found[0].Breitengrad).toFixed(5) + ', ' + parseFloat(found[0].Längengrad).toFixed(5),
-          value: { latitude: found[0].Breitengrad, longitude: found[0].Längengrad },
-          link: 'https://openstreetmap.org/?mlat=' + found[0].Breitengrad + '&mlon=' + found[0].Längengrad + '#map=19/' + found[0].Breitengrad + '/' + found[0].Längengrad
-        })
+      if (this.options.latitudeField && this.options.longitudeField) {
+        if (found[0][this.options.latitudeField] && found[0][this.options.longitudeField]) {
+          attrList.push({
+            key: 'coordinates',
+            title: 'Koordinaten',
+            text: parseFloat(found[0][this.options.latitudeField]).toFixed(5) + ', ' + parseFloat(found[0][this.options.longitudeField]).toFixed(5),
+            value: { latitude: found[0][this.options.latitudeField], longitude: found[0][this.options.longitudeField] },
+            link: 'https://openstreetmap.org/?mlat=' + found[0][this.options.latitudeField] + '&mlon=' + found[0][this.options.longitudeField] + '#map=19/' + found[0][this.options.latitudeField] + '/' + found[0][this.options.longitudeField]
+          })
+        }
       }
+
       msg += printAttrList(attrList)
       ob.message('wikipedia', STATUS.SUCCESS, msg)
 
@@ -67,13 +70,15 @@ class CheckWikipediaListe extends Check {
         }
       }
 
-      if (found[0].Artikel) {
-        ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf einen Wikipedia Artikel: <a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(found[0].Artikel.replace(/ /g, '_')) + '">' + escHTML(found[0].Artikel) + '</a>')
-      } else {
-        if (ob.data.wikidata && ob.data.wikidata.length) {
-          const wikidataEntry = ob.data.wikidata[0]
-          if (wikidataEntry.sitelinks && 'dewiki' in wikidataEntry.sitelinks) {
-            ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf einen Wikipedia Artikel, sollte sein: <tt>Artikel = ' + escHTML(wikidataEntry.sitelinks.dewiki.title) + '</tt>')
+      if (this.options.articleField) {
+        if (found[0][this.options.articleField]) {
+          ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf einen Wikipedia Artikel: <a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(found[0][this.options.articleField].replace(/ /g, '_')) + '">' + escHTML(found[0][this.options.articleField]) + '</a>')
+        } else {
+          if (ob.data.wikidata && ob.data.wikidata.length) {
+            const wikidataEntry = ob.data.wikidata[0]
+            if (wikidataEntry.sitelinks && 'dewiki' in wikidataEntry.sitelinks) {
+              ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf einen Wikipedia Artikel, sollte sein: <tt>Artikel = ' + escHTML(wikidataEntry.sitelinks.dewiki.title) + '</tt>')
+            }
           }
         }
       }
