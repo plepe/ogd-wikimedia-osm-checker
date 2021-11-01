@@ -81,7 +81,7 @@ function downloadWienerWohnen (callback) {
         const result = {
           id: m1[2],
           image: entry[0].match(/^<img src='([^']*)'/)[1],
-          url: m1[1],
+          url: 'https://www.wienerwohnen.at' + m1[1],
           name: m1[3],
           plz: m2[1] ? m2[1] : 'other',
           ort: m2[2],

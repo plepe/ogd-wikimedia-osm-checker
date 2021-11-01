@@ -80,7 +80,7 @@ class DatasetWienerWohnen extends Dataset {
     ul.innerHTML += '<li>Kunst am Bau: ' + (data.publicArt ? 'ja' : 'nein') + '</li>'
     ul.innerHTML += '<li>Wohnungen: ' + escHTML('flats' in data ? data.flats : 'unbekannt') + '</li>'
     ul.innerHTML += '<li>Lokale: ' + escHTML('commercialSpaces' in data ? data.commercialSpaces : 'unbekannt') + '</li>'
-    ul.innerHTML += '<li><a target="_blank" href="https://www.wienerwohnen.at' + escHTML(data.url) + '">Website</a></li>'
+    ul.innerHTML += '<li><a target="_blank" href="' + escHTML(data.url) + '">Website</a></li>'
 
     // const pre = document.createElement('pre')
     // dom.appendChild(pre)
