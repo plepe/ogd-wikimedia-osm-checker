@@ -101,7 +101,10 @@ class DatasetWienerWohnen extends Dataset {
   missingTags (ob) {
     const result = [
       'operator=Stadt Wien – Wiener Wohnen',
-      'ownership=municipal'
+      'ownership=municipal',
+      'architect=' + (ob.refData.architects.split(/, /).join(';')),
+      'construction:start_date=' + ob.refData.constructionStartYear,
+      'start_date=' + ob.refData.constructionEndYear
     ]
 
     result.push('website=' + ob.refData.url)
