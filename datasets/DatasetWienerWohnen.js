@@ -35,7 +35,15 @@ class DatasetWienerWohnen extends Dataset {
 
   ogdURL = 'https://www.wienerwohnen.at/wiener-gemeindebau/gemeindebaubeschreibungen.html'
 
-  ogdInfo = ``
+  ogdInfo = `<a href='https://www.wienerwohnen.at/wiener-gemeindebau/gemeindebaubeschreibungen.html'>Gemeindebaubeschreibungen auf der Homepage von "Wiener Wohnen"</a>
+
+<ul>
+<li>Jeder Gemeindebau hat eine ID, die aus der URL der Wiener Wohnen Homepage auszulesen ist.</li>
+<li>In der <b>Wikipedia</b> gibt es für jeden Wiener Bezirk Seiten mit Listen zu Gemeindebauten. Dort wird die ID dieses Objektes (Feld 'ID') aufgeführt, sowie ein Link zum Wikidata Item (Feld 'WD-Item'), falls es einen Eintrag gibt.</li>
+<li>In <b>Wikidata</b> gibt es für einige Gemeindebauten einen Eintrag, erkennbar am Property "Wiener Wohen ID" (P8231) welches die Gemeindebau-ID enthält.</li>
+<li>In <b>Wikimedia Commons</b> sollte es zumindest ein Bild für jeden Gemeindebau geben. Gibt es mehrere Bilder (oder andere Medien), sollten diese in eine Kategorie zusammengefasst werden, die dann von Wikipedia Liste und Wikidata verlinkt werden. Bilder und Kategorie haben einen Vermerk <tt>{{Wiener Wohnen|123}}</tt> (123 = ID des Objektes) oder <tt>{{Wiener Wohnen|123|name=Hofname}}</tt>. Außerdem kriegt die Kategorie eine "Wikidata Infobox".</li>
+<li>In <b>OpenStreetMap</b> kann die Gemeindebau Information entweder auf den Gebäuden und/oder auf einem landuse=residential Polygon erfasst sein. Es gibt kein Tag um die ID des Gemeindebaus zu erfassen, allerdings kann man einen Website-Link auf die Wiener Wohnen Homepage setzen. Wenn es ein Wikidata Objekt gibt, sollte auf jeden fall ein Verweis auf das Wikidata-Objekt eingetragen sein (Tag "wikidata"). Weiters: <tt>operator=Stadt Wien – Wiener Wohnen, ownership=municipal</tt></li>
+</ul> `
 
   filename = 'wiener_wohnen.json'
 
