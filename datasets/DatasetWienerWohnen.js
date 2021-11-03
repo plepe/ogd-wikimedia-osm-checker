@@ -95,7 +95,7 @@ class DatasetWienerWohnen extends Dataset {
   }
 
   recommendedTags (ob) {
-    return ['architect', 'architect:wikidata', 'historic']
+    return ['architect', 'architect:wikidata', 'name:etymology', 'name:etymology:wikidata', 'building:levels']
   }
 
   missingTags (ob) {
