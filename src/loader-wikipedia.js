@@ -8,7 +8,7 @@ module.exports = {
           .then(res => res.json())
           .then(body => {
             if (body.length) {
-              let data = body[0].raw
+              const data = body[0].raw
               data.url = body[0].url
               done(null, [data])
             } else {

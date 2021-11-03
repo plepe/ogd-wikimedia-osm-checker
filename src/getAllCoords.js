@@ -22,5 +22,12 @@ module.exports = function getAllCoords (ob) {
     }
   )
 
+  if (ob.data.wikipedia && ob.data.wikipedia.length && ob.dataset.wikipediaList && ob.dataset.wikipediaList.latitudeField) {
+    allCoords.push({
+      latitude: parseFloat(ob.data.wikipedia[0][ob.dataset.wikipediaList.latitudeField]),
+      longitude: parseFloat(ob.data.wikipedia[0][ob.dataset.wikipediaList.longitudeField])
+    })
+  }
+
   return allCoords
 }

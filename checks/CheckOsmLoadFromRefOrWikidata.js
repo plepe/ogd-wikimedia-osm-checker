@@ -100,7 +100,7 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
     }
 
     if (id === null) {
-      return ob.message('osm', STATUS.ERROR, 'Kein Eintrag ' + (wikidataId ? 'mit <tt>wikidata=' + wikidataId + '</tt>': '') + ' in der OpenStreetMap gefunden!')
+      return ob.message('osm', STATUS.ERROR, 'Kein Eintrag ' + (wikidataId ? 'mit <tt>wikidata=' + wikidataId + '</tt>' : '') + ' in der OpenStreetMap gefunden!')
     } else {
       return ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + osmRefField + '=' + id + '</tt> ' + (wikidataId ? 'oder <tt>wikidata=' + wikidataId + '</tt>' : '') + ' in der OpenStreetMap gefunden!')
     }

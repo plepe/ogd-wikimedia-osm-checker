@@ -40,6 +40,6 @@ module.exports = function (list) {
   })
 
   result += '</ul>\n'
-  
+
   return result
 }

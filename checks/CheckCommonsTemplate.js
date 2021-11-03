@@ -34,7 +34,7 @@ class CheckCommonsTemplate extends Check {
       id = data[0].mainsnak.datavalue.value
     }
 
-    let categoriesWithTemplateID = categories.filter(el => {
+    const categoriesWithTemplateID = categories.filter(el => {
       if (!el.title.match(/Category:/)) {
         return false
       }

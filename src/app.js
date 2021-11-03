@@ -179,7 +179,7 @@ function update () {
   }
 }
 
-function check (id, options={}) {
+function check (id, options = {}) {
   const entry = dataset.data[id]
   const div = document.getElementById('details')
 

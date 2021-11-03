@@ -1,7 +1,6 @@
 const escHTML = require('html-escape')
 
 const STATUS = require('../src/status.js')
-const parseMediawikiTemplate = require('parse-mediawiki-template')
 const Check = require('../src/Check.js')
 const printAttrList = require('../src/printAttrList.js')
 
@@ -10,9 +9,8 @@ class CheckWikipediaListe extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob) {
-    let title
     if (!ob.data.wikipedia) {
-      return ob.load('wikipedia', { list: ob.dataset.wikipediaList, id: (ob.dataset.wikipediaListPrefix ? ob.dataset.wikipediaListPrefix : '') + ob.id })
+      return ob.load('wikipedia', { list: ob.dataset.wikipediaList.list, id: (ob.dataset.wikipediaList.idPrefix ? ob.dataset.wikipediaList.idPrefix : '') + ob.id })
     }
 
     if (ob.data.wikipedia.length === 0) {
@@ -35,15 +33,18 @@ class CheckWikipediaListe extends Check {
         }
       )
 
-      if (found[0].Breitengrad && found[0].Längengrad) {
-        attrList.push({
-          key: 'coordinates',
-          title: 'Koordinaten',
-          text: parseFloat(found[0].Breitengrad).toFixed(5) + ', ' + parseFloat(found[0].Längengrad).toFixed(5),
-          value: {latitude: found[0].Breitengrad, longitude: found[0].Längengrad},
-          link: 'https://openstreetmap.org/?mlat=' + found[0].Breitengrad + '&mlon=' + found[0].Längengrad + '#map=19/' + found[0].Breitengrad + '/' + found[0].Längengrad
-        })
+      if (ob.dataset.wikipediaList.latitudeField && ob.dataset.wikipediaList.longitudeField) {
+        if (found[0][ob.dataset.wikipediaList.latitudeField] && found[0][ob.dataset.wikipediaList.longitudeField]) {
+          attrList.push({
+            key: 'coordinates',
+            title: 'Koordinaten',
+            text: parseFloat(found[0][ob.dataset.wikipediaList.latitudeField]).toFixed(5) + ', ' + parseFloat(found[0][ob.dataset.wikipediaList.longitudeField]).toFixed(5),
+            value: { latitude: found[0][ob.dataset.wikipediaList.latitudeField], longitude: found[0][ob.dataset.wikipediaList.longitudeField] },
+            link: 'https://openstreetmap.org/?mlat=' + found[0][ob.dataset.wikipediaList.latitudeField] + '&mlon=' + found[0][ob.dataset.wikipediaList.longitudeField] + '#map=19/' + found[0][ob.dataset.wikipediaList.latitudeField] + '/' + found[0][ob.dataset.wikipediaList.longitudeField]
+          })
+        }
       }
+
       msg += printAttrList(attrList)
       ob.message('wikipedia', STATUS.SUCCESS, msg)
 
@@ -69,35 +70,33 @@ class CheckWikipediaListe extends Check {
         }
       }
 
-      if (found[0].Artikel) {
-        ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf einen Wikipedia Artikel: <a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(found[0].Artikel.replace(/ /g, '_')) + '">' + escHTML(found[0].Artikel) + '</a>')
-      } else {
-        if (ob.data.wikidata && ob.data.wikidata.length) {
-          let wikidataEntry = ob.data.wikidata[0]
-          if (wikidataEntry.sitelinks && 'dewiki' in wikidataEntry.sitelinks) {
-            ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf einen Wikipedia Artikel, sollte sein: <tt>Artikel = ' + escHTML(wikidataEntry.sitelinks.dewiki.title) + '</tt>')
+      if (ob.dataset.wikipediaList.articleField) {
+        if (found[0][ob.dataset.wikipediaList.articleField]) {
+          ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf einen Wikipedia Artikel: <a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(found[0][ob.dataset.wikipediaList.articleField].replace(/ /g, '_')) + '">' + escHTML(found[0][ob.dataset.wikipediaList.articleField]) + '</a>')
+        } else {
+          if (ob.data.wikidata && ob.data.wikidata.length) {
+            const wikidataEntry = ob.data.wikidata[0]
+            if (wikidataEntry.sitelinks && 'dewiki' in wikidataEntry.sitelinks) {
+              ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf einen Wikipedia Artikel, sollte sein: <tt>Artikel = ' + escHTML(wikidataEntry.sitelinks.dewiki.title) + '</tt>')
+            }
           }
         }
       }
 
-      if (this.options.wikidataField) {
+      if (ob.dataset.wikipediaList.wikidataField) {
         if (!ob.data.wikidata) {
           // no wikidata entry loaded -> try this
-          if (found[0][this.options.wikidataField]) {
-            ob.load('wikidata', { key: 'id', id: found[0][this.options.wikidataField] })
+          if (found[0][ob.dataset.wikipediaList.wikidataField]) {
+            ob.load('wikidata', { key: 'id', id: found[0][ob.dataset.wikipediaList.wikidataField] })
           }
-        }
-        else if (!ob.data.wikidata.length) {
+        } else if (!ob.data.wikidata.length) {
           // no wikidata entry found
-        }
-        else if (found[0][this.options.wikidataField] === ob.data.wikidata[0].id) {
+        } else if (found[0][ob.dataset.wikipediaList.wikidataField] === ob.data.wikidata[0].id) {
           ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen gültigen Verweis auf den Wikidata Eintrag.')
-        }
-        else if (found[0][this.options.wikidataField]) {
-          ob.message('wikipedia', STATUS.ERROR, 'Liste hat einen ungültigen Verweis auf einen Wikidata Eintrag: <tt>' + escHTML(found[0][this.options.wikidataField]) + '</tt>')
-        }
-        else {
-          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf den Wikidata Eintrag, sollte sein: <tt>' + escHTML(this.options.wikidataField) + ' = ' + escHTML(ob.data.wikidata[0].id) + '</tt>')
+        } else if (found[0][ob.dataset.wikipediaList.wikidataField]) {
+          ob.message('wikipedia', STATUS.ERROR, 'Liste hat einen ungültigen Verweis auf einen Wikidata Eintrag: <tt>' + escHTML(found[0][ob.dataset.wikipediaList.wikidataField]) + '</tt>')
+        } else {
+          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf den Wikidata Eintrag, sollte sein: <tt>' + escHTML(ob.dataset.wikipediaList.wikidataField) + ' = ' + escHTML(ob.data.wikidata[0].id) + '</tt>')
         }
       }
 

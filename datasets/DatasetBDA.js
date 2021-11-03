@@ -3,14 +3,14 @@ const escHTML = require('html-escape')
 const Dataset = require('../src/Dataset')
 
 const checks = [
-  //require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
+  // require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
   require('../checks/CheckCommonsLoadFromWikidata.js')({
     template: '/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/',
     property: 'P2951'
   }),
   require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(['P9154', 'HERIS-ID der Datenbank österreichischer Kulturdenkmale']),
-  //require('../checks/CheckWikidataLoadFromCommons.js')(),
+  // require('../checks/CheckWikidataLoadFromCommons.js')(),
   require('../checks/CheckWikidataShow.js')(),
   require('../checks/CheckWikidataCoords.js')(),
   require('../checks/CheckWikidataIsA.js')(),
@@ -19,7 +19,6 @@ const checks = [
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    wikidataField: 'WD-Item',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
   require('../checks/CheckCommonsTemplate.js')({
@@ -52,21 +51,26 @@ class DatasetBDA extends Dataset {
 </p>
 
 <ul>
-<li>In der Wikipedia gibt es für jede österreichische Gemeinde Seiten mit Listen zu denkmalgeschützten Objekten, welche via Bot aktualisiert werden. Die neuen HERIS-IDs stehen allerdings nicht im Source-Code, sondern werden aus Wikidata geladen. Dafür hat jedes Objekt ein "WD-Item" Feld mit der Wikidata-ID.
-<li>In Wikidata gibt es für jedes Objekt einen Eintrag (via Bot gepflegt), erkennbar am Property "Heritage Information System ID der Datenbank österreichischer Kulturdenkmale" (P9154) welches die ID aus dem Katalog enthält. Objekte mit alter Objekt-ID haben außerdem ein Property "Objekt-ID der Datenbank österreichischer Kulturdenkmale" (P2951).</li>
-<li>In Wikimedia Commons sollte es zumindest ein Bild für jedes Objekt geben. Gibt es mehrere Bilder (oder andere Medien), sollten diese in eine Kategorie zusammengefasst werden, die dann von Wikipedia Liste und Wikidata verlinkt werden. Es gibt die Vorlage <tt>{{Denkmalgeschütztes Objekt Österreich|1=12345}}</tt>, diese enthält aber die alte Objekt-ID. Für die HERIS-ID gibt es (noch?) keine Vorlage. Außerdem kriegt die Kategorie eine "Infobox".</li>
-<li>In OpenStreetMap sollten die meisten Objekte erfasst sein (zumindest wenn es sich um Gebäude oder Denkmäler handelt). Es gibt ein Tag "ref:at:bda", welches die Objekt-ID des Objektes enthält, für die HERIS-ID gibt es (noch?) kein Tag (siehe <a href="https://wiki.openstreetmap.org/wiki/Talk:Key:ref:at:bda">diese Diskussion</a>. Es sollte auf jeden fall ein Verweis auf das Wikidata-Objekt eingetragen sein (Tag "wikidata").</li>
+<li>In der <b>Wikipedia</b> gibt es für jede österreichische Gemeinde Seiten mit Listen zu denkmalgeschützten Objekten, welche via Bot aktualisiert werden. Die neuen HERIS-IDs stehen allerdings nicht im Source-Code, sondern werden aus Wikidata geladen. Dafür hat jedes Objekt ein "WD-Item" Feld mit der Wikidata-ID.
+<li>In <b>Wikidata</b> gibt es für jedes Objekt einen Eintrag (via Bot gepflegt), erkennbar am Property "Heritage Information System ID der Datenbank österreichischer Kulturdenkmale" (P9154) welches die ID aus dem Katalog enthält. Objekte mit alter Objekt-ID haben außerdem ein Property "Objekt-ID der Datenbank österreichischer Kulturdenkmale" (P2951).</li>
+<li>In <b>Wikimedia Commons</b> sollte es zumindest ein Bild für jedes Objekt geben. Gibt es mehrere Bilder (oder andere Medien), sollten diese in eine Kategorie zusammengefasst werden, die dann von Wikipedia Liste und Wikidata verlinkt werden. Es gibt die Vorlage <tt>{{Denkmalgeschütztes Objekt Österreich|1=12345}}</tt>, diese enthält aber die alte Objekt-ID. Für die HERIS-ID gibt es (noch?) keine Vorlage. Außerdem kriegt die Kategorie eine "Infobox".</li>
+<li>In <b>OpenStreetMap</b> sollten die meisten Objekte erfasst sein (zumindest wenn es sich um Gebäude oder Denkmäler handelt). Es gibt ein Tag "ref:at:bda", welches die Objekt-ID des Objektes enthält, für die HERIS-ID gibt es (noch?) kein Tag (siehe <a href="https://wiki.openstreetmap.org/wiki/Talk:Key:ref:at:bda">diese Diskussion</a>. Es sollte auf jeden fall ein Verweis auf das Wikidata-Objekt eingetragen sein (Tag "wikidata").</li>
 </ul> `
 
   filename = 'bda.json'
 
   idField = 'HERIS-ID'
 
-  //osmRefField = 'ref:at:bda'
+  // osmRefField = 'ref:at:bda'
 
-  wikipediaList = 'AT-BDA'
-
-  wikipediaListPrefix = 'id-'
+  wikipediaList = {
+    list: 'AT-BDA',
+    idPrefix: 'id-',
+    wikidataField: 'WD-Item',
+    latitudeField: 'Breitengrad',
+    longitudeField: 'Längengrad',
+    articleField: 'Artikel'
+  }
 
   ortFilterField = 'Gemeinde'
 
@@ -127,7 +131,7 @@ class DatasetBDA extends Dataset {
   missingTags (ob) {
     const result = ['heritage=2', 'heritage:operator=bda']
 
-    //result.push('ref:at:bda=' + ob.id)
+    // result.push('ref:at:bda=' + ob.id)
     if (ob.data.wikidata.length) {
       result.push('wikidata=' + ob.data.wikidata[0].id)
     }

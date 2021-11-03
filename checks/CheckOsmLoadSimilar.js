@@ -13,10 +13,6 @@ class CheckOsmLoadSimilar extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob) {
-    if (!ob.data.wikidata) { // wait for wikidata info to be populated
-      return
-    }
-
     if (!ob.isDone(/^CheckWikidataLoad/)) {
       // wait for all wikidata loaders to finish
       return

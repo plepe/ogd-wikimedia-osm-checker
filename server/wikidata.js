@@ -111,7 +111,7 @@ function _request (options, callback) {
     )
   }
 
-  let query = {}
+  const query = {}
   query[options.key] = options.id
 
   const _options = JSON.parse(JSON.stringify(options))
@@ -124,7 +124,7 @@ function _request (options, callback) {
 
     async.map(results[0],
       (id, done) => {
-        let _options = JSON.parse(JSON.stringify(options))
+        const _options = JSON.parse(JSON.stringify(options))
         _options.key = 'id'
         _options.id = id
 

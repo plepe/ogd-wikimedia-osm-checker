@@ -27,7 +27,6 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    wikidataField: 'WD-Item',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
   }),
   require('../checks/CheckOsmLoadSimilar.js')({
@@ -50,10 +49,10 @@ class DatasetKunstWien extends Dataset {
   ogdInfo = `<a href='https://www.wien.gv.at/kultur/kulturgut/kunstwerke/'>Katalog Kunstwerke im öffentlichen Raum Standorte Wien</a>
 
 <ul>
-<li>In der Wikipedia gibt es für (fast) jeden Wiener Bezirk Seiten mit Listen zu Kunstwerken und Denkmälern bzw. zu Gedenktafeln und -steinen. Dort wird die ID dieses Objektes (Feld 'ID') aufgeführt, sowie ein Link zum Wikidata Item (Feld 'WD-Item'), falls es einen Eintrag gibt.</li>
-<li>In Wikidata sind gibt es für viele dieser Kunstwerke/Denkmäler einen Eintrag, erkennbar am Property "Wien Kulturgut: Kunstwerke im öffentlichen Raum ID" (P4830) welches die ID aus dem Katalog enthält.</li>
-<li>In Wikimedia Commons sollte es zumindest ein Bild für jedes Kunstwerk/Denkmal geben. Gibt es mehrere Bilder (oder andere Medien), sollten diese in eine Kategorie zusammengefasst werden, die dann von Wikipedia Liste und Wikidata verlinkt werden. Bilder und Kategorie haben einen Vermerk <tt>{{Public Art Austria|12345|AT-9}}</tt> (12345 = ID des Objektes). Außerdem kriegt die Kategorie eine "Infobox".</li>
-<li>In OpenStreetMap sollte jedes Kunstwerk/Denkmal erfasst sein. Es gibt ein Tag "ref:wien:kultur", welches die ID des Objektes enthält. Außerdem sollte ein Verweis auf das Wikidata-Objekt eingetragen sein (Tag "wikidata").</li>
+<li>In der <b>Wikipedia</b> gibt es für (fast) jeden Wiener Bezirk Seiten mit Listen zu Kunstwerken und Denkmälern bzw. zu Gedenktafeln und -steinen. Dort wird die ID dieses Objektes (Feld 'ID') aufgeführt, sowie ein Link zum Wikidata Item (Feld 'WD-Item'), falls es einen Eintrag gibt.</li>
+<li>In <b>Wikidata</b> gibt es für viele dieser Kunstwerke/Denkmäler einen Eintrag, erkennbar am Property "Wien Kulturgut: Kunstwerke im öffentlichen Raum ID" (P4830) welches die ID aus dem Katalog enthält.</li>
+<li>In <b>Wikimedia Commons</b> sollte es zumindest ein Bild für jedes Kunstwerk/Denkmal geben. Gibt es mehrere Bilder (oder andere Medien), sollten diese in eine Kategorie zusammengefasst werden, die dann von Wikipedia Liste und Wikidata verlinkt werden. Bilder und Kategorie haben einen Vermerk <tt>{{Public Art Austria|12345|AT-9}}</tt> (12345 = ID des Objektes). Außerdem kriegt die Kategorie eine "Wikidata Infobox".</li>
+<li>In <b>OpenStreetMap</b> sollte jedes Kunstwerk/Denkmal erfasst sein. Es gibt ein Tag "ref:wien:kultur", welches die ID des Objektes enthält. Außerdem sollte ein Verweis auf das Wikidata-Objekt eingetragen sein (Tag "wikidata").</li>
 </ul> `
 
   filename = 'kunstwien.json'
@@ -67,9 +66,14 @@ class DatasetKunstWien extends Dataset {
     id: 'SHAPE'
   }
 
-  wikipediaList = 'AT-Wien-Kultur'
-
-  wikipediaListPrefix = 'id-'
+  wikipediaList = {
+    list: 'AT-Wien-Kultur',
+    idPrefix: 'id-',
+    wikidataField: 'WD-Item',
+    latitudeField: 'Breitengrad',
+    longitudeField: 'Längengrad',
+    articleField: 'Artikel'
+  }
 
   ortFilterField = 'PLZ'
 
