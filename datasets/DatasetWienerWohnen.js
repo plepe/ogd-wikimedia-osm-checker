@@ -16,9 +16,6 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    wikidataField: 'WD-Item',
-    latitudeField: 'Breitengrad',
-    longitudeField: 'Längengrad',
     showFields: ['Name', 'Adresse', 'Baujahr', 'Architekt', 'Wohnungen', 'Kunstobjekte', 'Anmerkung']
   }),
   require('../checks/CheckOsmLoadSimilar.js')({
@@ -44,9 +41,13 @@ class DatasetWienerWohnen extends Dataset {
 
   idField = 'id'
 
-  wikipediaList = 'AT-Wien-Gemeindebauten'
-
-  wikipediaListPrefix = 'id-'
+  wikipediaList = {
+    list: 'AT-Wien-Gemeindebauten',
+    idPrefix: 'id-',
+    wikidataField: 'WD-Item',
+    latitudeField: 'Breitengrad',
+    longitudeField: 'Längengrad'
+  }
 
   ortFilterField = 'plz'
 

@@ -19,10 +19,6 @@ const checks = [
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    wikidataField: 'WD-Item',
-    latitudeField: 'Breitengrad',
-    longitudeField: 'Längengrad',
-    articleField: 'Artikel',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }),
   require('../checks/CheckCommonsTemplate.js')({
@@ -67,9 +63,14 @@ class DatasetBDA extends Dataset {
 
   // osmRefField = 'ref:at:bda'
 
-  wikipediaList = 'AT-BDA'
-
-  wikipediaListPrefix = 'id-'
+  wikipediaList = {
+    list: 'AT-BDA',
+    idPrefix: 'id-',
+    wikidataField: 'WD-Item',
+    latitudeField: 'Breitengrad',
+    longitudeField: 'Längengrad',
+    articleField: 'Artikel'
+  }
 
   ortFilterField = 'Gemeinde'
 

@@ -27,10 +27,6 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')({
-    wikidataField: 'WD-Item',
-    latitudeField: 'Breitengrad',
-    longitudeField: 'Längengrad',
-    articleField: 'Artikel',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
   }),
   require('../checks/CheckOsmLoadSimilar.js')({
@@ -70,9 +66,14 @@ class DatasetKunstWien extends Dataset {
     id: 'SHAPE'
   }
 
-  wikipediaList = 'AT-Wien-Kultur'
-
-  wikipediaListPrefix = 'id-'
+  wikipediaList = {
+    list: 'AT-Wien-Kultur',
+    idPrefix: 'id-',
+    wikidataField: 'WD-Item',
+    latitudeField: 'Breitengrad',
+    longitudeField: 'Längengrad',
+    articleField: 'Artikel'
+  }
 
   ortFilterField = 'PLZ'
 
