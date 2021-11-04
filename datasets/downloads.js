@@ -3,4 +3,3 @@ module.exports = {
   kunstwien: require('./DownloadKunstWien.js'),
   'wiener-wohnen': require('./DownloadWienerWohnen.js')
 }
-

@@ -2,8 +2,6 @@ const fs = require('fs')
 const fetch = require('node-fetch')
 
 module.exports = function downloadWienerWohnen (callback) {
-  const data = []
-
   fetch('https://www.wienerwohnen.at/wiener-gemeindebau/gemeindebaubeschreibungen.json')
     .then(response => response.json())
     .then(body => {

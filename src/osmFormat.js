@@ -20,8 +20,7 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
     const categories = ob.data.commons.filter(page => page.title.match(/^Category:/))
     if (categories.length) {
       missTags.push('wikimedia_commons=' + categories[0].title)
-    }
-    else if (files.length) {
+    } else if (files.length) {
       missTags.push('image=' + files[0].title)
     }
   }
