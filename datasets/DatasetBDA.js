@@ -118,7 +118,6 @@ class DatasetBDA extends Dataset {
 
     if (ob.refData.Gemeinde === 'Wien') {
       list.push('P7842') // Wien Geschichte Wiki ID (siehe Seiteninformationen)
-      list.push('P8231') // Wiener Wohnen ID (numerische ID in URL)
     }
 
     return list
