@@ -1,20 +1,7 @@
 const STATUS = require('../src/status.js')
 const Check = require('../src/Check.js')
 
-const properties = {
-  P84: 'Architekt_in',
-  P138: 'benannt nach',
-  P170: 'Urheber_in',
-  P186: 'Material',
-  P571: 'Entstehung',
-  P580: 'Startzeitpunkt',
-  P417: 'Patron_in',
-  P180: 'Motiv',
-  P1619: 'Eröffnung',
-  P1684: 'Inschrift',
-  P7842: 'Wien Geschichte Wiki ID',
-  P8231: 'Wiener Wohnen ID'
-}
+const properties = require('../data/wikidataProperties.json')
 
 class CheckWikidataRecommendations extends Check {
   check (ob) {
