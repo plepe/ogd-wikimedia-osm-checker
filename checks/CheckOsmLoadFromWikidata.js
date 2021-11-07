@@ -32,7 +32,7 @@ class CheckOsmLoadFromWikidata extends Check {
     }
 
     if (!ob.data.osm) {
-      const loading = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
+      const loading = ob.data.wikidata.filter(entry => !ob.load('osm', { query: 'nwr[wikidata="' + entry.id + '"];' }))
       return !loading.length
     }
 

@@ -44,11 +44,11 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       return
     }
 
-    const loadingWikidata = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
+    const loadingWikidata = ob.data.wikidata.filter(entry => !ob.load('osm', { query: 'nwr[wikidata="' + entry.id + '"];' }))
 
     let loadingRef = false
     if (id !== null) {
-      loadingRef = !ob.load('osm', 'nwr["' + osmRefField + '"=' + id + '];')
+      loadingRef = !ob.load('osm', { query: 'nwr["' + osmRefField + '"=' + id + '];' })
     }
 
     if (loadingWikidata.length || loadingRef) {

@@ -129,7 +129,7 @@ class DatasetWienerWohnen extends Dataset {
   }
 
   compileOverpassQuery (ob, filter) {
-    return '(nwr[building](filter);nwr[landuse=residential](filter););'
+    return '(nwr[building];nwr[landuse=residential];);'
   }
 }
 

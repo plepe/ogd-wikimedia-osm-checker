@@ -1,4 +1,8 @@
+const BoundingBox = require('boundingbox')
 const stringSimilarity = require('string-similarity')
+const turf = {
+  buffer: require('@turf/buffer')
+}
 
 const editLink = require('../src/editLink.js')
 const STATUS = require('../src/status.js')
@@ -26,8 +30,18 @@ class CheckOsmLoadSimilar extends Check {
         return true
       }
 
-      allCoords.forEach(coords => ob.load('osm', query.replace(/\(filter\)/g, '(around:30,' + coords.latitude + ',' + coords.longitude + ')')))
-      return
+      if (!allCoords.length) {
+        return true
+      }
+
+      let bounds = new BoundingBox(allCoords[0])
+      allCoords.forEach(coords => {
+        bounds.extend(coords)
+      })
+
+      bounds = turf.buffer(bounds.toGeoJSON(), 30, { units: 'meters' })
+
+      return ob.load('osm', { query, bounds })
     }
 
     // if one of the OSM objects has a matching wikidata tag, we are happy

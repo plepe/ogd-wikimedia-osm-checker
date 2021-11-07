@@ -3,13 +3,13 @@ const escHTML = require('html-escape')
 const Dataset = require('../src/Dataset')
 
 const typ2OverpassQuery = {
-  Gedenktafeln: 'nwr[historic=memorial](filter);',
-  Denkmäler: 'nwr[historic=memorial](filter);',
-  'Sakrale Kleindenkmäler': 'nwr[historic~"^wayside_(cross|shrine)$"](filter);',
-  Brunnen: 'nwr[amenity=fountain](filter);',
-  'Profanplastiken/Kunst am Bau freistehend': '(nwr[tourism=artwork](filter);nwr[amenity=fountain](filter););',
-  'Kunst am Bau wandgebunden': 'nwr[tourism=artwork](filter);',
-  'Grabmäler/Grabhaine': '(nwr[amenity=graveyard](filter);nwr[cemetery=grave](filter);nwr[historic=tomb](filter););',
+  Gedenktafeln: 'nwr[historic=memorial];',
+  Denkmäler: 'nwr[historic=memorial];',
+  'Sakrale Kleindenkmäler': 'nwr[historic~"^wayside_(cross|shrine)$"];',
+  Brunnen: 'nwr[amenity=fountain];',
+  'Profanplastiken/Kunst am Bau freistehend': '(nwr[tourism=artwork];nwr[amenity=fountain];);',
+  'Kunst am Bau wandgebunden': 'nwr[tourism=artwork];',
+  'Grabmäler/Grabhaine': '(nwr[amenity=graveyard];nwr[cemetery=grave];nwr[historic=tomb];);',
   '': null
 }
 
