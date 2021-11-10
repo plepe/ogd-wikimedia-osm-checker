@@ -5,6 +5,10 @@ Aktuell verfügbare Datensätze:
 * [Denkmalliste des österr. Bundesdenkmalamtes](https://bda.gv.at/denkmalverzeichnis/#denkmalliste-gemaess-3-dmsg)
 * [Kunstwerke im öff. Raum (Kulturgut Wien)](https://www.data.gv.at/katalog/dataset/stadt-wien_kunstwerkeimffentlichenraumwien)
 
+Der Checker läuft auf https://www.openstreetmap.at/checker
+
+Ein Screencast mit einer Anleitung findet sich hier: https://www.youtube.com/watch?v=e9Is-3ssA7U
+
 ## Installation
 ```
 git clone https://github.com/plepe/ogd-wikimedia-osm-checker
