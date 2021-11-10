@@ -4,6 +4,7 @@ Vergleiche die Einträge verschiedener OGD (Open Government Data) Datensätze mi
 Aktuell verfügbare Datensätze:
 * [Denkmalliste des österr. Bundesdenkmalamtes](https://bda.gv.at/denkmalverzeichnis/#denkmalliste-gemaess-3-dmsg)
 * [Kunstwerke im öff. Raum (Kulturgut Wien)](https://www.data.gv.at/katalog/dataset/stadt-wien_kunstwerkeimffentlichenraumwien)
+* [Wiener Gemeindebauten (Wiener Wohnen)](https://www.wienerwohnen.at/wiener-gemeindebau/gemeindebaubeschreibungen.html)
 
 Der Checker läuft auf https://www.openstreetmap.at/checker
 
