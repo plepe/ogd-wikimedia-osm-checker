@@ -38,6 +38,7 @@ class CheckOsmLoadSimilar extends Check {
       allCoords.forEach(coords => {
         bounds.extend(coords)
       })
+      console.log(bounds)
 
       bounds = turf.buffer(bounds.toGeoJSON(), 30, { units: 'meters' })
 
