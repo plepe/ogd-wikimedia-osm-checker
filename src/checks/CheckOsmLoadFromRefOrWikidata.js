@@ -1,6 +1,7 @@
 const STATUS = require('../status.js')
 const osmFormat = require('../osmFormat.js')
 const Check = require('../Check.js')
+const idFromRefOrRefValue = require('../idFromRefOrRefValue')
 
 class CheckOsmLoadFromRefOrWikidata extends Check {
   // result:
@@ -9,22 +10,13 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
   check (ob, dataset) {
     let wikidataId
 
-    if (!dataset.osm.refField) {
+    if (!dataset.osm || !dataset.osm.refField) {
       return true // use 'CheckOsmLoadFromWikidata' instead
     }
 
-    let id = ob.id
-    if (dataset.osm.refValue) {
-      if (!ob.data.wikidata || !ob.data.wikidata.length) {
-        return true
-      }
-
-      const data = ob.data.wikidata[0].claims[dataset.osm.refValue.wikidataProperty]
-      if (!data || !data.length) {
-        id = null
-      } else {
-        id = data[0].mainsnak.datavalue.value
-      }
+    const id = idFromRefOrRefValue(ob, dataset.osm.refValue)
+    if (id === false || id === null) {
+      return true
     }
 
     const osmRefField = dataset.osm.refField

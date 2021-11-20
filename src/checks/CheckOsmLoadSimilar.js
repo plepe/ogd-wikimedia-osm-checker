@@ -7,6 +7,7 @@ const calcDistance = require('../calcDistance.js')
 const Check = require('../Check.js')
 const getAllCoords = require('../getAllCoords.js')
 const wikidataToOsm = require('../wikidataToOsm.js')
+const idFromRefOrRefValue = require('../idFromRefOrRefValue')
 
 class CheckOsmLoadSimilar extends Check {
   // result:
@@ -39,10 +40,13 @@ class CheckOsmLoadSimilar extends Check {
     }
 
     // if one of the OSM objects has a matching refField tag (e.g. ref:at:bda), we are happy
-    if (!ob.osmSimilar && dataset.osmRefField) {
-      const match = ob.data.osm.filter(el => el.tags[dataset.osmRefField] === ob.id)
-      if (match.length) {
-        return true
+    if (!ob.osmSimilar && dataset.osm && dataset.osm.refField) {
+      const id = idFromRefOrRefValue(ob, dataset.osm.refValue)
+      if (id !== false && id !== null) {
+        const match = ob.data.osm.filter(el => el.tags[dataset.osm.refField] === id)
+        if (match.length) {
+          return true
+        }
       }
     }
 
