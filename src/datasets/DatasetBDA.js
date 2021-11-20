@@ -9,7 +9,7 @@ const checks = [
     property: 'P2951'
   }),
   require('../checks/CheckCommonsShowItems.js')(),
-  require('../checks/CheckWikidataLoadViaRef.js')(['P9154', 'HERIS-ID der Datenbank österreichischer Kulturdenkmale']),
+  require('../checks/CheckWikidataLoadViaRef.js')(),
   // require('../checks/CheckWikidataLoadFromCommons.js')(),
   require('../checks/CheckWikidataShow.js')(),
   require('../checks/CheckWikidataCoords.js')(),
@@ -69,6 +69,11 @@ class DatasetBDA extends Dataset {
     longitudeField: 'Längengrad',
     articleField: 'Artikel',
     showFields: ['Name', 'Beschreibung', 'Anmerkung']
+  }
+
+  wikidata = {
+    refProperty: 'P9154',
+    refPropertyTitle: 'HERIS-ID der Datenbank österreichischer Kulturdenkmale'
   }
 
   ortFilterField = 'Gemeinde'

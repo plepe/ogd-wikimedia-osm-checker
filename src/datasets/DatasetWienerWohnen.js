@@ -6,7 +6,7 @@ const checks = [
   require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{Wiener Wohnen\\s*\\|\\s*(1=)*$1(\\|(.*))?\\}\\}/'),
   require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckCommonsLoad.js')(),
-  require('../checks/CheckWikidataLoadViaRef.js')(['P8231', 'Wiener Wohnen ID']),
+  require('../checks/CheckWikidataLoadViaRef.js')(),
   require('../checks/CheckWikidataLoadFromCommons.js')(),
   require('../checks/CheckWikidataShow.js')(),
   require('../checks/CheckWikidataCoords.js')(),
@@ -54,6 +54,11 @@ class DatasetWienerWohnen extends Dataset {
     latitudeField: 'Breitengrad',
     longitudeField: 'Längengrad',
     showFields: ['Name', 'Adresse', 'Baujahr', 'Architekt', 'Wohnungen', 'Kunstobjekte', 'Anmerkung']
+  }
+
+  wikidata = {
+    refProperty: 'P8231',
+    refPropertyTitle: 'Wiener Wohnen ID'
   }
 
   ortFilterField = 'plz'

@@ -6,27 +6,27 @@ class CheckWikidataLoadViaRef extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob) {
-    if (!ob.load('wikidata', { key: this.options[0], id: ob.id })) {
+    if (!ob.load('wikidata', { key: ob.dataset.wikidata.refProperty, id: ob.id })) {
       return false
     }
 
     if (!ob.data.wikidata.length) {
-      return ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + this.options[1] + ' (' + this.options[0] + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
+      return ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + ob.dataset.wikidata.refPropertyTitle + ' (' + ob.dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
     }
 
     const success = ob.data.wikidata.filter(
       entry =>
-        entry.claims[this.options[0]] &&
-        entry.claims[this.options[0]].filter(
+        entry.claims[ob.dataset.wikidata.refProperty] &&
+        entry.claims[ob.dataset.wikidata.refProperty].filter(
           claim =>
             claim.mainsnak.datavalue.value === ob.id
         )
     )
 
     if (success.length) {
-      ob.message('wikidata', STATUS.SUCCESS, 'Eintrag mit Attribut <i>' + this.options[1] + ' (' + this.options[0] + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
+      ob.message('wikidata', STATUS.SUCCESS, 'Eintrag mit Attribut <i>' + ob.dataset.wikidata.refPropertyTitle + ' (' + ob.dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
     } else {
-      ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + this.options[1] + ' (' + this.options[0] + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
+      ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + ob.dataset.wikidata.refPropertyTitle + ' (' + ob.dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
     }
 
     return true

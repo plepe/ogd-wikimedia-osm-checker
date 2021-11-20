@@ -17,7 +17,7 @@ const checks = [
   require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
   require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckCommonsLoad.js')(),
-  require('../checks/CheckWikidataLoadViaRef.js')(['P8430', 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID']),
+  require('../checks/CheckWikidataLoadViaRef.js')(),
   require('../checks/CheckWikidataLoadFromCommons.js')(),
   require('../checks/CheckWikidataShow.js')(),
   require('../checks/CheckWikidataCoords.js')(),
@@ -72,6 +72,11 @@ class DatasetKunstWien extends Dataset {
     longitudeField: 'Längengrad',
     articleField: 'Artikel',
     showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
+  }
+
+  wikidata = {
+    refProperty: 'P8430',
+    refPropertyTitle: 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID'
   }
 
   ortFilterField = 'PLZ'
