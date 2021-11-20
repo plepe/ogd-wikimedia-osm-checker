@@ -172,7 +172,11 @@ function update () {
       tr.appendChild(td)
 
       const a = document.createElement('a')
-      a.innerHTML = text
+      if (typeof text === 'string') {
+        a.innerHTML = text
+      } else {
+        a.appendChild(text)
+      }
       a.href = '#' + dataset.id + '/' + id
 
       td.appendChild(a)
