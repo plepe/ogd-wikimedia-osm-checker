@@ -61,11 +61,8 @@ class DatasetBDA extends Dataset {
     refDataNameField: 'Katalogtitel'
   }
 
-  listEntry (entry) {
-    return {
-      id: entry['HERIS-ID'],
-      text: '<span class="Katalogtitel">' + escHTML(entry.Katalogtitel) + '</span><span class="Adresse">' + escHTML(entry.Adresse) + '</span>'
-    }
+  listFormat (item) {
+    return '<span class="Katalogtitel">' + escHTML(item.Katalogtitel) + '</span><span class="Adresse">' + escHTML(item.Adresse) + '</span>'
   }
 
   showEntry (data, dom) {

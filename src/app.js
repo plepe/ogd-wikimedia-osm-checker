@@ -159,24 +159,26 @@ function update () {
 
   const dom = document.getElementById('data')
 
-  for (const k in dataset.data) {
-    if (dataset.data[k][dataset.refData.placeFilterField] === place) {
-      const entry = dataset.listEntry(dataset.data[k])
+  Object.keys(dataset.data).forEach(id => {
+    const item = dataset.data[id]
+
+    if (item[dataset.refData.placeFilterField] === place) {
+      const text = dataset.listFormat(item)
 
       const tr = document.createElement('tr')
-      tr.id = dataset.id + '-' + entry.id
+      tr.id = dataset.id + '-' + id
 
       const td = document.createElement('td')
       tr.appendChild(td)
 
       const a = document.createElement('a')
-      a.innerHTML = entry.text
-      a.href = '#' + dataset.id + '/' + entry.id
+      a.innerHTML = text
+      a.href = '#' + dataset.id + '/' + id
 
       td.appendChild(a)
       dom.appendChild(tr)
     }
-  }
+  })
 }
 
 function check (id, options = {}) {

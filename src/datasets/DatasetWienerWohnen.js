@@ -55,11 +55,8 @@ class DatasetWienerWohnen extends Dataset {
     templateTemplate: '{{Wiener Wohnen|$1}}'
   }
 
-  listEntry (entry) {
-    return {
-      id: entry.id,
-      text: '<span class="Bezeichnung">' + escHTML(entry.name) + '</span><span class="Adresse">' + escHTML(entry.address) + '</span>'
-    }
+  listFormat (item) {
+    return '<span class="Bezeichnung">' + escHTML(item.name) + '</span><span class="Adresse">' + escHTML(item.address) + '</span>'
   }
 
   showEntry (data, dom) {

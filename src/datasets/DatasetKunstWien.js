@@ -71,11 +71,8 @@ class DatasetKunstWien extends Dataset {
     refDataNameField: 'OBJEKTTITEL'
   }
 
-  listEntry (entry) {
-    return {
-      id: entry.ID,
-      text: '<span class="Bezeichnung">' + escHTML(entry.OBJEKTTITEL) + '</span><span class="Adresse">' + escHTML(entry.STRASSE) + '</span>'
-    }
+  listFormat (item) {
+    return '<span class="Bezeichnung">' + escHTML(item.OBJEKTTITEL) + '</span><span class="Adresse">' + escHTML(item.STRASSE) + '</span>'
   }
 
   showEntry (data, dom) {
