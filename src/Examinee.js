@@ -153,7 +153,7 @@ module.exports = class Examinee extends EventEmitter {
     this.clearMessages()
 
     checks.forEach(check => {
-      this.checksStatus[check.id] = check.check(this)
+      this.checksStatus[check.id] = check.check(this, dataset)
     })
 
     if (this.needLoad()) {

@@ -4,14 +4,14 @@ class CheckCommonsLoadFromTemplate extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
-  check (ob) {
+  check (ob, dataset) {
     let id = ob.id
-    if (ob.dataset.commons.refValue && ob.dataset.commons.refValue.wikidataProperty) {
+    if (dataset.commons.refValue && dataset.commons.refValue.wikidataProperty) {
       if (!ob.data.wikidata || !ob.data.wikidata.length) {
         return true
       }
 
-      const data = ob.data.wikidata[0].claims[ob.dataset.commons.refValue.wikidataProperty]
+      const data = ob.data.wikidata[0].claims[dataset.commons.refValue.wikidataProperty]
       if (!data || !data.length) {
         return true
       }
@@ -20,7 +20,7 @@ class CheckCommonsLoadFromTemplate extends Check {
     }
 
     if (!ob.data.commons) {
-      return ob.load('commons', { search: 'insource:' + ob.dataset.commons.searchRegexp.replace(/\$1/g, id) })
+      return ob.load('commons', { search: 'insource:' + dataset.commons.searchRegexp.replace(/\$1/g, id) })
     }
 
     return true

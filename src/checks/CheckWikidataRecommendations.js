@@ -4,7 +4,7 @@ const Check = require('../Check.js')
 const properties = require('../../data/wikidataProperties.json')
 
 class CheckWikidataRecommendations extends Check {
-  check (ob) {
+  check (ob, dataset) {
     if (!ob.data.wikidata) {
       return // wait for other check to load wikidata
     }
@@ -17,8 +17,8 @@ class CheckWikidataRecommendations extends Check {
 
     let recommendations = []
 
-    if (ob.dataset.wikidataRecommendedProperties) {
-      recommendations = recommendations.concat(ob.dataset.wikidataRecommendedProperties(ob))
+    if (dataset.wikidataRecommendedProperties) {
+      recommendations = recommendations.concat(dataset.wikidataRecommendedProperties(ob))
     }
 
     // unique

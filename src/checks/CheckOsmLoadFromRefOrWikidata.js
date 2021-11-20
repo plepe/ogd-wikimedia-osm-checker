@@ -6,20 +6,20 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
-  check (ob) {
+  check (ob, dataset) {
     let wikidataId
 
-    if (!ob.dataset.osm.refField) {
+    if (!dataset.osm.refField) {
       return true // use 'CheckOsmLoadFromWikidata' instead
     }
 
     let id = ob.id
-    if (ob.dataset.osm.refValue) {
+    if (dataset.osm.refValue) {
       if (!ob.data.wikidata || !ob.data.wikidata.length) {
         return true
       }
 
-      const data = ob.data.wikidata[0].claims[ob.dataset.osm.refValue.wikidataProperty]
+      const data = ob.data.wikidata[0].claims[dataset.osm.refValue.wikidataProperty]
       if (!data || !data.length) {
         id = null
       } else {
@@ -27,7 +27,7 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       }
     }
 
-    const osmRefField = ob.dataset.osm.refField
+    const osmRefField = dataset.osm.refField
 
     // OSM object has been loaded by 'osmLoadSimilar'. When re-showing data, let
     // that module do it.

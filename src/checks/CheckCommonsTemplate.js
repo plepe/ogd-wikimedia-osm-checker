@@ -6,7 +6,7 @@ class CheckCommonsTemplate extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
-  check (ob) {
+  check (ob, dataset) {
     if (!ob.data.commons) {
       return
     }
@@ -21,12 +21,12 @@ class CheckCommonsTemplate extends Check {
     }
 
     let id = ob.id
-    if (ob.dataset.commons.refValue && ob.dataset.commons.refValue.wikidataProperty) {
+    if (dataset.commons.refValue && dataset.commons.refValue.wikidataProperty) {
       if (!ob.data.wikidata || !ob.data.wikidata.length) {
         return true
       }
 
-      const data = ob.data.wikidata[0].claims[ob.dataset.commons.refValue.wikidataProperty]
+      const data = ob.data.wikidata[0].claims[dataset.commons.refValue.wikidataProperty]
       if (!data || !data.length) {
         return true
       }
@@ -39,14 +39,14 @@ class CheckCommonsTemplate extends Check {
         return false
       }
 
-      const templates = parseMediawikiTemplate(el.wikitext, ob.dataset.commons.templateRegexp)
+      const templates = parseMediawikiTemplate(el.wikitext, dataset.commons.templateRegexp)
       return !!templates.filter(r => r[1] === id).length
     })
 
     if (categoriesWithTemplateID.length) {
       ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Referenz auf Datensatz.')
     } else {
-      ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>' + ob.dataset.commons.templateTemplate.replace(/\$1/g, id) + '</tt> hinzu.')
+      ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>' + dataset.commons.templateTemplate.replace(/\$1/g, id) + '</tt> hinzu.')
     }
 
     return true

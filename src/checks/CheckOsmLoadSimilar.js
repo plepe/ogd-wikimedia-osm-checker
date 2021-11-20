@@ -12,7 +12,7 @@ class CheckOsmLoadSimilar extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
-  check (ob) {
+  check (ob, dataset) {
     if (!ob.isDone(/^CheckWikidataLoad/)) {
       // wait for all wikidata loaders to finish
       return
@@ -21,7 +21,7 @@ class CheckOsmLoadSimilar extends Check {
     const allCoords = getAllCoords(ob)
 
     if (!ob.data.osm && ob.data.wikidata) {
-      const query = ob.dataset.compileOverpassQuery(ob)
+      const query = dataset.compileOverpassQuery(ob)
       if (query === null) {
         return true
       }
@@ -39,8 +39,8 @@ class CheckOsmLoadSimilar extends Check {
     }
 
     // if one of the OSM objects has a matching refField tag (e.g. ref:at:bda), we are happy
-    if (!ob.osmSimilar && ob.dataset.osmRefField) {
-      const match = ob.data.osm.filter(el => el.tags[ob.dataset.osmRefField] === ob.id)
+    if (!ob.osmSimilar && dataset.osmRefField) {
+      const match = ob.data.osm.filter(el => el.tags[dataset.osmRefField] === ob.id)
       if (match.length) {
         return true
       }
@@ -55,8 +55,8 @@ class CheckOsmLoadSimilar extends Check {
 
     // Order objects by name similarity or distance
     osmPoss.sort((a, b) => {
-      const simmA = stringSimilarity.compareTwoStrings(ob.refData[ob.dataset.osm.refDataNameField], a.tags.name || '')
-      const simmB = stringSimilarity.compareTwoStrings(ob.refData[ob.dataset.osm.refDataNameField], b.tags.name || '')
+      const simmA = stringSimilarity.compareTwoStrings(ob.refData[dataset.osm.refDataNameField], a.tags.name || '')
+      const simmB = stringSimilarity.compareTwoStrings(ob.refData[dataset.osm.refDataNameField], b.tags.name || '')
 
       console.log(simmA, simmB)
       if (simmA > 0.1 || simmB > 0.1) {
@@ -67,8 +67,8 @@ class CheckOsmLoadSimilar extends Check {
     })
 
     let missTags = []
-    if (ob.dataset.missingTags) {
-      missTags = missTags.concat(ob.dataset.missingTags(ob))
+    if (dataset.missingTags) {
+      missTags = missTags.concat(dataset.missingTags(ob))
     }
     missTags = missTags.concat(wikidataToOsm.getMissingTags(ob))
     missTags = Array.from(new Set(missTags)) // unique

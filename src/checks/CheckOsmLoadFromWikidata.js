@@ -6,10 +6,10 @@ class CheckOsmLoadFromWikidata extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
-  check (ob) {
+  check (ob, dataset) {
     let wikidataId
 
-    if (ob.dataset.osm.refField) {
+    if (dataset.osm.refField) {
       return true // use 'CheckOsmLoadFromRefOrWikidata' instead
     }
 

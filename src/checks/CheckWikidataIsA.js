@@ -2,7 +2,7 @@ const STATUS = require('../status.js')
 const Check = require('../Check.js')
 
 class CheckWikidataIsA extends Check {
-  check (ob) {
+  check (ob, dataset) {
     if (!ob.data.wikidata) {
       return // wait for other check to load wikidata
     }

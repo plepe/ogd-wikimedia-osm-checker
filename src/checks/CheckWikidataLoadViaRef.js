@@ -5,28 +5,28 @@ class CheckWikidataLoadViaRef extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
-  check (ob) {
-    if (!ob.load('wikidata', { key: ob.dataset.wikidata.refProperty, id: ob.id })) {
+  check (ob, dataset) {
+    if (!ob.load('wikidata', { key: dataset.wikidata.refProperty, id: ob.id })) {
       return false
     }
 
     if (!ob.data.wikidata.length) {
-      return ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + ob.dataset.wikidata.refPropertyTitle + ' (' + ob.dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
+      return ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
     }
 
     const success = ob.data.wikidata.filter(
       entry =>
-        entry.claims[ob.dataset.wikidata.refProperty] &&
-        entry.claims[ob.dataset.wikidata.refProperty].filter(
+        entry.claims[dataset.wikidata.refProperty] &&
+        entry.claims[dataset.wikidata.refProperty].filter(
           claim =>
             claim.mainsnak.datavalue.value === ob.id
         )
     )
 
     if (success.length) {
-      ob.message('wikidata', STATUS.SUCCESS, 'Eintrag mit Attribut <i>' + ob.dataset.wikidata.refPropertyTitle + ' (' + ob.dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
+      ob.message('wikidata', STATUS.SUCCESS, 'Eintrag mit Attribut <i>' + dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
     } else {
-      ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + ob.dataset.wikidata.refPropertyTitle + ' (' + ob.dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
+      ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag mit Attribut <i>' + dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')</i> und Wert <i>' + ob.id + '</i> gefunden.')
     }
 
     return true

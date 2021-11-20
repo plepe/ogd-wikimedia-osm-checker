@@ -6,7 +6,7 @@ class CheckWikidataShow extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
-  check (ob) {
+  check (ob, dataset) {
     if (!ob.data.wikidata) {
       return // wait for other check to load wikidata entry/ies
     }

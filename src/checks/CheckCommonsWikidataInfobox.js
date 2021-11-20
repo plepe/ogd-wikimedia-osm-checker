@@ -5,7 +5,7 @@ class CheckCommonsWikidataInfobox extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
-  check (ob) {
+  check (ob, dataset) {
     if (!ob.data.commons) {
       return
     }
