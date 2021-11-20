@@ -10,7 +10,7 @@ module.exports = function getAllCoords (ob) {
     }
   }
 
-  ob.data.wikidata.forEach(
+  ob.data.wikidata && ob.data.wikidata.forEach(
     wikidata => {
       if (wikidata.claims.P625) {
         wikidata.claims.P625.forEach(

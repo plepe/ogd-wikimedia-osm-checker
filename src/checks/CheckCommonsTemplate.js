@@ -8,8 +8,12 @@ class CheckCommonsTemplate extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
+    if (!dataset.commons || !dataset.commons.templateRegexp) {
+      return true
+    }
+
     if (!ob.data.commons) {
-      return
+      return false
     }
 
     if (!ob.data.commons.length) {

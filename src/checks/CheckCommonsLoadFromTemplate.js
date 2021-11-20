@@ -6,7 +6,7 @@ class CheckCommonsLoadFromTemplate extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
-    if (!dataset.commons) {
+    if (!dataset.commons || !dataset.commons.searchRegexp) {
       return true
     }
 

@@ -6,16 +6,11 @@ class CheckWikidataLoadFromCommons extends Check {
   // - true: check is finished
   check (ob, dataset) {
     if (!ob.data.commons) {
-      return
-    }
-
-    // wait for wikidata to load
-    if (!ob.data.wikidata) {
-      return
+      return !ob.dataset.commons
     }
 
     // already found wikidata objects, we are done
-    if (ob.data.wikidata.length > 0) {
+    if (ob.data.wikidata && ob.data.wikidata.length > 0) {
       return true
     }
 
