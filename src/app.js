@@ -202,7 +202,15 @@ function check (id, options = {}) {
   div.appendChild(reload)
 
   document.body.classList.add('loading')
-  dataset.showEntry(entry, div)
+
+  const format = dataset.showFormat(entry)
+  if (typeof format === 'string') {
+    const dom = document.createElement('div')
+    dom.innerHTML = format
+    div.appendChild(dom)
+  } else {
+    div.appendChild(format)
+  }
 
   const ob = new Examinee(entry[dataset.refData.idField], entry, dataset)
   ob.initMessages(div)

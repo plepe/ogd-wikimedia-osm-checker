@@ -65,22 +65,23 @@ class DatasetBDA extends Dataset {
     return '<span class="Katalogtitel">' + escHTML(item.Katalogtitel) + '</span><span class="Adresse">' + escHTML(item.Adresse) + '</span>'
   }
 
-  showEntry (data, dom) {
+  showFormat (item) {
     const div = document.createElement('div')
-    dom.appendChild(div)
 
     div.innerHTML = '<h2>Bundesdenkmalamt</h2>'
 
     const ul = document.createElement('ul')
     div.appendChild(ul)
 
-    ul.innerHTML += '<li>ID: ' + data['HERIS-ID'] + '</li>'
-    ul.innerHTML += '<li>Katalogtitel: ' + escHTML(data.Katalogtitel) + '</li>'
-    ul.innerHTML += '<li>Gemeinde: ' + escHTML(data.Gemeinde) + '</li>'
-    ul.innerHTML += '<li>Kat.gemeinde: ' + escHTML(data.KG) + '</li>'
-    ul.innerHTML += '<li>Adresse: ' + escHTML(data.Adresse) + '</li>'
-    ul.innerHTML += '<li>Grundstücknr.: ' + escHTML(data['GSTK-Nr.']) + '</li>'
-    ul.innerHTML += '<li>Status: ' + escHTML(data.Denkmalschutzstatus) + '</li>'
+    ul.innerHTML += '<li>ID: ' + item['HERIS-ID'] + '</li>'
+    ul.innerHTML += '<li>Katalogtitel: ' + escHTML(item.Katalogtitel) + '</li>'
+    ul.innerHTML += '<li>Gemeinde: ' + escHTML(item.Gemeinde) + '</li>'
+    ul.innerHTML += '<li>Kat.gemeinde: ' + escHTML(item.KG) + '</li>'
+    ul.innerHTML += '<li>Adresse: ' + escHTML(item.Adresse) + '</li>'
+    ul.innerHTML += '<li>Grundstücknr.: ' + escHTML(item['GSTK-Nr.']) + '</li>'
+    ul.innerHTML += '<li>Status: ' + escHTML(item.Denkmalschutzstatus) + '</li>'
+
+    return div
   }
 
   wikipediaListeAnchor (ob) {

@@ -59,28 +59,28 @@ class DatasetWienerWohnen extends Dataset {
     return '<span class="Bezeichnung">' + escHTML(item.name) + '</span><span class="Adresse">' + escHTML(item.address) + '</span>'
   }
 
-  showEntry (data, dom) {
+  showFormat (item) {
     const div = document.createElement('div')
-    dom.appendChild(div)
 
     div.innerHTML = '<h2>Stadt Wien</h2>'
 
     const ul = document.createElement('ul')
     div.appendChild(ul)
 
-    ul.innerHTML += '<li>ID: ' + data.id + '</li>'
-    ul.innerHTML += '<li>Name: ' + escHTML(data.name) + '</li>'
-    ul.innerHTML += '<li>Adresse: ' + escHTML(data.address) + '</li>'
-    ul.innerHTML += '<li>Bauzeit: ' + escHTML(data.constructionStartYear) + '-' + escHTML(data.constructionEndYear) + '</li>'
-    ul.innerHTML += '<li>Architekt_innen: ' + escHTML(data.architects || '') + '</li>'
-    ul.innerHTML += '<li>Kunst am Bau: ' + (data.publicArt ? 'ja' : 'nein') + '</li>'
-    ul.innerHTML += '<li>Wohnungen: ' + escHTML('flats' in data ? data.flats : 'unbekannt') + '</li>'
-    ul.innerHTML += '<li>Lokale: ' + escHTML('commercialSpaces' in data ? data.commercialSpaces : 'unbekannt') + '</li>'
-    ul.innerHTML += '<li><a target="_blank" href="' + escHTML(data.url) + '">Website</a></li>'
+    ul.innerHTML += '<li>ID: ' + item.id + '</li>'
+    ul.innerHTML += '<li>Name: ' + escHTML(item.name) + '</li>'
+    ul.innerHTML += '<li>Adresse: ' + escHTML(item.address) + '</li>'
+    ul.innerHTML += '<li>Bauzeit: ' + escHTML(item.constructionStartYear) + '-' + escHTML(item.constructionEndYear) + '</li>'
+    ul.innerHTML += '<li>Architekt_innen: ' + escHTML(item.architects || '') + '</li>'
+    ul.innerHTML += '<li>Kunst am Bau: ' + (item.publicArt ? 'ja' : 'nein') + '</li>'
+    ul.innerHTML += '<li>Wohnungen: ' + escHTML('flats' in item ? item.flats : 'unbekannt') + '</li>'
+    ul.innerHTML += '<li>Lokale: ' + escHTML('commercialSpaces' in item ? item.commercialSpaces : 'unbekannt') + '</li>'
+    ul.innerHTML += '<li><a target="_blank" href="' + escHTML(item.url) + '">Website</a></li>'
 
     // const pre = document.createElement('pre')
     // dom.appendChild(pre)
-    // pre.appendChild(document.createTextNode(JSON.stringify(data, null, '  ')))
+    // pre.appendChild(document.createTextNode(JSON.stringify(item, null, '  ')))
+    return div
   }
 
   wikidataRecommendedProperties (ob) {
