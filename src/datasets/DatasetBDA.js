@@ -18,9 +18,7 @@ const checks = [
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckWikipediaListe.js')(),
-  require('../checks/CheckCommonsTemplate.js')({
-    wikidataValueProperty: 'P2951'
-  }),
+  require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
   require('../checks/CheckOsmLoadSimilar.js')(),
 ]
@@ -72,12 +70,12 @@ class DatasetBDA extends Dataset {
 
   commons = {
     templateRegexp: '(doo|Denkmalgeschütztes Objekt Österreich)',
-    templateTemplate: '{{Denkmalgeschütztes Objekt Österreich|$1}}'
+    templateTemplate: '{{Denkmalgeschütztes Objekt Österreich|$1}}',
+    refValue: { wikidataProperty: 'P2951' }
   }
 
   osm = {
     refField: 'ref:at:bda',
-    refValue: { wikidataProperty: 'P2951' },
     // when search similar objects, use the specified field from refData to compare the name
     refDataNameField: 'Katalogtitel'
   }

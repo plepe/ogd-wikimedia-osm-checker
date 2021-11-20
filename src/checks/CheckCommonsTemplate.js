@@ -21,12 +21,12 @@ class CheckCommonsTemplate extends Check {
     }
 
     let id = ob.id
-    if (this.options && this.options.wikidataValueProperty) {
+    if (ob.dataset.commons.refValue && ob.dataset.commons.refValue.wikidataProperty) {
       if (!ob.data.wikidata || !ob.data.wikidata.length) {
         return true
       }
 
-      const data = ob.data.wikidata[0].claims[this.options.wikidataValueProperty]
+      const data = ob.data.wikidata[0].claims[ob.dataset.commons.refValue.wikidataProperty]
       if (!data || !data.length) {
         return true
       }
