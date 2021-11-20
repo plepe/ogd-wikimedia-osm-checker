@@ -1,6 +1,5 @@
 class Check {
-  constructor (options) {
-    this.options = options
+  constructor () {
     this.id = this.constructor.name
   }
 }

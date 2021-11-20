@@ -9,7 +9,7 @@ class CheckCommonsTemplateToWikidata extends Check {
   // - true: check is finished
   check (ob) {
     if (!ob.data.commons) {
-      return ob.load('commons', { search: 'insource:' + this.options.replace(/\$1/g, ob.id) })
+      return true
     }
 
     const files = ob.data.commons.filter(page => page.title.match(/^File:/))
