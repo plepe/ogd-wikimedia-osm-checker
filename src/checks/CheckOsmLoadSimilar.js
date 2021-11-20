@@ -66,12 +66,11 @@ class CheckOsmLoadSimilar extends Check {
       return a.distance - b.distance
     })
 
-    let missTags = []
-    if (dataset.missingTags) {
-      missTags = missTags.concat(dataset.missingTags(ob))
+    let compiledTags = {}
+    if (dataset.osmCompiledTags) {
+      compiledTags = {...compiledTags, ...dataset.osmCompileTags(ob, null)}
     }
-    missTags = missTags.concat(wikidataToOsm.getMissingTags(ob))
-    missTags = Array.from(new Set(missTags)) // unique
+    compiledTags = {...compiledTags, ...wikidataToOsm.compileTags(ob, null)}
 
     if (osmPoss.length) {
       const msg = [
@@ -81,7 +80,7 @@ class CheckOsmLoadSimilar extends Check {
 
       ob.message('osm', STATUS.SUCCESS,
         (osmPoss.length === 1 ? msg[0] : osmPoss.length + ' ' + msg[1]) + ':<ul>' + osmPoss.map(el => '<li>' + osmFormat(el, ob, ' (Entfernung: ' + Math.round(el.distance * 1000) + 'm)') + '</li>').join('') +
-        '<li>Neues Objekt anlegen ' + editLink(ob, null, missTags) + '.</li>' +
+        '<li>Neues Objekt anlegen ' + editLink(ob, null, compiledTags) + '.</li>' +
         '</ul>'
       )
 
@@ -91,7 +90,7 @@ class CheckOsmLoadSimilar extends Check {
         ob.osmSimilar = true
       }
     } else {
-      ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden' + editLink(ob, null, missTags) + '.')
+      ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden' + editLink(ob, null, compiledTags) + '.')
     }
     return true
   }

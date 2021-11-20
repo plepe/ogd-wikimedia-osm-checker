@@ -102,16 +102,20 @@ class DatasetBDA extends Dataset {
     return list
   }
 
-  recommendedTags (ob) {
+  osmRecommendedTags (ob, osmItem) {
     return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
   }
 
-  missingTags (ob) {
-    const result = ['heritage=2', 'heritage:operator=bda']
+  osmCompileTags (ob, osmItem) {
+    const result = {
+      heritage: '2',
+      'heritage:operator': 'bda'
+    }
 
-    // result.push('ref:at:bda=' + ob.id)
+    // result['ref:at:bda'] = ob.id
+
     if (ob.data.wikidata.length) {
-      result.push('wikidata=' + ob.data.wikidata[0].id)
+      result.wikidata = ob.data.wikidata[0].id
     }
 
     return result

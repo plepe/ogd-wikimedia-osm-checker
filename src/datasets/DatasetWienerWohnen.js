@@ -89,27 +89,27 @@ class DatasetWienerWohnen extends Dataset {
     return list
   }
 
-  recommendedTags (ob) {
+  osmRecommendedTags (ob, osmItem) {
     return ['architect', 'architect:wikidata', 'name:etymology', 'name:etymology:wikidata', 'building:levels']
   }
 
-  missingTags (ob) {
-    const result = [
-      'operator=Stadt Wien – Wiener Wohnen',
-      'ownership=municipal',
-      'architect=' + (ob.refData.architects.split(/, /).join(';')),
-      'construction:start_date=' + ob.refData.constructionStartYear,
-      'start_date=' + ob.refData.constructionEndYear
-    ]
+  osmCompileTags (ob, osmItem) {
+    const result = {
+      'operator': 'Stadt Wien – Wiener Wohnen',
+      'ownership': 'municipal',
+      'architect': (ob.refData.architects.split(/, /).join(';')),
+      'construction:start_date': ob.refData.constructionStartYear,
+      'start_date': ob.refData.constructionEndYear
+    }
 
-    result.push('website=' + ob.refData.url)
+    result.website = ob.refData.url
 
     if (ob.refData.name !== ob.refData.address) {
-      result.push('name=' + ob.refData.name)
+      result.name = ob.refData.name
     }
 
     if (ob.data.wikidata.length) {
-      result.push('wikidata=' + ob.data.wikidata[0].id)
+      result.wikidata = ob.data.wikidata[0].id
     }
 
     return result

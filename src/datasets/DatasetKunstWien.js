@@ -128,16 +128,17 @@ class DatasetKunstWien extends Dataset {
     return list
   }
 
-  recommendedTags (ob) {
+  osmRecommendedTags (ob, osmItem) {
     return ['artist_name', 'artist:wikidata', 'architect', 'architect:wikidata', 'historic']
   }
 
-  missingTags (ob) {
-    const result = []
+  osmCompileTags (ob, osmItem) {
+    const result = {
+      'ref:wien:kultur': ob.id
+    }
 
-    result.push('ref:wien:kultur=' + ob.id)
     if (ob.data.wikidata.length) {
-      result.push('wikidata=' + ob.data.wikidata[0].id)
+      result.wikidata = ob.data.wikidata[0].id
     }
 
     return result
