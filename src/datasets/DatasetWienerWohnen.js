@@ -25,7 +25,10 @@ class DatasetWienerWohnen extends Dataset {
 
   filename = 'wiener_wohnen.json'
 
-  idField = 'id'
+  refData = {
+    idField: 'id',
+    placeFilterField: 'plz'
+  }
 
   wikipediaList = {
     list: 'AT-Wien-Gemeindebauten',
@@ -45,8 +48,6 @@ class DatasetWienerWohnen extends Dataset {
     // when search similar objects, use the specified field from refData to compare the name
     refDataNameField: 'name'
   }
-
-  ortFilterField = 'plz'
 
   commons = {
     searchRegexp: '/\\{\\{Wiener Wohnen\\s*\\|\\s*(1=)*$1(\\|(.*))?\\}\\}/',

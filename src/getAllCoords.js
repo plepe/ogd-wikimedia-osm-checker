@@ -3,8 +3,8 @@ const getCoords = require('./getCoords.js')
 module.exports = function getAllCoords (ob) {
   const allCoords = []
 
-  if (ob.dataset.coordField) {
-    const coords = getCoords(ob.refData, ob.dataset.coordField)
+  if (ob.dataset.refData.coordField) {
+    const coords = getCoords(ob.refData, ob.dataset.refData.coordField)
     if (coords) {
       allCoords.push(coords)
     }

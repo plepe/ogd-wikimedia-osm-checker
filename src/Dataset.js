@@ -7,7 +7,7 @@ class Dataset {
       return callback(null)
     }
 
-    const ortFilter = {}
+    const placeFilter = {}
     this.data = {}
 
     async.parallel([
@@ -22,8 +22,8 @@ class Dataset {
           })
           .then(json => {
             json.forEach(entry => {
-              this.data[entry[this.idField]] = entry
-              ortFilter[entry[this.ortFilterField]] = true
+              this.data[entry[this.refData.idField]] = entry
+              placeFilter[entry[this.refData.placeFilterField]] = true
             })
 
             done()
@@ -34,8 +34,8 @@ class Dataset {
     err => {
       if (err) { return callback(err) }
 
-      this.ortFilter = Object.keys(ortFilter)
-      this.ortFilter = this.ortFilter.sort(natsort({ insensitive: true }))
+      this.placeFilter = Object.keys(placeFilter)
+      this.placeFilter = this.placeFilter.sort(natsort({ insensitive: true }))
 
       callback(null)
     })

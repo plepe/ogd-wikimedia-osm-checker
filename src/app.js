@@ -80,7 +80,7 @@ function updateDataset () {
 
   content.innerHTML = '<h1>' + dataset.title + '</h1><p>' + dataset.ogdInfo + '</p><p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
 
-  const select = document.getElementById('Ortfilter')
+  const select = document.getElementById('placeFilter')
   while (select.firstChild.nextSibling) {
     select.removeChild(select.firstChild.nextSibling)
   }
@@ -90,9 +90,9 @@ function updateDataset () {
     document.body.classList.remove('loading')
     if (err) { global.alert(err) }
 
-    dataset.ortFilter.forEach(ort => {
+    dataset.placeFilter.forEach(place => {
       const option = document.createElement('option')
-      option.appendChild(document.createTextNode(ort))
+      option.appendChild(document.createTextNode(place))
       select.appendChild(option)
     })
 
@@ -130,24 +130,24 @@ function choose (path) {
 
   httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
-  const select = document.getElementById('Ortfilter')
-  const ort = dataset.data[id][dataset.ortFilterField]
-  select.value = ort
+  const select = document.getElementById('placeFilter')
+  const place = dataset.data[id][dataset.refData.placeFilterField]
+  select.value = place
   update()
 
   check(id)
 }
 
 function update () {
-  const select = document.getElementById('Ortfilter')
-  const ort = select.value
+  const select = document.getElementById('placeFilter')
+  const place = select.value
 
   const content = document.getElementById('content')
   while (content.firstChild) {
     content.removeChild(content.firstChild)
   }
 
-  if (ort === '') {
+  if (place === '') {
     content.innerHTML = info
     return
   }
@@ -160,7 +160,7 @@ function update () {
   const dom = document.getElementById('data')
 
   for (const k in dataset.data) {
-    if (dataset.data[k][dataset.ortFilterField] === ort) {
+    if (dataset.data[k][dataset.refData.placeFilterField] === place) {
       const entry = dataset.listEntry(dataset.data[k])
 
       const tr = document.createElement('tr')
@@ -202,7 +202,7 @@ function check (id, options = {}) {
   document.body.classList.add('loading')
   dataset.showEntry(entry, div)
 
-  const ob = new Examinee(entry[dataset.idField], entry, dataset)
+  const ob = new Examinee(entry[dataset.refData.idField], entry, dataset)
   ob.initMessages(div)
   ob.runChecks(dataset, options, (err, result) => {
     if (err) { global.alert(err) }

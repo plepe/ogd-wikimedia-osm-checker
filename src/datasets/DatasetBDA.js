@@ -28,7 +28,10 @@ class DatasetBDA extends Dataset {
 
   filename = 'bda.json'
 
-  idField = 'HERIS-ID'
+  refData = {
+    idField: 'HERIS-ID',
+    placeFilterField: 'Gemeinde'
+  }
 
   wikipediaList = {
     list: 'AT-BDA',
@@ -44,8 +47,6 @@ class DatasetBDA extends Dataset {
     refProperty: 'P9154',
     refPropertyTitle: 'HERIS-ID der Datenbank österreichischer Kulturdenkmale'
   }
-
-  ortFilterField = 'Gemeinde'
 
   commons = {
     searchRegexp: '/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/',

@@ -35,11 +35,13 @@ class DatasetKunstWien extends Dataset {
 
   filename = 'kunstwien.json'
 
-  idField = 'ID'
-
-  coordField = {
-    type: 'shape',
-    id: 'SHAPE'
+  refData = {
+    idField: 'ID',
+    coordField: {
+      type: 'shape',
+      id: 'SHAPE'
+    },
+    placeFilterField: 'PLZ'
   }
 
   wikipediaList = {
@@ -68,8 +70,6 @@ class DatasetKunstWien extends Dataset {
     // when search similar objects, use the specified field from refData to compare the name
     refDataNameField: 'OBJEKTTITEL'
   }
-
-  ortFilterField = 'PLZ'
 
   listEntry (entry) {
     return {
