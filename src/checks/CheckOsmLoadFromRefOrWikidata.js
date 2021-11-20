@@ -27,7 +27,7 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       }
     }
 
-    let osmRefField = ob.dataset.osm.refField
+    const osmRefField = ob.dataset.osm.refField
 
     // OSM object has been loaded by 'osmLoadSimilar'. When re-showing data, let
     // that module do it.
