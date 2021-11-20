@@ -13,24 +13,6 @@ const typ2OverpassQuery = {
   '': null
 }
 
-const checks = [
-  require('../checks/CheckCommonsLoadFromTemplate.js')(),
-  require('../checks/CheckCommonsShowItems.js')(),
-  require('../checks/CheckCommonsLoad.js')(),
-  require('../checks/CheckWikidataLoadViaRef.js')(),
-  require('../checks/CheckWikidataLoadFromCommons.js')(),
-  require('../checks/CheckWikidataShow.js')(),
-  require('../checks/CheckWikidataCoords.js')(),
-  require('../checks/CheckWikidataIsA.js')(),
-  require('../checks/CheckWikidataRecommendations.js')(),
-  require('../checks/CheckWikidataImage.js')(),
-  require('../checks/CheckCommonsWikidataInfobox.js')(),
-  require('../checks/CheckCommonsTemplate.js')(),
-  require('../checks/CheckWikipediaListe.js')(),
-  require('../checks/CheckOsmLoadSimilar.js')(),
-  require('../checks/CheckOsmLoadFromRefOrWikidata.js')()
-]
-
 class DatasetKunstWien extends Dataset {
   id = 'kunstwien'
 
@@ -88,8 +70,6 @@ class DatasetKunstWien extends Dataset {
   }
 
   ortFilterField = 'PLZ'
-
-  checks = checks
 
   listEntry (entry) {
     return {

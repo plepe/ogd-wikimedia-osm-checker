@@ -2,24 +2,6 @@ const escHTML = require('html-escape')
 
 const Dataset = require('../Dataset')
 
-const checks = [
-  require('../checks/CheckCommonsLoadFromTemplate.js')(),
-  require('../checks/CheckCommonsShowItems.js')(),
-  require('../checks/CheckWikidataLoadViaRef.js')(),
-  // require('../checks/CheckWikidataLoadFromCommons.js')(),
-  require('../checks/CheckWikidataShow.js')(),
-  require('../checks/CheckWikidataCoords.js')(),
-  require('../checks/CheckWikidataIsA.js')(),
-  require('../checks/CheckWikidataRecommendations.js')(),
-  require('../checks/CheckCommonsLoad.js')(),
-  require('../checks/CheckWikidataImage.js')(),
-  require('../checks/CheckCommonsWikidataInfobox.js')(),
-  require('../checks/CheckWikipediaListe.js')(),
-  require('../checks/CheckCommonsTemplate.js')(),
-  require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
-  require('../checks/CheckOsmLoadSimilar.js')(),
-]
-
 class DatasetBDA extends Dataset {
   id = 'bda'
 
@@ -77,8 +59,6 @@ class DatasetBDA extends Dataset {
     // when search similar objects, use the specified field from refData to compare the name
     refDataNameField: 'Katalogtitel'
   }
-
-  checks = checks
 
   listEntry (entry) {
     return {

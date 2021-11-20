@@ -1,0 +1,20 @@
+module.exports = [
+  require('./CheckCommonsLoad')(),
+  require('./CheckCommonsLoadFromTemplate')(),
+  require('./CheckCommonsShowItems')(),
+  require('./CheckCommonsTemplate')(),
+  require('./CheckCommonsTemplateToWikidata')(),
+  require('./CheckCommonsWikidataInfobox')(),
+  require('./CheckWikidataShow')(),
+  require('./CheckWikidataCoords')(),
+  require('./CheckWikidataImage')(),
+  require('./CheckWikidataIsA')(),
+  require('./CheckWikidataLoadFromCommons')(),
+  require('./CheckWikidataLoadViaRef')(),
+  require('./CheckWikidataLoaded')(),
+  require('./CheckWikidataRecommendations')(),
+  require('./CheckWikipediaListe')(),
+  require('./CheckOsmLoadFromRefOrWikidata')(),
+  require('./CheckOsmLoadFromWikidata')(),
+  require('./CheckOsmLoadSimilar')()
+]

@@ -2,24 +2,6 @@ const escHTML = require('html-escape')
 
 const Dataset = require('../Dataset')
 
-const checks = [
-  require('../checks/CheckCommonsLoadFromTemplate.js')(),
-  require('../checks/CheckCommonsShowItems.js')(),
-  require('../checks/CheckCommonsLoad.js')(),
-  require('../checks/CheckWikidataLoadViaRef.js')(),
-  require('../checks/CheckWikidataLoadFromCommons.js')(),
-  require('../checks/CheckWikidataShow.js')(),
-  require('../checks/CheckWikidataCoords.js')(),
-  require('../checks/CheckWikidataIsA.js')(),
-  require('../checks/CheckWikidataRecommendations.js')(),
-  require('../checks/CheckWikidataImage.js')(),
-  require('../checks/CheckCommonsWikidataInfobox.js')(),
-  require('../checks/CheckCommonsTemplate.js')(),
-  require('../checks/CheckWikipediaListe.js')(),
-  require('../checks/CheckOsmLoadSimilar.js')(),
-  require('../checks/CheckOsmLoadFromWikidata.js')()
-]
-
 class DatasetWienerWohnen extends Dataset {
   id = 'wiener-wohnen'
 
@@ -71,8 +53,6 @@ class DatasetWienerWohnen extends Dataset {
     templateRegexp: 'Wiener Wohnen',
     templateTemplate: '{{Wiener Wohnen|$1}}'
   }
-
-  checks = checks
 
   listEntry (entry) {
     return {

@@ -9,6 +9,10 @@ class CheckOsmLoadFromWikidata extends Check {
   check (ob) {
     let wikidataId
 
+    if (ob.dataset.osm.refField) {
+      return true // use 'CheckOsmLoadFromRefOrWikidata' instead
+    }
+
     // OSM object has been loaded by 'osmLoadSimilar'. When re-showing data, let
     // that module do it.
     if (ob.osmSimilar) {

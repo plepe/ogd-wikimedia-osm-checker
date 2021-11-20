@@ -1,6 +1,7 @@
 const EventEmitter = require('events')
 const forEach = require('foreach')
 
+const checks = require('./checks/index')
 const loader = {
   commons: require('./loader-commons.js'),
   osm: require('./loader-osm.js'),
@@ -138,7 +139,7 @@ module.exports = class Examinee extends EventEmitter {
 
   runChecks (dataset, options, callback, init = false) {
     if (!init) {
-      dataset.checks.forEach(check => {
+      checks.forEach(check => {
         this.checksStatus[check.id] = false
       })
 
@@ -151,7 +152,7 @@ module.exports = class Examinee extends EventEmitter {
 
     this.clearMessages()
 
-    dataset.checks.forEach(check => {
+    checks.forEach(check => {
       this.checksStatus[check.id] = check.check(this)
     })
 

@@ -9,6 +9,10 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
   check (ob) {
     let wikidataId
 
+    if (!ob.dataset.osm.refField) {
+      return true // use 'CheckOsmLoadFromWikidata' instead
+    }
+
     let id = ob.id
     if (ob.dataset.osm.refValue) {
       if (!ob.data.wikidata || !ob.data.wikidata.length) {
