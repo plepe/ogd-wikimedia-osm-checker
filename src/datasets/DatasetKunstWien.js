@@ -38,7 +38,7 @@ class DatasetKunstWien extends Dataset {
   refData = {
     idField: 'ID',
     coordField: {
-      type: 'shape',
+      type: 'wkt',
       id: 'SHAPE'
     },
     placeFilterField: 'PLZ'
