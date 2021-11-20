@@ -3,7 +3,6 @@ const escHTML = require('html-escape')
 const Dataset = require('../Dataset')
 
 const checks = [
-  // require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),
   require('../checks/CheckCommonsLoadFromWikidata.js')({
     template: '/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/',
     property: 'P2951'

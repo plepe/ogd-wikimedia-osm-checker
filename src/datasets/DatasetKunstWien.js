@@ -14,7 +14,7 @@ const typ2OverpassQuery = {
 }
 
 const checks = [
-  require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/'),
+  require('../checks/CheckCommonsLoadFromTemplate.js')(),
   require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckCommonsLoad.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(),
@@ -80,6 +80,7 @@ class DatasetKunstWien extends Dataset {
   }
 
   commons = {
+    searchRegexp: '/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/',
     templateRegexp: 'Public Art Austria',
     templateTemplate: '{{Public Art Austria|$1|AT-9}}'
   }

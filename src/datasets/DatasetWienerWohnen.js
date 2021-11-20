@@ -3,7 +3,7 @@ const escHTML = require('html-escape')
 const Dataset = require('../Dataset')
 
 const checks = [
-  require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{Wiener Wohnen\\s*\\|\\s*(1=)*$1(\\|(.*))?\\}\\}/'),
+  require('../checks/CheckCommonsLoadFromTemplate.js')(),
   require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckCommonsLoad.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(),
@@ -64,6 +64,7 @@ class DatasetWienerWohnen extends Dataset {
   ortFilterField = 'plz'
 
   commons = {
+    searchRegexp: '/\\{\\{Wiener Wohnen\\s*\\|\\s*(1=)*$1(\\|(.*))?\\}\\}/',
     templateRegexp: 'Wiener Wohnen',
     templateTemplate: '{{Wiener Wohnen|$1}}'
   }
