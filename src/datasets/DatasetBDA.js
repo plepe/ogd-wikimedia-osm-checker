@@ -3,10 +3,7 @@ const escHTML = require('html-escape')
 const Dataset = require('../Dataset')
 
 const checks = [
-  require('../checks/CheckCommonsLoadFromWikidata.js')({
-    template: '/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/',
-    property: 'P2951'
-  }),
+  require('../checks/CheckCommonsLoadFromTemplate.js')(),
   require('../checks/CheckCommonsShowItems.js')(),
   require('../checks/CheckWikidataLoadViaRef.js')(),
   // require('../checks/CheckWikidataLoadFromCommons.js')(),
@@ -69,6 +66,7 @@ class DatasetBDA extends Dataset {
   ortFilterField = 'Gemeinde'
 
   commons = {
+    searchRegexp: '/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/',
     templateRegexp: '(doo|Denkmalgeschütztes Objekt Österreich)',
     templateTemplate: '{{Denkmalgeschütztes Objekt Österreich|$1}}',
     refValue: { wikidataProperty: 'P2951' }
