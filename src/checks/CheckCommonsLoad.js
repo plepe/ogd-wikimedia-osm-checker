@@ -1,4 +1,4 @@
-const Check = require('../src/Check.js')
+const Check = require('../Check.js')
 
 class CheckCommonsLoad extends Check {
   // result:

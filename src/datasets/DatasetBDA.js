@@ -1,6 +1,6 @@
 const escHTML = require('html-escape')
 
-const Dataset = require('../src/Dataset')
+const Dataset = require('../Dataset')
 
 const checks = [
   // require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\\|(1=)*$1\\}\\}/'),

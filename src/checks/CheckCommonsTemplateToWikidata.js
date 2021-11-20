@@ -1,7 +1,7 @@
 const escHTML = require('html-escape')
 
-const STATUS = require('../src/status.js')
-const Check = require('../src/Check.js')
+const STATUS = require('../status.js')
+const Check = require('../Check.js')
 
 class CheckCommonsTemplateToWikidata extends Check {
   // result:

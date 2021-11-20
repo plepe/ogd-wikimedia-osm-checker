@@ -15,7 +15,7 @@ Ein Screencast mit einer Anleitung findet sich hier: https://www.youtube.com/wat
 git clone https://github.com/plepe/ogd-wikimedia-osm-checker
 cd ogd-wikimedia-osm-checker
 npm install # install dependencies, link code
-npm run update # download current list of memorial sites to data/bda.json
+npm run download # download current list of memorial sites to data/bda.json
 npm start # start internal web server on port 8080
 ```
 

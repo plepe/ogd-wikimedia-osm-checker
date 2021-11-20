@@ -10,12 +10,7 @@ const { JSDOM } = jsdom
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>')
 global.document = dom.window.document
 
-const cgi = {
-  commons: require('./server/commons.js'),
-  log: require('./server/log.js'),
-  wikipedia: require('./server/wikipedia.js'),
-  wikidata: require('./server/wikidata.js')
-}
+const cgi = require('./src/server/index')
 
 const contentTypes = {
   html: 'text/html',

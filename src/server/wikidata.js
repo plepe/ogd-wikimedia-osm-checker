@@ -1,7 +1,7 @@
 const async = require('async')
 const JSDOM = require('jsdom').JSDOM
 
-const httpRequest = require('../src/httpRequest.js')
+const httpRequest = require('../httpRequest.js')
 const findWikidataItems = require('wikipedia-list-extractor/src/findWikidataItems')
 
 const active = []

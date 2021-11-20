@@ -1,6 +1,6 @@
 const escHTML = require('html-escape')
 
-const Dataset = require('../src/Dataset')
+const Dataset = require('../Dataset')
 
 const checks = [
   require('../checks/CheckCommonsLoadFromTemplate.js')('/\\{\\{Wiener Wohnen\\s*\\|\\s*(1=)*$1(\\|(.*))?\\}\\}/'),

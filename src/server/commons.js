@@ -1,7 +1,7 @@
 const JSDOM = require('jsdom').JSDOM
 const async = require('async')
 
-const httpRequest = require('../src/httpRequest.js')
+const httpRequest = require('../httpRequest.js')
 
 function loadTitle (title, callback) {
   httpRequest('https://commons.wikimedia.org/w/api.php?action=parse&format=json&prop=wikitext&page=' + encodeURIComponent(title),

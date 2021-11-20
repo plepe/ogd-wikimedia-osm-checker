@@ -1,6 +1,6 @@
-const STATUS = require('../src/status.js')
-const Check = require('../src/Check.js')
-const wikidataFormat = require('../src/wikidataFormat.js')
+const STATUS = require('../status.js')
+const Check = require('../Check.js')
+const wikidataFormat = require('../wikidataFormat.js')
 
 class CheckWikidataShow extends Check {
   // result:

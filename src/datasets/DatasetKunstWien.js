@@ -1,6 +1,6 @@
 const escHTML = require('html-escape')
 
-const Dataset = require('../src/Dataset')
+const Dataset = require('../Dataset')
 
 const typ2OverpassQuery = {
   Gedenktafeln: 'nwr[historic=memorial](filter);',

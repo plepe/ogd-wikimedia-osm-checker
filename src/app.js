@@ -6,7 +6,7 @@ const async = require('async')
 const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 
-const datasets = require('../datasets/index.js')
+const datasets = require('./datasets/index.js')
 const modules = [
   require('./wikidataToOsm.js')
 ]

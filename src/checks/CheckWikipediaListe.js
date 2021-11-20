@@ -1,8 +1,8 @@
 const escHTML = require('html-escape')
 
-const STATUS = require('../src/status.js')
-const Check = require('../src/Check.js')
-const printAttrList = require('../src/printAttrList.js')
+const STATUS = require('../status.js')
+const Check = require('../Check.js')
+const printAttrList = require('../printAttrList.js')
 
 class CheckWikipediaListe extends Check {
   // result:

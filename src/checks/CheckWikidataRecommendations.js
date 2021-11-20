@@ -1,7 +1,7 @@
-const STATUS = require('../src/status.js')
-const Check = require('../src/Check.js')
+const STATUS = require('../status.js')
+const Check = require('../Check.js')
 
-const properties = require('../data/wikidataProperties.json')
+const properties = require('../../data/wikidataProperties.json')
 
 class CheckWikidataRecommendations extends Check {
   check (ob) {

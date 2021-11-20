@@ -1,12 +1,12 @@
 const stringSimilarity = require('string-similarity')
 
-const editLink = require('../src/editLink.js')
-const STATUS = require('../src/status.js')
-const osmFormat = require('../src/osmFormat.js')
-const calcDistance = require('../src/calcDistance.js')
-const Check = require('../src/Check.js')
-const getAllCoords = require('../src/getAllCoords.js')
-const wikidataToOsm = require('../src/wikidataToOsm.js')
+const editLink = require('../editLink.js')
+const STATUS = require('../status.js')
+const osmFormat = require('../osmFormat.js')
+const calcDistance = require('../calcDistance.js')
+const Check = require('../Check.js')
+const getAllCoords = require('../getAllCoords.js')
+const wikidataToOsm = require('../wikidataToOsm.js')
 
 class CheckOsmLoadSimilar extends Check {
   // result:

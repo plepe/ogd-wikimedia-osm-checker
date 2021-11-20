@@ -1,6 +1,6 @@
-const STATUS = require('../src/status.js')
-const osmFormat = require('../src/osmFormat.js')
-const Check = require('../src/Check.js')
+const STATUS = require('../status.js')
+const osmFormat = require('../osmFormat.js')
+const Check = require('../Check.js')
 
 class CheckOsmLoadFromRefOrWikidata extends Check {
   // result:

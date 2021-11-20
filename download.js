@@ -2,7 +2,7 @@ const async = require('async')
 const fs = require('fs')
 const fetch = require('node-fetch')
 
-const downloads = require('./datasets/downloads')
+const downloads = require('./src/datasets/downloads')
 
 function downloadWikidataLists (callback) {
   async.parallel([
