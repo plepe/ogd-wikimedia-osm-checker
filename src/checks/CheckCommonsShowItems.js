@@ -22,7 +22,7 @@ class CheckCommonsShowItems extends Check {
       ob.message('commons', STATUS.SUCCESS, categories.length + ' Kategorie(n) gefunden, die auf das Objekt verweisen: ' + categories.map((page, i) => '<a target="_blank" href="https://commons.wikimedia.org/wiki/' + escHTML(page.title) + '">#' + (i + 1) + '</a>').join(', ') + '.')
     } else {
       if (files.length === 0) {
-        ob.message('commons', STATUS.ERROR, 'Weder Bilder noch Kategorien gefunden, die auf dieses Objekt verweisen. Füge <tt>' + ob.dataset.commonsTemplate.replace(/\$1/g, ob.id) + '</tt> hinzu.')
+        ob.message('commons', STATUS.ERROR, 'Weder Bilder noch Kategorien gefunden, die auf dieses Objekt verweisen. Füge <tt>' + ob.dataset.commons.templateTemplate.replace(/\$1/g, ob.id) + '</tt> hinzu.')
       } else {
         ob.message('commons', STATUS.WARNING, 'Keine Kategorie gefunden, die auf das Objekt verweist.')
       }

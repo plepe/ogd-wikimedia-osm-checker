@@ -79,11 +79,12 @@ class DatasetKunstWien extends Dataset {
     refPropertyTitle: 'Wien Kulturgut: Kunstwerke im öffentlichen Raum ID'
   }
 
+  commons = {
+    templateRegexp: 'Public Art Austria',
+    templateTemplate: '{{Public Art Austria|$1|AT-9}}'
+  }
+
   ortFilterField = 'PLZ'
-
-  commonsTemplateRegexp = 'Public Art Austria'
-
-  commonsTemplate = '{{Public Art Austria|$1|AT-9}}'
 
   checks = checks
 

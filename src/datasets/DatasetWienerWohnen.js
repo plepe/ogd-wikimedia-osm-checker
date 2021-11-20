@@ -63,9 +63,10 @@ class DatasetWienerWohnen extends Dataset {
 
   ortFilterField = 'plz'
 
-  commonsTemplateRegexp = 'Wiener Wohnen'
-
-  commonsTemplate = '{{Wiener Wohnen|$1}}'
+  commons = {
+    templateRegexp: 'Wiener Wohnen',
+    templateTemplate: '{{Wiener Wohnen|$1}}'
+  }
 
   checks = checks
 

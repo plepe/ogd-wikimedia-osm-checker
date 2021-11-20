@@ -78,9 +78,10 @@ class DatasetBDA extends Dataset {
 
   ortFilterField = 'Gemeinde'
 
-  commonsTemplateRegexp = '(doo|Denkmalgeschütztes Objekt Österreich)'
-
-  commonsTemplate = '{{Denkmalgeschütztes Objekt Österreich|$1}}'
+  commons = {
+    templateRegexp: '(doo|Denkmalgeschütztes Objekt Österreich)',
+    templateTemplate: '{{Denkmalgeschütztes Objekt Österreich|$1}}'
+  }
 
   checks = checks
 

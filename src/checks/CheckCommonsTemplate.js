@@ -39,14 +39,14 @@ class CheckCommonsTemplate extends Check {
         return false
       }
 
-      const templates = parseMediawikiTemplate(el.wikitext, ob.dataset.commonsTemplateRegexp)
+      const templates = parseMediawikiTemplate(el.wikitext, ob.dataset.commons.templateRegexp)
       return !!templates.filter(r => r[1] === id).length
     })
 
     if (categoriesWithTemplateID.length) {
       ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Referenz auf Datensatz.')
     } else {
-      ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>' + ob.dataset.commonsTemplate.replace(/\$1/g, id) + '</tt> hinzu.')
+      ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>' + ob.dataset.commons.templateTemplate.replace(/\$1/g, id) + '</tt> hinzu.')
     }
 
     return true
