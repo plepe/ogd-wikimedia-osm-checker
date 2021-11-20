@@ -18,9 +18,7 @@ const checks = [
   require('../checks/CheckCommonsLoad.js')(),
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
-  require('../checks/CheckWikipediaListe.js')({
-    showFields: ['Name', 'Beschreibung', 'Anmerkung']
-  }),
+  require('../checks/CheckWikipediaListe.js')(),
   require('../checks/CheckCommonsTemplate.js')({
     wikidataValueProperty: 'P2951'
   }),
@@ -69,7 +67,8 @@ class DatasetBDA extends Dataset {
     wikidataField: 'WD-Item',
     latitudeField: 'Breitengrad',
     longitudeField: 'Längengrad',
-    articleField: 'Artikel'
+    articleField: 'Artikel',
+    showFields: ['Name', 'Beschreibung', 'Anmerkung']
   }
 
   ortFilterField = 'Gemeinde'

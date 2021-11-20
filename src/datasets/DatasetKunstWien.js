@@ -26,9 +26,7 @@ const checks = [
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
-  require('../checks/CheckWikipediaListe.js')({
-    showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
-  }),
+  require('../checks/CheckWikipediaListe.js')(),
   require('../checks/CheckOsmLoadSimilar.js')({
     nameField: 'OBJEKTTITEL'
   }),
@@ -72,7 +70,8 @@ class DatasetKunstWien extends Dataset {
     wikidataField: 'WD-Item',
     latitudeField: 'Breitengrad',
     longitudeField: 'Längengrad',
-    articleField: 'Artikel'
+    articleField: 'Artikel',
+    showFields: ['Name', 'Name-Vulgo', 'Typ', 'Beschreibung', 'Standort', 'Künstler', 'Inschrift']
   }
 
   ortFilterField = 'PLZ'

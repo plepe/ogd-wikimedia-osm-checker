@@ -15,9 +15,7 @@ const checks = [
   require('../checks/CheckWikidataImage.js')(),
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
-  require('../checks/CheckWikipediaListe.js')({
-    showFields: ['Name', 'Adresse', 'Baujahr', 'Architekt', 'Wohnungen', 'Kunstobjekte', 'Anmerkung']
-  }),
+  require('../checks/CheckWikipediaListe.js')(),
   require('../checks/CheckOsmLoadSimilar.js')({
     nameField: 'name'
   }),
@@ -54,7 +52,8 @@ class DatasetWienerWohnen extends Dataset {
     idPrefix: 'id-',
     wikidataField: 'WD-Item',
     latitudeField: 'Breitengrad',
-    longitudeField: 'Längengrad'
+    longitudeField: 'Längengrad',
+    showFields: ['Name', 'Adresse', 'Baujahr', 'Architekt', 'Wohnungen', 'Kunstobjekte', 'Anmerkung']
   }
 
   ortFilterField = 'plz'

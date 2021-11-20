@@ -22,7 +22,7 @@ class CheckWikipediaListe extends Check {
     if (found.length) {
       let msg = '<a target="_blank" href="' + escHTML(found[0].url) + '">Wikipedia Liste</a>:'
 
-      const attrList = this.options.showFields.map(
+      const attrList = ob.dataset.wikipediaList.showFields.map(
         fieldId => {
           if (found[0][fieldId]) {
             return {
