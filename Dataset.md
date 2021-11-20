@@ -29,7 +29,7 @@ class DatasetExample extends Dataset {
     coordField: {
       id: 'SHAPE',
       type: 'wkt'
-    }
+    },
 
     // add a place filter in the menu. use this field for filtering:
     placeFilterField: 'PLACE'
@@ -66,7 +66,7 @@ class DatasetExample extends Dataset {
     refProperty: 'P1234',
 
     // title of the refProperty
-    refPropertyTitle: 'Property Title',
+    refPropertyTitle: 'Property Title'
   }
 
   // Configuration of the item in Wikimedia Commons
@@ -75,10 +75,10 @@ class DatasetExample extends Dataset {
     searchRegexp: '/\\{\\{Example\\s*\\|\\s*(1=)*$1(\\|(.*))?\\}\\}/',
 
     // in the source of each page, search for occurences of this template
-    templateRegexp: '[Ee]xample'
+    templateRegexp: '[Ee]xample',
 
     // when no template is found, suggest the following template; '$1' will be replaced by the ID of the item
-    templateTemplate: '{{Example|$1}}'
+    templateTemplate: '{{Example|$1}}',
 
     // optional: instead of the ID of the item, use the value of this wikidata property for 'searchRegexp' and 'templateTemplate'.
     refValue: { wikidataProperty: 'P2951' }
@@ -148,7 +148,7 @@ Create a file in `src/datasets`: `DownloadExample.js` and add it to `src/dataset
 
 This should load the reference data and create a JSON file in the `data` folder.
 
-```
+```js
 const fetch = require('node-fetch')
 const fs = require('fs')
 
