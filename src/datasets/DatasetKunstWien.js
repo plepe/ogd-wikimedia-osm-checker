@@ -27,9 +27,7 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')(),
-  require('../checks/CheckOsmLoadSimilar.js')({
-    nameField: 'OBJEKTTITEL'
-  }),
+  require('../checks/CheckOsmLoadSimilar.js')(),
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')()
 ]
 
@@ -84,7 +82,9 @@ class DatasetKunstWien extends Dataset {
   }
 
   osm = {
-    refField: 'ref:wien:kultur'
+    refField: 'ref:wien:kultur',
+    // when search similar objects, use the specified field from refData to compare the name
+    refDataNameField: 'OBJEKTTITEL'
   }
 
   ortFilterField = 'PLZ'

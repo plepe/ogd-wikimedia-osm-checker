@@ -22,9 +22,7 @@ const checks = [
     wikidataValueProperty: 'P2951'
   }),
   require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
-  require('../checks/CheckOsmLoadSimilar.js')({
-    nameField: 'Katalogtitel'
-  })
+  require('../checks/CheckOsmLoadSimilar.js')(),
 ]
 
 class DatasetBDA extends Dataset {
@@ -79,7 +77,9 @@ class DatasetBDA extends Dataset {
 
   osm = {
     refField: 'ref:at:bda',
-    refValue: { wikidataProperty: 'P2951' }
+    refValue: { wikidataProperty: 'P2951' },
+    // when search similar objects, use the specified field from refData to compare the name
+    refDataNameField: 'Katalogtitel'
   }
 
   checks = checks

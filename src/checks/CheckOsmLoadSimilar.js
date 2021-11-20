@@ -55,8 +55,8 @@ class CheckOsmLoadSimilar extends Check {
 
     // Order objects by name similarity or distance
     osmPoss.sort((a, b) => {
-      const simmA = stringSimilarity.compareTwoStrings(ob.refData[this.options.nameField], a.tags.name || '')
-      const simmB = stringSimilarity.compareTwoStrings(ob.refData[this.options.nameField], b.tags.name || '')
+      const simmA = stringSimilarity.compareTwoStrings(ob.refData[ob.dataset.osm.refDataNameField], a.tags.name || '')
+      const simmB = stringSimilarity.compareTwoStrings(ob.refData[ob.dataset.osm.refDataNameField], b.tags.name || '')
 
       console.log(simmA, simmB)
       if (simmA > 0.1 || simmB > 0.1) {

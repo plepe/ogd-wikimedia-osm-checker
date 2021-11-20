@@ -16,9 +16,7 @@ const checks = [
   require('../checks/CheckCommonsWikidataInfobox.js')(),
   require('../checks/CheckCommonsTemplate.js')(),
   require('../checks/CheckWikipediaListe.js')(),
-  require('../checks/CheckOsmLoadSimilar.js')({
-    nameField: 'name'
-  }),
+  require('../checks/CheckOsmLoadSimilar.js')(),
   require('../checks/CheckOsmLoadFromWikidata.js')()
 ]
 
@@ -59,6 +57,11 @@ class DatasetWienerWohnen extends Dataset {
   wikidata = {
     refProperty: 'P8231',
     refPropertyTitle: 'Wiener Wohnen ID'
+  }
+
+  osm = {
+    // when search similar objects, use the specified field from refData to compare the name
+    refDataNameField: 'name'
   }
 
   ortFilterField = 'plz'
