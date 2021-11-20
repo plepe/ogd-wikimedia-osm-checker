@@ -6,6 +6,9 @@ class CheckCommonsLoadFromTemplate extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
+    if (!dataset.commons) {
+      return true
+    }
 
     const id = idFromRefOrRefValue(ob, dataset.commons.refValue)
     if (id === false || id === null) {

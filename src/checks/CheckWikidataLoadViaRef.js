@@ -6,6 +6,10 @@ class CheckWikidataLoadViaRef extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
+    if (!dataset.wikidata || !dataset.wikidata.refProperty) {
+      return true
+    }
+
     if (!ob.load('wikidata', { key: dataset.wikidata.refProperty, id: ob.id })) {
       return false
     }

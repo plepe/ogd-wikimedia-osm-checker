@@ -9,6 +9,10 @@ class CheckWikipediaListe extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
+    if (!dataset.wikipediaList) {
+      return true
+    }
+
     if (!ob.data.wikipedia) {
       return ob.load('wikipedia', { list: dataset.wikipediaList.list, id: (dataset.wikipediaList.idPrefix ? dataset.wikipediaList.idPrefix : '') + ob.id })
     }
