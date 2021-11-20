@@ -57,8 +57,6 @@ class DatasetKunstWien extends Dataset {
 
   idField = 'ID'
 
-  osmRefField = 'ref:wien:kultur'
-
   coordField = {
     type: 'shape',
     id: 'SHAPE'
@@ -83,6 +81,10 @@ class DatasetKunstWien extends Dataset {
     searchRegexp: '/\\{\\{[Pp]ublic Art Austria\\s*\\|\\s*(1=)*$1\\|\\s*(2=)*AT-9\\}\\}/',
     templateRegexp: 'Public Art Austria',
     templateTemplate: '{{Public Art Austria|$1|AT-9}}'
+  }
+
+  osm = {
+    refField: 'ref:wien:kultur'
   }
 
   ortFilterField = 'PLZ'

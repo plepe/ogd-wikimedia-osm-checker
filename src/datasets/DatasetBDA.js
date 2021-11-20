@@ -21,10 +21,7 @@ const checks = [
   require('../checks/CheckCommonsTemplate.js')({
     wikidataValueProperty: 'P2951'
   }),
-  require('../checks/CheckOsmLoadFromRefOrWikidata.js')({
-    wikidataValueProperty: 'P2951',
-    osmRefField: 'ref:at:bda'
-  }),
+  require('../checks/CheckOsmLoadFromRefOrWikidata.js')(),
   require('../checks/CheckOsmLoadSimilar.js')({
     nameField: 'Katalogtitel'
   })
@@ -58,8 +55,6 @@ class DatasetBDA extends Dataset {
 
   idField = 'HERIS-ID'
 
-  // osmRefField = 'ref:at:bda'
-
   wikipediaList = {
     list: 'AT-BDA',
     idPrefix: 'id-',
@@ -80,6 +75,11 @@ class DatasetBDA extends Dataset {
   commons = {
     templateRegexp: '(doo|Denkmalgeschütztes Objekt Österreich)',
     templateTemplate: '{{Denkmalgeschütztes Objekt Österreich|$1}}'
+  }
+
+  osm = {
+    refField: 'ref:at:bda',
+    refValue: { wikidataProperty: 'P2951' }
   }
 
   checks = checks
