@@ -1,5 +1,5 @@
 module.exports = [
-  require('./CheckCommonsLoad')(),
+  require('./CheckCommonsLoadFromWikidata')(),
   require('./CheckCommonsLoadFromTemplate')(),
   require('./CheckCommonsShowItems')(),
   require('./CheckCommonsTemplate')(),

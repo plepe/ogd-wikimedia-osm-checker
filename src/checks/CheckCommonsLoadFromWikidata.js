@@ -1,6 +1,6 @@
 const Check = require('../Check.js')
 
-class CheckCommonsLoad extends Check {
+class CheckCommonsLoadFromWikidata extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
@@ -23,4 +23,4 @@ class CheckCommonsLoad extends Check {
   }
 }
 
-module.exports = options => new CheckCommonsLoad(options)
+module.exports = options => new CheckCommonsLoadFromWikidata(options)
