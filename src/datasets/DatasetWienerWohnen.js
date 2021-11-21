@@ -95,11 +95,11 @@ class DatasetWienerWohnen extends Dataset {
 
   osmCompileTags (ob, osmItem) {
     const result = {
-      'operator': 'Stadt Wien – Wiener Wohnen',
-      'ownership': 'municipal',
-      'architect': (ob.refData.architects.split(/, /).join(';')),
+      operator: 'Stadt Wien – Wiener Wohnen',
+      ownership: 'municipal',
+      architect: (ob.refData.architects.split(/, /).join(';')),
       'construction:start_date': ob.refData.constructionStartYear,
-      'start_date': ob.refData.constructionEndYear
+      start_date: ob.refData.constructionEndYear
     }
 
     result.website = ob.refData.url

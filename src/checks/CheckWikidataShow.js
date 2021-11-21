@@ -12,7 +12,7 @@ class CheckWikidataShow extends Check {
     }
 
     if (!ob.data.wikidataSelected) {
-      return ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag gefunden!')
+      ob.message('wikidata', STATUS.ERROR, 'Kein Eintrag gefunden!')
       return true
     }
 

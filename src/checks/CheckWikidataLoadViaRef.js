@@ -14,7 +14,6 @@ class CheckWikidataLoadViaRef extends Check {
       return false
     }
 
-
     if (!ob.data.wikidataSelected) {
       return true
     }
@@ -29,8 +28,7 @@ class CheckWikidataLoadViaRef extends Check {
 
     if (found) {
       ob.message('wikidata', STATUS.SUCCESS, 'Eintrag hat Attribut <i>' + dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')</i> mit Wert <i>' + ob.id + '</i>.')
-    }
-    else {
+    } else {
       ob.message('wikidata', STATUS.ERROR, 'Eintrag hat kein Attribut <i>' + dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')</i> mit Wert <i>' + ob.id + '</i>.')
     }
 

@@ -10,10 +10,10 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
   let compiledTags = {}
 
   if (ob.dataset.osmCompileTags) {
-    compiledTags = {...compiledTags, ...ob.dataset.osmCompileTags(ob, el)}
+    compiledTags = { ...compiledTags, ...ob.dataset.osmCompileTags(ob, el) }
   }
 
-  compiledTags = {...compiledTags, ...wikidataToOsm.compileTags(ob, el)}
+  compiledTags = { ...compiledTags, ...wikidataToOsm.compileTags(ob, el) }
 
   if (ob.data.commons) {
     const files = ob.data.commons.filter(page => page.title.match(/^File:/))
@@ -26,7 +26,7 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
   }
 
   Object.keys(compiledTags).forEach(k => {
-    v = compiledTags[k]
+    const v = compiledTags[k]
 
     if (k in el.tags && el.tags[k] === v) {
       delete compiledTags[k]

@@ -28,7 +28,7 @@ class CheckOsmLoadSimilar extends Check {
       }
 
       allCoords.forEach(coords => {
-        let q = query
+        const q = query
           .replace(/\(filter\)/g, '(around:30,' + coords.latitude + ',' + coords.longitude + ')')
           .replace(/\(filter:([0-9]+)\)/g, '(around:$1,' + coords.latitude + ',' + coords.longitude + ')')
         console.log(coords, q)
@@ -83,9 +83,9 @@ class CheckOsmLoadSimilar extends Check {
 
     let compiledTags = {}
     if (dataset.osmCompiledTags) {
-      compiledTags = {...compiledTags, ...dataset.osmCompileTags(ob, null)}
+      compiledTags = { ...compiledTags, ...dataset.osmCompileTags(ob, null) }
     }
-    compiledTags = {...compiledTags, ...wikidataToOsm.compileTags(ob, null)}
+    compiledTags = { ...compiledTags, ...wikidataToOsm.compileTags(ob, null) }
 
     if (osmPoss.length) {
       const msg = [

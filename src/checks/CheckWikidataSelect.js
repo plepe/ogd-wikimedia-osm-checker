@@ -1,5 +1,3 @@
-const escHTML = require('html-escape')
-
 const STATUS = require('../status.js')
 const Check = require('../Check.js')
 
@@ -28,7 +26,7 @@ class CheckWikidataSelect extends Check {
     }
     div.appendChild(select)
 
-    let optionOther = document.createElement('option')
+    const optionOther = document.createElement('option')
     optionOther.value = ''
     optionOther.appendChild(document.createTextNode('kein passendes gefunden'))
 
@@ -42,7 +40,7 @@ class CheckWikidataSelect extends Check {
     const selectedId = ob.data.wikidataSelected ? ob.data.wikidataSelected.id : null
 
     ob.data.wikidata.forEach(item => {
-      let option = document.createElement('option')
+      const option = document.createElement('option')
       option.value = item.id
       if (selectedId === item.id) {
         option.selected = true
