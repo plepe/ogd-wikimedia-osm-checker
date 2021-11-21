@@ -10,17 +10,16 @@ module.exports = function getAllCoords (ob) {
     }
   }
 
-  ob.data.wikidata && ob.data.wikidata.forEach(
-    wikidata => {
-      if (wikidata.claims.P625) {
-        wikidata.claims.P625.forEach(
-          P625 => {
-            allCoords.push(P625.mainsnak.datavalue.value)
-          }
-        )
-      }
+  if (ob.data.wikidataSelected) {
+    const wikidata = ob.data.wikidataSelected
+    if (wikidata.claims.P625) {
+      wikidata.claims.P625.forEach(
+        P625 => {
+          allCoords.push(P625.mainsnak.datavalue.value)
+        }
+      )
     }
-  )
+  }
 
   if (ob.data.wikipedia && ob.data.wikipedia.length && ob.dataset.wikipediaList && ob.dataset.wikipediaList.latitudeField) {
     allCoords.push({
