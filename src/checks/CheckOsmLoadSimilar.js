@@ -99,13 +99,19 @@ class CheckOsmLoadSimilar extends Check {
         '</ul>'
       )
 
-      if (osmPoss.length === 1 && osmPoss[0].tags.wikidata) {
-        ob.load('wikidata', { key: 'id', id: osmPoss[0].tags.wikidata })
+      if (osmPoss.length) {
+        osmPoss.forEach(el => {
+          if (!el.tags.wikidata) {
+            return
+          }
 
-        if (ob.data.wikidataSelected && ob.data.wikidataSelected.id === osmPoss[0].tags.wikidata) {
-          ob.message('wikidata', STATUS.WARNING, 'Bitte kontrollieren, ob <a target="_blank" href="https://wikidata.org/wiki/' + osmPoss[0].tags.wikidata + '">' + osmPoss[0].tags.wikidata + '</a> der richtige Wikidata Eintrag ist. Er wurde von möglicherweise passendem OpenStreetMap Objekt <a target="_blank" href="https://openstreetmap.org/' + osmPoss[0].type + '/' + osmPoss[0].id + '">' + osmPoss[0].type + '/' + osmPoss[0].id + '</a> geladen.')
-        }
-        ob.osmSimilar = true
+          ob.load('wikidata', { key: 'id', id: el.tags.wikidata })
+
+          if (ob.data.wikidataSelected && ob.data.wikidataSelected.id === el.tags.wikidata) {
+            ob.message('wikidata', STATUS.WARNING, 'Bitte kontrollieren, ob <a target="_blank" href="https://wikidata.org/wiki/' + el.tags.wikidata + '">' + el.tags.wikidata + '</a> der richtige Wikidata Eintrag ist. Er wurde von möglicherweise passendem OpenStreetMap Objekt <a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + el.type + '/' + el.id + '</a> geladen.')
+            ob.osmSimilar = true
+          }
+        })
       }
     } else {
       ob.message('osm', STATUS.ERROR, 'Kein passendes Objekt in der Nähe gefunden' + editLink(ob, null, compiledTags) + '.')
