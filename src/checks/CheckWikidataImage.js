@@ -12,12 +12,12 @@ class CheckWikidataImage extends Check {
       return
     }
 
-    if (ob.data.wikidata.length === 0) {
+    if (!ob.data.wikidataSelected) {
       return true
     }
 
     // image
-    const el = ob.data.wikidata[0]
+    const el = ob.data.wikidataSelected
     if (el.claims.P18) {
       const images = el.claims.P18
       if (images.length === 1) {

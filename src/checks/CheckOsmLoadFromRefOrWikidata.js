@@ -48,8 +48,8 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       return false
     }
 
-    if (ob.data.wikidata.length) {
-      wikidataId = ob.data.wikidata[0].id
+    if (ob.data.wikidataSelected) {
+      wikidataId = ob.data.wikidataSelected.id
     }
 
     const refBdaResult = ob.data.osm.filter(el => el.tags[osmRefField] === id)

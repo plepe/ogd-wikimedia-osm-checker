@@ -7,11 +7,11 @@ class CheckWikidataCoords extends Check {
       return // wait for other check to load wikidata
     }
 
-    if (ob.data.wikidata.length === 0) {
+    if (!ob.data.wikidataSelected) {
       return true // loaded, but no wikidata entry found
     }
 
-    if (ob.data.wikidata[0].claims.P625) {
+    if (ob.data.wikidataSelected.claims.P625) {
       return true // has coordinates - will be printed by WikidataShow anyway
     }
 

@@ -32,8 +32,8 @@ class CheckOsmLoadSimilar extends Check {
     }
 
     // if one of the OSM objects has a matching wikidata tag, we are happy
-    if (!ob.osmSimilar && ob.data.wikidata && ob.data.wikidata.length) {
-      const match = ob.data.osm.filter(el => el.tags.wikidata === ob.data.wikidata[0].id)
+    if (!ob.osmSimilar && ob.data.wikidataSelected) {
+      const match = ob.data.osm.filter(el => el.tags.wikidata === ob.data.wikidataSelected.id)
       if (match.length) {
         return true
       }

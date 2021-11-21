@@ -29,8 +29,8 @@ class CheckOsmLoadFromWikidata extends Check {
       return
     }
 
-    if (ob.data.wikidata.length) {
-      wikidataId = ob.data.wikidata[0].id
+    if (ob.data.wikidataSelected) {
+      wikidataId = ob.data.wikidataSelected.id
     } else {
       return true
     }

@@ -13,8 +13,9 @@ class CheckCommonsLoadFromWikidata extends Check {
       return true
     }
 
-    const el = ob.data.wikidata[0]
-    if (el.claims.P373) {
+    const el = ob.data.wikidataSelected
+
+    if (el && el.claims.P373) {
       const data = el.claims.P373
       return ob.load('commons', { title: 'Category:' + data[0].mainsnak.datavalue.value })
     }

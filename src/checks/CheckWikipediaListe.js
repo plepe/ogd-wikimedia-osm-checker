@@ -78,8 +78,8 @@ class CheckWikipediaListe extends Check {
         if (found[0][dataset.wikipediaList.articleField]) {
           ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf einen Wikipedia Artikel: <a target="_blank" href="https://de.wikipedia.org/wiki/' + escHTML(found[0][dataset.wikipediaList.articleField].replace(/ /g, '_')) + '">' + escHTML(found[0][dataset.wikipediaList.articleField]) + '</a>')
         } else {
-          if (ob.data.wikidata && ob.data.wikidata.length) {
-            const wikidataEntry = ob.data.wikidata[0]
+          if (ob.data.wikidataSelected) {
+            const wikidataEntry = ob.data.wikidataSelected
             if (wikidataEntry.sitelinks && 'dewiki' in wikidataEntry.sitelinks) {
               ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf einen Wikipedia Artikel, sollte sein: <tt>Artikel = ' + escHTML(wikidataEntry.sitelinks.dewiki.title) + '</tt>')
             }
@@ -93,14 +93,14 @@ class CheckWikipediaListe extends Check {
           if (found[0][dataset.wikipediaList.wikidataField]) {
             ob.load('wikidata', { key: 'id', id: found[0][dataset.wikipediaList.wikidataField] })
           }
-        } else if (!ob.data.wikidata.length) {
+        } else if (!ob.data.wikidataSelected) {
           // no wikidata entry found
-        } else if (found[0][dataset.wikipediaList.wikidataField] === ob.data.wikidata[0].id) {
+        } else if (found[0][dataset.wikipediaList.wikidataField] === ob.data.wikidataSelected.id) {
           ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen gültigen Verweis auf den Wikidata Eintrag.')
         } else if (found[0][dataset.wikipediaList.wikidataField]) {
           ob.message('wikipedia', STATUS.ERROR, 'Liste hat einen ungültigen Verweis auf einen Wikidata Eintrag: <tt>' + escHTML(found[0][dataset.wikipediaList.wikidataField]) + '</tt>')
         } else {
-          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf den Wikidata Eintrag, sollte sein: <tt>' + escHTML(dataset.wikipediaList.wikidataField) + ' = ' + escHTML(ob.data.wikidata[0].id) + '</tt>')
+          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf den Wikidata Eintrag, sollte sein: <tt>' + escHTML(dataset.wikipediaList.wikidataField) + ' = ' + escHTML(ob.data.wikidataSelected.id) + '</tt>')
         }
       }
 

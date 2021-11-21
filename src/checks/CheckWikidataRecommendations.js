@@ -9,11 +9,11 @@ class CheckWikidataRecommendations extends Check {
       return // wait for other check to load wikidata
     }
 
-    if (ob.data.wikidata.length === 0) {
+    if (!ob.data.wikidataSelected) {
       return true // loaded, but no wikidata entry found
     }
 
-    const el = ob.data.wikidata[0]
+    const el = ob.data.wikidataSelected
 
     let recommendations = []
 

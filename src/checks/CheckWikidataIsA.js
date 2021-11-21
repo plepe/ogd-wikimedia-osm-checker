@@ -7,11 +7,11 @@ class CheckWikidataIsA extends Check {
       return // wait for other check to load wikidata
     }
 
-    if (ob.data.wikidata.length === 0) {
+    if (!ob.data.wikidataSelected) {
       return true // loaded, but no wikidata entry found
     }
 
-    const data = ob.data.wikidata[0].claims.P31
+    const data = ob.data.wikidataSelected.claims.P31
 
     if (!data) {
       return ob.message('wikidata', STATUS.ERROR, 'Objekt hat keine "ist ein(e)" Angabe')
