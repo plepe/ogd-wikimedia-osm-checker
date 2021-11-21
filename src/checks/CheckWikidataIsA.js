@@ -24,6 +24,10 @@ class CheckWikidataIsA extends Check {
     if (data.filter(el => el.mainsnak.datavalue.value.id === 'Q13406463').length) {
       return ob.message('wikidata', STATUS.ERROR, 'Verdacht auf falsches Objekt: ist eine Wikimedia-Liste.')
     }
+
+    if (data.filter(el => el.mainsnak.datavalue.value.id === 'Q5').length) {
+      return ob.message('wikidata', STATUS.ERROR, 'Verdacht auf falsches Objekt: ist ein Mensch.')
+    }
   }
 }
 
