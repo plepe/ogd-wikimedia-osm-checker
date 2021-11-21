@@ -23,8 +23,8 @@ module.exports = {
   compileTags (ob, osmItem) {
     const result = {}
 
-    if (ob.data.wikidata && ob.data.wikidata.length) {
-      const wikidata = ob.data.wikidata[0]
+    if (ob.data.wikidataSelected) {
+      const wikidata = ob.data.wikidataSelected
 
       for (const k in wikidataToOsm) {
         const d = wikidataToOsm[k]
