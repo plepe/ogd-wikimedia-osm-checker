@@ -6,8 +6,8 @@ const osmFormat = require('../osmFormat.js')
 const calcDistance = require('../calcDistance.js')
 const Check = require('../Check.js')
 const getAllCoords = require('../getAllCoords.js')
-const wikidataToOsm = require('../wikidataToOsm.js')
 const idFromRefOrRefValue = require('../idFromRefOrRefValue')
+const osmCompileTags = require('../osmCompileTags.js')
 
 class CheckOsmLoadSimilar extends Check {
   // result:
@@ -81,11 +81,7 @@ class CheckOsmLoadSimilar extends Check {
       })
     }
 
-    let compiledTags = {}
-    if (dataset.osmCompiledTags) {
-      compiledTags = { ...compiledTags, ...dataset.osmCompileTags(ob, null) }
-    }
-    compiledTags = { ...compiledTags, ...wikidataToOsm.compileTags(ob, null) }
+    const compiledTags = osmCompileTags(ob, null)
 
     if (osmPoss.length) {
       const msg = [

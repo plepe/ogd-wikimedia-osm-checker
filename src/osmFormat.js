@@ -1,37 +1,13 @@
 const escHTML = require('html-escape')
 
 const editLink = require('./editLink.js')
-const wikidataToOsm = require('./wikidataToOsm.js')
 const printAttrList = require('./printAttrList.js')
+const osmCompileTags = require('./osmCompileTags.js')
 
 const recommendedTags = ['name', 'start_date', 'wikidata']
 
 module.exports = function osmFormat (el, ob, appendTitle = '') {
-  let compiledTags = {}
-
-  if (ob.dataset.osmCompileTags) {
-    compiledTags = { ...compiledTags, ...ob.dataset.osmCompileTags(ob, el) }
-  }
-
-  compiledTags = { ...compiledTags, ...wikidataToOsm.compileTags(ob, el) }
-
-  if (ob.data.commons) {
-    const files = ob.data.commons.filter(page => page.title.match(/^File:/))
-    const categories = ob.data.commons.filter(page => page.title.match(/^Category:/))
-    if (categories.length) {
-      compiledTags.wikimedia_commons = categories[0].title
-    } else if (files.length) {
-      compiledTags.image = files[0].title
-    }
-  }
-
-  Object.keys(compiledTags).forEach(k => {
-    const v = compiledTags[k]
-
-    if (k in el.tags && el.tags[k] === v) {
-      delete compiledTags[k]
-    }
-  })
+  const compiledTags = osmCompileTags(ob, el)
 
   let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el, compiledTags) + appendTitle
 
