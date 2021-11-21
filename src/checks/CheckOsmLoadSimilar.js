@@ -23,11 +23,17 @@ class CheckOsmLoadSimilar extends Check {
 
     if (!ob.data.osm && ob.data.wikidata) {
       const query = dataset.compileOverpassQuery(ob)
-      if (query === null) {
+      if (!query) {
         return true
       }
 
-      allCoords.forEach(coords => ob.load('osm', query.replace(/\(filter\)/g, '(around:30,' + coords.latitude + ',' + coords.longitude + ')')))
+      allCoords.forEach(coords => {
+        let q = query
+          .replace(/\(filter\)/g, '(around:30,' + coords.latitude + ',' + coords.longitude + ')')
+          .replace(/\(filter:([0-9]+)\)/g, '(around:$1,' + coords.latitude + ',' + coords.longitude + ')')
+        console.log(coords, q)
+        ob.load('osm', q)
+      })
       return
     }
 

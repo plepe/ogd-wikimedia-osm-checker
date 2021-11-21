@@ -135,7 +135,8 @@ class DatasetExample extends Dataset {
 
   // return a query for the current item in Overpass QL (ob is an instance of class Examinee)
   // about Overpass QL: https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL
-  // '(filter)' will be replaced by a bouding box query from the found coordinates
+  // '(filter)' will be replaced by a bouding box query from the found coordinates, extended by 30 meters
+  // '(filter:200)' will be replaced by a bounding box query extended by 200 meters (or what ever has been specified)
   // if null is returned, no OpenStreetMap objects will be queried
   compileOverpassQuery (ob) {
     return '(nwr[building](filter);nwr[amenity=example](filter););'
