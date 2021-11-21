@@ -1,5 +1,6 @@
 module.exports = [
   require('./CheckWikidataAutoselect')(),
+  require('./CheckWikidataSelect')(),
   require('./CheckCommonsLoadFromWikidata')(),
   require('./CheckCommonsLoadFromTemplate')(),
   require('./CheckCommonsShowItems')(),
