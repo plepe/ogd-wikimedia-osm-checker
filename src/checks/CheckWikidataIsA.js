@@ -1,6 +1,12 @@
 const STATUS = require('../status.js')
 const Check = require('../Check.js')
 
+const suspiciousObjects = {
+  Q5: 'ist ein Mensch.',
+  Q4167410: 'ist eine Wikimedia-Begriffsklärungsseite.',
+  Q13406463: 'ist eine Wikimedia-Liste.'
+}
+
 class CheckWikidataIsA extends Check {
   check (ob, dataset) {
     if (!ob.data.wikidata) {
@@ -21,13 +27,11 @@ class CheckWikidataIsA extends Check {
       return ob.message('wikidata', STATUS.ERROR, 'Objekt ist nur als Kulturgut eingetragen ("ist ein(e)").')
     }
 
-    if (data.filter(el => el.mainsnak.datavalue.value.id === 'Q13406463').length) {
-      return ob.message('wikidata', STATUS.ERROR, 'Verdacht auf falsches Objekt: ist eine Wikimedia-Liste.')
-    }
-
-    if (data.filter(el => el.mainsnak.datavalue.value.id === 'Q5').length) {
-      return ob.message('wikidata', STATUS.ERROR, 'Verdacht auf falsches Objekt: ist ein Mensch.')
-    }
+    data.forEach(el => {
+      if (el.mainsnak.datavalue.value.id in suspiciousObjects) {
+        return ob.message('wikidata', STATUS.ERROR, 'Verdacht auf falsches Objekt: ' + suspiciousObjects[el.mainsnak.datavalue.value.id])
+      }
+    })
   }
 }
 
