@@ -79,7 +79,11 @@ module.exports = class Examinee extends EventEmitter {
 
   message (module, status, message) {
     const li = document.createElement('li')
-    li.innerHTML = message
+    if (typeof message === 'string') {
+      li.innerHTML = message
+    } else {
+      li.appendChild(message)
+    }
     li.className = status
     this.messagesUl[module].appendChild(li)
 
