@@ -114,10 +114,6 @@ class DatasetBDA extends Dataset {
 
     // result['ref:at:bda'] = ob.id
 
-    if (ob.data.wikidata.length) {
-      result.wikidata = ob.data.wikidata[0].id
-    }
-
     return result
   }
 

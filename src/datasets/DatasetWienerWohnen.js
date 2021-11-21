@@ -108,10 +108,6 @@ class DatasetWienerWohnen extends Dataset {
       result.name = ob.refData.name
     }
 
-    if (ob.data.wikidata.length) {
-      result.wikidata = ob.data.wikidata[0].id
-    }
-
     return result
   }
 

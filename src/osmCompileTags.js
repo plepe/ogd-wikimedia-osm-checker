@@ -9,7 +9,9 @@ module.exports = function osmCompileTags (ob, el) {
 
   compiledTags = { ...compiledTags, ...wikidataToOsm.compileTags(ob, el) }
 
-  if (ob.data.commons) {
+  if (ob.data.wikidataSelected) {
+    compiledTags.wikidata = ob.data.wikidataSelected.id
+  } else if (ob.data.commons) {
     const files = ob.data.commons.filter(page => page.title.match(/^File:/))
     const categories = ob.data.commons.filter(page => page.title.match(/^Category:/))
     if (categories.length) {

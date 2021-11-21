@@ -137,10 +137,6 @@ class DatasetKunstWien extends Dataset {
       'ref:wien:kultur': ob.id
     }
 
-    if (ob.data.wikidata.length) {
-      result.wikidata = ob.data.wikidata[0].id
-    }
-
     return result
   }
 
