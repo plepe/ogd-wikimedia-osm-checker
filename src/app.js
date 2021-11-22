@@ -5,6 +5,7 @@ const async = require('async')
 
 const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
+const timestamp = require('./timestamp')
 
 const datasets = require('./datasets/index.js')
 const modules = [
@@ -199,7 +200,7 @@ function check (id, options = {}) {
   reload.innerHTML = '↻'
   reload.title = 'Nochmal prüfen'
   reload.onclick = () => {
-    options.reload = true
+    options.reload = timestamp()
     check(id, options)
     return false
   }
