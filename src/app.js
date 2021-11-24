@@ -131,8 +131,12 @@ function choose (path) {
   httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
   const select = document.getElementById('placeFilter')
-  const place = dataset.data[id][dataset.refData.placeFilterField]
-  select.value = place
+  if (dataset.refData.placeFilterField) {
+    const place = dataset.data[id][dataset.refData.placeFilterField]
+    select.value = place
+  } else {
+    select.value = 'alle'
+  }
   update()
 
   check(id)
@@ -162,7 +166,7 @@ function update () {
   Object.keys(dataset.data).forEach(id => {
     const item = dataset.data[id]
 
-    if (item[dataset.refData.placeFilterField] === place) {
+    if (!dataset.refData.placeFilterField || item[dataset.refData.placeFilterField] === place) {
       const text = dataset.listFormat(item)
 
       const tr = document.createElement('tr')
