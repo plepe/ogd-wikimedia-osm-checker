@@ -23,7 +23,7 @@ class Dataset {
           .then(json => {
             json.forEach(entry => {
               this.data[entry[this.refData.idField]] = entry
-              placeFilter[entry[this.refData.placeFilterField]] = true
+              placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
             })
 
             done()
@@ -34,8 +34,12 @@ class Dataset {
     err => {
       if (err) { return callback(err) }
 
-      this.placeFilter = Object.keys(placeFilter)
-      this.placeFilter = this.placeFilter.sort(natsort({ insensitive: true }))
+      if (this.refData.placeFilterField) {
+        this.placeFilter = Object.keys(placeFilter)
+        this.placeFilter = this.placeFilter.sort(natsort({ insensitive: true }))
+      } else {
+        this.placeFilter = ['alle']
+      }
 
       callback(null)
     })

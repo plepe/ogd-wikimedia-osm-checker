@@ -3,6 +3,7 @@ const escHTML = require('html-escape')
 const STATUS = require('../status.js')
 const Check = require('../Check.js')
 const printAttrList = require('../printAttrList.js')
+const createGeoLink = require('../createGeoLink')
 
 class CheckWikipediaListe extends Check {
   // result:
@@ -24,18 +25,20 @@ class CheckWikipediaListe extends Check {
     const found = ob.data.wikipedia
 
     if (found.length) {
-      let msg = '<a target="_blank" href="' + escHTML(found[0].url) + '">Wikipedia Liste</a>:'
+      const attrList = []
 
-      const attrList = dataset.wikipediaList.showFields.map(
-        fieldId => {
-          if (found[0][fieldId]) {
-            return {
-              title: fieldId,
-              text: found[0][fieldId]
+      if (dataset.wikipediaList.showFields) {
+        dataset.wikipediaList.showFields.forEach(
+          fieldId => {
+            if (found[0][fieldId]) {
+              attrList.push({
+                title: fieldId,
+                text: found[0][fieldId]
+              })
             }
           }
-        }
-      )
+        )
+      }
 
       if (dataset.wikipediaList.latitudeField && dataset.wikipediaList.longitudeField) {
         if (found[0][dataset.wikipediaList.latitudeField] && found[0][dataset.wikipediaList.longitudeField]) {
@@ -44,12 +47,15 @@ class CheckWikipediaListe extends Check {
             title: 'Koordinaten',
             text: parseFloat(found[0][dataset.wikipediaList.latitudeField]).toFixed(5) + ', ' + parseFloat(found[0][dataset.wikipediaList.longitudeField]).toFixed(5),
             value: { latitude: found[0][dataset.wikipediaList.latitudeField], longitude: found[0][dataset.wikipediaList.longitudeField] },
-            link: 'https://openstreetmap.org/?mlat=' + found[0][dataset.wikipediaList.latitudeField] + '&mlon=' + found[0][dataset.wikipediaList.longitudeField] + '#map=19/' + found[0][dataset.wikipediaList.latitudeField] + '/' + found[0][dataset.wikipediaList.longitudeField]
+            link: createGeoLink({ latitude: found[0][dataset.wikipediaList.latitudeField], longitude: found[0][dataset.wikipediaList.longitudeField] })
           })
         }
       }
 
-      msg += printAttrList(attrList)
+      let msg = '<a target="_blank" href="' + escHTML(found[0].url) + '">Wikipedia Liste</a>'
+      if (attrList.length) {
+        msg += ':' + printAttrList(attrList)
+      }
       ob.message('wikipedia', STATUS.SUCCESS, msg)
 
       if (found[0].Foto && found[0].Bilderwunsch) {
