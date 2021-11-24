@@ -4,8 +4,9 @@ Create a file in `src/datasets`: `DatasetExample.js` and add it to `src/datasets
 
 ```js
 const escHTML = require('html-escape') // needed for the format-functions
-const Dataset = require('../Dataset')
+const createGeoLink = require('../createGeoLink') // might be needed for showFormat()
 
+const Dataset = require('../Dataset')
 class DatasetExample extends Dataset {
   id = 'example'
 
@@ -90,7 +91,7 @@ class DatasetExample extends Dataset {
     refField: 'ref:example',
 
     // [optional] instead of the ID of the item, use the value of this wikidata property for 'refField'.
-    refValue: { wikidataProperty: 'P2951' }
+    refValue: { wikidataProperty: 'P2951' },
 
     // [optional] when search similar objects, use the specified field from refData to compare the name
     refDataNameField: 'TITLE'
@@ -102,7 +103,6 @@ class DatasetExample extends Dataset {
   }
 
   // format the details of an item (may return either an HTML string or a DOM structure)
-  // [optional] for the createGeoLink to work, you have to include "const createGeoLink = require('../createGeoLink')" at the start of the file
   showFormat (item) {
     return '<h2>Example</h2><ul>' +
       '<li>Title: ' + escHTML(item.TITLE) + '</li>' +
@@ -149,6 +149,8 @@ class DatasetExample extends Dataset {
     return '(nwr[building](filter);nwr[amenity=example](filter););'
   }
 }
+
+module.exports = new DatasetExample()
 ```
 
 ## Downloader
