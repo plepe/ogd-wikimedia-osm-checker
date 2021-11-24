@@ -24,18 +24,20 @@ class CheckWikipediaListe extends Check {
     const found = ob.data.wikipedia
 
     if (found.length) {
-      let msg = '<a target="_blank" href="' + escHTML(found[0].url) + '">Wikipedia Liste</a>:'
+      const attrList = []
 
-      const attrList = dataset.wikipediaList.showFields.map(
-        fieldId => {
-          if (found[0][fieldId]) {
-            return {
-              title: fieldId,
-              text: found[0][fieldId]
+      if (dataset.wikipediaList.showFields) {
+        dataset.wikipediaList.showFields.forEach(
+          fieldId => {
+            if (found[0][fieldId]) {
+              attrList.push({
+                title: fieldId,
+                text: found[0][fieldId]
+              })
             }
           }
-        }
-      )
+        )
+      }
 
       if (dataset.wikipediaList.latitudeField && dataset.wikipediaList.longitudeField) {
         if (found[0][dataset.wikipediaList.latitudeField] && found[0][dataset.wikipediaList.longitudeField]) {
@@ -49,7 +51,10 @@ class CheckWikipediaListe extends Check {
         }
       }
 
-      msg += printAttrList(attrList)
+      let msg = '<a target="_blank" href="' + escHTML(found[0].url) + '">Wikipedia Liste</a>'
+      if (attrList.length) {
+        msg += ':' + printAttrList(attrList)
+      }
       ob.message('wikipedia', STATUS.SUCCESS, msg)
 
       if (found[0].Foto && found[0].Bilderwunsch) {
