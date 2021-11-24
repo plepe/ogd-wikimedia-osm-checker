@@ -25,72 +25,75 @@ class DatasetExample extends Dataset {
     // important: this field holds the identificator of each item
     idField: 'ID',
 
-    // if there's a field with coordinates, add this structure; id is the field name, type the encoding (currently supported: 'wkt' = Well-known text)
+    // [optional] for a field with coordinates, add this structure; id is the field name, type the encoding (currently supported: 'wkt' = Well-known text)
     coordField: {
       id: 'SHAPE',
       type: 'wkt'
     },
 
-    // add a place filter in the menu. use this field for filtering:
+    // [optional] add a place filter in the menu. use this field for filtering:
     placeFilterField: 'PLACE'
   }
 
-  // Configuration of the item in a corresponding wikipedia list
+  // [optional] Configuration of the item in a corresponding wikipedia list
   wikipediaList = {
     // id of an existing list in the module https://github.com/plepe/wikipedia-list-extractor
     list: 'AT-BDA',
 
-    // optional id prefix
+    // [optional] id prefix
     idPrefix: 'id-',
 
-    // id of the field referencing the wikidata item
+    // [optional] id of the field referencing the wikidata item
     wikidataField: 'WD-Item',
 
-    // id of the field referencing a wikipedia article
+    // [optional] id of the field referencing a wikipedia article
     articleField: 'Article',
 
-    // id of the field referencing the wikimedia commons category
+    // [optional] id of the field referencing the wikimedia commons category
     commonsField: 'Commonscat',
 
-    // id of the field referencing the latitude/longitude of the item's coordinates
+    // [optional] id of the fields referencing the latitude/longitude of the item's coordinates
     latitudeField: 'Latitude',
     longitudeField: 'Longitude',
 
-    // which fields should be displayed
+    // [optional] which fields should be displayed
     showField: ['Name', 'Type', 'Description'],
   }
 
-  // Configuration of the item in Wikidata
+  // [optional] Configuration of the item in Wikidata
   wikidata = {
     // which property holds the reference to this dataset
     refProperty: 'P1234',
 
-    // title of the refProperty
+    // [optional] title of the refProperty
     refPropertyTitle: 'Property Title'
   }
 
-  // Configuration of the item in Wikimedia Commons
+  // [optional] Configuration of the item in Wikimedia Commons
   commons = {
-    // template for a search via full text search (Cirrus Search); '$1' will be replaced by the ID of the item
+    // [optional] template for a search via full text search (Cirrus Search); '$1' will be replaced by the ID of the item
     searchRegexp: '/\\{\\{Example\\s*\\|\\s*(1=)*$1(\\|(.*))?\\}\\}/',
 
-    // in the source of each page, search for occurences of this template
+    // [optional] in the source of each page, search for occurences of this template
     templateRegexp: '[Ee]xample',
 
-    // when no template is found, suggest the following template; '$1' will be replaced by the ID of the item
+    // [optional] when no template is found, suggest the following template; '$1' will be replaced by the ID of the item
     templateTemplate: '{{Example|$1}}',
 
-    // optional: instead of the ID of the item, use the value of this wikidata property for 'searchRegexp' and 'templateTemplate'.
+    // [optional] instead of the ID of the item, use the value of this wikidata property for 'searchRegexp' and 'templateTemplate'.
     refValue: { wikidataProperty: 'P2951' }
   }
 
-  // Configuration of the item in OpenStreetMap
+  // [optional] Configuration of the item in OpenStreetMap
   osm = {
-    // the specified tag holds a reference to the dataset's id
+    // [optional] the specified tag holds a reference to the dataset's id
     refField: 'ref:example',
 
-    // optional: instead of the ID of the item, use the value of this wikidata property for 'refField'.
+    // [optional] instead of the ID of the item, use the value of this wikidata property for 'refField'.
     refValue: { wikidataProperty: 'P2951' }
+
+    // [optional] when search similar objects, use the specified field from refData to compare the name
+    refDataNameField: 'TITLE'
   }
 
   // format an item for the list on the left side (may return either an HTML string or a DOM structure)
@@ -105,7 +108,7 @@ class DatasetExample extends Dataset {
       '</ul>'
   }
 
-  // the wikidata representation of an item should have these properties (ob is an instance of class Examinee)
+  // [optional] the wikidata representation of an item should have these properties (ob is an instance of class Examinee)
   wikidataRecommendedProperties (ob) {
     // use ob.refData for the original data from the dataset (e.g. ob.refData.TITLE)
     return [
@@ -114,7 +117,7 @@ class DatasetExample extends Dataset {
     ]
   }
 
-  // the OSM representation of an item should have these properties
+  // [optional] the OSM representation of an item should have these properties
   // - ob is an instance of class Examinee
   // - [optional] osmItem is a result from overpass with: osmItem.type, osmItem.id, osmItem.tags, ...
   osmRecommendedTags (ob, osmItem) {
@@ -123,7 +126,7 @@ class DatasetExample extends Dataset {
     ]
   }
 
-  // list of tag=value pairs which should be added to the OSM entry
+  // [optional] list of tag=value pairs which should be added to the OSM entry
   // - ob is an instance of class Examinee
   // - [optional] osmItem is a result from overpass with: osmItem.type, osmItem.id, osmItem.tags, ...
   osmCompileTags (ob, osmItem) {
@@ -133,12 +136,14 @@ class DatasetExample extends Dataset {
     }
   }
 
-  // return a query for the current item in Overpass QL (ob is an instance of class Examinee)
+  // [optional] query for similar items near coordinates (from refData, wikipediaList and/or wikidata) in OpenStreetMap
+  // return a query Overpass QL (parameter 'ob' is an instance of class Examinee)
   // about Overpass QL: https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL
   // '(filter)' will be replaced by a bouding box query from the found coordinates, extended by 30 meters
   // '(filter:200)' will be replaced by a bounding box query extended by 200 meters (or what ever has been specified)
-  // if null is returned, no OpenStreetMap objects will be queried
+  // if null is returned, no similar OpenStreetMap objects will be queried
   compileOverpassQuery (ob) {
+    // example: loading all nearby buildings; load all objects with amenity=example
     return '(nwr[building](filter);nwr[amenity=example](filter););'
   }
 }
