@@ -3,6 +3,7 @@ const escHTML = require('html-escape')
 const STATUS = require('../status.js')
 const Check = require('../Check.js')
 const printAttrList = require('../printAttrList.js')
+const createGeoLink = require('../createGeoLink')
 
 class CheckWikipediaListe extends Check {
   // result:
@@ -46,7 +47,7 @@ class CheckWikipediaListe extends Check {
             title: 'Koordinaten',
             text: parseFloat(found[0][dataset.wikipediaList.latitudeField]).toFixed(5) + ', ' + parseFloat(found[0][dataset.wikipediaList.longitudeField]).toFixed(5),
             value: { latitude: found[0][dataset.wikipediaList.latitudeField], longitude: found[0][dataset.wikipediaList.longitudeField] },
-            link: 'https://openstreetmap.org/?mlat=' + found[0][dataset.wikipediaList.latitudeField] + '&mlon=' + found[0][dataset.wikipediaList.longitudeField] + '#map=19/' + found[0][dataset.wikipediaList.latitudeField] + '/' + found[0][dataset.wikipediaList.longitudeField]
+            link: createGeoLink({ latitude: found[0][dataset.wikipediaList.latitudeField], longitude: found[0][dataset.wikipediaList.longitudeField] })
           })
         }
       }
