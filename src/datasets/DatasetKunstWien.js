@@ -1,6 +1,7 @@
 const escHTML = require('html-escape')
 
 const Dataset = require('../Dataset')
+const createGeoLink = require('../createGeoLink')
 
 const typ2OverpassQuery = {
   Gedenktafeln: 'nwr[historic=memorial](filter);',
@@ -89,10 +90,7 @@ class DatasetKunstWien extends Dataset {
     ul.innerHTML += '<li>Inschrift: ' + escHTML(item.INSCHRIFT) + '</li>'
     ul.innerHTML += '<li>Typ: ' + escHTML(item.TYP) + '</li>'
     ul.innerHTML += '<li>Adresse: ' + escHTML(item.STRASSE) + ', ' + escHTML(item.PLZ) + ' ' + escHTML(item.ORT) + '</li>'
-    const coords = item.SHAPE.match(/POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/)
-    if (coords) {
-      ul.innerHTML += '<li>Koordinaten: <a target="_blank" href="https://openstreetmap.org/?mlat=' + coords[2] + '&mlon=' + coords[1] + '#map=19/' + coords[2] + '/' + coords[1] + '">' + parseFloat(coords[2]).toFixed(5) + ', ' + parseFloat(coords[1]).toFixed(5) + '</a></li>'
-    }
+    ul.innerHTML += '<li>Koordinaten: ' + createGeoLink(item, this.refData.coordField) + '</li>'
     ul.innerHTML += '<li>Standort: ' + escHTML(item.STANDORT) + '</li>'
     ul.innerHTML += '<li>Beschreibung: ' + escHTML(item.BESCHREIBUNG) + '</li>'
     ul.innerHTML += '<li>Geschichte: ' + escHTML(item.GESCHICHTE) + '</li>'

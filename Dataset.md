@@ -102,9 +102,11 @@ class DatasetExample extends Dataset {
   }
 
   // format the details of an item (may return either an HTML string or a DOM structure)
+  // [optional] for the createGeoLink to work, you have to include "const createGeoLink = require('../createGeoLink')" at the start of the file
   showFormat (item) {
     return '<h2>Example</h2><ul>' +
       '<li>Title: ' + escHTML(item.TITLE) + '</li>' +
+      '<li>Koordinaten: ' + createGeoLink(item, this.refData.coordField) + '</li>' +
       '</ul>'
   }
 
