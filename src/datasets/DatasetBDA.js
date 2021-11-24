@@ -93,7 +93,7 @@ class DatasetBDA extends Dataset {
   }
 
   wikidataRecommendedProperties (ob) {
-    const list = ['P84', 'P170', 'P580', 'P417', 'P180']
+    const list = ['P84', 'P170', 'P571', 'P1619', 'P417', 'P180']
 
     if (ob.refData.Gemeinde === 'Wien') {
       list.push('P7842') // Wien Geschichte Wiki ID (siehe Seiteninformationen)

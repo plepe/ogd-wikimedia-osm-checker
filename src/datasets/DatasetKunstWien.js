@@ -105,7 +105,7 @@ class DatasetKunstWien extends Dataset {
   }
 
   wikidataRecommendedProperties (ob) {
-    const list = ['P170', 'P580', 'P417', 'P180', 'P7842']
+    const list = ['P170', 'P571', 'P1619', 'P417', 'P180', 'P7842']
 
     if (ob.refData.INSCHRIFT) {
       list.push('P1684')
