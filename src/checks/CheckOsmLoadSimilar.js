@@ -14,6 +14,10 @@ class CheckOsmLoadSimilar extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
+    if (!dataset.compileOverpassQuery) {
+      return true
+    }
+
     if (!ob.isDone(/^CheckWikidataLoad/)) {
       // wait for all wikidata loaders to finish
       return
