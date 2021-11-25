@@ -49,6 +49,40 @@ class Dataset {
     })
   }
 
+  listFormat (item) {
+    let result = ''
+
+    let value = null
+    if (this.refData.listFieldTitle.match(/\{/)) {
+      if (!this.listFieldTitleTemplate) {
+        this.listFieldTitleTemplate = twig({ data: this.refData.listFieldTitle })
+      }
+      value = this.listFieldTitleTemplate.render(item)
+    } else if (this.refData.listFieldTitle) {
+      value = escHTML(item[this.refData.listFieldTitle])
+    } else {
+      value = escHTML(item[this.refData.idField])
+    }
+
+    result += '<span class="title">' + value + '</span>'
+
+    value = null
+    if (this.refData.listFieldAddress.match(/\{/)) {
+      if (!this.listFieldAddressTemplate) {
+        this.listFieldAddressTemplate = twig({ data: this.refData.listFieldAddress })
+      }
+      value = this.listFieldAddressTemplate.render(item)
+    } else if (this.refData.listFieldAddress) {
+      value = escHTML(item[this.refData.listFieldAddress])
+    }
+
+    if (value) {
+      result += '<span class="address">' + value + '</span>'
+    }
+
+    return result
+  }
+
   showFormat (item) {
     let result = '<h2>' + escHTML(this.operator) + '</h2>'
 

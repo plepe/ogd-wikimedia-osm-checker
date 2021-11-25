@@ -37,6 +37,14 @@ class DatasetExample extends Dataset {
     // [optional] add a place filter in the menu. use this field for filtering:
     placeFilterField: 'PLACE',
 
+    // in the list, which field to show as title field; optionally you can use
+    // a combination from several fields by using TwigJS syntax.
+    listFieldTitle: 'TITLE',
+
+    // in the list, which field to show as address field; optionally you can
+    // use a combination from several fields by using TwigJS syntax.
+    listFieldAddress: '{{ PLZ }} {{ CITY }}, {{ ADDRESS }}',
+
     // which fields should be shown in the reference data block; alternatively
     // you can create a function `showFormat(item)` which returns HTML code.
     showFields: {
