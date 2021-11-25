@@ -35,11 +35,11 @@ class DatasetExample extends Dataset {
     },
 
     // [optional] add a place filter in the menu. use this field for filtering:
-    placeFilterField: 'PLACE'
+    placeFilterField: 'PLACE',
 
     // which fields should be shown in the reference data block; alternatively
     // you can create a function `showFormat(item)` which returns HTML code.
-    showFields = {
+    showFields: {
       TITLE: {
         // human-readable field name (if omitted uses the key, thus 'TITLE')
         title: 'Title',
