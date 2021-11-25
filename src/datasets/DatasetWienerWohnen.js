@@ -56,7 +56,7 @@ class DatasetWienerWohnen extends Dataset {
   }
 
   listFormat (item) {
-    return '<span class="Bezeichnung">' + escHTML(item.name) + '</span><span class="Adresse">' + escHTML(item.address) + '</span>'
+    return '<span class="title">' + escHTML(item.name) + '</span><span class="address">' + escHTML(item.address) + '</span>'
   }
 
   showFormat (item) {

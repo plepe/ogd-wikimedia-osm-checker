@@ -73,7 +73,7 @@ class DatasetKunstWien extends Dataset {
   }
 
   listFormat (item) {
-    return '<span class="Bezeichnung">' + escHTML(item.OBJEKTTITEL) + '</span><span class="Adresse">' + escHTML(item.STRASSE) + '</span>'
+    return '<span class="title">' + escHTML(item.OBJEKTTITEL) + '</span><span class="address">' + escHTML(item.STRASSE) + '</span>'
   }
 
   showFormat (item) {

@@ -62,7 +62,7 @@ class DatasetBDA extends Dataset {
   }
 
   listFormat (item) {
-    return '<span class="Katalogtitel">' + escHTML(item.Katalogtitel) + '</span><span class="Adresse">' + escHTML(item.Adresse) + '</span>'
+    return '<span class="title">' + escHTML(item.Katalogtitel) + '</span><span class="address">' + escHTML(item.Adresse) + '</span>'
   }
 
   showFormat (item) {
