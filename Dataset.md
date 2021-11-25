@@ -14,6 +14,8 @@ class DatasetExample extends Dataset {
 
   titleLong = 'Long title for Example'
 
+  operator = 'A.C.M.E.'
+
   ogdURL = 'https://example.com/'
 
   ogdInfo = `Longer <b>HTML</b> multiline text, explaining the dataset`
@@ -34,6 +36,18 @@ class DatasetExample extends Dataset {
 
     // [optional] add a place filter in the menu. use this field for filtering:
     placeFilterField: 'PLACE'
+
+    // which fields should be shown in the reference data block; alternatively
+    // you can create a function `showFormat(item)` which returns HTML code.
+    showFields = {
+      TITLE: {
+        // human-readable field name (if omitted uses the key, thus 'TITLE')
+        title: 'Title',
+      },
+      ADDRESS: {
+        title: 'Address',
+      }
+    }
   }
 
   // [optional] Configuration of the item in a corresponding wikipedia list
@@ -102,7 +116,8 @@ class DatasetExample extends Dataset {
     return '<span class="title">' + escHTML(item.TITEL) + '</span><span class="address">' + escHTML(item.ADDRESS) + '</span>'
   }
 
-  // format the details of an item (may return either an HTML string or a DOM structure)
+  // [optional] format the details of an item (may return either an HTML string or a DOM structure)
+  // if omitted, supply 'showFields' in the `refData` structure
   showFormat (item) {
     return '<h2>Example</h2><ul>' +
       '<li>Title: ' + escHTML(item.TITLE) + '</li>' +

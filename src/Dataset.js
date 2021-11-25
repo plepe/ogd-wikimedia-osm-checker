@@ -1,5 +1,8 @@
 const async = require('async')
+const escHTML = require('html-escape')
 const natsort = require('natsort').default
+
+const createGeoLink = require('./createGeoLink')
 
 class Dataset {
   load (callback) {
@@ -43,6 +46,42 @@ class Dataset {
 
       callback(null)
     })
+  }
+
+  showFormat (item) {
+    let result = '<h2>' + escHTML(this.operator) + '</h2>'
+
+    result += '<li class="field-id">'
+    result += '<span class="label">ID</span>: '
+    result += '<span class="value">' + escHTML(item[this.refData.idField]) + '</span>'
+    result += '</li>'
+
+    if (this.refData.showFields) {
+      Object.keys(this.refData.showFields).forEach(fieldId => {
+        const field = this.refData.showFields[fieldId] || {}
+        const value = item[fieldId]
+
+        if (value) {
+          result += '<li class="field-' + fieldId + '">'
+          result += '<span class="label">' + escHTML(field.title || fieldId) + '</span>: '
+          result += '<span class="value">' + escHTML(value) + '</span>'
+          result += '</li>'
+        }
+      })
+    }
+
+    if (this.refData.coordField) {
+      let text = '<li class="field-coords">'
+      text += '<span class="label">Koordinaten</span>: '
+      text += '<span class="value">' + createGeoLink(item, this.refData.coordField) + '</span>'
+      text += '</li>'
+
+      result += text
+    }
+
+    result += '</ul>'
+
+    return result
   }
 }
 
