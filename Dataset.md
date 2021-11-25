@@ -28,6 +28,9 @@ class DatasetExample extends Dataset {
     // important: this field holds the identificator of each item
     idField: 'ID',
 
+    // [optional] How to link to a description of the item on the operator's website
+    urlFormat: 'https://example.com/item/{{ ID }}',
+
     // [optional] for a field with coordinates, add this structure; id is the field name, type the encoding (currently supported: 'wkt' = Well-known text)
     coordField: {
       id: 'SHAPE',

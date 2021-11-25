@@ -89,6 +89,15 @@ class Dataset {
     result += '<li class="field-id">'
     result += '<span class="label">ID</span>: '
     result += '<span class="value">' + escHTML(item[this.refData.idField]) + '</span>'
+
+    if (this.refData.urlFormat) {
+      if (!this.urlTemplate) {
+        this.urlTemplate = twig({ data: this.refData.urlFormat })
+      }
+
+      result += ' <span class="url">(<a target="_blank" href="' + this.urlTemplate.render(item) + '">Website</a>)</span>'
+    }
+
     result += '</li>'
 
     if (this.refData.showFields) {
