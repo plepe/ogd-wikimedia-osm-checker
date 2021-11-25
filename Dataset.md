@@ -46,6 +46,10 @@ class DatasetExample extends Dataset {
       },
       ADDRESS: {
         title: 'Address',
+
+        // [optional] format, e.g. combination from several fields. Uses TwigJS
+        // syntax.
+        format: '{{ PLZ }} {{ CITY }}, {{ ADDRESS }}'
       }
     }
   }

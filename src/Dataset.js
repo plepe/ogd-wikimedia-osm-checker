@@ -1,6 +1,7 @@
 const async = require('async')
 const escHTML = require('html-escape')
 const natsort = require('natsort').default
+const twig = require('twig').twig
 
 const createGeoLink = require('./createGeoLink')
 
@@ -59,7 +60,14 @@ class Dataset {
     if (this.refData.showFields) {
       Object.keys(this.refData.showFields).forEach(fieldId => {
         const field = this.refData.showFields[fieldId] || {}
-        const value = item[fieldId]
+        let value = item[fieldId]
+        if (field.format) {
+          if (!field.template) {
+            field.template = twig({ data: field.format })
+          }
+
+          value = field.template.render(item)
+        }
 
         if (value) {
           result += '<li class="field-' + fieldId + '">'
