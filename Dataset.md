@@ -29,7 +29,7 @@ class DatasetExample extends Dataset {
     idField: 'ID',
 
     // [optional] How to link to a description of the item on the operator's website
-    urlFormat: 'https://example.com/item/{{ ID }}',
+    urlFormat: 'https://example.com/item/{{ item.ID }}',
 
     // [optional] for a field with coordinates, add this structure; id is the field name, type the encoding (currently supported: 'wkt' = Well-known text)
     coordField: {
@@ -46,7 +46,7 @@ class DatasetExample extends Dataset {
 
     // in the list, which field to show as address field; optionally you can
     // use a combination from several fields by using TwigJS syntax.
-    listFieldAddress: '{{ PLZ }} {{ CITY }}, {{ ADDRESS }}',
+    listFieldAddress: '{{ item.PLZ }} {{ item.CITY }}, {{ item.ADDRESS }}',
 
     // which fields should be shown in the reference data block; alternatively
     // you can create a function `showFormat(item)` which returns HTML code.
@@ -60,7 +60,7 @@ class DatasetExample extends Dataset {
 
         // [optional] format, e.g. combination from several fields. Uses TwigJS
         // syntax.
-        format: '{{ PLZ }} {{ CITY }}, {{ ADDRESS }}'
+        format: '{{ item.PLZ }} {{ item.CITY }}, {{ item.ADDRESS }}'
       }
     }
   }

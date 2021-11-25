@@ -57,7 +57,7 @@ class Dataset {
       if (!this.listFieldTitleTemplate) {
         this.listFieldTitleTemplate = twig({ data: this.refData.listFieldTitle })
       }
-      value = this.listFieldTitleTemplate.render(item)
+      value = this.listFieldTitleTemplate.render({item})
     } else if (this.refData.listFieldTitle) {
       value = escHTML(item[this.refData.listFieldTitle])
     } else {
@@ -71,7 +71,7 @@ class Dataset {
       if (!this.listFieldAddressTemplate) {
         this.listFieldAddressTemplate = twig({ data: this.refData.listFieldAddress })
       }
-      value = this.listFieldAddressTemplate.render(item)
+      value = this.listFieldAddressTemplate.render({item})
     } else if (this.refData.listFieldAddress) {
       value = escHTML(item[this.refData.listFieldAddress])
     }
@@ -95,7 +95,7 @@ class Dataset {
         this.urlTemplate = twig({ data: this.refData.urlFormat })
       }
 
-      result += ' <span class="url">(<a target="_blank" href="' + this.urlTemplate.render(item) + '">Website</a>)</span>'
+      result += ' <span class="url">(<a target="_blank" href="' + this.urlTemplate.render({item}) + '">Website</a>)</span>'
     }
 
     result += '</li>'
@@ -109,7 +109,7 @@ class Dataset {
             field.template = twig({ data: field.format })
           }
 
-          value = field.template.render(item)
+          value = field.template.render({item})
         }
 
         if (value) {
