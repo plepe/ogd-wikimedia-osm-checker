@@ -95,31 +95,31 @@ class Dataset {
         this.urlTemplate = twig({ data: this.refData.urlFormat })
       }
 
-      result += ' <span class="url">(<a target="_blank" href="' + this.urlTemplate.render({item}) + '">Website</a>)</span>'
+      result += ' <span class="url">(<a target="_blank" href="' + this.urlTemplate.render({ item }) + '">Website</a>)</span>'
     }
 
     result += '</li>'
 
-    if (this.refData.showFields) {
-      Object.keys(this.refData.showFields).forEach(fieldId => {
-        const field = this.refData.showFields[fieldId] || {}
-        let value = item[fieldId]
-        if (field.format) {
-          if (!field.template) {
-            field.template = twig({ data: field.format })
-          }
+    const showFields = this.refData.showFields || Object.fromEntries(Object.keys(item).map(k => [k, {}]))
 
-          value = field.template.render({item})
+    Object.keys(showFields).forEach(fieldId => {
+      const field = showFields[fieldId] || {}
+      let value = item[fieldId]
+      if (field.format) {
+        if (!field.template) {
+          field.template = twig({ data: field.format })
         }
 
-        if (value) {
-          result += '<li class="field-' + fieldId + '">'
-          result += '<span class="label">' + escHTML(field.title || fieldId) + '</span>: '
-          result += '<span class="value">' + escHTML(value) + '</span>'
-          result += '</li>'
-        }
-      })
-    }
+        value = field.template.render({ item })
+      }
+
+      if (value) {
+        result += '<li class="field-' + fieldId + '">'
+        result += '<span class="label">' + escHTML(field.title || fieldId) + '</span>: '
+        result += '<span class="value">' + escHTML(value) + '</span>'
+        result += '</li>'
+      }
+    })
 
     if (this.refData.coordField) {
       let text = '<li class="field-coords">'

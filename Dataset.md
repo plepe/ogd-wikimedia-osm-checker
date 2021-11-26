@@ -48,8 +48,10 @@ class DatasetExample extends Dataset {
     // use a combination from several fields by using TwigJS syntax.
     listFieldAddress: '{{ item.PLZ }} {{ item.CITY }}, {{ item.ADDRESS }}',
 
-    // which fields should be shown in the reference data block; alternatively
-    // you can create a function `showFormat(item)` which returns HTML code.
+    // which fields should be shown in the reference data block; if omitted,
+    // all key/values of the current item are shown. alternatively you can
+    // create a function `showFormat(item)` which returns HTML code or a DOM
+    // node.
     showFields: {
       TITLE: {
         // human-readable field name (if omitted uses the key, thus 'TITLE')
