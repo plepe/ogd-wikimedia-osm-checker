@@ -1,6 +1,6 @@
 const getCoords = require('./getCoords')
 
-module.exports = function createGeoLink(data, field) {
+module.exports = function createGeoLink (data, field) {
   let coords = data
   if (field) {
     coords = getCoords(data, field)

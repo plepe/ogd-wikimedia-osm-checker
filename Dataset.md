@@ -3,9 +3,6 @@
 Create a file in `src/datasets`: `DatasetExample.js` and add it to `src/datasets/index.js`.
 
 ```js
-const escHTML = require('html-escape') // needed for the format-functions
-const createGeoLink = require('../createGeoLink') // might be needed for showFormat()
-
 const Dataset = require('../Dataset')
 class DatasetExample extends Dataset {
   id = 'example'
@@ -40,18 +37,22 @@ class DatasetExample extends Dataset {
     // [optional] add a place filter in the menu. use this field for filtering:
     placeFilterField: 'PLACE',
 
-    // in the list, which field to show as title field; optionally you can use
-    // a combination from several fields by using TwigJS syntax.
+    // [optional] in the list, which field to show as title field; if omitted,
+    // the idField will be used. Optionally you can use a combination from
+    // several fields by using TwigJS syntax (see below).
+    // Instead of using 'listFieldTitle' and 'listFieldAddress', you could
+    // overwrite the function listFormat() and return HTML code or a DOM node.
     listFieldTitle: 'TITLE',
 
-    // in the list, which field to show as address field; optionally you can
-    // use a combination from several fields by using TwigJS syntax.
+    // [optional] in the list, which field to show as address field; if
+    // omitted, empty. Optionally you can use a combination from several fields
+    // by using TwigJS syntax.
     listFieldAddress: '{{ item.PLZ }} {{ item.CITY }}, {{ item.ADDRESS }}',
 
-    // which fields should be shown in the reference data block; if omitted,
-    // all key/values of the current item are shown. alternatively you can
-    // create a function `showFormat(item)` which returns HTML code or a DOM
-    // node.
+    // [optional] which fields should be shown in the reference data block; if
+    // omitted, all key/values of the current item are shown. Alternatively you
+    // can create a function `showFormat(item)` which returns HTML code or a
+    // DOM node.
     showFields: {
       TITLE: {
         // human-readable field name (if omitted uses the key, thus 'TITLE')
@@ -126,20 +127,6 @@ class DatasetExample extends Dataset {
 
     // [optional] when search similar objects, use the specified field from refData to compare the name
     refDataNameField: 'TITLE'
-  }
-
-  // format an item for the list on the left side (may return either an HTML string or a DOM structure)
-  listFormat (item) {
-    return '<span class="title">' + escHTML(item.TITEL) + '</span><span class="address">' + escHTML(item.ADDRESS) + '</span>'
-  }
-
-  // [optional] format the details of an item (may return either an HTML string or a DOM structure)
-  // if omitted, supply 'showFields' in the `refData` structure
-  showFormat (item) {
-    return '<h2>Example</h2><ul>' +
-      '<li>Title: ' + escHTML(item.TITLE) + '</li>' +
-      '<li>Koordinaten: ' + createGeoLink(item, this.refData.coordField) + '</li>' +
-      '</ul>'
   }
 
   // [optional] the wikidata representation of an item should have these properties (ob is an instance of class Examinee)
