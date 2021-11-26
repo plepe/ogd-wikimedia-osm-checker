@@ -9,7 +9,7 @@ class DatasetWienerWohnen extends Dataset {
 
   titleLong = 'Wiener Gemeindebauten (Wiener Wohnen)'
 
-  listTitle = 'Wiener Gemeindebauten'
+  operator = 'Stadt Wien'
 
   ogdURL = 'https://www.wienerwohnen.at/wiener-gemeindebau/gemeindebaubeschreibungen.html'
 
@@ -27,7 +27,37 @@ class DatasetWienerWohnen extends Dataset {
 
   refData = {
     idField: 'id',
-    placeFilterField: 'plz'
+    urlFormat: '{{ item.url }}',
+    placeFilterField: 'plz',
+    listFieldTitle: 'name',
+    listFieldAddress: 'address',
+    showFields: {
+      name: {
+        title: 'Name'
+      },
+      address: {
+        title: 'Adresse'
+      },
+      construction: {
+        title: 'Bauzeit',
+        format: '{{ item.constructionStartYear }}-{{ item.constructionEndYear }}',
+      },
+      architects: {
+        titel: 'Architekt_innen',
+      },
+      publicArt: {
+        titel: 'Kunst am Bau',
+        format: '{{ item.publicArt ? "ja" : "nein" }}'
+      },
+      flats: {
+        title: 'Wohnungen',
+        format: '{{ item.flats }}'
+      },
+      commercialSpaces: {
+        title: 'Lokale',
+        format: '{{ item.commercialSpaces }}'
+      }
+    }
   }
 
   wikipediaList = {
@@ -53,34 +83,6 @@ class DatasetWienerWohnen extends Dataset {
     searchRegexp: '/\\{\\{Wiener Wohnen\\s*\\|\\s*(1=)*$1(\\|(.*))?\\}\\}/',
     templateRegexp: 'Wiener Wohnen',
     templateTemplate: '{{Wiener Wohnen|$1}}'
-  }
-
-  listFormat (item) {
-    return '<span class="title">' + escHTML(item.name) + '</span><span class="address">' + escHTML(item.address) + '</span>'
-  }
-
-  showFormat (item) {
-    const div = document.createElement('div')
-
-    div.innerHTML = '<h2>Stadt Wien</h2>'
-
-    const ul = document.createElement('ul')
-    div.appendChild(ul)
-
-    ul.innerHTML += '<li>ID: ' + item.id + '</li>'
-    ul.innerHTML += '<li>Name: ' + escHTML(item.name) + '</li>'
-    ul.innerHTML += '<li>Adresse: ' + escHTML(item.address) + '</li>'
-    ul.innerHTML += '<li>Bauzeit: ' + escHTML(item.constructionStartYear) + '-' + escHTML(item.constructionEndYear) + '</li>'
-    ul.innerHTML += '<li>Architekt_innen: ' + escHTML(item.architects || '') + '</li>'
-    ul.innerHTML += '<li>Kunst am Bau: ' + (item.publicArt ? 'ja' : 'nein') + '</li>'
-    ul.innerHTML += '<li>Wohnungen: ' + escHTML('flats' in item ? item.flats : 'unbekannt') + '</li>'
-    ul.innerHTML += '<li>Lokale: ' + escHTML('commercialSpaces' in item ? item.commercialSpaces : 'unbekannt') + '</li>'
-    ul.innerHTML += '<li><a target="_blank" href="' + escHTML(item.url) + '">Website</a></li>'
-
-    // const pre = document.createElement('pre')
-    // dom.appendChild(pre)
-    // pre.appendChild(document.createTextNode(JSON.stringify(item, null, '  ')))
-    return div
   }
 
   wikidataRecommendedProperties (ob) {

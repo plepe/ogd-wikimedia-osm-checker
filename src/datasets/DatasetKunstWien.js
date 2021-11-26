@@ -1,7 +1,4 @@
-const escHTML = require('html-escape')
-
 const Dataset = require('../Dataset')
-const createGeoLink = require('../createGeoLink')
 
 const typ2OverpassQuery = {
   Gedenktafeln: 'nwr[historic=memorial](filter);',
@@ -21,7 +18,7 @@ class DatasetKunstWien extends Dataset {
 
   titleLong = 'Kunstwerke im öff. Raum (Kulturgut Wien)'
 
-  listTitle = 'Kunstwerke im öff. Raum (Kulturgut Wien)'
+  operator = 'Stadt Wien'
 
   ogdURL = 'https://www.wien.gv.at/kultur/kulturgut/kunstwerke/'
 
@@ -36,13 +33,59 @@ class DatasetKunstWien extends Dataset {
 
   filename = 'kunstwien.json'
 
+  source = {
+    url: 'https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:KUNSTWERKOGD&srsName=EPSG:4326&outputFormat=csv',
+    format: 'csv',
+    formatOptions: { delimiter: ',' }
+  }
+
   refData = {
     idField: 'ID',
+    urlFormat: 'https://www.wien.gv.at/kulturportal/public/grafik.aspx?FeatureByID={{ item.ID }}&FeatureClass=kunstkultur&ThemePage=4',
     coordField: {
       type: 'wkt',
       id: 'SHAPE'
     },
-    placeFilterField: 'PLZ'
+    placeFilterField: 'PLZ',
+    listFieldTitle: 'OBJEKTTITEL',
+    listFieldAddress: '{{ item.PLZ }} {{ item.ORT }}, {{ item.STRASSE }}',
+    showFields: {
+      OBJEKTTITEL: {
+        title: 'Titel'
+      },
+      VULGONAMEN: {
+        title: 'Vulgonamen'
+      },
+      INSCHRIFT: {
+        title: 'Inschrift'
+      },
+      TYP: {
+        title: 'Typ'
+      },
+      ADRESSE: {
+        title: 'Adresse',
+        format: '{{ item.STRASSE }}, {{ item.PLZ }} {{ item.ORT }}'
+      },
+      STANDORT: {
+        title: 'Standort'
+      },
+      BESCHREIBUNG: {
+        title: 'Beschreibung'
+      },
+      GESCHICHTE: {
+        title: 'Geschichte'
+      },
+      ENTSTEHUNG: {
+        title: 'Entstehung',
+        format: '{{ item.ENTSTEHUNG }} (Epoche: {{ item.EPOCHE }})'
+      },
+      KUENSTLER: {
+        title: 'Künstler*in'
+      },
+      MATERIAL: {
+        title: 'Material'
+      }
+    }
   }
 
   wikipediaList = {
@@ -70,38 +113,6 @@ class DatasetKunstWien extends Dataset {
     refField: 'ref:wien:kultur',
     // when search similar objects, use the specified field from refData to compare the name
     refDataNameField: 'OBJEKTTITEL'
-  }
-
-  listFormat (item) {
-    return '<span class="title">' + escHTML(item.OBJEKTTITEL) + '</span><span class="address">' + escHTML(item.STRASSE) + '</span>'
-  }
-
-  showFormat (item) {
-    const div = document.createElement('div')
-
-    div.innerHTML = '<h2>Stadt Wien</h2>'
-
-    const ul = document.createElement('ul')
-    div.appendChild(ul)
-
-    ul.innerHTML += '<li>ID: ' + item.ID + '</li>'
-    ul.innerHTML += '<li>Titel: ' + escHTML(item.OBJEKTTITEL) + '</li>'
-    ul.innerHTML += '<li>Vulgonamen: ' + escHTML(item.VULGONAMEN) + '</li>'
-    ul.innerHTML += '<li>Inschrift: ' + escHTML(item.INSCHRIFT) + '</li>'
-    ul.innerHTML += '<li>Typ: ' + escHTML(item.TYP) + '</li>'
-    ul.innerHTML += '<li>Adresse: ' + escHTML(item.STRASSE) + ', ' + escHTML(item.PLZ) + ' ' + escHTML(item.ORT) + '</li>'
-    ul.innerHTML += '<li>Koordinaten: ' + createGeoLink(item, this.refData.coordField) + '</li>'
-    ul.innerHTML += '<li>Standort: ' + escHTML(item.STANDORT) + '</li>'
-    ul.innerHTML += '<li>Beschreibung: ' + escHTML(item.BESCHREIBUNG) + '</li>'
-    ul.innerHTML += '<li>Geschichte: ' + escHTML(item.GESCHICHTE) + '</li>'
-    ul.innerHTML += '<li>Entstehung: ' + escHTML(item.ENTSTEHUNG) + ' (' + escHTML(item.EPOCHE) + ')</li>'
-    ul.innerHTML += '<li>Künstler*in: ' + escHTML(item.KUENSTLER) + '</li>'
-    ul.innerHTML += '<li>Material: ' + escHTML(item.MATERIAL) + '</li>'
-
-    // const pre = document.createElement('pre')
-    // dom.appendChild(pre)
-    // pre.appendChild(document.createTextNode(JSON.stringify(item, null, '  ')))
-    return div
   }
 
   wikidataRecommendedProperties (ob) {

@@ -7,9 +7,9 @@ class DatasetBDA extends Dataset {
 
   titleLong = 'Denkmalliste des österr. Bundesdenkmalamtes'
 
-  title = 'Bundesdenkmalamt'
+  title = 'Österr. Bundesdenkmäler'
 
-  listTitle = 'Denkmal aus Bundesdenkmalamtsliste'
+  operator = 'Bundesdenkmalamt Österreich'
 
   ogdURL = 'https://bda.gv.at/denkmalverzeichnis/#denkmalliste-gemaess-3-dmsg'
 
@@ -30,7 +30,23 @@ class DatasetBDA extends Dataset {
 
   refData = {
     idField: 'HERIS-ID',
-    placeFilterField: 'Gemeinde'
+    placeFilterField: 'Gemeinde',
+    listFieldTitle: 'Katalogtitel',
+    listFieldAddress: 'Adresse',
+    showFields: {
+      'Katalogtitel': {},
+      'Gemeinde': {},
+      'KG': {
+        title: 'Kat.gemeinde'
+      },
+      'Adresse': {},
+      'GSTK-Nr.': {
+        title: 'Grundstücknr.'
+      },
+      'Denkmalschutzstatus': {
+        title: 'Status'
+      }
+    }
   }
 
   wikipediaList = {
@@ -59,29 +75,6 @@ class DatasetBDA extends Dataset {
     refField: 'ref:at:bda',
     // when search similar objects, use the specified field from refData to compare the name
     refDataNameField: 'Katalogtitel'
-  }
-
-  listFormat (item) {
-    return '<span class="title">' + escHTML(item.Katalogtitel) + '</span><span class="address">' + escHTML(item.Adresse) + '</span>'
-  }
-
-  showFormat (item) {
-    const div = document.createElement('div')
-
-    div.innerHTML = '<h2>Bundesdenkmalamt</h2>'
-
-    const ul = document.createElement('ul')
-    div.appendChild(ul)
-
-    ul.innerHTML += '<li>ID: ' + item['HERIS-ID'] + '</li>'
-    ul.innerHTML += '<li>Katalogtitel: ' + escHTML(item.Katalogtitel) + '</li>'
-    ul.innerHTML += '<li>Gemeinde: ' + escHTML(item.Gemeinde) + '</li>'
-    ul.innerHTML += '<li>Kat.gemeinde: ' + escHTML(item.KG) + '</li>'
-    ul.innerHTML += '<li>Adresse: ' + escHTML(item.Adresse) + '</li>'
-    ul.innerHTML += '<li>Grundstücknr.: ' + escHTML(item['GSTK-Nr.']) + '</li>'
-    ul.innerHTML += '<li>Status: ' + escHTML(item.Denkmalschutzstatus) + '</li>'
-
-    return div
   }
 
   wikipediaListeAnchor (ob) {
