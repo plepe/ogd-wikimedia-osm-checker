@@ -53,26 +53,27 @@ class Dataset {
     let result = ''
 
     let value = null
-    if (this.refData.listFieldTitle.match(/\{/)) {
+    if (!this.refData.listFieldTitle) {
+      value = escHTML(item[this.refData.idField])
+    } else if (this.refData.listFieldTitle.match(/\{/)) {
       if (!this.listFieldTitleTemplate) {
         this.listFieldTitleTemplate = twig({ data: this.refData.listFieldTitle })
       }
-      value = this.listFieldTitleTemplate.render({item})
-    } else if (this.refData.listFieldTitle) {
-      value = escHTML(item[this.refData.listFieldTitle])
+      value = this.listFieldTitleTemplate.render({ item })
     } else {
-      value = escHTML(item[this.refData.idField])
+      value = escHTML(item[this.refData.listFieldTitle])
     }
 
     result += '<span class="title">' + value + '</span>'
 
-    value = null
-    if (this.refData.listFieldAddress.match(/\{/)) {
+    if (!this.refData.listFieldAddress) {
+      value = null
+    } else if (this.refData.listFieldAddress.match(/\{/)) {
       if (!this.listFieldAddressTemplate) {
         this.listFieldAddressTemplate = twig({ data: this.refData.listFieldAddress })
       }
-      value = this.listFieldAddressTemplate.render({item})
-    } else if (this.refData.listFieldAddress) {
+      value = this.listFieldAddressTemplate.render({ item })
+    } else {
       value = escHTML(item[this.refData.listFieldAddress])
     }
 
