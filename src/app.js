@@ -79,7 +79,7 @@ function updateDataset () {
 
   dataset = datasets[selectDataset.value]
 
-  content.innerHTML = '<h1>' + dataset.title + '</h1><p>' + dataset.ogdInfo + '</p><p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
+  content.innerHTML = '<h1>' + dataset.titleLong + '</h1><p>' + dataset.ogdInfo + '</p><p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
 
   const select = document.getElementById('placeFilter')
   while (select.firstChild.nextSibling) {
@@ -159,7 +159,7 @@ function update () {
 
   const table = document.createElement('table')
   table.id = 'data'
-  table.innerHTML = '<tr><th>' + escHTML(dataset.listTitle) + '</th></tr>'
+  table.innerHTML = '<tr><th>' + escHTML(dataset.title) + '</th></tr>'
   content.appendChild(table)
 
   const dom = document.getElementById('data')

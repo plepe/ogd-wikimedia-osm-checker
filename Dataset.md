@@ -7,7 +7,7 @@ const Dataset = require('../Dataset')
 class DatasetExample extends Dataset {
   id = 'example'
 
-  titleShort = 'Example'
+  title = 'Example'
 
   titleLong = 'Long title for Example'
 
