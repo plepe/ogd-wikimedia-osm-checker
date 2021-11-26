@@ -2,7 +2,17 @@ const async = require('async')
 const fs = require('fs')
 const fetch = require('node-fetch')
 
+const datasets = require('./src/datasets/index')
 const downloads = require('./src/datasets/downloads')
+const standardDownload = require('./src/standardDownload')
+
+Object.keys(datasets).forEach(id => {
+  const dataset = datasets[id]
+
+  if (!(id in downloads) && dataset.source) {
+    downloads[id] = (callback) => standardDownload(dataset, callback)
+  }
+})
 
 function downloadWikidataLists (callback) {
   async.parallel([

@@ -20,6 +20,25 @@ class DatasetExample extends Dataset {
   // read the reference data from 'example.json' in the data-directory
   filename = 'example.json'
 
+  // [optional] describe source of the dataset; if omitted, you should define a
+  // special download function (see at the end of the Dataset.md file) or
+  // download the file manually into the data directory.
+  source = {
+    // URL of the dataset
+    url: 'https://example.com/data.json',
+
+    // [optional] format of the dataset, e.g. 'csv', 'json'; default: 'json'
+    format: 'json',
+
+    // [optional] format options, depending on the format
+    // csv: see possible parameters here: https://www.npmjs.com/package/csvtojson#parameters
+    // json: currently none
+    formatOptions: {},
+
+    // [optional] encoding of the dataset, e.g. 'iso-8859-1'. default: 'utf-8'
+    encoding: 'utf-8',
+  }
+
   // describe reference data
   refData = {
     // important: this field holds the identificator of each item
@@ -172,10 +191,12 @@ class DatasetExample extends Dataset {
 module.exports = new DatasetExample()
 ```
 
-## Downloader
-Create a file in `src/datasets`: `DownloadExample.js` and add it to `src/datasets/download.js`.
+## Downloader [optional]
+If you need a special downloader, create a file in `src/datasets`:
+`DownloadExample.js` and add it to `src/datasets/download.js`.
 
-This should load the reference data and create a JSON file in the `data` folder.
+This should load the reference data and create a JSON file in the `data`
+folder.
 
 ```js
 const fetch = require('node-fetch')
