@@ -8,7 +8,7 @@ module.exports = function idFromRefOrRefValue (ob, refValue) {
   let id = ob.id
   if (refValue) {
     if (!ob.data.wikidata || !ob.data.wikidata.length) {
-      return true
+      return false
     }
 
     const data = ob.data.wikidata[0].claims[refValue.wikidataProperty]
