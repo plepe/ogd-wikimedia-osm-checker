@@ -45,9 +45,7 @@ class CheckWikipediaListe extends Check {
           attrList.push({
             key: 'coordinates',
             title: 'Koordinaten',
-            text: parseFloat(found[0][dataset.wikipediaList.latitudeField]).toFixed(5) + ', ' + parseFloat(found[0][dataset.wikipediaList.longitudeField]).toFixed(5),
-            value: { latitude: found[0][dataset.wikipediaList.latitudeField], longitude: found[0][dataset.wikipediaList.longitudeField] },
-            link: createGeoLink({ latitude: found[0][dataset.wikipediaList.latitudeField], longitude: found[0][dataset.wikipediaList.longitudeField] })
+            html: createGeoLink({ latitude: found[0][dataset.wikipediaList.latitudeField], longitude: found[0][dataset.wikipediaList.longitudeField] })
           })
         }
       }
