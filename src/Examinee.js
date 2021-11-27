@@ -2,6 +2,7 @@ const EventEmitter = require('events')
 const forEach = require('foreach')
 
 const checks = require('./checks/index')
+const wikidataSimplify = require('./wikidataSimplify')
 const loader = {
   commons: require('./loader-commons.js'),
   osm: require('./loader-osm.js'),
@@ -190,6 +191,18 @@ module.exports = class Examinee extends EventEmitter {
   }
 
   templateData () {
-    return { item: this.refData }
+    const result = {
+      item: this.refData
+    }
+
+    if (this.data.wikipedia && this.data.wikipedia.length) {
+      result.wikipediaList = this.data.wikipedia[0]
+    }
+
+    if (this.data.wikidataSelected) {
+      result.wikidata = wikidataSimplify(this.data.wikidataSelected)
+    }
+
+    return result
   }
 }

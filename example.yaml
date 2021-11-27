@@ -199,4 +199,4 @@ osm:
 # item.*           Values of the reference dataset, e.g. 'item.ID'
 # wikipediaList.*  Values of a found wikipedia list, e.g. 'wikipediaList.ID'
 # wikidata.*       Values of a selected wikidata object, where each property is
-#                  an array, with { value: xxx }. E.g. 'wikidata.P31[0].value'
+#                  an array, with { value: xxx, type: yyy }. E.g. 'wikidata.P31[0].value'
