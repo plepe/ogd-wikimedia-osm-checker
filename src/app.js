@@ -167,7 +167,7 @@ function update () {
   Object.keys(dataset.data).forEach(id => {
     const item = dataset.data[id]
 
-    if (!dataset.refData.placeFilterField || item[dataset.refData.placeFilterField] === place) {
+    if (!dataset.refData.placeFilterField || item[dataset.refData.placeFilterField] == place) {
       const text = dataset.listFormat(item)
 
       const tr = document.createElement('tr')
