@@ -187,7 +187,7 @@ class Dataset {
         return line + ';'
       }
 
-      return line + '(filter);'
+      return line + '(distance:50);'
     }).filter(f => f)
 
     if (result.length) {

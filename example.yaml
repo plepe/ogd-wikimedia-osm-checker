@@ -171,9 +171,9 @@ osm:
   # [optional] A query which searches for OSM objects. It uses Overpass QL
   # language. This is multi-line string, with a query each line. 
   # It uses TwigJS syntax (see below for available variables).
-  # By default, it searches for objects in 30m distance of possible coordinates
+  # By default, it searches for objects in 50m distance of possible coordinates
   # (e.g. dataset, wikipediaList, wikidata), optionally you can specify a
-  # different distance with '(distance:1234)
+  # different distance with '(distance:1234)'.
   query: |
     nwr[foo=bar]
     {% if item.TYPE == 'park' %}

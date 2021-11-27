@@ -33,9 +33,7 @@ class CheckOsmLoadSimilar extends Check {
 
       allCoords.forEach(coords => {
         const q = query
-          .replace(/\(filter\)/g, '(around:30,' + coords.latitude + ',' + coords.longitude + ')')
-          .replace(/\(filter:([0-9]+)\)/g, '(around:$1,' + coords.latitude + ',' + coords.longitude + ')')
-        console.log(coords, q)
+          .replace(/\(distance:([0-9]+)\)/g, '(around:$1,' + coords.latitude + ',' + coords.longitude + ')')
         ob.load('osm', q)
       })
       return
