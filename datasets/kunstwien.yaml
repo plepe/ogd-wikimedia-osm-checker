@@ -79,6 +79,7 @@ wikidata:
   refPropertyTitle: "Wien Kulturgut: Kunstwerke im öffentlichen Raum ID"
   recommendedProperties: |
     P170
+    P276
     P571
     P1619
     P417
@@ -100,6 +101,8 @@ osm:
     architect
     architect:wikidata
     historic
+    name
+    start_date
   compileTags: |
     ref:wien:kultur={{ item.ID }}
   query: |
