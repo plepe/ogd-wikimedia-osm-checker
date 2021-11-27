@@ -72,7 +72,7 @@ function init () {
     const li = document.createElement('li')
     const a = document.createElement('a')
     a.href = '#' + id
-    a.appendChild(document.createTextNode(_dataset.titleLong))
+    a.appendChild(document.createTextNode(_dataset.titleLong || _dataset.title))
     li.appendChild(a)
     listDatasets.appendChild(li)
   })
@@ -108,7 +108,17 @@ function updateDataset () {
 
   dataset = datasets[selectDataset.value]
 
-  content.innerHTML = '<h1>' + dataset.titleLong + '</h1><p>' + dataset.ogdInfo + '</p><p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
+  let text = '<h1>' + (dataset.titleLong || dataset.title) + '</h1>'
+
+  if (dataset.ogdInfo) {
+    text += '<p>' + dataset.ogdInfo + '</p>'
+  }
+
+  if (dataset.ogdURL) {
+    text += '<p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
+  }
+
+  content.innerHTML = text
 
   const select = document.getElementById('placeFilter')
   while (select.firstChild.nextSibling) {

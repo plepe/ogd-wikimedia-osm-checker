@@ -6,9 +6,6 @@ id: template
 # Short title of the dataset
 title: Example
 
-# Longer title of the dataset for the overview and description page
-titleLong: Long title for Example
-
 # Who provides the dataset?
 operator: A.C.M.E.
 
