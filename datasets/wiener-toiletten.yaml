@@ -1,9 +1,7 @@
 id: wiener-toiletten
 title: Wiener Toiletten
-titleLong: Wiener Toiletten
 operator: Stadt Wien
 ogdURL: https://www.data.gv.at/katalog/dataset/oeffentliche-wc-anlagen-standorte-wien
-ogdInfo: Longer <b>HTML</b> multiline text, explaining the dataset
 filename: wiener-toiletten.json
 fileFormat: geojson
 source:
