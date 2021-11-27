@@ -62,6 +62,8 @@ commons:
     wikidataProperty: P2951
 osm:
   refField: ref:at:bda
+  refValue:
+    wikidataProperty: P2951
   refDataNameField: Katalogtitel
   query: |
     nwr[building]

@@ -73,7 +73,7 @@ wikidata:
     P7842
 osm:
   refDataNameField: name
-  query:
+  query: |
     nwr[building]
     nwr[landuse=residential](distance:1000)
   recommendedTags: |
@@ -85,7 +85,7 @@ osm:
   compileTags: |
     operator=Stadt Wien – Wiener Wohnen
     ownership=municipal
-    architect={{ item.architects|split(', ')|join(';')
+    architect={{ item.architects|split(', ')|join(';') }}
     construction:start_date={{ item.constructionStartYear }}
     start_date={{ item.constructionEndYear }}
 commons:

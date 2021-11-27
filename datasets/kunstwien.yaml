@@ -101,9 +101,9 @@ osm:
     architect:wikidata
     historic
   compileTags: |
-    ref:wien:kultur: {{ item.ID }}
+    ref:wien:kultur={{ item.ID }}
   query: |
-    {% if item.TYP in ['Gedenktafeln', 'Denkmäler' %}
+    {% if item.TYP in ['Gedenktafeln', 'Denkmäler'] %}
     nwr[historic=memorial]
     {% elseif item.TYP in ['Sakrale Kleindenkmäler'] %}
     nwr[historic~"^wayside_(cross|shrine)$"]
