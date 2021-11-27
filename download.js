@@ -3,14 +3,16 @@ const fs = require('fs')
 const fetch = require('node-fetch')
 const yaml = require('yaml')
 
-const datasets = require('./src/datasets/index')
 const downloads = require('./src/datasets/downloads')
 const standardDownload = require('./src/standardDownload')
 
-Object.keys(datasets).forEach(id => {
-  const dataset = datasets[id]
+const index = fs.readFileSync('./datasets/index.txt')
+  .toString()
+  .split(/\n/g)
+  .filter(v => v.trim() !== '' && v.trim()[0] !== '#')
 
-  //fs.writeFile('datasets/' + id + '.yaml', yaml.stringify(dataset), () => {})
+index.forEach(id => {
+  const dataset = yaml.parse(fs.readFileSync('./datasets/' + id + '.yaml').toString())
 
   if (!(id in downloads) && dataset.source) {
     downloads[id] = (callback) => standardDownload(dataset, callback)
