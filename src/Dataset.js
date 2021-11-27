@@ -25,6 +25,8 @@ class Dataset {
             return res.json()
           })
           .then(json => {
+            json = this.convertData(json)
+
             json.forEach(entry => {
               this.data[entry[this.refData.idField]] = entry
               placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
@@ -101,7 +103,7 @@ class Dataset {
 
     result += '</li>'
 
-    const showFields = this.refData.showFields || Object.fromEntries(Object.keys(item).map(k => [k, {}]))
+    const showFields = this.refData.showFields || Object.fromEntries(Object.keys(item).filter(k => !k.match(/^_/)).map(k => [k, {}]))
 
     Object.keys(showFields).forEach(fieldId => {
       const field = showFields[fieldId] || {}
@@ -134,6 +136,27 @@ class Dataset {
     result += '</ul>'
 
     return result
+  }
+
+  convertData (data) {
+    if (!this.refData.format || this.refData.format === 'json') {
+      return data
+    }
+
+    if (this.refData.format === 'geojson') {
+      const result = {}
+
+      this.refData.coordField = {
+        id: '_geometry',
+        type: 'geojson'
+      }
+
+      return data.features.map(item => {
+        const d = item.properties
+        d._geometry = item.geometry
+        return d
+      })
+    }
   }
 }
 

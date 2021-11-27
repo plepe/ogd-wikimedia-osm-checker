@@ -20,6 +20,11 @@ class DatasetExample extends Dataset {
   // read the reference data from 'example.json' in the data-directory
   filename = 'example.json'
 
+  // [optional] either 'json' (default) or 'geojson'. If the file is a 'csv',
+  // it will be converted to 'json' at download time (this might change in the
+  // future?)
+  fileFormat = 'json'
+
   // [optional] describe source of the dataset; if omitted, you should define a
   // special download function (see at the end of the Dataset.md file) or
   // download the file manually into the data directory.
@@ -48,6 +53,7 @@ class DatasetExample extends Dataset {
     urlFormat: 'https://example.com/item/{{ item.ID }}',
 
     // [optional] for a field with coordinates, add this structure; id is the field name, type the encoding (currently supported: 'wkt' = Well-known text)
+    // for 'geojson', omit this field
     coordField: {
       id: 'SHAPE',
       type: 'wkt'
