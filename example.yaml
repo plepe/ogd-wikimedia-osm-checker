@@ -1,0 +1,202 @@
+# ID of the dataset (should equal the filename)
+id: template
+
+# Short title of the dataset
+title: Example
+
+# Longer title of the dataset for the overview and description page
+titleLong: Long title for Example
+
+# Who provides the dataset?
+operator: A.C.M.E.
+
+# Where to find information about this dataset?
+ogdURL: https://example.com/
+
+# Description of the dataset and it's reproduction in the different datasets
+# (like Wikidata, OSM, ...)
+ogdInfo: >-
+  Longer <b>HTML</b> multiline text, explaining the dataset
+
+# Location of the reference data from 'example.json' in the data-directory
+filename: example.json
+
+# [optional] either 'json' (default) or 'geojson'. If the file is a 'csv',
+# it will be converted to 'json' at download time (this might change in the
+# future?)
+fileFormat: json
+
+# [optional] describe source of the dataset; if omitted, you should define a
+# special download function (see at the end of the Dataset.md file) or
+# download the file manually into the data directory.
+source:
+  # URL of the dataset
+  url: https://example.com/data.json
+
+  # [optional] either 'json' (default) or 'geojson'. If the file is a 'csv',
+  # it will be converted to 'json' at download time (this might change in the
+  # future?)
+  format: json
+
+  # [optional] format options, depending on the format
+  # csv: see possible parameters here: https://www.npmjs.com/package/csvtojson#parameters
+  # json: currently none
+  formatOptions: {}
+
+  # [optional] encoding of the dataset, e.g. 'iso-8859-1'. default: 'utf-8'
+  encoding: utf-8
+
+# describe reference data (the dataset)
+refData:
+  # important: this field holds the identificator of each item
+  idField: ID
+
+  # [optional] How to link to a description of the item on the operator's website
+  urlFormat: https://example.com/item/{{ item.ID }}
+
+  # [optional] for a field with coordinates, add this structure; id is the
+  # field name, type the encoding (currently supported: 'wkt' = Well-known
+  # text)
+  # for 'geojson', omit this field
+  coordField:
+    id: SHAPE
+    type: wkt
+
+  # [optional] add a place filter in the menu. use this field for filtering:
+  placeFilterField: PLACE
+
+  # [optional] in the list, which field to show as title field; if omitted,
+  # the idField will be used. Optionally you can use a combination from
+  # several fields by using TwigJS syntax (see below).
+  # Instead of using 'listFieldTitle' and 'listFieldAddress', you could
+  # overwrite the function listFormat() and return HTML code or a DOM node.
+  listFieldTitle: TITLE
+
+  # [optional] in the list, which field to show as address field; if
+  # omitted, empty. Optionally you can use a combination from several fields
+  # by using TwigJS syntax (as shown).
+  listFieldAddress: "{{ item.PLZ }} {{ item.CITY }}, {{ item.ADDRESS }}"
+
+  # [optional] which fields should be shown in the reference data block; if
+  # omitted, all key/values of the current item are shown. Alternatively you
+  # can create a function `showFormat(item)` which returns HTML code or a
+  # DOM node.
+  showFields:
+    TITLE:
+      # human-readable field name (if omitted uses the key, thus 'TITLE')
+      title: Title
+
+    ADDRESS:
+      title: Address
+
+      # [optional] format, e.g. combination from several fields. Uses TwigJS
+      # syntax.
+      format: "{{ item.PLZ }} {{ item.CITY }}, {{ item.ADDRESS }}"
+
+# [optional] Configuration of the item in a corresponding wikipedia list
+wikipediaList:
+  # id of an existing list in the module
+  # https://github.com/plepe/wikipedia-list-extractor
+  list: AT-BDA
+
+  # [optional] id prefix
+  idPrefix: id-
+
+  # [optional] id of the field referencing the wikidata item
+  wikidataField: WD-Item
+
+  # [optional] id of the field referencing a wikipedia article
+  articleField: Article
+
+  # [optional] id of the field referencing the wikimedia commons category
+  commonsField: Commonscat
+
+  # [optional] id of the fields referencing the latitude/longitude of the
+  # item's coordinates
+  latitudeField: Latitude
+  longitudeField: Longitude
+
+  # [optional] which fields should be displayed
+  showField:
+    - Name
+    - Type
+    - Description
+
+# [optional] Configuration of the item in Wikidata
+wikidata:
+  # [optional] which property holds the reference to this dataset
+  refProperty: P1234
+
+  # [optional] title of the refProperty (if omitted, prints the 'refProperty' id)
+  refPropertyTitle: Property Title
+
+  # [optional] the wikidata representation of an item should have these
+  # properties. This is a multi-line string, with a property each line.
+  # Uses TwigJS syntax (see below for available variables).
+  recommendedProperties: |
+    P571 # date of inception
+    P625 # coordinates
+    {% if item.TYPE == 'foo' %}P31{% endif %} # is a
+
+# [optional] Configuration of the item in Wikimedia Commons
+commons:
+  # [optional] template for a search via full text search (Cirrus Search); '$1'
+  # will be replaced by the ID of the item
+  searchRegexp: /\{\{Example\s*\|\s*(1=)*$1(\|(.*))?\}\}/
+
+  # [optional] in the source of each page, search for occurences of this template
+  templateRegexp: "[Ee]xample"
+
+  # [optional] when no template is found, suggest the following template; '$1'
+  # will be replaced by the ID of the item
+  templateTemplate: "{{Example|$1}}"
+
+  # [optional] instead of the ID of the item, use the value of this wikidata
+  # property for 'searchRegexp' and 'templateTemplate'.
+  refValue:
+    wikidataProperty: P2951
+
+# [optional] Configuration of the item in OpenStreetMap
+osm:
+  # [optional] the specified tag holds a reference to the dataset's id
+  refField: ref:example
+
+  # [optional] instead of the ID of the item, use the value of this wikidata property for 'refField'.
+  refValue:
+    wikidataProperty: P2951
+
+  # [optional] when search similar objects, use the specified field from refData to compare the name
+  refDataNameField: TITLE
+
+  # [optional] A query which searches for OSM objects. It uses Overpass QL
+  # language. This is multi-line string, with a query each line. 
+  # It uses TwigJS syntax (see below for available variables).
+  # By default, it searches for objects in 30m distance of possible coordinates
+  # (e.g. dataset, wikipediaList, wikidata), optionally you can specify a
+  # different distance with '(distance:1234)
+  query: |
+    nwr[foo=bar]
+    {% if item.TYPE == 'park' %}
+    nwr[leisure=park](distance:1000)
+    {% endif %}
+
+  # [optional] the OSM representation of an item should have these properties
+  # This is a multi-line string, with a key each line.
+  # It uses TwigJS syntax (see below for available variables)
+  # Additionally, 'osmItem' may be set for the current OSM item (with osmItem.tags.* for its tags)
+  recommendedTags: |
+    start_date
+  
+  # [optional] list of key=value pairs which should be added to the OSM entry
+  # This is a multi-line string, with a key=value each line.
+  # It uses TwigJS syntax (see below for available variables)
+  # Additionally, 'osmItem' may be set for the current OSM item (with osmItem.tags.* for its tags)
+  compileTags: |
+    name={{ item.NAME }}
+    operator=ACME
+
+# TwigJS Variables - The following variables are available for templates:
+# item.*           Values of the reference dataset, e.g. 'item.ID'
+# wikipediaList.*  Values of a found wikipedia list, e.g. 'wikipediaList.ID'
+# wikidata.*       Values of a selected wikidata object, where each property is
+#                  an array, with { value: xxx }. E.g. 'wikidata.P31[0].value'
