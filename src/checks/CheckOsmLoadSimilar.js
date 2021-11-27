@@ -25,7 +25,7 @@ class CheckOsmLoadSimilar extends Check {
 
     const allCoords = getAllCoords(ob)
 
-    if (!ob.data.osm && ob.data.wikidata) {
+    if (!ob.data.osm) {
       const query = dataset.compileOverpassQuery(ob)
       if (!query) {
         return true
