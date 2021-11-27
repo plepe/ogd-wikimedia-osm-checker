@@ -4,7 +4,7 @@ const editLink = require('./editLink.js')
 const printAttrList = require('./printAttrList.js')
 const osmCompileTags = require('./osmCompileTags.js')
 
-const recommendedTags = ['name', 'start_date', 'wikidata']
+const recommendedTags = []
 
 module.exports = function osmFormat (el, ob, appendTitle = '') {
   const compiledTags = osmCompileTags(ob, el)
