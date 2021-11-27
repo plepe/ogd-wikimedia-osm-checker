@@ -166,7 +166,7 @@ class Dataset {
   }
 
   compileOverpassQuery (ob) {
-    if (!ob.dataset.osm.query) {
+    if (!ob.dataset.osm || !ob.dataset.osm.query) {
       return null
     }
 
@@ -198,6 +198,10 @@ class Dataset {
   }
 
   osmCompileTags (ob, osmItem) {
+    if (!ob.dataset.osm || !ob.dataset.osm.compileTags) {
+      return null
+    }
+
     const compiledTags = {}
 
     if (!this.osmCompileTagsTemplate) {
@@ -222,7 +226,7 @@ class Dataset {
   }
 
   wikidataRecommendedProperties (ob) {
-    if (!ob.dataset.wikidata.recommendedProperties) {
+    if (!ob.dataset.wikidata || !ob.dataset.wikidata.recommendedProperties) {
       return null
     }
 
