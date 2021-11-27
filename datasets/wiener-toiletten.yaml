@@ -29,3 +29,5 @@ refData:
     ORT:
       title: Ortsangabe
       format: "{{ item.STRASSE }} {{ item.ORTSANGABE }}"
+osm:
+  query: "nwr[amenity=toilets]"

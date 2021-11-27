@@ -65,8 +65,29 @@ wikipediaList:
 wikidata:
   refProperty: P8231
   refPropertyTitle: Wiener Wohnen ID
+  recommendedProperties: |
+    P84
+    P138
+    P571
+    P1619
+    P7842
 osm:
   refDataNameField: name
+  query:
+    nwr[building]
+    nwr[landuse=residential](distance:1000)
+  recommendedTags: |
+    architect
+    architect:wikidata
+    name:etymology
+    name:etymology:wikidata
+    building:levels
+  compileTags: |
+    operator=Stadt Wien – Wiener Wohnen
+    ownership=municipal
+    architect={{ item.architects|split(', ')|join(';')
+    construction:start_date={{ item.constructionStartYear }}
+    start_date={{ item.constructionEndYear }}
 commons:
   searchRegexp: /\{\{Wiener Wohnen\s*\|\s*(1=)*$1(\|(.*))?\}\}/
   templateRegexp: Wiener Wohnen

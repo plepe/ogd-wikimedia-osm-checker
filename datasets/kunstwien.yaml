@@ -102,7 +102,7 @@ osm:
     historic
   compileTags: |
     ref:wien:kultur: {{ item.ID }}
-  overpassQuery: |
+  query: |
     {% if item.TYP in ['Gedenktafeln', 'Denkmäler' %}
     nwr[historic=memorial]
     {% elseif item.TYP in ['Sakrale Kleindenkmäler'] %}

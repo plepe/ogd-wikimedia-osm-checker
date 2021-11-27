@@ -9,9 +9,8 @@ const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 
-//const datasets = require('./datasets/index.js')
-const _datasets = ['kunstwien']
 const datasets = {}
+const _datasets = require('../datasets/index.json')
 const modules = [
   require('./wikidataToOsm.js')
 ]
@@ -20,12 +19,9 @@ let dataset
 
 let info
 
-window.onload = () => {
-  document.body.classList.add('loading')
-
-  async.parallel([
-    done => async.each(modules, (module, done) => module.init(done), done),
-    done => async.each(_datasets, (id, done) => {
+const datasetLoader = {
+  init (callback) {
+    async.each(_datasets, (id, done) => {
       fetch('datasets/' + id + '.yaml')
         .then(res => res.text())
         .then(body => {
@@ -33,9 +29,16 @@ window.onload = () => {
           datasets[id] = new Dataset(d)
           done()
         })
-    }, done)
-  ],
-  (err) => {
+    }, callback)
+  }
+}
+
+window.onload = () => {
+  document.body.classList.add('loading')
+
+  modules.push(datasetLoader)
+
+  async.each(modules, (module, done) => module.init(done), (err) => {
     document.body.classList.remove('loading')
 
     if (err) {
