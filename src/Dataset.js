@@ -6,6 +6,12 @@ const twig = require('twig').twig
 const createGeoLink = require('./createGeoLink')
 
 class Dataset {
+  constructor (data = {}) {
+    for (let k in data) {
+      this[k] = data[k]
+    }
+  }
+
   load (callback) {
     if (this.data) {
       return callback(null)

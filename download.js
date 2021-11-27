@@ -1,6 +1,7 @@
 const async = require('async')
 const fs = require('fs')
 const fetch = require('node-fetch')
+const yaml = require('yaml')
 
 const datasets = require('./src/datasets/index')
 const downloads = require('./src/datasets/downloads')
@@ -8,6 +9,8 @@ const standardDownload = require('./src/standardDownload')
 
 Object.keys(datasets).forEach(id => {
   const dataset = datasets[id]
+
+  //fs.writeFile('datasets/' + id + '.yaml', yaml.stringify(dataset), () => {})
 
   if (!(id in downloads) && dataset.source) {
     downloads[id] = (callback) => standardDownload(dataset, callback)

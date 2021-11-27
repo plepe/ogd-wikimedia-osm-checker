@@ -2,12 +2,16 @@ const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const forEach = require('foreach')
 const async = require('async')
+const yaml = require('yaml')
 
+const Dataset = require('./Dataset.js')
 const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 
-const datasets = require('./datasets/index.js')
+//const datasets = require('./datasets/index.js')
+const _datasets = ['kunstwien']
+const datasets = {}
 const modules = [
   require('./wikidataToOsm.js')
 ]
@@ -19,7 +23,19 @@ let info
 window.onload = () => {
   document.body.classList.add('loading')
 
-  async.each(modules, (module, done) => module.init(done), (err) => {
+  async.parallel([
+    done => async.each(modules, (module, done) => module.init(done), done),
+    done => async.each(_datasets, (id, done) => {
+      fetch('datasets/' + id + '.yaml')
+        .then(res => res.text())
+        .then(body => {
+          const d = yaml.parse(body)
+          datasets[id] = new Dataset(d)
+          done()
+        })
+    }, done)
+  ],
+  (err) => {
     document.body.classList.remove('loading')
 
     if (err) {
