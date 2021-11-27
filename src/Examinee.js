@@ -188,4 +188,8 @@ module.exports = class Examinee extends EventEmitter {
 
     return this.checksStatus[checkId]
   }
+
+  templateData () {
+    return { item: this.refData }
+  }
 }

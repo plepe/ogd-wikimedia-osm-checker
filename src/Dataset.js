@@ -164,6 +164,79 @@ class Dataset {
       })
     }
   }
+
+  compileOverpassQuery (ob) {
+    if (!ob.dataset.osm.query) {
+      return null
+    }
+
+    if (!this.osmCompileQueryTemplate) {
+      // add empty lines, to avoid that twig merges lines between expressions
+      this.osmCompileQueryTemplate = twig({ data: ob.dataset.osm.query.replace(/\n/g, '\n\n') })
+    }
+
+    let result = this.osmCompileQueryTemplate.render(ob.templateData())
+
+    result = result.split(/\n/g).map(line => {
+      if (!line.trim()) {
+        return null
+      }
+
+      const m1 = line.match(/^(.*)\((.*)\)$/)
+      if (m1) {
+        return line + ';'
+      }
+
+      return line + '(filter);'
+    }).filter(f => f)
+
+    if (result.length) {
+      return '(' + result.join('') + ');'
+    }
+
+    return null
+  }
+
+  osmCompileTags (ob, osmItem) {
+    const compiledTags = {}
+
+    if (!this.osmCompileTagsTemplate) {
+      // add empty lines, to avoid that twig merges lines between expressions
+      this.osmCompileTagsTemplate = twig({ data: ob.dataset.osm.compileTags.replace(/\n/g, '\n\n') })
+    }
+
+    const templateData = ob.templateData()
+    if (osmItem) {
+      templateData.osmItem = osmItem.tags
+    }
+
+    const result = this.osmCompileTagsTemplate.render(templateData)
+    result.split(/\n/g).forEach(line => {
+      const m = line.match(/^([^=]+)=(.*)$/)
+      if (m) {
+        compiledTags[m[1]] = m[2]
+      }
+    })
+
+    return compiledTags
+  }
+
+  wikidataRecommendedProperties (ob) {
+    if (!ob.dataset.wikidata.recommendedProperties) {
+      return null
+    }
+
+    if (!this.wikidataRecommendedPropertiesTemplate) {
+      // add empty lines, to avoid that twig merges lines between expressions
+      this.wikidataRecommendedPropertiesTemplate = twig({ data: ob.dataset.wikidata.recommendedProperties.replace(/\n/g, '\n\n') })
+    }
+
+    let result = this.wikidataRecommendedPropertiesTemplate.render(ob.templateData())
+
+    result = result.split(/\n/g).filter(f => f)
+
+    return result
+  }
 }
 
 module.exports = Dataset
