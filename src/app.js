@@ -10,7 +10,6 @@ const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 
 const datasets = {}
-const _datasets = require('../datasets/index.json')
 const modules = [
   require('./wikidataToOsm.js')
 ]
@@ -21,6 +20,17 @@ let info
 
 const datasetLoader = {
   init (callback) {
+    fetch('datasets/index.txt')
+      .then(res => res.text())
+      .then(body => {
+        const list = body
+          .split(/\n/g)
+          .filter(v => v.trim() !== '' && v.trim()[0] !== '#')
+        datasetLoader.load(list, callback)
+      })
+  },
+
+  load (_datasets, callback) {
     async.each(_datasets, (id, done) => {
       fetch('datasets/' + id + '.yaml')
         .then(res => res.text())
