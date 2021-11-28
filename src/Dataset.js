@@ -141,11 +141,7 @@ class Dataset {
   }
 
   convertData (data) {
-    if (!this.refData.format || this.refData.format === 'json') {
-      return data
-    }
-
-    if (this.refData.format === 'geojson') {
+    if (this.file.format === 'geojson') {
       const result = {}
 
       this.refData.coordField = {
@@ -159,6 +155,8 @@ class Dataset {
         return d
       })
     }
+
+	  return data
   }
 
   compileOverpassQuery (ob) {
