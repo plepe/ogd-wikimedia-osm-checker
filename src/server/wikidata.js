@@ -2,7 +2,7 @@ const async = require('async')
 const JSDOM = require('jsdom').JSDOM
 
 const httpRequest = require('../httpRequest.js')
-const findWikidataItems = require('wikipedia-list-extractor/src/findWikidataItems')
+const findWikidataItems = require('find-wikidata-items')
 
 const active = []
 const pending = []
@@ -122,7 +122,7 @@ function _request (options, callback) {
     if (err) { return callback(err) }
     next(options)
 
-    async.map(results[0],
+    async.map(Object.keys(results[0]),
       (id, done) => {
         const _options = JSON.parse(JSON.stringify(options))
         _options.key = 'id'
