@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm install
 RUN npm run build
-RUN npm run update
+RUN npm run download
 
 EXPOSE 8080
 

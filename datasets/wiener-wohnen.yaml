@@ -1,0 +1,95 @@
+id: wiener-wohnen
+title: Wiener Gemeindebauten
+titleLong: Wiener Gemeindebauten (Wiener Wohnen)
+operator: Stadt Wien
+ogdURL: https://www.wienerwohnen.at/wiener-gemeindebau/gemeindebaubeschreibungen.html
+ogdInfo: >-
+  <a
+  href='https://www.wienerwohnen.at/wiener-gemeindebau/gemeindebaubeschreibungen.html'>Gemeindebaubeschreibungen
+  auf der Homepage von "Wiener Wohnen"</a>
+
+
+  <ul>
+
+  <li>Jeder Gemeindebau hat eine ID, die aus der URL der Wiener Wohnen Homepage auszulesen ist.</li>
+
+  <li>In der <b>Wikipedia</b> gibt es für jeden Wiener Bezirk Seiten mit Listen zu Gemeindebauten. Dort wird die ID dieses Objektes (Feld 'ID') aufgeführt, sowie ein Link zum Wikidata Item (Feld 'WD-Item'), falls es einen Eintrag gibt.</li>
+
+  <li>In <b>Wikidata</b> gibt es für einige Gemeindebauten einen Eintrag, erkennbar am Property "Wiener Wohen ID" (P8231) welches die Gemeindebau-ID enthält.</li>
+
+  <li>In <b>Wikimedia Commons</b> sollte es zumindest ein Bild für jeden Gemeindebau geben. Gibt es mehrere Bilder (oder andere Medien), sollten diese in eine Kategorie zusammengefasst werden, die dann von Wikipedia Liste und Wikidata verlinkt werden. Bilder und Kategorie haben einen Vermerk <tt>{{Wiener Wohnen|123}}</tt> (123 = ID des Objektes) oder <tt>{{Wiener Wohnen|123|name=Hofname}}</tt>. Außerdem kriegt die Kategorie eine "Wikidata Infobox".</li>
+
+  <li>In <b>OpenStreetMap</b> kann die Gemeindebau Information entweder auf den Gebäuden und/oder auf einem landuse=residential Polygon erfasst sein. Es gibt kein Tag um die ID des Gemeindebaus zu erfassen, allerdings kann man einen Website-Link auf die Wiener Wohnen Homepage setzen. Wenn es ein Wikidata Objekt gibt, sollte auf jeden fall ein Verweis auf das Wikidata-Objekt eingetragen sein (Tag "wikidata"). Weiters: <tt>operator=Stadt Wien – Wiener Wohnen, ownership=municipal</tt></li>
+
+  </ul> 
+file:
+  name: wiener-wohnen.json
+refData:
+  idField: id
+  urlFormat: "{{ item.url }}"
+  placeFilterField: plz
+  listFieldTitle: name
+  listFieldAddress: address
+  showFields:
+    name:
+      title: Name
+    address:
+      title: Adresse
+    construction:
+      title: Bauzeit
+      format: "{{ item.constructionStartYear }}-{{ item.constructionEndYear }}"
+    architects:
+      titel: Architekt_innen
+    publicArt:
+      titel: Kunst am Bau
+      format: '{{ item.publicArt ? "ja" : "nein" }}'
+    flats:
+      title: Wohnungen
+      format: "{{ item.flats }}"
+    commercialSpaces:
+      title: Lokale
+      format: "{{ item.commercialSpaces }}"
+wikipediaList:
+  list: AT-Wien-Gemeindebauten
+  idPrefix: id-
+  wikidataField: WD-Item
+  latitudeField: Breitengrad
+  longitudeField: Längengrad
+  showFields:
+    - Name
+    - Adresse
+    - Baujahr
+    - Architekt
+    - Wohnungen
+    - Kunstobjekte
+    - Anmerkung
+wikidata:
+  refProperty: P8231
+  refPropertyTitle: Wiener Wohnen ID
+  recommendedProperties: |
+    P84
+    P138
+    P571
+    P1619
+    P7842
+osm:
+  refDataNameField: name
+  query: |
+    nwr[building]
+    nwr[landuse=residential](distance:1000)
+  recommendedTags: |
+    architect
+    architect:wikidata
+    name:etymology
+    name:etymology:wikidata
+    building:levels
+  compileTags: |
+    operator=Stadt Wien – Wiener Wohnen
+    ownership=municipal
+    architect={{ item.architects|split(', ')|join(';') }}
+    construction:start_date={{ item.constructionStartYear }}
+    start_date={{ item.constructionEndYear }}
+commons:
+  searchRegexp: /\{\{Wiener Wohnen\s*\|\s*(1=)*$1(\|(.*))?\}\}/
+  templateRegexp: Wiener Wohnen
+  templateTemplate: "{{Wiener Wohnen|$1}}"

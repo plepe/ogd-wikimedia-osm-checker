@@ -20,11 +20,11 @@ module.exports = {
     callback)
   },
 
-  getMissingTags (ob) {
-    const missTags = []
+  compileTags (ob, osmItem) {
+    const result = {}
 
-    if (ob.data.wikidata && ob.data.wikidata.length) {
-      const wikidata = ob.data.wikidata[0]
+    if (ob.data.wikidataSelected) {
+      const wikidata = ob.data.wikidataSelected
 
       for (const k in wikidataToOsm) {
         const d = wikidataToOsm[k]
@@ -43,7 +43,7 @@ module.exports = {
         }
 
         if (values) {
-          missTags.push(d.tag + '=' + values.map(v => {
+          result[d.tag] = values.map(v => {
             if (d.mapping) {
               if (v.mainsnak.datavalue.value.id in d.mapping) {
                 return d.mapping[v.mainsnak.datavalue.value.id].tag
@@ -71,25 +71,24 @@ module.exports = {
                   return v.mainsnak.datavalue.value
               }
             }
-          }).filter(v => v).join(';'))
+          }).filter(v => v).join(';')
 
           if (d.tagLabel) {
-            missTags.push(d.tagLabel + '=' + wikidata.claims[k]
+            result[d.tagLabel] = wikidata.claims[k]
               .map(v => v.text)
               .filter(v => v)
               .join(';')
-            )
           }
 
           if (d.additionalTags) {
             forEach(d.additionalTags, (v, k) => {
-              missTags.push(k + '=' + v)
+              result[k] = v
             })
           }
         }
       }
     }
 
-    return missTags
+    return result
   }
 }

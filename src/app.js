@@ -2,11 +2,14 @@ const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const forEach = require('foreach')
 const async = require('async')
+const yaml = require('yaml')
 
+const Dataset = require('./Dataset.js')
 const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
+const timestamp = require('./timestamp')
 
-const datasets = require('../datasets/index.js')
+const datasets = {}
 const modules = [
   require('./wikidataToOsm.js')
 ]
@@ -15,8 +18,35 @@ let dataset
 
 let info
 
+const datasetLoader = {
+  init (callback) {
+    fetch('datasets/index.txt')
+      .then(res => res.text())
+      .then(body => {
+        const list = body
+          .split(/\n/g)
+          .filter(v => v.trim() !== '' && v.trim()[0] !== '#')
+        datasetLoader.load(list, callback)
+      })
+  },
+
+  load (_datasets, callback) {
+    async.each(_datasets, (id, done) => {
+      fetch('datasets/' + id + '.yaml')
+        .then(res => res.text())
+        .then(body => {
+          const d = yaml.parse(body)
+          datasets[id] = new Dataset(d)
+          done()
+        })
+    }, callback)
+  }
+}
+
 window.onload = () => {
   document.body.classList.add('loading')
+
+  modules.push(datasetLoader)
 
   async.each(modules, (module, done) => module.init(done), (err) => {
     document.body.classList.remove('loading')
@@ -42,7 +72,7 @@ function init () {
     const li = document.createElement('li')
     const a = document.createElement('a')
     a.href = '#' + id
-    a.appendChild(document.createTextNode(_dataset.titleLong))
+    a.appendChild(document.createTextNode(_dataset.titleLong || _dataset.title))
     li.appendChild(a)
     listDatasets.appendChild(li)
   })
@@ -78,9 +108,19 @@ function updateDataset () {
 
   dataset = datasets[selectDataset.value]
 
-  content.innerHTML = '<h1>' + dataset.title + '</h1><p>' + dataset.ogdInfo + '</p><p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
+  let text = '<h1>' + (dataset.titleLong || dataset.title) + '</h1>'
 
-  const select = document.getElementById('Ortfilter')
+  if (dataset.ogdInfo) {
+    text += '<p>' + dataset.ogdInfo + '</p>'
+  }
+
+  if (dataset.ogdURL) {
+    text += '<p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
+  }
+
+  content.innerHTML = text
+
+  const select = document.getElementById('placeFilter')
   while (select.firstChild.nextSibling) {
     select.removeChild(select.firstChild.nextSibling)
   }
@@ -90,9 +130,9 @@ function updateDataset () {
     document.body.classList.remove('loading')
     if (err) { global.alert(err) }
 
-    dataset.ortFilter.forEach(ort => {
+    dataset.placeFilter.forEach(place => {
       const option = document.createElement('option')
-      option.appendChild(document.createTextNode(ort))
+      option.appendChild(document.createTextNode(place))
       select.appendChild(option)
     })
 
@@ -130,53 +170,63 @@ function choose (path) {
 
   httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
-  const select = document.getElementById('Ortfilter')
-  const ort = dataset.data[id][dataset.ortFilterField]
-  select.value = ort
+  const select = document.getElementById('placeFilter')
+  if (dataset.refData.placeFilterField) {
+    const place = dataset.data[id][dataset.refData.placeFilterField]
+    select.value = place
+  } else {
+    select.value = 'alle'
+  }
   update()
 
   check(id)
 }
 
 function update () {
-  const select = document.getElementById('Ortfilter')
-  const ort = select.value
+  const select = document.getElementById('placeFilter')
+  const place = select.value
 
   const content = document.getElementById('content')
   while (content.firstChild) {
     content.removeChild(content.firstChild)
   }
 
-  if (ort === '') {
+  if (place === '') {
     content.innerHTML = info
     return
   }
 
   const table = document.createElement('table')
   table.id = 'data'
-  table.innerHTML = '<tr><th>' + escHTML(dataset.listTitle) + '</th></tr>'
+  table.innerHTML = '<tr><th>' + escHTML(dataset.title) + '</th></tr>'
   content.appendChild(table)
 
   const dom = document.getElementById('data')
 
-  for (const k in dataset.data) {
-    if (dataset.data[k][dataset.ortFilterField] === ort) {
-      const entry = dataset.listEntry(dataset.data[k])
+  Object.keys(dataset.data).forEach(id => {
+    const item = dataset.data[id]
+
+    if (!dataset.refData.placeFilterField || item[dataset.refData.placeFilterField] == place) {
+      const text = dataset.listFormat(item)
 
       const tr = document.createElement('tr')
-      tr.id = dataset.id + '-' + entry.id
+      tr.id = dataset.id + '-' + id
 
       const td = document.createElement('td')
       tr.appendChild(td)
 
       const a = document.createElement('a')
-      a.innerHTML = entry.text
-      a.href = '#' + dataset.id + '/' + entry.id
+      if (typeof text === 'string') {
+        a.innerHTML = text
+      } else {
+        a.appendChild(text)
+      }
+      a.href = '#' + dataset.id + '/' + id
 
       td.appendChild(a)
       dom.appendChild(tr)
     }
-  }
+  })
 }
 
 function check (id, options = {}) {
@@ -193,16 +243,24 @@ function check (id, options = {}) {
   reload.innerHTML = '↻'
   reload.title = 'Nochmal prüfen'
   reload.onclick = () => {
-    options.reload = true
+    options.reload = timestamp()
     check(id, options)
     return false
   }
   div.appendChild(reload)
 
   document.body.classList.add('loading')
-  dataset.showEntry(entry, div)
 
-  const ob = new Examinee(entry[dataset.idField], entry, dataset)
+  const format = dataset.showFormat(entry)
+  if (typeof format === 'string') {
+    const dom = document.createElement('div')
+    dom.innerHTML = format
+    div.appendChild(dom)
+  } else {
+    div.appendChild(format)
+  }
+
+  const ob = new Examinee(entry[dataset.refData.idField], entry, dataset)
   ob.initMessages(div)
   ob.runChecks(dataset, options, (err, result) => {
     if (err) { global.alert(err) }

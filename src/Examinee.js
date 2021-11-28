@@ -1,6 +1,8 @@
 const EventEmitter = require('events')
 const forEach = require('foreach')
 
+const checks = require('./checks/index')
+const wikidataSimplify = require('./wikidataSimplify')
 const loader = {
   commons: require('./loader-commons.js'),
   osm: require('./loader-osm.js'),
@@ -78,7 +80,11 @@ module.exports = class Examinee extends EventEmitter {
 
   message (module, status, message) {
     const li = document.createElement('li')
-    li.innerHTML = message
+    if (typeof message === 'string') {
+      li.innerHTML = message
+    } else {
+      li.appendChild(message)
+    }
     li.className = status
     this.messagesUl[module].appendChild(li)
 
@@ -138,7 +144,7 @@ module.exports = class Examinee extends EventEmitter {
 
   runChecks (dataset, options, callback, init = false) {
     if (!init) {
-      dataset.checks.forEach(check => {
+      checks.forEach(check => {
         this.checksStatus[check.id] = false
       })
 
@@ -151,8 +157,8 @@ module.exports = class Examinee extends EventEmitter {
 
     this.clearMessages()
 
-    dataset.checks.forEach(check => {
-      this.checksStatus[check.id] = check.check(this)
+    checks.forEach(check => {
+      this.checksStatus[check.id] = check.check(this, dataset)
     })
 
     if (this.needLoad()) {
@@ -182,5 +188,21 @@ module.exports = class Examinee extends EventEmitter {
     }
 
     return this.checksStatus[checkId]
+  }
+
+  templateData () {
+    const result = {
+      item: this.refData
+    }
+
+    if (this.data.wikipedia && this.data.wikipedia.length) {
+      result.wikipediaList = this.data.wikipedia[0]
+    }
+
+    if (this.data.wikidataSelected) {
+      result.wikidata = wikidataSimplify(this.data.wikidataSelected)
+    }
+
+    return result
   }
 }

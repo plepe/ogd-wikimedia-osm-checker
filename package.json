@@ -4,10 +4,10 @@
   "description": "Vergleiche die Einträge verschiedener OGD Datensätze mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.",
   "main": "index.js",
   "scripts": {
-    "build": "mkdir -p dist && browserify src/app.js -o dist/app.js",
-    "watch": "mkdir -p dist && watchify --debug src/app.js -o dist/app.js -v",
-    "update": "mkdir -p data && node update.js",
-    "lint": "standard --fix update.js server.js src/*.js server/*.js checks/*.js datasets/*.js test/*.js",
+    "build": "mkdir -p dist && browserify -p esmify src/app.js -o dist/app.js",
+    "watch": "mkdir -p dist && watchify -p esmify --debug src/app.js -o dist/app.js -v",
+    "download": "mkdir -p data && node download.js",
+    "lint": "standard --fix download.js server.js src/*.js src/*/*.js test/*.js",
     "prepare": "npm run build",
     "start": "node server.js",
     "test": "mocha --bail"
@@ -26,6 +26,7 @@
     "babel-eslint": "^10.1.0",
     "boundingbox": "^1.2.5",
     "csvtojson": "^2.0.10",
+    "find-wikidata-items": "^0.2.0",
     "foreach": "^2.0.5",
     "html-escape": "^2.0.0",
     "iconv-lite": "^0.6.3",
@@ -36,12 +37,14 @@
     "query-string": "^6.14.1",
     "sheet-router": "^4.2.3",
     "string-similarity": "^4.0.4",
+    "twig": "^1.15.4",
     "w3c-xmlhttprequest": "^2.2.0",
-    "wikipedia-list-extractor": "git+https://github.com/plepe/wikipedia-list-extractor.git#v0.1.1",
+    "wikipedia-list-extractor": "^0.2.0",
     "yaml": "^1.10.2"
   },
   "devDependencies": {
     "browserify": "^16.5.2",
+    "esmify": "^2.1.1",
     "mocha": "^8.4.0",
     "standard": "^14.3.4",
     "watchify": "^4.0.0"

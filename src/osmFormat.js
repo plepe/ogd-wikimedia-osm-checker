@@ -1,43 +1,15 @@
 const escHTML = require('html-escape')
 
 const editLink = require('./editLink.js')
-const wikidataToOsm = require('./wikidataToOsm.js')
 const printAttrList = require('./printAttrList.js')
+const osmCompileTags = require('./osmCompileTags.js')
 
-const recommendedTags = ['name', 'start_date', 'wikidata']
+const recommendedTags = []
 
 module.exports = function osmFormat (el, ob, appendTitle = '') {
-  let missTags = []
+  const compiledTags = osmCompileTags(ob, el)
 
-  if (ob.dataset.missingTags) {
-    missTags = missTags.concat(ob.dataset.missingTags(ob))
-  }
-
-  missTags = missTags.concat(wikidataToOsm.getMissingTags(ob))
-
-  if (ob.data.commons) {
-    const files = ob.data.commons.filter(page => page.title.match(/^File:/))
-    const categories = ob.data.commons.filter(page => page.title.match(/^Category:/))
-    if (categories.length) {
-      missTags.push('wikimedia_commons=' + categories[0].title)
-    } else if (files.length) {
-      missTags.push('image=' + files[0].title)
-    }
-  }
-
-  missTags = Array.from(new Set(missTags)) // unique
-
-  missTags = missTags.filter(tag => {
-    const [k, v] = tag.split(/=/)
-
-    if (!(k in el.tags)) {
-      return true
-    }
-
-    return !(el.tags[k] === v)
-  })
-
-  let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el, missTags) + appendTitle
+  let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el, compiledTags) + appendTitle
 
   const tagKeys = Object.keys(el.tags || {})
 
@@ -53,13 +25,13 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
 
   ret += '<ul class="check">'
 
-  if (missTags.length) {
-    ret += '<li class="error">Fehlende Tags: ' + missTags.map(t => '<tt>' + escHTML(t) + '</tt>').join(', ') + '</li>'
+  if (Object.keys(compiledTags).length) {
+    ret += '<li class="error">Fehlende Tags: ' + printCompiledTags(compiledTags) + '</li>'
   }
 
   let recTags = recommendedTags.concat()
-  if (ob && ob.dataset.recommendedTags) {
-    recTags = recTags.concat(ob.dataset.recommendedTags(ob))
+  if (ob && ob.dataset.osmRecommendedTags) {
+    recTags = recTags.concat(ob.dataset.osmRecommendedTags(ob, el))
   }
 
   recTags = recTags.filter(tag => {
@@ -83,4 +55,8 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
   ret += '</ul>'
 
   return ret
+}
+
+function printCompiledTags (tags) {
+  return Object.keys(tags).map(t => '<tt>' + escHTML(t) + '=' + escHTML(tags[t]) + '</tt>').join(', ')
 }

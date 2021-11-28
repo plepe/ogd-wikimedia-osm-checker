@@ -15,7 +15,7 @@ Ein Screencast mit einer Anleitung findet sich hier: https://www.youtube.com/wat
 git clone https://github.com/plepe/ogd-wikimedia-osm-checker
 cd ogd-wikimedia-osm-checker
 npm install # install dependencies, link code
-npm run update # download current list of memorial sites to data/bda.json
+npm run download # download current list of memorial sites to data/bda.json
 npm start # start internal web server on port 8080
 ```
 
@@ -30,6 +30,30 @@ docker run -p 8080:8080 -d skunk/ogd-wikimedia-osm-checker
 ```
 
 Browse to http://localhost:8080
+
+## Create an additional dataset
+### Dataset
+Create a file `foobar.yaml` in the `datasets/` directory and add it to
+`datasets/index.txt`. You can use [minimal.yaml](minimal.yaml) as basis or
+[example.yaml](example.yaml) (which has a full documentation of this file).
+
+### Downloader [optional]
+If you need a special downloader, create a file in `src/datasets`:
+`DownloadExample.js` and add it to `src/datasets/download.js`.
+
+This should load the reference data and create a JSON file in the `data`
+folder.
+
+```js
+const fetch = require('node-fetch')
+const fs = require('fs')
+
+module.exports = function downloadExample (callback) {
+  fetch('https://example.com/dataset.json')
+    .then(response => response.json())
+    .then(data => fs.writeFile('data/example.json', JSON.stringify(data), callback))
+}
+```
 
 ## Development
 If you modify the code, you can run the following command. This will compile the code with debugging symbols and will re-compile as soon as the source code changed.

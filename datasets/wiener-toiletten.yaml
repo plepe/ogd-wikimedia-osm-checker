@@ -1,0 +1,33 @@
+id: wiener-toiletten
+title: Wiener Toiletten
+operator: Stadt Wien
+ogdURL: https://www.data.gv.at/katalog/dataset/oeffentliche-wc-anlagen-standorte-wien
+file:
+  format: geojson
+source:
+  url: https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:WCANLAGE2OGD&srsName=EPSG:4326&outputFormat=json
+refData:
+  idField: WC_ID
+  format: geojson
+  placeFilterField: BEZIRK
+  listFieldAddress: STRASSE
+  showFields:
+    ABTEILUNG:
+      title: Abteilung
+    EINSCHRAENKUNGEN:
+      title: Einschränkungen
+    KATEGORIE:
+      title: Kategorie
+    AUSSTATTUNG:
+      title: Ausstattung
+    OEFFNUNGSZEIT:
+      title: Öffnungszeiten
+    PERSONALBETREUUNG:
+      title: Betreuung
+    ORT:
+      title: Ortsangabe
+      format: "{{ item.STRASSE }} {{ item.ORTSANGABE }}"
+osm:
+  query: "nwr[amenity=toilets]"
+  compileTags: |
+    amenity=toilets

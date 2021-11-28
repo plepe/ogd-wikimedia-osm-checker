@@ -60,10 +60,10 @@ module.exports = function editLink (ob, osmOb = null, tagChange = null) {
         '&top=' + (bounds.maxlat + buffer).toFixed(5) +
         '&bottom=' + (bounds.minlat - buffer).toFixed(5)
 
-  if (tagChange && tagChange.length) {
-    url[url.length - 1] += '&addtags=' + tagChange
-      .map(kv => {
-        const [k, v] = kv.split(/=/)
+  if (tagChange && Object.keys(tagChange).length) {
+    url[url.length - 1] += '&addtags=' + Object.keys(tagChange)
+      .map(k => {
+        const v = tagChange[k]
         return encodeURIComponent(k) + '=' + encodeURIComponent(v)
       })
       .join('%7C')

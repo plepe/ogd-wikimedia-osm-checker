@@ -1,6 +1,10 @@
 const escHTML = require('html-escape')
 
 function formatValue (entry) {
+  if (entry.html) {
+    return entry.html
+  }
+
   let title = ''
   if (entry.value) {
     title = ' title="' + escHTML(typeof entry.value === 'object' ? JSON.stringify(entry.value, null, '  ') : entry.value) + '"'
