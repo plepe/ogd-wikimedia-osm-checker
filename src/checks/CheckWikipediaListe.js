@@ -10,7 +10,7 @@ class CheckWikipediaListe extends Check {
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
-    if (!dataset.wikipediaList) {
+    if (!dataset.wikipediaList.id) {
       return true
     }
 
