@@ -122,6 +122,10 @@ function _request (options, callback) {
     if (err) { return callback(err) }
     next(options)
 
+    if (!results[0]) {
+      return callback(null, [])
+    }
+
     async.map(Object.keys(results[0]),
       (id, done) => {
         const _options = JSON.parse(JSON.stringify(options))
