@@ -1,3 +1,6 @@
+// compatibilty NodeJS < 11.0
+require('array.prototype.flat').shim();
+
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
