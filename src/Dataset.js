@@ -8,6 +8,13 @@ const load = require('./load')
 
 class Dataset {
   constructor (data = {}) {
+    this.commons = {}
+    this.wikidata = {}
+    this.source = {}
+    this.file = {}
+    this.osm = {}
+    this.wikipediaList = {}
+
     for (let k in data) {
       this[k] = data[k]
     }
@@ -24,7 +31,6 @@ class Dataset {
     if (!this.file.format) {
       this.file.format = 'json'
     }
-
     if (!this.file.name) {
       this.file.name = this.id + '.' + this.file.format
     }
