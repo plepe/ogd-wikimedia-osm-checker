@@ -1,7 +1,9 @@
+const twig = require('twig').twig
 const escHTML = require('html-escape')
 
 const STATUS = require('../status.js')
 const Check = require('../Check.js')
+const idFromRefOrRefValue = require('../idFromRefOrRefValue')
 
 class CheckCommonsShowItems extends Check {
   // result:
@@ -10,6 +12,19 @@ class CheckCommonsShowItems extends Check {
   check (ob, dataset) {
     if (!ob.data.commons) {
       return
+    }
+
+    let id = idFromRefOrRefValue(ob, dataset.commons.refValue)
+    if (id === false || id === null) {
+      return true
+    }
+
+    if (dataset.commons.refFormat) {
+      if (!dataset.commonsRefFormatTemplate) {
+        dataset.commonsRefFormatTemplate = twig({ data: dataset.commons.refFormat })
+      }
+
+      id = dataset.commonsRefFormatTemplate.render(ob.templateData())
     }
 
     const files = ob.data.commons.filter(page => page.title.match(/^File:/))
@@ -22,7 +37,7 @@ class CheckCommonsShowItems extends Check {
       ob.message('commons', STATUS.SUCCESS, categories.length + ' Kategorie(n) gefunden, die auf das Objekt verweisen: ' + categories.map((page, i) => '<a target="_blank" href="https://commons.wikimedia.org/wiki/' + escHTML(page.title) + '">#' + (i + 1) + '</a>').join(', ') + '.')
     } else {
       if (files.length === 0) {
-        ob.message('commons', STATUS.ERROR, 'Weder Bilder noch Kategorien gefunden, die auf dieses Objekt verweisen. Füge <tt>' + dataset.commons.templateTemplate.replace(/\$1/g, ob.id) + '</tt> hinzu.')
+        ob.message('commons', STATUS.ERROR, 'Weder Bilder noch Kategorien gefunden, die auf dieses Objekt verweisen. Füge <tt>' + dataset.commons.templateTemplate.replace(/\$1/g, id) + '</tt> hinzu.')
       } else {
         ob.message('commons', STATUS.WARNING, 'Keine Kategorie gefunden, die auf das Objekt verweist.')
       }

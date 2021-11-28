@@ -1,3 +1,5 @@
+const twig = require('twig').twig
+
 const STATUS = require('../status.js')
 const Check = require('../Check.js')
 
@@ -10,7 +12,16 @@ class CheckWikidataLoadViaRef extends Check {
       return true
     }
 
-    if (!ob.load('wikidata', { key: dataset.wikidata.refProperty, id: ob.id })) {
+    let id = ob.id
+    if (dataset.wikidata.refFormat) {
+      if (!dataset.wikidataRefFormatTemplate) {
+        dataset.wikidataRefFormatTemplate = twig({ data: dataset.wikidata.refFormat })
+      }
+
+      id = dataset.wikidataRefFormatTemplate.render(ob.templateData())
+    }
+
+    if (!ob.load('wikidata', { key: dataset.wikidata.refProperty, id })) {
       return false
     }
 
@@ -23,13 +34,13 @@ class CheckWikidataLoadViaRef extends Check {
     const found =
       !!entry.claims[dataset.wikidata.refProperty] &&
       entry.claims[dataset.wikidata.refProperty].filter(
-        claim => claim.mainsnak.datavalue.value === ob.id
+        claim => claim.mainsnak.datavalue.value === id
       ).length
 
     if (found) {
-      ob.message('wikidata', STATUS.SUCCESS, 'Eintrag hat Attribut <i>' + (dataset.wikidata.refPropertyTitle ? dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')' : dataset.wikidata.refProperty) + '</i> mit Wert <i>' + ob.id + '</i>.')
+      ob.message('wikidata', STATUS.SUCCESS, 'Eintrag hat Attribut <i>' + (dataset.wikidata.refPropertyTitle ? dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')' : dataset.wikidata.refProperty) + '</i> mit Wert <i>' + id + '</i>.')
     } else {
-      ob.message('wikidata', STATUS.ERROR, 'Eintrag hat kein Attribut <i>' + (dataset.wikidata.refPropertyTitle ? dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')' : dataset.wikidata.refProperty) + '</i> mit Wert <i>' + ob.id + '</i>.')
+      ob.message('wikidata', STATUS.ERROR, 'Eintrag hat kein Attribut <i>' + (dataset.wikidata.refPropertyTitle ? dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')' : dataset.wikidata.refProperty) + '</i> mit Wert <i>' + id + '</i>.')
     }
 
     return true

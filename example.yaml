@@ -126,6 +126,10 @@ wikidata:
   # [optional] title of the refProperty (if omitted, prints the 'refProperty' id)
   refPropertyTitle: Property Title
 
+  # [optional] if the reference id has to modified from the value in the reference data.
+  # Uses TwigJS syntax (see below for available variables).
+  refFormat: "{{ item.ID }}"
+
   # [optional] the wikidata representation of an item should have these
   # properties. This is a multi-line string, with a property each line.
   # Uses TwigJS syntax (see below for available variables).
@@ -147,6 +151,10 @@ commons:
   # will be replaced by the ID of the item
   templateTemplate: "{{Example|$1}}"
 
+  # [optional] if the reference id has to modified from the value in the reference data.
+  # Uses TwigJS syntax (see below for available variables).
+  refFormat: "{{ item.ID }}"
+
   # [optional] instead of the ID of the item, use the value of this wikidata
   # property for 'searchRegexp' and 'templateTemplate'.
   refValue:
@@ -156,6 +164,10 @@ commons:
 osm:
   # [optional] the specified tag holds a reference to the dataset's id
   refField: ref:example
+
+  # [optional] if the reference id has to modified from the value in the reference data.
+  # Uses TwigJS syntax (see below for available variables).
+  refFormat: "{{ item.ID }}"
 
   # [optional] instead of the ID of the item, use the value of this wikidata property for 'refField'.
   refValue:

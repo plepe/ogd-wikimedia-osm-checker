@@ -1,4 +1,6 @@
+const twig = require('twig').twig
 const parseMediawikiTemplate = require('parse-mediawiki-template')
+
 const STATUS = require('../status.js')
 const Check = require('../Check.js')
 const idFromRefOrRefValue = require('../idFromRefOrRefValue')
@@ -25,9 +27,17 @@ class CheckCommonsTemplate extends Check {
       return true
     }
 
-    const id = idFromRefOrRefValue(ob, dataset.commons.refValue)
+    let id = idFromRefOrRefValue(ob, dataset.commons.refValue)
     if (id === false || id === null) {
       return true
+    }
+
+    if (dataset.commons.refFormat) {
+      if (!dataset.commonsRefFormatTemplate) {
+        dataset.commonsRefFormatTemplate = twig({ data: dataset.commons.refFormat })
+      }
+
+      id = dataset.commonsRefFormatTemplate.render(ob.templateData())
     }
 
     const categoriesWithTemplateID = categories.filter(el => {

@@ -1,3 +1,5 @@
+const twig = require('twig').twig
+
 const STATUS = require('../status.js')
 const osmFormat = require('../osmFormat.js')
 const Check = require('../Check.js')
@@ -14,9 +16,17 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       return true // use 'CheckOsmLoadFromWikidata' instead
     }
 
-    const id = idFromRefOrRefValue(ob, dataset.osm.refValue)
+    let id = idFromRefOrRefValue(ob, dataset.osm.refValue)
     if (id === false || id === null) {
       return true
+    }
+
+    if (dataset.osm.refFormat) {
+      if (!dataset.osmRefFormatTemplate) {
+        dataset.osmRefFormatTemplate = twig({ data: dataset.osm.refFormat })
+      }
+
+      id = dataset.osmRefFormatTemplate.render(ob.templateData())
     }
 
     const osmRefField = dataset.osm.refField
