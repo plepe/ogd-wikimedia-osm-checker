@@ -25,6 +25,11 @@ class CheckOsmLoadSimilar extends Check {
 
     const allCoords = getAllCoords(ob)
 
+    if (!allCoords.length) {
+      ob.message('osm', STATUS.ERROR, 'Keine Koordinaten gefunden, kann nicht in der Nähe suchen.')
+      return true
+    }
+
     if (!ob.data.osm) {
       const query = dataset.compileOverpassQuery(ob)
       if (!query) {
