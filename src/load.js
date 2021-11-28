@@ -19,7 +19,7 @@ function loadCSV (dataset, callback) {
 
   fetch('data/' + dataset.file.name)
     .then(response => response.arrayBuffer())
-    .then(buffer => iconv.decode(buffer, dataset.file.encoding || 'utf-8'))
+    .then(buffer => iconv.decode(new Buffer(buffer), dataset.file.encoding || 'utf-8'))
     .then(encoded =>
       csvtojson(dataset.file.formatOptions || {})
         .fromString(encoded)
@@ -31,7 +31,7 @@ function loadCSV (dataset, callback) {
 function loadJSON (dataset, callback) {
   fetch('data/' + dataset.file.name)
     .then(response => response.arrayBuffer())
-    .then(buffer => iconv.decode(buffer, dataset.file.encoding || 'utf-8'))
+    .then(buffer => iconv.decode(new Buffer(buffer), dataset.file.encoding || 'utf-8'))
     .then(encoded => {
       const data = JSON.parse(encoded)
       callback(null, data)
