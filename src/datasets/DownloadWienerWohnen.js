@@ -45,6 +45,6 @@ module.exports = function downloadWienerWohnen (callback) {
         return result
       })
 
-      fs.writeFile('data/wiener_wohnen.json', JSON.stringify(data, null, '  '), callback)
+      fs.writeFile('data/wiener-wohnen.json', JSON.stringify(data, null, '  '), callback)
     })
 }

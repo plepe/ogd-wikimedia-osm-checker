@@ -9,9 +9,16 @@ title: Example
 # Who provides the dataset?
 operator: A.C.M.E.
 
-# Location of the reference data from 'example.json' in the data-directory
-# if no 'source' is defined, place the file manually
-filename: example.json
+# Describe file where the reference data is saved (in the data-directory). It
+# should be called 'id'.'format', e.g. 'foobar.geojson'.
+file:
+  # [optional] either 'json' (default), 'geojson' or 'csv'.
+  format: json
+
+# source of the dataset (it will be downloaded from there by the 'npm run download')
+source:
+  # URL of the dataset
+  url: https://example.com/data.json
 
 # describe reference data (the dataset)
 refData:

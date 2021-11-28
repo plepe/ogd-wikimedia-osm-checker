@@ -19,24 +19,12 @@ ogdURL: https://example.com/
 ogdInfo: >-
   Longer <b>HTML</b> multiline text, explaining the dataset
 
-# Location of the reference data from 'example.json' in the data-directory
-filename: example.json
+# Describe file where the reference data is saved (in the data-directory)
+file:
+  # [optional] name of the file in data/ (default: 'id'.'format')
+  name: example.json
 
-# [optional] either 'json' (default) or 'geojson'. If the file is a 'csv',
-# it will be converted to 'json' at download time (this might change in the
-# future?)
-fileFormat: json
-
-# [optional] describe source of the dataset; if omitted, you should define a
-# special download function (see at the end of the Dataset.md file) or
-# download the file manually into the data directory.
-source:
-  # URL of the dataset
-  url: https://example.com/data.json
-
-  # [optional] either 'json' (default) or 'geojson'. If the file is a 'csv',
-  # it will be converted to 'json' at download time (this might change in the
-  # future?)
+  # [optional] either 'json' (default), 'geojson' or 'csv'.
   format: json
 
   # [optional] format options, depending on the format
@@ -46,6 +34,13 @@ source:
 
   # [optional] encoding of the dataset, e.g. 'iso-8859-1'. default: 'utf-8'
   encoding: utf-8
+
+# [optional] describe source of the dataset; if omitted, you should define a
+# special download function (see at the end of the Dataset.md file) or
+# download the file manually into the data directory.
+source:
+  # URL of the dataset
+  url: https://example.com/data.json
 
 # describe reference data (the dataset)
 refData:

@@ -4,6 +4,7 @@ const natsort = require('natsort').default
 const twig = require('twig').twig
 
 const createGeoLink = require('./createGeoLink')
+const load = require('./load')
 
 class Dataset {
   constructor (data = {}) {
@@ -17,34 +18,29 @@ class Dataset {
       return callback(null)
     }
 
+    if (!this.file) {
+      this.file = {}
+    }
+    if (!this.file.format) {
+      this.file.format = 'json'
+    }
+
+    if (!this.file.name) {
+      this.file.name = this.id + '.' + this.file.format
+    }
+
     const placeFilter = {}
     this.data = {}
 
-    async.parallel([
-      done => {
-        global.fetch('data/' + this.filename)
-          .then(res => {
-            if (!res.ok) {
-              throw Error('loading BDA data: ' + res.statusText)
-            }
-
-            return res.json()
-          })
-          .then(json => {
-            json = this.convertData(json)
-
-            json.forEach(entry => {
-              this.data[entry[this.refData.idField]] = entry
-              placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
-            })
-
-            done()
-          })
-          // .catch(e => done(e))
-      }
-    ],
-    err => {
+    load(this, (err, json) => {
       if (err) { return callback(err) }
+
+      json = this.convertData(json)
+
+      json.forEach(entry => {
+        this.data[entry[this.refData.idField]] = entry
+        placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
+      })
 
       if (this.refData.placeFilterField) {
         this.placeFilter = Object.keys(placeFilter)
