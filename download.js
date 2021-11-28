@@ -13,6 +13,7 @@ const index = fs.readFileSync('./datasets/index.txt')
 
 index.forEach(id => {
   const dataset = yaml.parse(fs.readFileSync('./datasets/' + id + '.yaml').toString())
+  dataset.id = id
 
   if (!(id in downloads) && dataset.source) {
     downloads[id] = (callback) => standardDownload(dataset, callback)

@@ -37,6 +37,7 @@ const datasetLoader = {
         .then(body => {
           const d = yaml.parse(body)
           datasets[id] = new Dataset(d)
+          datasets[id].id = id
           done()
         })
     }, callback)
