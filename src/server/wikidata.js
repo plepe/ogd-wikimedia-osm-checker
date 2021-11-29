@@ -104,8 +104,7 @@ function _request (options, callback) {
   if (options.key === 'id') {
     return loadById(options.id,
       (err, result) => {
-        if (err) { return callback(err) }
-        callback(null, [result])
+        callback(err, [result])
         next(options)
       }
     )
@@ -119,8 +118,8 @@ function _request (options, callback) {
   delete _options.id
 
   findWikidataItems([query], _options, (err, results) => {
-    if (err) { return callback(err) }
     next(options)
+    if (err) { return callback(err) }
 
     if (!results[0]) {
       return callback(null, [])
