@@ -27,5 +27,12 @@ refData:
       format: "{{ item.STRASSE }} {{ item.ORTSANGABE }}"
 osm:
   query: "nwr[amenity=toilets]"
+  recommendTags: |
+    fee
+    opening_hours
+    wheelchair
+    changing_table
+    drinking_water
+    supervised
   compileTags: |
     amenity=toilets
