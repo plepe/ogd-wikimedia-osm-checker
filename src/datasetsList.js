@@ -6,7 +6,7 @@ module.exports = function datasetsList (options = {}, callback) {
 
     files = files
       .map(file => {
-        const m = file.name.match(/^([^\.].*)\.yaml$/)
+        const m = file.name.match(/^([^.].*)\.yaml$/)
         if (m) {
           return {
             id: m[1]
@@ -14,7 +14,7 @@ module.exports = function datasetsList (options = {}, callback) {
         }
       })
       .filter(file => file)
-   
+
     callback(null, files)
   })
 }

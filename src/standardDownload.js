@@ -1,6 +1,4 @@
-const iconv = require('iconv-lite')
 const fetch = require('node-fetch')
-const csvtojson = require('csvtojson')
 const fs = require('fs')
 
 module.exports = function standardDownload (dataset, callback) {

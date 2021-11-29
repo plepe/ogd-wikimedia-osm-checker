@@ -1,5 +1,5 @@
 // compatibilty NodeJS < 11.0
-require('array.prototype.flat').shim();
+require('array.prototype.flat').shim()
 
 const http = require('http')
 const fs = require('fs')
@@ -35,6 +35,12 @@ const requestListener = function (req, res) {
     file = '/index.html'
   } else if (req.url === '/datasets/') {
     datasetsList({}, (err, datasets) => {
+      if (err) {
+        res.writeHead(500)
+        res.end('Invalid request')
+        return console.error("Can't read list of datasets: ", err.toString())
+      }
+
       res.setHeader('Content-Type', 'application/json')
       res.writeHead(200)
       res.end(JSON.stringify(datasets, null, '  '))

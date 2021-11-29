@@ -1,4 +1,3 @@
-const async = require('async')
 const escHTML = require('html-escape')
 const natsort = require('natsort').default
 const twig = require('twig').twig
@@ -8,7 +7,7 @@ const load = require('./load')
 
 class Dataset {
   constructor (data = {}) {
-    for (let k in data) {
+    for (const k in data) {
       this[k] = data[k]
     }
   }
@@ -142,8 +141,6 @@ class Dataset {
 
   convertData (data) {
     if (this.file.format === 'geojson') {
-      const result = {}
-
       this.refData.coordField = {
         id: '_geometry',
         type: 'geojson'
@@ -156,7 +153,7 @@ class Dataset {
       })
     }
 
-	  return data
+    return data
   }
 
   compileOverpassQuery (ob) {
@@ -195,8 +192,6 @@ class Dataset {
     if (!ob.dataset.osm || !ob.dataset.osm.recommendTags) {
       return []
     }
-
-    const recommendTags = {}
 
     if (!this.osmRecommendTagsTemplate) {
       // add empty lines, to avoid that twig merges lines between expressions

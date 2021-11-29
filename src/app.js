@@ -20,7 +20,7 @@ let info
 
 const datasetLoader = {
   init (callback) {
-    fetch('datasets/')
+    global.fetch('datasets/')
       .then(res => res.json())
       .then(list => {
         list = list.map(entry => entry.id)
@@ -30,7 +30,7 @@ const datasetLoader = {
 
   load (_datasets, callback) {
     async.each(_datasets, (id, done) => {
-      fetch('datasets/' + id + '.yaml')
+      global.fetch('datasets/' + id + '.yaml')
         .then(res => res.text())
         .then(body => {
           const d = yaml.parse(body)
@@ -205,7 +205,7 @@ function update () {
   Object.keys(dataset.data).forEach(id => {
     const item = dataset.data[id]
 
-    if (!dataset.refData.placeFilterField || item[dataset.refData.placeFilterField] == place) {
+    if (!dataset.refData.placeFilterField || ('' + item[dataset.refData.placeFilterField]) === place) {
       const text = dataset.listFormat(item)
 
       const tr = document.createElement('tr')

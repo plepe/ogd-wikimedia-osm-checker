@@ -42,6 +42,10 @@ function downloadWikidataLists (callback) {
 }
 
 datasetsList({}, (err, datasets) => {
+  if (err) {
+    return console.error("Can't read list of datasets:", err.toString())
+  }
+
   async.each(datasets, (_dataset, done) => {
     const id = _dataset.id
 
