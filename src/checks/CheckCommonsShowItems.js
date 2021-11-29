@@ -14,12 +14,12 @@ class CheckCommonsShowItems extends Check {
       return
     }
 
-    let id = idFromRefOrRefValue(ob, dataset.commons.refValue)
+    let id = idFromRefOrRefValue(ob, dataset.commons || dataset.commons.refValue)
     if (id === false || id === null) {
       return true
     }
 
-    if (dataset.commons.refFormat) {
+    if (dataset.commons && dataset.commons.refFormat) {
       if (!dataset.commonsRefFormatTemplate) {
         dataset.commonsRefFormatTemplate = twig({ data: dataset.commons.refFormat })
       }
@@ -37,7 +37,7 @@ class CheckCommonsShowItems extends Check {
       ob.message('commons', STATUS.SUCCESS, categories.length + ' Kategorie(n) gefunden, die auf das Objekt verweisen: ' + categories.map((page, i) => '<a target="_blank" href="https://commons.wikimedia.org/wiki/' + escHTML(page.title) + '">#' + (i + 1) + '</a>').join(', ') + '.')
     } else {
       if (files.length === 0) {
-        ob.message('commons', STATUS.ERROR, 'Weder Bilder noch Kategorien gefunden, die auf dieses Objekt verweisen. Füge <tt>' + dataset.commons.templateTemplate.replace(/\$1/g, id) + '</tt> hinzu.')
+        ob.message('commons', STATUS.ERROR, 'Weder Bilder noch Kategorien gefunden, die auf dieses Objekt verweisen.' + (dataset.commons && dataset.commons.templateTemplate ? ' Füge <tt>' + dataset.commons.templateTemplate.replace(/\$1/g, id) + '</tt> hinzu.' : ''))
       } else {
         ob.message('commons', STATUS.WARNING, 'Keine Kategorie gefunden, die auf das Objekt verweist.')
       }
