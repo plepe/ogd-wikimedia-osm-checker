@@ -191,6 +191,29 @@ class Dataset {
     return null
   }
 
+  osmRecommendTags (ob, osmItem) {
+    if (!ob.dataset.osm || !ob.dataset.osm.recommendTags) {
+      return []
+    }
+
+    const recommendTags = {}
+
+    if (!this.osmRecommendTagsTemplate) {
+      // add empty lines, to avoid that twig merges lines between expressions
+      this.osmRecommendTagsTemplate = twig({ data: ob.dataset.osm.recommendTags.replace(/\n/g, '\n\n') })
+    }
+
+    const templateData = ob.templateData()
+    if (osmItem) {
+      templateData.osmItem = osmItem
+    }
+
+    return this.osmRecommendTagsTemplate
+      .render(templateData)
+      .split(/\n/g)
+      .filter(f => f)
+  }
+
   osmCompileTags (ob, osmItem) {
     if (!ob.dataset.osm || !ob.dataset.osm.compileTags) {
       return null
