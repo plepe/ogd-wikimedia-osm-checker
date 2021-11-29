@@ -29,6 +29,9 @@ wikidata:
 
 # [optional] Configuration of the item in OpenStreetMap
 osm:
+  # [optional] the specified tag holds a reference to the dataset's id
+  refField: ref:example
+
   # [optional] A query which searches for OSM objects. It uses Overpass QL
   # language. This is multi-line string, with a query each line. 
   # It uses TwigJS syntax (see below for available variables).
