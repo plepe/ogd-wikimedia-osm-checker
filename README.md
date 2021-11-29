@@ -34,8 +34,8 @@ Browse to http://localhost:8080
 ## Create an additional dataset
 ### Dataset
 Create a file `foobar.yaml` in the `datasets/` directory and add it to
-`datasets/index.txt`. You can use [minimal.yaml](minimal.yaml) as basis or
-[example.yaml](example.yaml) (which has a full documentation of this file).
+`datasets/index.txt`. You can use [minimal.yaml](doc/minimal.yaml) as basis or
+[example.yaml](doc/example.yaml) (which has a full documentation of this file).
 
 ### Downloader [optional]
 If you need a special downloader, create a file in `src/datasets`:
