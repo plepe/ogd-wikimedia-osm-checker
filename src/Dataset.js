@@ -252,11 +252,10 @@ class Dataset {
       this.wikidataRecommendPropertiesTemplate = twig({ data: ob.dataset.wikidata.recommendProperties.replace(/\n/g, '\n\n') })
     }
 
-    let result = this.wikidataRecommendPropertiesTemplate.render(ob.templateData())
-
-    result = result.split(/\n/g).filter(f => f)
-
-    return result
+    return this.wikidataRecommendPropertiesTemplate
+      .render(ob.templateData())
+      .split(/\n/g)
+      .filter(f => f)
   }
 }
 
