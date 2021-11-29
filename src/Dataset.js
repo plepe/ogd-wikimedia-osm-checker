@@ -219,8 +219,6 @@ class Dataset {
       return null
     }
 
-    const compiledTags = {}
-
     if (!this.osmCompileTagsTemplate) {
       // add empty lines, to avoid that twig merges lines between expressions
       this.osmCompileTagsTemplate = twig({ data: ob.dataset.osm.compileTags.replace(/\n/g, '\n\n') })
@@ -231,13 +229,16 @@ class Dataset {
       templateData.osmItem = osmItem
     }
 
-    const result = this.osmCompileTagsTemplate.render(templateData)
-    result.split(/\n/g).forEach(line => {
-      const m = line.match(/^([^=]+)=(.*)$/)
-      if (m) {
-        compiledTags[m[1]] = m[2]
-      }
-    })
+    const compiledTags = {}
+    this.osmCompileTagsTemplate
+      .render(templateData)
+      .split(/\n/g)
+      .forEach(line => {
+        const m = line.match(/^([^=]+)=(.*)$/)
+        if (m) {
+          compiledTags[m[1]] = m[2]
+        }
+      })
 
     return compiledTags
   }
