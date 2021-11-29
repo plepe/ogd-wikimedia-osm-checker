@@ -65,7 +65,7 @@ wikipediaList:
 wikidata:
   refProperty: P8231
   refPropertyTitle: Wiener Wohnen ID
-  recommendedProperties: |
+  recommendProperties: |
     P84
     P138
     P571
@@ -76,7 +76,7 @@ osm:
   query: |
     nwr[building]
     nwr[landuse=residential](distance:1000)
-  recommendedTags: |
+  recommendTags: |
     architect
     architect:wikidata
     name:etymology

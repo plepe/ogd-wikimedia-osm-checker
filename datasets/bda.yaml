@@ -44,7 +44,7 @@ wikipediaList:
 wikidata:
   refProperty: P9154
   refPropertyTitle: HERIS-ID der Datenbank österreichischer Kulturdenkmale
-  recommendedProperties: |
+  recommendProperties: |
     P84
     P170
     P571

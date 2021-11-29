@@ -17,8 +17,8 @@ class CheckWikidataRecommendations extends Check {
 
     let recommendations = []
 
-    if (dataset.wikidataRecommendedProperties) {
-      recommendations = recommendations.concat(dataset.wikidataRecommendedProperties(ob))
+    if (dataset.wikidataRecommendProperties) {
+      recommendations = recommendations.concat(dataset.wikidataRecommendProperties(ob))
     }
 
     // unique

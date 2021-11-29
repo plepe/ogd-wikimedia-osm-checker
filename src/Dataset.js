@@ -219,17 +219,17 @@ class Dataset {
     return compiledTags
   }
 
-  wikidataRecommendedProperties (ob) {
-    if (!ob.dataset.wikidata || !ob.dataset.wikidata.recommendedProperties) {
+  wikidataRecommendProperties (ob) {
+    if (!ob.dataset.wikidata || !ob.dataset.wikidata.recommendProperties) {
       return null
     }
 
-    if (!this.wikidataRecommendedPropertiesTemplate) {
+    if (!this.wikidataRecommendPropertiesTemplate) {
       // add empty lines, to avoid that twig merges lines between expressions
-      this.wikidataRecommendedPropertiesTemplate = twig({ data: ob.dataset.wikidata.recommendedProperties.replace(/\n/g, '\n\n') })
+      this.wikidataRecommendPropertiesTemplate = twig({ data: ob.dataset.wikidata.recommendProperties.replace(/\n/g, '\n\n') })
     }
 
-    let result = this.wikidataRecommendedPropertiesTemplate.render(ob.templateData())
+    let result = this.wikidataRecommendPropertiesTemplate.render(ob.templateData())
 
     result = result.split(/\n/g).filter(f => f)
 

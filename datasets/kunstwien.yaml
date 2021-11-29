@@ -76,7 +76,7 @@ wikipediaList:
 wikidata:
   refProperty: P8430
   refPropertyTitle: "Wien Kulturgut: Kunstwerke im öffentlichen Raum ID"
-  recommendedProperties: |
+  recommendProperties: |
     P170
     P276
     P571
@@ -94,7 +94,7 @@ commons:
 osm:
   refField: ref:wien:kultur
   refDataNameField: OBJEKTTITEL
-  recommendedTags: |
+  recommendTags: |
     artist_name
     artist:wikidata
     architect

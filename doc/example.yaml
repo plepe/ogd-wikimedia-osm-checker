@@ -189,7 +189,7 @@ osm:
   # This is a multi-line string, with a key each line.
   # It uses TwigJS syntax (see below for available variables)
   # Additionally, 'osmItem' may be set for the current OSM item (with osmItem.tags.* for its tags)
-  recommendedTags: |
+  recommendTags: |
     start_date
   
   # [optional] list of key=value pairs which should be added to the OSM entry

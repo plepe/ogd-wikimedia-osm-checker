@@ -4,7 +4,7 @@ const editLink = require('./editLink.js')
 const printAttrList = require('./printAttrList.js')
 const osmCompileTags = require('./osmCompileTags.js')
 
-const recommendedTags = []
+const recommendTags = []
 
 module.exports = function osmFormat (el, ob, appendTitle = '') {
   const compiledTags = osmCompileTags(ob, el)
@@ -29,9 +29,9 @@ module.exports = function osmFormat (el, ob, appendTitle = '') {
     ret += '<li class="error">Fehlende Tags: ' + printCompiledTags(compiledTags) + '</li>'
   }
 
-  let recTags = recommendedTags.concat()
-  if (ob && ob.dataset.osmRecommendedTags) {
-    recTags = recTags.concat(ob.dataset.osmRecommendedTags(ob, el))
+  let recTags = recommendTags.concat()
+  if (ob && ob.dataset.osmRecommendTags) {
+    recTags = recTags.concat(ob.dataset.osmRecommendTags(ob, el))
   }
 
   recTags = recTags.filter(tag => {
