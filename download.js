@@ -5,20 +5,7 @@ const yaml = require('yaml')
 
 const downloads = require('./src/datasets/downloads')
 const standardDownload = require('./src/standardDownload')
-
-const index = fs.readFileSync('./datasets/index.txt')
-  .toString()
-  .split(/\n/g)
-  .filter(v => v.trim() !== '' && v.trim()[0] !== '#')
-
-index.forEach(id => {
-  const dataset = yaml.parse(fs.readFileSync('./datasets/' + id + '.yaml').toString())
-  dataset.id = id
-
-  if (!(id in downloads) && dataset.source) {
-    downloads[id] = (callback) => standardDownload(dataset, callback)
-  }
-})
+const datasetsList = require('./src/datasetsList')
 
 function downloadWikidataLists (callback) {
   async.parallel([
@@ -54,8 +41,26 @@ function downloadWikidataLists (callback) {
   ], callback)
 }
 
-async.eachOf(downloads, (fun, id, callback) => {
-  console.error('Starting', id)
+datasetsList({}, (err, datasets) => {
+  async.each(datasets, (_dataset, done) => {
+    const id = _dataset.id
+
+    if (id in downloads) {
+      return download(downloads[id], id, done)
+    }
+
+    const dataset = yaml.parse(fs.readFileSync('./datasets/' + id + '.yaml').toString())
+    dataset.id = id
+
+    if (dataset.source) {
+      return download((cb) => standardDownload(dataset, cb), id, done)
+    }
+
+    return done()
+  })
+})
+
+function download (fun, id, callback) {
   fun((err, result) => {
     if (err) {
       console.error('Error downloading', id, err)
@@ -63,7 +68,7 @@ async.eachOf(downloads, (fun, id, callback) => {
       console.error('Success downloading', id)
     }
   })
-})
+}
 
 downloadWikidataLists(err => {
   if (err) {

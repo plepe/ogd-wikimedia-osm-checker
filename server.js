@@ -13,6 +13,7 @@ const { JSDOM } = jsdom
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>')
 global.document = dom.window.document
 
+const datasetsList = require('./src/datasetsList')
 const cgi = require('./src/server/index')
 
 const contentTypes = {
@@ -32,6 +33,13 @@ const requestListener = function (req, res) {
 
   if (req.url === '/') {
     file = '/index.html'
+  } else if (req.url === '/datasets/') {
+    datasetsList({}, (err, datasets) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.writeHead(200)
+      res.end(JSON.stringify(datasets, null, '  '))
+    })
+    return
   } else {
     const m = req.url.match(/^(\/([/[0-9A-Z-_]+)\.([A-Z]+))(\?.*|)$/i)
     if (!m) {

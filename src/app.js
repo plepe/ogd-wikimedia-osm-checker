@@ -20,12 +20,10 @@ let info
 
 const datasetLoader = {
   init (callback) {
-    fetch('datasets/index.txt')
-      .then(res => res.text())
-      .then(body => {
-        const list = body
-          .split(/\n/g)
-          .filter(v => v.trim() !== '' && v.trim()[0] !== '#')
+    fetch('datasets/')
+      .then(res => res.json())
+      .then(list => {
+        list = list.map(entry => entry.id)
         datasetLoader.load(list, callback)
       })
   },
