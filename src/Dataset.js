@@ -205,7 +205,7 @@ class Dataset {
 
     const templateData = ob.templateData()
     if (osmItem) {
-      templateData.osmItem = osmItem.tags
+      templateData.osmItem = osmItem
     }
 
     const result = this.osmCompileTagsTemplate.render(templateData)
