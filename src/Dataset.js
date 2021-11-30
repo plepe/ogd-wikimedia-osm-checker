@@ -211,7 +211,7 @@ class Dataset {
 
   osmCompileTags (ob, osmItem) {
     if (!ob.dataset.osm || !ob.dataset.osm.compileTags) {
-      return null
+      return {}
     }
 
     if (!this.osmCompileTagsTemplate) {
@@ -240,7 +240,7 @@ class Dataset {
 
   wikidataRecommendProperties (ob) {
     if (!ob.dataset.wikidata || !ob.dataset.wikidata.recommendProperties) {
-      return null
+      return []
     }
 
     if (!this.wikidataRecommendPropertiesTemplate) {
