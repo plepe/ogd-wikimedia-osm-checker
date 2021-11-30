@@ -14,7 +14,7 @@ class CheckCommonsShowItems extends Check {
       return
     }
 
-    let id = idFromRefOrRefValue(ob, dataset.commons || dataset.commons.refValue)
+    let id = idFromRefOrRefValue(ob, dataset.commons && dataset.commons.refValue)
     if (id === false || id === null) {
       return true
     }
