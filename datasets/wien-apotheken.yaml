@@ -1,0 +1,55 @@
+# A minimal template for a useful dataset
+
+# Short title of the dataset
+title: Apotheken - Wien
+
+# Who provides the dataset?
+operator: Stadt Wien
+
+ogdURL: https://www.data.gv.at/katalog/dataset/cf00fe06-e4b2-4319-af00-85230e7b2f1b
+
+# Describe file where the reference data is saved (in the data-directory). It
+# should be called 'id'.'format', e.g. 'foobar.geojson'.
+file:
+  # [optional] either 'json' (default), 'geojson' or 'csv'.
+  format: geojson
+
+# source of the dataset (it will be downloaded from there by the 'npm run download')
+source:
+  # URL of the dataset
+  url: https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:APOTHEKEOGD&srsName=EPSG:4326&outputFormat=json
+
+# describe reference data (the dataset)
+refData:
+  # important: this field holds the identificator of each item
+  idField: OBJECTID
+  placeFilterField: BEZIRK
+  listFieldTitle: BEZEICHNUNG
+  listFieldAddress: "{{ item.STRASSE }} {{ item.ONR }}"
+  showFields:
+    BEZEICHNUNG:
+      title: Name
+    ADRESSE:
+      title: Adresse
+    TELEFON:
+      title: Telefon
+    FAX:
+      title: Fax
+    EMAIL:
+      title: E-Mail
+    WEBLINK1:
+      title: Homepage
+
+# [optional] Configuration of the item in OpenStreetMap
+osm:
+  # [optional] A query which searches for OSM objects. It uses Overpass QL
+  # language. This is multi-line string, with a query each line. 
+  # It uses TwigJS syntax (see below for available variables).
+  # By default, it searches for objects in 30m distance of possible coordinates
+  # (e.g. dataset, wikipediaList, wikidata), optionally you can specify a
+  # different distance with '(distance:1234)
+  query:
+    - nwr[amenity=pharmacy]
+  addTags:
+    - amenity=pharmacy
+    - name={{ item.NAME }}
