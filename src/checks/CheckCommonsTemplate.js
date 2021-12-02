@@ -5,12 +5,15 @@ const STATUS = require('../status.js')
 const Check = require('../Check.js')
 const idFromRefOrRefValue = require('../idFromRefOrRefValue')
 
+const compileMediawikiTemplate = require('../compileMediawikiTemplate')
+const compileMediawikiTemplateParameter = require('../compileMediawikiTemplateParameter')
+
 class CheckCommonsTemplate extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
-    if (!dataset.commons || !dataset.commons.templateRegexp) {
+    if (!dataset.commons || !dataset.commons.template) {
       return true
     }
 
@@ -27,32 +30,37 @@ class CheckCommonsTemplate extends Check {
       return true
     }
 
-    let id = idFromRefOrRefValue(ob, dataset.commons.refValue)
-    if (id === false || id === null) {
-      return true
-    }
-
-    if (dataset.commons.refFormat) {
-      if (!dataset.commonsRefFormatTemplate) {
-        dataset.commonsRefFormatTemplate = twig({ data: dataset.commons.refFormat })
+    if (dataset.commons.template.require) {
+      if (dataset.commons.template.require.includes('wikidata') && !ob.data.wikidataSelected) {
+        return true
       }
-
-      id = dataset.commonsRefFormatTemplate.render(ob.templateData())
     }
 
+    const template = JSON.parse(JSON.stringify(dataset.commons.template))
+    const templateNames = Array.isArray(template.name) ? template.name : [template.name]
+
+    template.parameter = compileMediawikiTemplateParameter(template.parameter, ob.templateData())
     const categoriesWithTemplateID = categories.filter(el => {
       if (!el.title.match(/Category:/)) {
         return false
       }
 
-      const templates = parseMediawikiTemplate(el.wikitext, dataset.commons.templateRegexp)
-      return !!templates.filter(r => r[1] === id).length
-    })
+      const found = templateNames.filter(templateName => {
+        const templates = parseMediawikiTemplate(el.wikitext, templateName)
 
+        return !templates.filter(t => {
+          template.parameter.filter(p => t[p.name] !== p.value).length
+        }).length
+      })
+      console.log(found)
+
+      return found.length
+    })
+    
     if (categoriesWithTemplateID.length) {
       ob.message('commons', STATUS.SUCCESS, 'Commons Kategorie hat Referenz auf Datensatz.')
     } else {
-      ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>' + dataset.commons.templateTemplate.replace(/\$1/g, id) + '</tt> hinzu.')
+      ob.message('commons', STATUS.ERROR, 'Commons Kategorie hat keine Referenz zu Datensatz. Füge <tt>' + compileMediawikiTemplate(dataset.commons.template, ob.templateData()) + '</tt> hinzu.')
     }
 
     return true

@@ -55,11 +55,15 @@ wikidata:
       P7842 # Wien Geschichte Wiki ID (siehe Seiteninformationen der Wiki-Seite)
     {% endif %}
 commons:
-  searchRegexp: /\{\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\|(1=)*$1\}\}/
-  templateRegexp: (doo|Denkmalgeschütztes Objekt Österreich)
-  templateTemplate: "{{Denkmalgeschütztes Objekt Österreich|$1}}"
-  refValue:
-    wikidataProperty: P2951
+  template:
+    name: 
+      - Denkmalgeschütztes Objekt Österreich
+      - doo
+    parameter:
+      - name: 1
+        value: "{{ wikidata.P2951[0].value }}"
+    require:
+      - wikidata
 osm:
   refField: ref:at:bda
   refValue:

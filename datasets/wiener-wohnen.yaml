@@ -89,6 +89,8 @@ osm:
     construction:start_date={{ item.constructionStartYear }}
     start_date={{ item.constructionEndYear }}
 commons:
-  searchRegexp: /\{\{Wiener Wohnen\s*\|\s*(1=)*$1(\|(.*))?\}\}/
-  templateRegexp: Wiener Wohnen
-  templateTemplate: "{{Wiener Wohnen|$1}}"
+  template:
+    name: Wiener Wohnen
+    parameter:
+    - name: 1
+      value: "{{ item.id }}"

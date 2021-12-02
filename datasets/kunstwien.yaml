@@ -88,9 +88,13 @@ wikidata:
     {% if item.INSCHRIFT %}P1684{% endif %}
     {% if wikipedia.Inschrift %}P1684{% endif %}
 commons:
-  searchRegexp: /\{\{[Pp]ublic Art Austria\s*\|\s*(1=)*$1\|\s*(2=)*AT-9\}\}/
-  templateRegexp: Public Art Austria
-  templateTemplate: "{{Public Art Austria|$1|AT-9}}"
+  template:
+    name: Public Art Austria
+    parameter:
+      - name: 1
+        value: "{{ item.ID }}"
+      - name: 2
+        value: "AT-9"
 osm:
   refField: ref:wien:kultur
   refDataNameField: OBJEKTTITEL

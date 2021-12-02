@@ -1,32 +1,35 @@
-const twig = require('twig').twig
-
 const Check = require('../Check.js')
-const idFromRefOrRefValue = require('../idFromRefOrRefValue')
+const compileMediawikiTemplateSearchRegexp = require('../compileMediawikiTemplateSearchRegexp')
+const compileMediawikiTemplateParameter = require('../compileMediawikiTemplateParameter')
 
 class CheckCommonsLoadFromTemplate extends Check {
   // result:
   // - null/false: not finished yet
   // - true: check is finished
   check (ob, dataset) {
-    if (!dataset.commons || !dataset.commons.searchRegexp) {
+    if (!dataset.commons || !dataset.commons.template) {
       return true
     }
 
-    let id = idFromRefOrRefValue(ob, dataset.commons.refValue)
-    if (id === false || id === null) {
-      return true
-    }
-
-    if (dataset.commons.refFormat) {
-      if (!dataset.commonsRefFormatTemplate) {
-        dataset.commonsRefFormatTemplate = twig({ data: dataset.commons.refFormat })
+    if (dataset.commons.template) {
+      if (dataset.commons.template.require) {
+        if (dataset.commons.template.require.includes('wikidata') && !ob.data.wikidataSelected) {
+          return true
+        }
       }
 
-      id = dataset.commonsRefFormatTemplate.render(ob.templateData())
-    }
+      const template = JSON.parse(JSON.stringify(dataset.commons.template))
+      const templateNames = Array.isArray(template.name) ? template.name : [template.name]
 
-    if (!ob.data.commons) {
-      return ob.load('commons', { search: 'insource:' + dataset.commons.searchRegexp.replace(/\$1/g, id) })
+      template.parameter = compileMediawikiTemplateParameter(template.parameter, ob.templateData())
+      console.log(template.parameter)
+
+      templateNames.forEach(templateName => {
+        template.name = templateName
+        const search = compileMediawikiTemplateSearchRegexp(template)
+        console.log(search)
+        return ob.load('commons', { search })
+      })
     }
 
     return true
