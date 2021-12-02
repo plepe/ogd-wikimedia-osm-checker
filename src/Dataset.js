@@ -5,6 +5,8 @@ const twig = require('twig').twig
 const createGeoLink = require('./createGeoLink')
 const load = require('./load')
 
+const twigTemplates = {}
+
 class Dataset {
   constructor (data = {}) {
     for (const k in data) {
@@ -161,12 +163,13 @@ class Dataset {
       return null
     }
 
-    if (!this.osmCompileQueryTemplate) {
-      // add empty lines, to avoid that twig merges lines between expressions
-      this.osmCompileQueryTemplate = twig({ data: ob.dataset.osm.query.replace(/\n/g, '\n\n') })
+    // add empty lines, to avoid that twig merges lines between expressions
+    const template = ob.dataset.osm.query.replace(/\n/g, '\n\n')
+    if (!(template in twigTemplates)) {
+      twigTemplates[template] = twig({ data: template })
     }
 
-    let result = this.osmCompileQueryTemplate.render(ob.templateData())
+    let result = twigTemplates[template].render(ob.templateData())
 
     result = result.split(/\n/g).map(line => {
       if (!line.trim()) {
@@ -193,9 +196,10 @@ class Dataset {
       return []
     }
 
-    if (!this.osmRecommendTagsTemplate) {
-      // add empty lines, to avoid that twig merges lines between expressions
-      this.osmRecommendTagsTemplate = twig({ data: ob.dataset.osm.recommendTags.replace(/\n/g, '\n\n') })
+    // add empty lines, to avoid that twig merges lines between expressions
+    const template = ob.dataset.osm.recommendTags.replace(/\n/g, '\n\n')
+    if (!(template in twigTemplates)) {
+      twigTemplates[template] = twig({ data: template })
     }
 
     const templateData = ob.templateData()
@@ -203,7 +207,7 @@ class Dataset {
       templateData.osmItem = osmItem
     }
 
-    return this.osmRecommendTagsTemplate
+    return twigTemplates[template]
       .render(templateData)
       .split(/\n/g)
       .filter(f => f)
@@ -214,9 +218,10 @@ class Dataset {
       return {}
     }
 
-    if (!this.osmCompileTagsTemplate) {
-      // add empty lines, to avoid that twig merges lines between expressions
-      this.osmCompileTagsTemplate = twig({ data: ob.dataset.osm.compileTags.replace(/\n/g, '\n\n') })
+    // add empty lines, to avoid that twig merges lines between expressions
+    const template = ob.dataset.osm.compileTags.replace(/\n/g, '\n\n')
+    if (!(template in twigTemplates)) {
+      twigTemplates[template] = twig({ data: template })
     }
 
     const templateData = ob.templateData()
@@ -225,7 +230,7 @@ class Dataset {
     }
 
     const compiledTags = {}
-    this.osmCompileTagsTemplate
+    twigTemplates[template]
       .render(templateData)
       .split(/\n/g)
       .forEach(line => {
@@ -243,12 +248,13 @@ class Dataset {
       return []
     }
 
-    if (!this.wikidataRecommendPropertiesTemplate) {
-      // add empty lines, to avoid that twig merges lines between expressions
-      this.wikidataRecommendPropertiesTemplate = twig({ data: ob.dataset.wikidata.recommendProperties.replace(/\n/g, '\n\n') })
+    // add empty lines, to avoid that twig merges lines between expressions
+    const template = ob.dataset.wikidata.recommendProperties.replace(/\n/g, '\n\n')
+    if (!(template in twigTemplates)) {
+      twigTemplates[template] = twig({ data: template })
     }
 
-    return this.wikidataRecommendPropertiesTemplate
+    return twigTemplates[template]
       .render(ob.templateData())
       .split(/\n/g)
       .filter(f => f)
