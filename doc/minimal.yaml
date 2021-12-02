@@ -38,5 +38,5 @@ osm:
   # By default, it searches for objects in 30m distance of possible coordinates
   # (e.g. dataset, wikipediaList, wikidata), optionally you can specify a
   # different distance with '(distance:1234)
-  query: |
-    nwr[foo=bar]
+  query:
+    - nwr[foo=bar]

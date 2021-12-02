@@ -128,8 +128,8 @@ wikidata:
   refFormat: "{{ item.ID }}"
 
   # [optional] the wikidata representation of an item should have these
-  # properties. This is a multi-line string, with a property each line.
-  # Uses TwigJS syntax (see below for available variables).
+  # properties. This is either an array or a multi-line string with a property
+  # each line. Uses TwigJS syntax (see below for available variables).
   recommendedProperties: |
     P571 # date of inception
     P625 # coordinates
@@ -174,7 +174,7 @@ osm:
   refDataNameField: TITLE
 
   # [optional] A query which searches for OSM objects. It uses Overpass QL
-  # language. This is multi-line string, with a query each line. 
+  # language. This is either an array or a multi-line string, with a query each line.
   # It uses TwigJS syntax (see below for available variables).
   # By default, it searches for objects in 50m distance of possible coordinates
   # (e.g. dataset, wikipediaList, wikidata), optionally you can specify a
@@ -186,19 +186,19 @@ osm:
     {% endif %}
 
   # [optional] the OSM representation of an item should have these properties
-  # This is a multi-line string, with a key each line.
+  # This is either an array or a multi-line string with a key each line.
   # It uses TwigJS syntax (see below for available variables)
   # Additionally, 'osmItem' may be set for the current OSM item (with osmItem.tags.* for its tags)
-  recommendTags: |
-    start_date
+  recommendTags:
+    - start_date
   
   # [optional] list of key=value pairs which should be added to the OSM entry
-  # This is a multi-line string, with a key=value each line.
+  # This is either an array or a multi-line string with a key=value each line.
   # It uses TwigJS syntax (see below for available variables)
   # Additionally, 'osmItem' may be set for the current OSM item (with osmItem.tags.* for its tags)
-  addTags: |
-    name={{ item.NAME }}
-    operator=ACME
+  addTags:
+    - name={{ item.NAME }}
+    - operator=ACME
 
 # TwigJS Variables - The following variables are available for templates:
 # item.*           Values of the reference dataset, e.g. 'item.ID'
