@@ -102,7 +102,7 @@ osm:
     historic
     name
     start_date
-  compileTags: |
+  addTags: |
     ref:wien:kultur={{ item.ID }}
   query: |
     {% if item.TYP in ['Gedenktafeln', 'Denkmäler'] %}

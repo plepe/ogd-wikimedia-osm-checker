@@ -20,7 +20,7 @@ module.exports = {
     callback)
   },
 
-  compileTags (ob, osmItem) {
+  addTags (ob, osmItem) {
     const result = {}
 
     if (ob.data.wikidataSelected) {

@@ -7,7 +7,7 @@ const calcDistance = require('../calcDistance.js')
 const Check = require('../Check.js')
 const getAllCoords = require('../getAllCoords.js')
 const idFromRefOrRefValue = require('../idFromRefOrRefValue')
-const osmCompileTags = require('../osmCompileTags.js')
+const osmAddTags = require('../osmAddTags.js')
 
 class CheckOsmLoadSimilar extends Check {
   // result:
@@ -88,7 +88,7 @@ class CheckOsmLoadSimilar extends Check {
       })
     }
 
-    const compiledTags = osmCompileTags(ob, null)
+    const compiledTags = osmAddTags(ob, null)
 
     if (osmPoss.length) {
       const msg = [

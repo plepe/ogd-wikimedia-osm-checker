@@ -198,8 +198,8 @@ class Dataset {
     return renderTemplate(ob.dataset.osm.recommendTags, templateData)
   }
 
-  osmCompileTags (ob, osmItem) {
-    if (!ob.dataset.osm || !ob.dataset.osm.compileTags) {
+  osmAddTags (ob, osmItem) {
+    if (!ob.dataset.osm || !ob.dataset.osm.addTags) {
       return {}
     }
 
@@ -209,7 +209,7 @@ class Dataset {
     }
 
     const compiledTags = {}
-    renderTemplate(ob.dataset.osm.compileTags, templateData)
+    renderTemplate(ob.dataset.osm.addTags, templateData)
       .forEach(line => {
         const m = line.match(/^([^=]+)=(.*)$/)
         if (m) {

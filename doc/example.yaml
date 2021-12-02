@@ -196,7 +196,7 @@ osm:
   # This is a multi-line string, with a key=value each line.
   # It uses TwigJS syntax (see below for available variables)
   # Additionally, 'osmItem' may be set for the current OSM item (with osmItem.tags.* for its tags)
-  compileTags: |
+  addTags: |
     name={{ item.NAME }}
     operator=ACME
 

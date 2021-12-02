@@ -1,13 +1,13 @@
 const wikidataToOsm = require('./wikidataToOsm.js')
 
-module.exports = function osmCompileTags (ob, el) {
+module.exports = function osmAddTags (ob, el) {
   let compiledTags = {}
 
-  if (ob.dataset.osmCompileTags) {
-    compiledTags = { ...compiledTags, ...ob.dataset.osmCompileTags(ob, el) }
+  if (ob.dataset.osmAddTags) {
+    compiledTags = { ...compiledTags, ...ob.dataset.osmAddTags(ob, el) }
   }
 
-  compiledTags = { ...compiledTags, ...wikidataToOsm.compileTags(ob, el) }
+  compiledTags = { ...compiledTags, ...wikidataToOsm.addTags(ob, el) }
 
   if (ob.data.wikidataSelected) {
     compiledTags.wikidata = ob.data.wikidataSelected.id

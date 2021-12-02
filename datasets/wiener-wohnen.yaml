@@ -82,7 +82,7 @@ osm:
     name:etymology
     name:etymology:wikidata
     building:levels
-  compileTags: |
+  addTags: |
     operator=Stadt Wien – Wiener Wohnen
     ownership=municipal
     architect={{ item.architects|split(', ')|join(';') }}

@@ -71,6 +71,6 @@ osm:
     nwr[amenity~"^(grave_yard|fountain|place_of_worship)$"]
     nwr[landuse=cemetery](distance:1000)
     nwr[historic]
-  compileTags: |
+  addTags: |
     heritage=2
     heritage:operator=bda

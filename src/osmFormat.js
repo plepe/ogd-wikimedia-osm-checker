@@ -2,12 +2,12 @@ const escHTML = require('html-escape')
 
 const editLink = require('./editLink.js')
 const printAttrList = require('./printAttrList.js')
-const osmCompileTags = require('./osmCompileTags.js')
+const osmAddTags = require('./osmAddTags.js')
 
 const recommendTags = []
 
 module.exports = function osmFormat (el, ob, appendTitle = '') {
-  const compiledTags = osmCompileTags(ob, el)
+  const compiledTags = osmAddTags(ob, el)
 
   let ret = '<a target="_blank" href="https://openstreetmap.org/' + el.type + '/' + el.id + '">' + escHTML(el.tags.name || 'unbenannt') + ' (' + el.type + '/' + el.id + ')</a>' + editLink(ob, el, compiledTags) + appendTitle
 
