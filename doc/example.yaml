@@ -50,6 +50,8 @@ refData:
   # [optional] for a field with coordinates, add this structure; id is the
   # field name (or a TwigJS template), type the encoding (currently supported:
   # 'wkt' = Well-known text)
+  # alternatively, you could supply 'latitudeField' and 'longitudeField' (which
+  # could also be TwigJS templates).
   # for file format 'geojson', omit this field
   coordField:
     id: SHAPE

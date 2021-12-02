@@ -20,6 +20,32 @@ module.exports = function getCoords (data, field) {
     }
   }
 
+  if (field.latitudeField) {
+    const geometry = {}
+
+    if (field.latitudeField.match(/\{/)) {
+      if (!(field.latitudeField in twigTemplates)) {
+        twigTemplates[field.latitudeField] = twig({ data: field.latitudeField })
+      }
+
+      geometry.latitude = twigTemplates[field.latitudeField].render({ item: data })
+    } else {
+      geometry.latitude = data[field.latitudeField]
+    }
+
+    if (field.longitudeField.match(/\{/)) {
+      if (!(field.longitudeField in twigTemplates)) {
+        twigTemplates[field.longitudeField] = twig({ data: field.longitudeField })
+      }
+
+      geometry.longitude = twigTemplates[field.longitudeField].render({ item: data })
+    } else {
+      geometry = data[field.longitudeField]
+    }
+
+    return geometry
+  }
+
   if (field.type === 'wkt') {
     const m = geometry.match(/POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/)
     return { latitude: m[2], longitude: m[1] }
