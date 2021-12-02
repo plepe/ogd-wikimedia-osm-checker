@@ -48,9 +48,9 @@ refData:
   urlFormat: "https://example.com/item/{{ item.ID }}"
 
   # [optional] for a field with coordinates, add this structure; id is the
-  # field name, type the encoding (currently supported: 'wkt' = Well-known
-  # text)
-  # for 'geojson', omit this field
+  # field name (or a TwigJS template), type the encoding (currently supported:
+  # 'wkt' = Well-known text)
+  # for file format 'geojson', omit this field
   coordField:
     id: SHAPE
     type: wkt
