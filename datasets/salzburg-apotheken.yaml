@@ -1,0 +1,42 @@
+# A minimal template for a useful dataset
+
+# Short title of the dataset
+title: Apotheken - Land Salzburg
+
+# Who provides the dataset?
+operator: Land Salzburg
+
+ogdURL: https://www.data.gv.at/katalog/dataset/3ae40a5c-88ce-4cfe-8fa1-f64d97c47bd4
+
+# Describe file where the reference data is saved (in the data-directory). It
+# should be called 'id'.'format', e.g. 'foobar.geojson'.
+file:
+  # [optional] either 'json' (default), 'geojson' or 'csv'.
+  format: geojson
+
+# describe reference data (the dataset)
+refData:
+  # important: this field holds the identificator of each item
+  idField: OBJECTID
+  placeFilterField: ORT
+  listFieldTitle: BEZEICHN
+  listFieldAddress: "{{ item.STRASSE }} {{ item.HAUSNUMMER }}"
+  showFields:
+    BEZEICHN:
+      title: Name
+    Adresse:
+      format: "{{ item.STRASSE }} {{ item.HAUSNUMMER }}, {{ item.PLZ }} {{ item.ORT }}"
+
+# [optional] Configuration of the item in OpenStreetMap
+osm:
+  # [optional] A query which searches for OSM objects. It uses Overpass QL
+  # language. This is multi-line string, with a query each line. 
+  # It uses TwigJS syntax (see below for available variables).
+  # By default, it searches for objects in 30m distance of possible coordinates
+  # (e.g. dataset, wikipediaList, wikidata), optionally you can specify a
+  # different distance with '(distance:1234)
+  query:
+    - nwr[amenity=pharmacy]
+  addTags:
+    - amenity=pharmacy
+    - name={{ item.BEZEICHN }}
