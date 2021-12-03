@@ -8,6 +8,8 @@ const renderTemplate = require('./renderTemplate')
 
 class Dataset {
   constructor (data = {}) {
+    this.refData = {}
+
     for (const k in data) {
       this[k] = data[k]
     }
@@ -37,8 +39,8 @@ class Dataset {
 
       json = this.convertData(json)
 
-      json.forEach(entry => {
-        this.data[entry[this.refData.idField]] = entry
+      json.forEach((entry, index) => {
+        this.data[this.refData.idField ? entry[this.refData.idField] : index] = entry
         placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
       })
 
@@ -53,12 +55,12 @@ class Dataset {
     })
   }
 
-  listFormat (item) {
+  listFormat (item, index) {
     let result = ''
 
     let value = null
     if (!this.refData.listFieldTitle) {
-      value = escHTML(item[this.refData.idField])
+      value = escHTML(this.refData.idField ? item[this.refData.idField] : index)
     } else if (this.refData.listFieldTitle.match(/\{/)) {
       if (!this.listFieldTitleTemplate) {
         this.listFieldTitleTemplate = twig({ data: this.refData.listFieldTitle })
@@ -91,19 +93,28 @@ class Dataset {
   showFormat (item) {
     let result = '<h2>' + escHTML(this.operator) + '</h2>'
 
-    result += '<li class="field-id">'
-    result += '<span class="label">ID</span>: '
-    result += '<span class="value">' + escHTML(item[this.refData.idField]) + '</span>'
-
-    if (this.refData.urlFormat) {
-      if (!this.urlTemplate) {
-        this.urlTemplate = twig({ data: this.refData.urlFormat })
+    if (this.refData.idField || this.refData.urlFormat) {
+      result += '<li class="field-id">'
+      if (this.refData.idField) {
+        result += '<span class="label">ID</span>: '
+        result += '<span class="value">' + escHTML(item[this.refData.idField]) + '</span>'
       }
 
-      result += ' <span class="url">(<a target="_blank" href="' + this.urlTemplate.render({ item }) + '">Website</a>)</span>'
-    }
+      if (this.refData.urlFormat) {
+        if (!this.urlTemplate) {
+          this.urlTemplate = twig({ data: this.refData.urlFormat })
+        }
 
-    result += '</li>'
+        const urlText = '<a target="_blank" href="' + this.urlTemplate.render({ item }) + '">Website</a>'
+        if (this.refData.idField) {
+          result += ' <span class="url">(' + urlText + ')</span>'
+        } else {
+          result += '<span class="url">' + urlText + '</span>'
+        }
+      }
+
+      result += '</li>'
+    }
 
     const showFields = this.refData.showFields || Object.fromEntries(Object.keys(item).filter(k => !k.match(/^_/)).map(k => [k, {}]))
 

@@ -202,11 +202,11 @@ function update () {
 
   const dom = document.getElementById('data')
 
-  Object.keys(dataset.data).forEach(id => {
+  Object.keys(dataset.data).forEach((id, index) => {
     const item = dataset.data[id]
 
     if (!dataset.refData.placeFilterField || ('' + item[dataset.refData.placeFilterField]) === place) {
-      const text = dataset.listFormat(item)
+      const text = dataset.listFormat(item, index)
 
       const tr = document.createElement('tr')
       tr.id = dataset.id + '-' + id
@@ -259,7 +259,7 @@ function check (id, options = {}) {
     div.appendChild(format)
   }
 
-  const ob = new Examinee(entry[dataset.refData.idField], entry, dataset)
+  const ob = new Examinee(id, entry, dataset)
   ob.initMessages(div)
   ob.runChecks(dataset, options, (err, result) => {
     if (err) { global.alert(err) }

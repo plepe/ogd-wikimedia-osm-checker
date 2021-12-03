@@ -41,7 +41,8 @@ source:
 
 # describe reference data (the dataset)
 refData:
-  # important: this field holds the identificator of each item
+  # [optional] this field holds the identificator of each item; if omitted, the
+  # items will be automatically numbered in order of appearance
   idField: ID
 
   # [optional] How to link to a description of the item on the operator's website
