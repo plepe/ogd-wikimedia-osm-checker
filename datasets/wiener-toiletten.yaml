@@ -36,4 +36,3 @@ osm:
     - supervised
   addTags:
     - amenity=toilets
-    - name={{ item.WC_ID }}
