@@ -38,9 +38,9 @@ refData:
       title: Bauzeit
       format: "{{ item.constructionStartYear }}-{{ item.constructionEndYear }}"
     architects:
-      titel: Architekt_innen
+      title: Architekt_innen
     publicArt:
-      titel: Kunst am Bau
+      title: Kunst am Bau
       format: '{{ item.publicArt ? "ja" : "nein" }}'
     flats:
       title: Wohnungen
