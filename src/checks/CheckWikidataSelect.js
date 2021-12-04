@@ -16,6 +16,10 @@ class CheckWikidataSelect extends Check {
     const select = document.createElement('select')
     select.id = 'wikidata-select'
     select.onchange = () => {
+      // force commons to load again (which is fast, because searches are cached)
+      delete ob.data.commons
+      ob.doneLoading.commons = []
+
       ob.data.wikidataSelected = null
       ob.data.wikidata.forEach(item => {
         if (select.value === item.id) {
