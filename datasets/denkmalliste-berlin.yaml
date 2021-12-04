@@ -1,5 +1,6 @@
 title: Denkmalliste Berlin
 operator: Landesdenkmalamt Berlin
+ogdURL: https://www.berlin.de/landesdenkmalamt/denkmale/liste-karte-datenbank/denkmalliste/
 file:
   format: csv
   formatOptions:
@@ -19,6 +20,7 @@ refData:
     "Architekt/Künstler":
     WeitereInformationen:
       title: Weitere Informationen
+    Datierung:
     Eintragung:
 
 wikidata:
