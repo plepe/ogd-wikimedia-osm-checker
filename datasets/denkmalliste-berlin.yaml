@@ -1,0 +1,46 @@
+title: Denkmalliste Berlin
+operator: Landesdenkmalamt Berlin
+file:
+  format: csv
+  formatOptions:
+    delimiter: ;
+refData:
+  idField: ObjDokNr
+  urlFormat: "https://www.berlin.de/landesdenkmalamt/denkmale/liste-karte-datenbank/denkmaldatenbank/daobj.php?obj_dok_nr={{ item.ObjDokNr }}"
+  placeFilterField: Bezirk
+  listFieldTitle: Beschreibung
+  listFieldAddress: Adresse
+  showFields:
+    Beschreibung:
+    Denkmalart:
+    Zugehörigkeit:
+    Adresse:
+      format: "{{ item.Adresse }}, {{ item.Bezirk }} ({{ item.Ortsteil }})"
+    "Architekt/Künstler":
+    WeitereInformationen:
+      title: Weitere Informationen
+    Eintragung:
+
+wikidata:
+  refProperty: P2424
+  refPropertyTitle: Denkmalliste-Berlin-Kennung
+  recommendProperties: |
+    P84
+    P170
+    P547
+    P571
+    P1619
+    P180
+commons:
+  searchRegexp: /\{\{Kulturdenkmal Berlin\s*\|\s*(1=)*$1(\|(.*))?\}\}/
+  templateRegexp: Kulturdenkmal Berlin
+  templateTemplate: "{{Kulturdenkmal Berlin|$1|Ortsteil=}}"
+osm:
+  refField: ref:lda
+  query:
+    - nwr[historic]
+    - nwr[heritage]
+    - nwr[tourism~"^(artwork|attraction)$"]
+    - nwr[building]
+  addTags: |
+    ref:lda={{ item.ObjDokNr }}
