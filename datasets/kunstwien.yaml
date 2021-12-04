@@ -82,6 +82,7 @@ wikidata:
     P571
     P1619
     P417
+    P547
     P180
     P7842
     {% if item.MATERIAL %}P186{% endif %}
