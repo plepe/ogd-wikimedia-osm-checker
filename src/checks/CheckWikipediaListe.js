@@ -27,18 +27,20 @@ class CheckWikipediaListe extends Check {
     if (found.length) {
       const attrList = []
 
+      let showFields = Object.keys(found[0])
       if (dataset.wikipediaList.showFields) {
-        dataset.wikipediaList.showFields.forEach(
-          fieldId => {
-            if (found[0][fieldId]) {
-              attrList.push({
-                title: fieldId,
-                text: found[0][fieldId]
-              })
-            }
-          }
-        )
+        showFields = dataset.wikipediaList.showFields
       }
+      showFields.forEach(
+        fieldId => {
+          if (found[0][fieldId]) {
+            attrList.push({
+              title: fieldId,
+              text: found[0][fieldId]
+            })
+          }
+        }
+      )
 
       if (dataset.wikipediaList.latitudeField && dataset.wikipediaList.longitudeField) {
         if (found[0][dataset.wikipediaList.latitudeField] && found[0][dataset.wikipediaList.longitudeField]) {
