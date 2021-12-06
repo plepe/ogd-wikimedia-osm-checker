@@ -56,25 +56,33 @@ class CheckWikipediaListe extends Check {
       }
       ob.message('wikipedia', STATUS.SUCCESS, msg)
 
-      if (found[0].Foto && found[0].Bilderwunsch) {
-        ob.message('wikipedia', STATUS.WARNING, 'Liste hat ein <a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + escHTML(found[0].Foto.replace(/ /g, '_')) + '">Bild</a>, aber mit Bilderwunsch: ' + escHTML(found[0].Bilderwunsch))
-      } else if (found[0].Foto) {
-        ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat ein <a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + escHTML(found[0].Foto.replace(/ /g, '_')) + '">Bild</a>')
-      } else {
-        ob.message('wikipedia', STATUS.WARNING, 'Liste hat kein Bild.')
+      if (dataset.wikipediaList.pictureField) {
+        const field = dataset.wikipediaList.pictureField
+        const requestField = dataset.wikipediaList.pictureRequestField
+
+        if (found[0][field] && found[0][requestField]) {
+          ob.message('wikipedia', STATUS.WARNING, 'Liste hat ein <a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + escHTML(found[0][field].replace(/ /g, '_')) + '">Bild</a>, aber mit Bilderwunsch: ' + escHTML(found[0][requestField]))
+        } else if (found[0][field]) {
+          ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat ein <a target="_blank" href="https://commons.wikimedia.org/wiki/File:' + escHTML(found[0][field].replace(/ /g, '_')) + '">Bild</a>')
+        } else {
+          ob.message('wikipedia', STATUS.WARNING, 'Liste hat kein Bild.')
+        }
       }
 
-      if (found[0].Commonscat) {
-        ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf eine Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + escHTML(found[0].Commonscat.replace(/ /g, '_')) + '">' + escHTML(found[0].Commonscat) + '</a>')
-        ob.load('commons', { title: 'Category:' + found[0].Commonscat })
-      } else {
-        const categories = ob.data.commons && ob.data.commons.filter(page => page.title.match(/^Category:/))
-        if (!categories || !categories.length) {
-          ob.message('wikipedia', STATUS.WARNING, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
-        } else if (categories.length === 1) {
-          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie, sollte sein: <tt>Commonscat = ' + escHTML(categories[0].title.slice(9)) + '</tt>')
-        } else if (categories.length) {
-          ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
+      if (dataset.wikipediaList.commonsField) {
+        const field = dataset.wikipediaList.commonsField
+        if (found[0][field]) {
+          ob.message('wikipedia', STATUS.SUCCESS, 'Liste hat einen Verweis auf eine Commons Kategorie: <a target="_blank" href="https://commons.wikimedia.org/wiki/Category:' + escHTML(found[0][field].replace(/ /g, '_')) + '">' + escHTML(found[0][field]) + '</a>')
+          ob.load('commons', { title: 'Category:' + found[0][field] })
+        } else {
+          const categories = ob.data.commons && ob.data.commons.filter(page => page.title.match(/^Category:/))
+          if (!categories || !categories.length) {
+            ob.message('wikipedia', STATUS.WARNING, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
+          } else if (categories.length === 1) {
+            ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie, sollte sein: <tt>Commonscat = ' + escHTML(categories[0].title.slice(9)) + '</tt>')
+          } else if (categories.length) {
+            ob.message('wikipedia', STATUS.ERROR, 'Liste hat keinen Verweis auf eine Commons Kategorie.')
+          }
         }
       }
 

@@ -107,6 +107,12 @@ wikipediaList:
   # [optional] id of the field referencing the wikimedia commons category
   commonsField: Commonscat
 
+  # [optional] id of the field referencing a wikimedia commons image
+  pictureField: Foto
+
+  # [optional] id of the field requesting a (better) picture
+  pictureRequestField: Bilderwunsch
+
   # [optional] id of the fields referencing the latitude/longitude of the
   # item's coordinates
   latitudeField: Latitude
