@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/plepe/ogd-wikimedia-osm-checker",
   "dependencies": {
+    "@turf/center-of-mass": "^6.5.0",
     "@turf/point-to-line-distance": "^6.5.0",
     "@turf/points-within-polygon": "^5.1.5",
     "async": "^3.2.1",

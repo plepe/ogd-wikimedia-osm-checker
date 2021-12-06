@@ -1,4 +1,7 @@
 const twig = require('twig').twig
+const turf = {
+  centerOfMass: require('@turf/center-of-mass').default
+}
 
 const twigTemplates = {}
 
@@ -54,6 +57,9 @@ module.exports = function getCoords (data, field) {
   if (field.type === 'geojson') {
     if (geometry.type === 'Point') {
       return { latitude: geometry.coordinates[1], longitude: geometry.coordinates[0] }
+    } else {
+      const center = turf.centerOfMass(geometry)
+      return { latitude: center.geometry.coordinates[1], longitude: center.geometry.coordinates[0] }
     }
   }
 }
