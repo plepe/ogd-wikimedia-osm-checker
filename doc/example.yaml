@@ -139,7 +139,7 @@ wikidata:
   # [optional] the wikidata representation of an item should have these
   # properties. This is either an array or a multi-line string with a property
   # each line. Uses TwigJS syntax (see below for available variables).
-  recommendedProperties: |
+  recommendProperties: |
     P571 # date of inception
     P625 # coordinates
     {% if item.TYPE == 'foo' %}P31{% endif %} # is a
