@@ -53,7 +53,7 @@ wikidata:
     P417
     P180
     {% if item.Gemeinde == 'Wien' %}
-      P7842 # Wien Geschichte Wiki ID (siehe Seiteninformationen der Wiki-Seite)
+      P7842
     {% endif %}
 commons:
   searchRegexp: /\{\{(Doo|doo|Denkmalgeschütztes Objekt Österreich)\|(1=)*$1\}\}/
