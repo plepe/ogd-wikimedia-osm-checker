@@ -1,10 +1,12 @@
 const escHTML = require('html-escape')
 const natsort = require('natsort').default
 const twig = require('twig').twig
+const yaml = require('yaml')
 
 const createGeoLink = require('./createGeoLink')
 const load = require('./load')
 const renderTemplate = require('./renderTemplate')
+const loadFile = require('./loadFile')
 
 class Dataset {
   constructor (data = {}) {
@@ -242,6 +244,21 @@ class Dataset {
 
     return renderTemplate(ob.dataset.wikidata.recommendProperties, ob.templateData())
   }
+}
+
+const datasets = {}
+Dataset.get = function (id, callback) {
+  if (id in datasets) {
+    return callback(null, datasets[id])
+  }
+
+  loadFile('datasets/' + id + '.yaml', (err, body) => {
+    if (err) { return callback(err) }
+
+    const def = yaml.parse(body.toString())
+    datasets[id] = new Dataset(def)
+    callback(null, datasets[id])
+  })
 }
 
 module.exports = Dataset
