@@ -65,6 +65,8 @@ wikipediaList:
   latitudeField: Breitengrad
   longitudeField: Längengrad
   articleField: Artikel
+  commonsField: Commonscat
+  pictureField: Foto
   showFields:
     - Name
     - Name-Vulgo

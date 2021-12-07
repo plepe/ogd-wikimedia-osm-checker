@@ -37,6 +37,9 @@ wikipediaList:
   latitudeField: Breitengrad
   longitudeField: Längengrad
   articleField: Artikel
+  commonsField: Commonscat
+  pictureField: Foto
+  pictureRequestField: Bilderwunsch
   showFields:
     - Name
     - Beschreibung

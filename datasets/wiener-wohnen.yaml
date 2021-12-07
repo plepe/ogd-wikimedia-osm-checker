@@ -54,6 +54,9 @@ wikipediaList:
   wikidataField: WD-Item
   latitudeField: Breitengrad
   longitudeField: Längengrad
+  commonsField: Commonscat
+  pictureField: Foto
+  pictureRequestField: Bilderwunsch
   showFields:
     - Name
     - Adresse
