@@ -43,7 +43,7 @@ module.exports = function getCoords (data, field) {
 
       geometry.longitude = twigTemplates[field.longitudeField].render({ item: data })
     } else {
-      geometry = data[field.longitudeField]
+      geometry.longitude = data[field.longitudeField]
     }
 
     return geometry
