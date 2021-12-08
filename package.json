@@ -41,7 +41,7 @@
     "string-similarity": "^4.0.4",
     "twig": "^1.15.4",
     "w3c-xmlhttprequest": "^2.2.0",
-    "wikipedia-list-extractor": "^0.2.0",
+    "wikipedia-list-extractor": "^0.3.0",
     "yaml": "^1.10.2"
   },
   "devDependencies": {

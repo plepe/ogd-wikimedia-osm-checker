@@ -1,0 +1,45 @@
+title: Wiener Wienflussbrücken
+operator: Wikipedia
+ogdURL: https://de.wikipedia.org/wiki/Wiener_Wienflussbr%C3%BCcken
+source:
+  type: wikipedia-list
+  parser: rendered
+  list: AT-Wiener_Wienflussbruecken
+refData:
+  listFieldTitle: "{{ item.Name|raw }}"
+  urlFormat: "{{ item.url }}"
+  coordField:
+    latitudeField: Breitengrad
+    longitudeField: Längengrad
+  pictureField: Foto
+  showFields:
+    Name:
+    Bauform:
+      format: "{{ item.Bauform|raw }}"
+    Baujahr:
+    BrückeSeit:
+      title: Brücke seit
+    Foto:
+      format: '<a href="https://commons.wikimedia.org/wiki/{{ item.Foto }}">{{ item.Foto }}</a>'
+    Beschreibung:
+      format: "{{ item.Beschreibung|raw }}"
+wikidata:
+  recommendProperties:
+  - P84
+  - P138
+  - P177
+  - P186
+  - P571
+  - P1619
+  - P7842
+osm:
+  addTags:
+  - "start_date={{ item.Baujahr }}"
+  recommendTags:
+  - name:etymology
+  - name:etymology:wikidata
+  - architect
+  - architect:wikidata
+  query:
+  - nwr[bridge]
+  - nwr[man_made=bridge]
