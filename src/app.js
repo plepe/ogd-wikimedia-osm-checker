@@ -259,6 +259,12 @@ function check (id, options = {}) {
     div.appendChild(format)
   }
 
+  Array.from(div.getElementsByTagName('a')).forEach(a => {
+    if (!a.target) {
+      a.target = '_blank'
+    }
+  })
+
   const ob = new Examinee(id, entry, dataset)
   ob.initMessages(div)
   ob.runChecks(dataset, options, (err, result) => {
