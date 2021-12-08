@@ -2,13 +2,13 @@ const async = require('async')
 const fs = require('fs')
 const WikipediaListExtractor = require('wikipedia-list-extractor')
 
-function modify (data) {
+function modify (data, dataset) {
   data.forEach(d => {
-    const rendered = d.rendered
-    delete d.rendered
+    const row = d[dataset.source.parser]
+    delete d[dataset.source.parser]
 
-    for (let k in rendered) {
-      d[k] = rendered[k]
+    for (let k in row) {
+      d[k] = row[k]
     }
   })
 
@@ -24,12 +24,20 @@ function save (dataset, err, result, callback) {
 module.exports = function wikipediaListDownload (dataset, callback) {
   const list = new WikipediaListExtractor(dataset.source.list)
   let result = []
+
+  const options = {}
+  if (dataset.source.parser === 'rendered') {
+    options.loadRaw = false
+  } else {
+    dataset.source.parser = 'raw'
+    options.loadRendered = false
+  }
   
   if (dataset.source.pages) {
     async.each(dataset.source.pages,
       (page, done) => {
-        list.getPageItems(page, {}, (err, data) => {
-          data = modify(data)
+        list.getPageItems(page, options, (err, data) => {
+          data = modify(data, dataset)
           result = result.concat(data)
           done()
         })
@@ -37,9 +45,9 @@ module.exports = function wikipediaListDownload (dataset, callback) {
       (err, result) => save(dataset, err, result, callback)
     )
   } else {
-    list.getAll({}, (err, result) => {
+    list.getAll(options, (err, result) => {
       if (err) { return callback(err) }
-      result = modify(result)
+      result = modify(result, dataset)
       save(dataset, null, result, callback)
     })
   }
