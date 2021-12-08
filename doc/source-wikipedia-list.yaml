@@ -1,0 +1,20 @@
+# [optional] describe source of the dataset
+source:
+  # use type 'wikipedia-list' for this type of download
+  type: 'wikipedia-list'
+
+  # specify list id; has the be available in module
+  # https://github.com/plepe/wikipedia-list-extractor
+  list: AT-Wiener_Wienflussbruecken
+
+  # [optional] in wikipedia-list-extractor there are two types of parsers:
+  # 'raw' (parses the source code of the page) or 'rendered' (parses the
+  # rendered output). Not all lists have 'raw' and 'rendered' parsed output.
+  # Default: 'raw'.
+  parser: 'raw'
+
+  # [optional] specify list of Wikipedia pages, where the content is to be
+  # found. if omitted, the list should be configured to be able to download all
+  # pages.
+  pages:
+  - Wiener Wienflussbrücken
