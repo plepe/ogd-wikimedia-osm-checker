@@ -41,11 +41,39 @@ function downloadWikidataLists (callback) {
   ], callback)
 }
 
-datasetsList({}, (err, datasets) => {
-  if (err) {
-    return console.error("Can't read list of datasets:", err.toString())
-  }
+function listExisting (options = {}, callback) {
+  fs.readdir('data/', (err, files) => {
+    if (err) { return callback(err) }
 
+    files = files
+      .map(file => {
+        const m = file.match(/^([^.].*)\.(csv|json|geojson)$/)
+        if (m) {
+          return m[1]
+        }
+      })
+      .filter(file => file)
+
+    callback(null, files)
+  })
+}
+
+async.parallel(
+  {
+    existing: done => listExisting({}, done),
+    datasets: done => datasetsList({}, done)
+  },
+  (err, {existing, datasets}) => {
+    if (err) {
+      return console.error("Can't read list of datasets:", err.toString())
+    }
+
+    const todo = datasets.filter(dataset => !existing.includes(dataset.id))
+    downloadDatasets(todo)
+  }
+)
+
+function downloadDatasets (datasets) {
   async.each(datasets, (_dataset, done) => {
     const id = _dataset.id
 
@@ -62,7 +90,7 @@ datasetsList({}, (err, datasets) => {
 
     return done()
   })
-})
+}
 
 function download (fun, id, callback) {
   fun((err, result) => {
