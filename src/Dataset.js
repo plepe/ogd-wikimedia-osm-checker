@@ -63,7 +63,7 @@ class Dataset {
       value = escHTML(this.refData.idField ? item[this.refData.idField] : index)
     } else if (this.refData.listFieldTitle.match(/\{/)) {
       if (!this.listFieldTitleTemplate) {
-        this.listFieldTitleTemplate = twig({ data: this.refData.listFieldTitle })
+        this.listFieldTitleTemplate = twig({ data: this.refData.listFieldTitle, autoescape: true })
       }
       value = this.listFieldTitleTemplate.render({ item })
     } else {
@@ -76,7 +76,7 @@ class Dataset {
       value = null
     } else if (this.refData.listFieldAddress.match(/\{/)) {
       if (!this.listFieldAddressTemplate) {
-        this.listFieldAddressTemplate = twig({ data: this.refData.listFieldAddress })
+        this.listFieldAddressTemplate = twig({ data: this.refData.listFieldAddress, autoescape: true })
       }
       value = this.listFieldAddressTemplate.render({ item })
     } else {
@@ -102,7 +102,7 @@ class Dataset {
 
       if (this.refData.urlFormat) {
         if (!this.urlTemplate) {
-          this.urlTemplate = twig({ data: this.refData.urlFormat })
+          this.urlTemplate = twig({ data: this.refData.urlFormat, autoescape: true })
         }
 
         const urlText = '<a target="_blank" href="' + this.urlTemplate.render({ item }) + '">Website</a>'
@@ -123,16 +123,18 @@ class Dataset {
       let value = item[fieldId]
       if (field.format) {
         if (!field.template) {
-          field.template = twig({ data: field.format })
+          field.template = twig({ data: field.format, autoescape: true })
         }
 
         value = field.template.render({ item })
+      } else {
+        value = escHTML(value)
       }
 
       if (value) {
         result += '<li class="field-' + fieldId + '">'
         result += '<span class="label">' + escHTML(field.title || fieldId) + '</span>: '
-        result += '<span class="value">' + escHTML(value) + '</span>'
+        result += '<span class="value">' + value + '</span>'
         result += '</li>'
       }
     })
