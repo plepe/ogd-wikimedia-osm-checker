@@ -3,9 +3,12 @@ const fs = require('fs')
 const fetch = require('node-fetch')
 const yaml = require('yaml')
 
+require('./src/node')
+
 const downloads = require('./src/datasets/downloads')
 const standardDownload = require('./src/standardDownload')
 const datasetsList = require('./src/datasetsList')
+const wikipediaListDownload = require('./src/wikipediaListDownload')
 
 function downloadWikidataLists (callback) {
   async.parallel([
@@ -85,7 +88,12 @@ function downloadDatasets (datasets) {
     dataset.id = id
 
     if (dataset.source) {
-      return download((cb) => standardDownload(dataset, cb), id, done)
+      switch (dataset.source.type) {
+        case 'wikipedia-list':
+          return download((cb) => wikipediaListDownload(dataset, cb), id, done)
+        default:
+          return download((cb) => standardDownload(dataset, cb), id, done)
+      }
     }
 
     return done()

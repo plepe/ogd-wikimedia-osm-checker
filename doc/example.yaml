@@ -39,6 +39,10 @@ source:
   # URL of the dataset
   url: https://example.com/data.json
 
+  # [optional] type of dataset source, default 'http'
+  # for type 'wikipedia-list', see source-wikipedia-list.yaml
+  type: 'http'
+
 # describe reference data (the dataset)
 refData:
   # [optional] this field holds the identificator of each item; if omitted, the
