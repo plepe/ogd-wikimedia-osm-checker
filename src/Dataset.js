@@ -93,6 +93,8 @@ class Dataset {
   showFormat (item) {
     let result = '<h2>' + escHTML(this.operator) + '</h2>'
 
+    result += '<ul>'
+
     if (this.refData.idField || this.refData.urlFormat) {
       result += '<li class="field-id">'
       if (this.refData.idField) {
