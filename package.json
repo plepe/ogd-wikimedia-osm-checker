@@ -42,6 +42,7 @@
     "twig": "^1.15.4",
     "w3c-xmlhttprequest": "^2.2.0",
     "wikipedia-list-extractor": "^0.3.0",
+    "xlsx": "^0.17.4",
     "yaml": "^1.10.2"
   },
   "devDependencies": {
