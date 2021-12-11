@@ -31,24 +31,19 @@ module.exports = class Examinee extends EventEmitter {
   }
 
   initMessages (dom) {
-    this.messagesUl = {}
+    this.messagesDiv = {}
 
     forEach(modules, (title, id) => {
       const div = document.createElement('div')
       dom.appendChild(div)
 
-      div.innerHTML = '<h2>' + title + '</h2>'
-
-      const ul = document.createElement('ul')
-      ul.className = 'check'
-      div.appendChild(ul)
-      this.messagesUl[id] = ul
+      this.messagesDiv[id] = div
     })
   }
 
   clearMessages () {
-    forEach(this.messagesUl,
-      ul => { ul.innerHTML = '' }
+    forEach(this.messagesDiv,
+      div => { div.innerHTML = '' }
     )
   }
 
@@ -86,7 +81,18 @@ module.exports = class Examinee extends EventEmitter {
       li.appendChild(message)
     }
     li.className = status
-    this.messagesUl[module].appendChild(li)
+
+    if (this.messagesDiv[module].innerHTML === '') {
+      const div = this.messagesDiv[module]
+      div.innerHTML = '<h2>' + modules[module] + '</h2>'
+
+      const ul = document.createElement('ul')
+      ul.className = 'check'
+      div.appendChild(ul)
+    }
+
+    const ul = this.messagesDiv[module].querySelector('ul')
+    ul.appendChild(li)
 
     return true
   }
