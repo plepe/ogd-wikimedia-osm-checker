@@ -37,7 +37,7 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       return ob.message('osm', STATUS.ERROR, 'Kein Eintrag mit <tt>' + osmRefField + '=' + id + '</tt> in der OpenStreetMap gefunden!')
     }
 
-    if (!ob.data.wikidata && !ob.data.osm) {
+    if (!ob.data.osm) {
       // wait for wikidata info to be loaded
       return
     }
@@ -47,7 +47,7 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       return
     }
 
-    const loadingWikidata = ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];'))
+    const loadingWikidata = ob.data.wikidata ? ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];')) : []
 
     let loadingRef = false
     if (id !== null) {
