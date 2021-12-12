@@ -28,7 +28,7 @@ const requestListener = function (req, res) {
 
   if (req.url === '/') {
     file = '/index.html'
-  } else if (req.url === '/datasets/') {
+  } else if (req.url === '/datasets/') { // deprecated, replaced by datasets.cgi
     datasetsList({}, (err, datasets) => {
       if (err) {
         res.writeHead(500)

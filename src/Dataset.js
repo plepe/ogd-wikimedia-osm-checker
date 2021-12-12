@@ -283,10 +283,16 @@ Dataset.list = function (callback) {
     return callback(null, list)
   }
 
-  datasetsList({}, (err, _list) => {
+  datasetsList({withContent: true}, (err, _list) => {
     if (err) { return callback(err) }
 
-    list = _list.map(d => d.id)
+    list = _list.map(d => {
+      if (!(d.id in datasets)) {
+        new Dataset(d.id, d)
+      }
+
+      return d.id
+    })
     callback(null, list)
   })
 }
