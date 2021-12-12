@@ -1,7 +1,6 @@
 const escHTML = require('html-escape')
 const natsort = require('natsort').default
 const twig = require('twig').twig
-const yaml = require('yaml')
 
 const createGeoLink = require('./createGeoLink')
 const load = require('./load')
@@ -264,17 +263,16 @@ Dataset.get = function (id, callback) {
     return callback(null, datasets[id])
   }
 
-  loadFile('datasets/' + id + '.yaml', (err, body) => {
-    if (err) { return callback(err) }
+  global.fetch('datasets.cgi?id=' + encodeURIComponent(id))
+    .then(res => res.json())
+    .then(def => {
+      // do not load dataset, if it already has been loaded in the meantime ...
+      if (!(id in datasets)) {
+        new Dataset(id, def)
+      }
 
-    // do not load dataset, if it already has been loaded in the meantime ...
-    if (!(id in datasets)) {
-      const def = yaml.parse(body.toString())
-      new Dataset(id, def)
-    }
-
-    callback(null, datasets[id])
-  })
+      callback(null, datasets[id])
+    })
 }
 
 let list

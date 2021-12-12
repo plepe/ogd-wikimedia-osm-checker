@@ -2,7 +2,6 @@ const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const forEach = require('foreach')
 const async = require('async')
-const yaml = require('yaml')
 
 const Dataset = require('./Dataset.js')
 const Examinee = require('./Examinee.js')
