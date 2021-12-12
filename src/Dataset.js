@@ -23,7 +23,7 @@ class Dataset {
   }
 
   load (callback) {
-    if (this.data) {
+    if (this._data) {
       return callback(null)
     }
 
@@ -39,7 +39,7 @@ class Dataset {
     }
 
     const placeFilter = {}
-    this.data = {}
+    this._data = {}
 
     load(this, (err, json) => {
       if (err) { return callback(err) }
@@ -47,7 +47,7 @@ class Dataset {
       json = this.convertData(json)
 
       json.forEach((entry, index) => {
-        this.data[this.refData.idField ? entry[this.refData.idField] : index] = entry
+        this._data[this.refData.idField ? entry[this.refData.idField] : index] = entry
         placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
       })
 
@@ -248,6 +248,14 @@ class Dataset {
     }
 
     return renderTemplate(ob.dataset.wikidata.recommendProperties, ob.templateData())
+  }
+
+  getItems (options = {}, callback) {
+    callback(null, Object.values(this._data))
+  }
+
+  getItem (id, callback) {
+    callback(null, this._data[id])
   }
 }
 
