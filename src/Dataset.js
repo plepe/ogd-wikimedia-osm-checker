@@ -7,6 +7,7 @@ const createGeoLink = require('./createGeoLink')
 const load = require('./load')
 const renderTemplate = require('./renderTemplate')
 const loadFile = require('./loadFile')
+const datasetsList = require('./datasetsList')
 
 const datasets = {}
 
@@ -258,9 +259,27 @@ Dataset.get = function (id, callback) {
   loadFile('datasets/' + id + '.yaml', (err, body) => {
     if (err) { return callback(err) }
 
-    const def = yaml.parse(body.toString())
-    const dataset = new Dataset(id, def)
-    callback(null, dataset)
+    // do not load dataset, if it already has been loaded in the meantime ...
+    if (!(id in datasets)) {
+      const def = yaml.parse(body.toString())
+      new Dataset(id, def)
+    }
+
+    callback(null, datasets[id])
+  })
+}
+
+let list
+Dataset.list = function (callback) {
+  if (list) {
+    return callback(null, list)
+  }
+
+  datasetsList({}, (err, _list) => {
+    if (err) { return callback(err) }
+
+    list = _list.map(d => d.id)
+    callback(null, list)
   })
 }
 

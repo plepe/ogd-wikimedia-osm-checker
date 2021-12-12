@@ -9,7 +9,7 @@ const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 
-const datasets = {}
+const datasets = {} // deprecated
 const modules = [
   require('./wikidataToOsm.js')
 ]
@@ -18,34 +18,8 @@ let dataset
 
 let info
 
-const datasetLoader = {
-  init (callback) {
-    global.fetch('datasets/')
-      .then(res => res.json())
-      .then(list => {
-        list = list.map(entry => entry.id)
-        datasetLoader.load(list, callback)
-      })
-  },
-
-  load (_datasets, callback) {
-    async.each(_datasets, (id, done) => {
-      global.fetch('datasets/' + id + '.yaml')
-        .then(res => res.text())
-        .then(body => {
-          const d = yaml.parse(body)
-          datasets[id] = new Dataset(d)
-          datasets[id].id = id
-          done()
-        })
-    }, callback)
-  }
-}
-
 window.onload = () => {
   document.body.classList.add('loading')
-
-  modules.push(datasetLoader)
 
   async.each(modules, (module, done) => module.init(done), (err) => {
     document.body.classList.remove('loading')
@@ -62,21 +36,34 @@ function init () {
   const selectDataset = document.getElementById('Dataset')
   const listDatasets = document.getElementById('datasets')
 
-  forEach(datasets, (_dataset, id) => {
-    const option = document.createElement('option')
-    option.value = id
-    option.appendChild(document.createTextNode(_dataset.title))
-    selectDataset.appendChild(option)
+  Dataset.list((err, list) => {
+    async.each(list, (id, done) => {
+      Dataset.get(id, (err, dataset) => {
+        datasets[id] = dataset // deprecated
+        const option = document.createElement('option')
+        option.value = id
+        option.appendChild(document.createTextNode(dataset.title))
+        selectDataset.appendChild(option)
 
-    const li = document.createElement('li')
-    const a = document.createElement('a')
-    a.href = '#' + id
-    a.appendChild(document.createTextNode(_dataset.titleLong || _dataset.title))
-    li.appendChild(a)
-    listDatasets.appendChild(li)
+        const li = document.createElement('li')
+        const a = document.createElement('a')
+        a.href = '#' + id
+        a.appendChild(document.createTextNode(dataset.titleLong || dataset.title))
+        li.appendChild(a)
+        listDatasets.appendChild(li)
+
+        done()
+      })
+    },
+    () => {
+      info = document.getElementById('content').innerHTML
+      init2()
+    })
   })
+}
 
-  info = document.getElementById('content').innerHTML
+function init2 () {
+  const selectDataset = document.getElementById('Dataset')
 
   selectDataset.onchange = chooseDataset
 
