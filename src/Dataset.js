@@ -8,10 +8,14 @@ const load = require('./load')
 const renderTemplate = require('./renderTemplate')
 const loadFile = require('./loadFile')
 
-class Dataset {
-  constructor (data = {}) {
-    this.refData = {}
+const datasets = {}
 
+class Dataset {
+  constructor (id, data = {}) {
+    this.id = id
+    datasets[id] = this
+
+    this.refData = {}
     for (const k in data) {
       this[k] = data[k]
     }
@@ -246,7 +250,6 @@ class Dataset {
   }
 }
 
-const datasets = {}
 Dataset.get = function (id, callback) {
   if (id in datasets) {
     return callback(null, datasets[id])
@@ -256,8 +259,8 @@ Dataset.get = function (id, callback) {
     if (err) { return callback(err) }
 
     const def = yaml.parse(body.toString())
-    datasets[id] = new Dataset(def)
-    callback(null, datasets[id])
+    const dataset = new Dataset(id, def)
+    callback(null, dataset)
   })
 }
 
