@@ -250,11 +250,11 @@ class Dataset {
   }
 
   getItems (options = {}, callback) {
-    callback(null, Object.values(this._data))
+    this.load((err) => callback(err, Object.values(this._data)))
   }
 
   getItem (id, callback) {
-    callback(null, this._data[id])
+    this.load((err) => callback(err, this._data[id]))
   }
 }
 
