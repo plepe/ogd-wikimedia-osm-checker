@@ -4,6 +4,17 @@ const csvtojson = require('csvtojson')
 const loadFile = require('./loadFile')
 
 module.exports = function load (dataset, callback) {
+  if (!dataset.file) {
+    dataset.file = {}
+  }
+  if (!dataset.file.format) {
+    dataset.file.format = 'json'
+  }
+
+  if (!dataset.file.name) {
+    dataset.file.name = dataset.id + '.' + dataset.file.format
+  }
+
   switch (dataset.file.format) {
     case 'csv':
       loadCSV(dataset, callback)

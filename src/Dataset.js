@@ -26,17 +26,6 @@ class Dataset {
       return callback(null)
     }
 
-    if (!this.file) {
-      this.file = {}
-    }
-    if (!this.file.format) {
-      this.file.format = 'json'
-    }
-
-    if (!this.file.name) {
-      this.file.name = this.id + '.' + this.file.format
-    }
-
     const placeFilter = {}
     this._data = {}
 
