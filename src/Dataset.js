@@ -43,8 +43,6 @@ class Dataset {
     load(this, (err, json) => {
       if (err) { return callback(err) }
 
-      json = this.convertData(json)
-
       json.forEach((entry, index) => {
         this._data[this.refData.idField ? entry[this.refData.idField] : index] = entry
         placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
@@ -159,23 +157,6 @@ class Dataset {
     result += '</ul>'
 
     return result
-  }
-
-  convertData (data) {
-    if (this.file.format === 'geojson') {
-      this.refData.coordField = {
-        id: '_geometry',
-        type: 'geojson'
-      }
-
-      return data.features.map(item => {
-        const d = item.properties
-        d._geometry = item.geometry
-        return d
-      })
-    }
-
-    return data
   }
 
   compileOverpassQuery (ob) {
