@@ -263,16 +263,16 @@ Dataset.get = function (id, callback) {
     return callback(null, datasets[id])
   }
 
-  global.fetch('datasets.cgi?id=' + encodeURIComponent(id))
-    .then(res => res.json())
-    .then(def => {
+  datasetsList({id},
+    (err, def) => {
       // do not load dataset, if it already has been loaded in the meantime ...
       if (!(id in datasets)) {
         new Dataset(id, def)
       }
 
       callback(null, datasets[id])
-    })
+    }
+  )
 }
 
 let list
