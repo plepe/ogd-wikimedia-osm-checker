@@ -6,4 +6,15 @@ module.exports = function fixDatasetConfig (def) {
       def[k] = {}
     }
   })
+
+  if (!def.file) {
+    def.file = {}
+  }
+
+  if (def.file.format === 'geojson') {
+    def.refData.coordField = {
+      id: '_geometry',
+      type: 'geojson'
+    }
+  }
 }
