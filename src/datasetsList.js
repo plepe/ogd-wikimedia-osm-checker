@@ -4,6 +4,7 @@ const fs = require('fs')
 const yaml = require('yaml')
 
 const loadFile = require('./loadFile')
+const fixDatasetConfig = require('./fixDatasetConfig')
 
 module.exports = function datasetsList (options = {}, callback) {
   if (options.id) {
@@ -42,6 +43,8 @@ function loadDatasetFile (id, callback) {
 
     const c = yaml.parse(body.toString())
     c.id = id
+
+    fixDatasetConfig(c)
 
     callback(null, c)
   })
