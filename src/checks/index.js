@@ -1,4 +1,5 @@
 module.exports = [
+  require('./CheckGeocoder')(),
   require('./CheckWikidataAutoselect')(),
   require('./CheckWikidataSelect')(),
   require('./CheckCommonsLoadFromWikidata')(),

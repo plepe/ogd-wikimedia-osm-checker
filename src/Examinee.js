@@ -5,12 +5,14 @@ const checks = require('./checks/index')
 const wikidataSimplify = require('./wikidataSimplify')
 const loader = {
   commons: require('./loader-commons.js'),
+  geocoder: require('./loader-geocoder.js'),
   osm: require('./loader-osm.js'),
   wikidata: require('./loader-wikidata.js'),
   wikipedia: require('./loader-wikipedia.js')
 }
 
 const modules = {
+  geocoder: 'Geocoder (OpenStreetMap Nominatim)',
   wikipedia: 'Wikipedia',
   wikidata: 'Wikidata',
   commons: 'Wikimedia Commons',
