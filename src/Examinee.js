@@ -73,6 +73,18 @@ module.exports = class Examinee extends EventEmitter {
     return false
   }
 
+  /**
+   * Like load(), but returns an actual result
+   * @return undefined or the actual result
+   */
+  loadResult (module, query) {
+    if (this.load(module, query)) {
+      return loader[module].cached(query)
+    }
+
+    return undefined
+  }
+
   message (module, status, message) {
     const li = document.createElement('li')
     if (typeof message === 'string') {
