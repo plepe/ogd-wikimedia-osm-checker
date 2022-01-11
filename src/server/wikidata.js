@@ -125,22 +125,26 @@ function _request (options, callback) {
       return callback(null, [])
     }
 
-    async.map(Object.keys(results[0]),
-      (id, done) => {
-        const _options = JSON.parse(JSON.stringify(options))
-        _options.key = 'id'
-        _options.id = id
-
-        request(
-          _options,
-          (err, r) => done(err, r.length ? r[0] : null)
-        )
-      },
-      (err, results) => {
-        callback(err, results)
-      }
-    )
+    processResults(results, options, callback)
   })
+}
+
+function processResults (results, options, callback) {
+  async.map(Object.keys(results[0]),
+    (id, done) => {
+      const _options = JSON.parse(JSON.stringify(options))
+      _options.key = 'id'
+      _options.id = id
+
+      request(
+        _options,
+        (err, r) => done(err, r.length ? r[0] : null)
+      )
+    },
+    (err, results) => {
+      callback(err, results)
+    }
+  )
 }
 
 module.exports = request
