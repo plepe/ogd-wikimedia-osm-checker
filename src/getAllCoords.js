@@ -23,7 +23,7 @@ module.exports = function getAllCoords (ob) {
 
   if (ob.data.geocoderSelected) {
     const d = ob.data.geocoderSelected
-    allCoords.push({latitude: d.lat, longitude: d.lon})
+    allCoords.push({ latitude: d.lat, longitude: d.lon })
   }
 
   if (ob.data.wikipedia && ob.data.wikipedia.length && ob.dataset.wikipediaList && ob.dataset.wikipediaList.latitudeField) {

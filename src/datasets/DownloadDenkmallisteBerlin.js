@@ -14,7 +14,6 @@ class FixIDStream extends stream.Transform {
 }
 const fixIDStream = new FixIDStream()
 
-
 module.exports = function downloadDenkmallisteBerlin (callback) {
   fetch('https://www.berlin.de/landesdenkmalamt/_assets/pdf-und-zip/denkmale/liste-karte-datenbank/denkmalliste_berlin.csv')
     .then(response => {

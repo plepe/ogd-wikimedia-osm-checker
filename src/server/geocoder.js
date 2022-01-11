@@ -18,7 +18,7 @@ module.exports = function (options, callback) {
     return queries[id].push(callback)
   }
 
-  queries[id] = [ callback ]
+  queries[id] = [callback]
 
   options.format = 'json'
   url = 'https://nominatim.openstreetmap.org/search?' + queryString.stringify(options)

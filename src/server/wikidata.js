@@ -87,11 +87,9 @@ function _next () {
 function request (options, callback) {
   if (options.query) {
     // accept arbitrary query
-  }
-  else if (!options.key || !options.key.match(/^(id|P[0-9]+)$/)) {
+  } else if (!options.key || !options.key.match(/^(id|P[0-9]+)$/)) {
     return callback(new Error('illegal key'))
-  }
-  else if (!options.id) {
+  } else if (!options.id) {
     return callback(new Error('illegal id'))
   }
 
@@ -141,7 +139,7 @@ function _request (options, callback) {
   })
 }
 
-function loadByQuery(options, callback) {
+function loadByQuery (options, callback) {
   fetch('https://query.wikidata.org/sparql?query=' + encodeURIComponent(options.query),
     {
       headers: {

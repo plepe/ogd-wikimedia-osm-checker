@@ -66,7 +66,7 @@ async.parallel(
     existing: done => listExisting({}, done),
     datasets: done => datasetsList({}, done)
   },
-  (err, {existing, datasets}) => {
+  (err, { existing, datasets }) => {
     if (err) {
       return console.error("Can't read list of datasets:", err.toString())
     }

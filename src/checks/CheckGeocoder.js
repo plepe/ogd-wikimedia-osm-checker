@@ -25,7 +25,7 @@ class CheckGeocoder extends Check {
     if (!result.length) {
       ob.message('geocoder', STATUS.ERROR, 'Adresse konnte nicht gefunden werden.')
     } else if (result.length === 1) {
-      ob.message('geocoder', STATUS.SUCCESS, 'Adresse konnte gefunden werden: ' + createGeoLink({latitude: result[0].lat, longitude: result[0].lon}))
+      ob.message('geocoder', STATUS.SUCCESS, 'Adresse konnte gefunden werden: ' + createGeoLink({ latitude: result[0].lat, longitude: result[0].lon }))
       ob.data.geocoderSelected = result[0]
     }
 
@@ -63,7 +63,7 @@ class CheckGeocoder extends Check {
     })
 
     const geoLink = document.createElement('span')
-    geoLink.innerHTML = createGeoLink({latitude: ob.data.geocoderSelected.lat, longitude: ob.data.geocoderSelected.lon})
+    geoLink.innerHTML = createGeoLink({ latitude: ob.data.geocoderSelected.lat, longitude: ob.data.geocoderSelected.lon })
     div.appendChild(geoLink)
 
     ob.message('geocoder', STATUS.SUCCESS, div)

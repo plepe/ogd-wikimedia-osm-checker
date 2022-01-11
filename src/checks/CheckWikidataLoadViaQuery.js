@@ -12,7 +12,7 @@ class CheckWikidataLoadViaQuery extends Check {
       return true
     }
 
-    let id = ob.id
+    const id = ob.id
 
     const query = twigRender(dataset.wikidata.query, ob.templateData())
 
