@@ -11,6 +11,7 @@ module.exports = [
   require('./CheckWikidataShow')(),
   require('./CheckWikidataIsA')(),
   require('./CheckWikidataLoadViaRef')(),
+  require('./CheckWikidataLoadViaQuery')(),
   require('./CheckWikidataCoords')(),
   require('./CheckWikidataImage')(),
   require('./CheckWikidataLoadFromCommons')(),

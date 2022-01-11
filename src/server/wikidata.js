@@ -1,5 +1,6 @@
 const async = require('async')
 const JSDOM = require('jsdom').JSDOM
+const fetch = require('node-fetch')
 
 const httpRequest = require('../httpRequest.js')
 const findWikidataItems = require('find-wikidata-items')
@@ -84,11 +85,13 @@ function _next () {
 }
 
 function request (options, callback) {
-  if (!options.key || !options.key.match(/^(id|P[0-9]+)$/)) {
+  if (options.query) {
+    // accept arbitrary query
+  }
+  else if (!options.key || !options.key.match(/^(id|P[0-9]+)$/)) {
     return callback(new Error('illegal key'))
   }
-
-  if (!options.id) {
+  else if (!options.id) {
     return callback(new Error('illegal id'))
   }
 
@@ -103,6 +106,15 @@ function _request (options, callback) {
   // console.log('start', JSON.stringify(options))
   if (options.key === 'id') {
     return loadById(options.id,
+      (err, result) => {
+        callback(err, [result])
+        next(options)
+      }
+    )
+  }
+
+  if (options.query) {
+    return loadByQuery(options,
       (err, result) => {
         callback(err, [result])
         next(options)
@@ -127,6 +139,41 @@ function _request (options, callback) {
 
     processResults(results, options, callback)
   })
+}
+
+function loadByQuery(options, callback) {
+  fetch('https://query.wikidata.org/sparql?query=' + encodeURIComponent(options.query),
+    {
+      headers: {
+        // lower case to avoid forbidden request headers, see:
+        // https://github.com/ykzts/node-xmlhttprequest/pull/18/commits/7f73611dc3b0dd15b0869b566f60b64cd7aa3201
+        'user-agent': 'wikipedia-list-extractor',
+        accept: 'application/json'
+      },
+      responseType: 'json'
+    })
+    .then(response => response.json())
+    .then(result => {
+      next(options)
+
+      const list = []
+      result.results.bindings.forEach(item => {
+        const id = item.item.value.match(/(Q[0-9]+)$/)[1]
+        list[id] = null
+      })
+
+      const _options = JSON.parse(JSON.stringify(options))
+      delete _options.query
+
+      processResults([list], _options, (err, result) => {
+        if (err) { return callback(err) }
+        callback(null, result[0])
+      })
+    })
+    .catch(err => {
+      next(options)
+      global.setTimeout(() => callback(err), 0)
+    })
 }
 
 function processResults (results, options, callback) {
