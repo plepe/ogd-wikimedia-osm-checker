@@ -151,6 +151,13 @@ wikidata:
   # Uses TwigJS syntax (see below for available variables).
   refFormat: "{{ item.ID }}"
 
+  # [optional] a special query for searching matching items via SPARQL on query.wikidata.org
+  # Uses TwigJS syntax (see below for available variables).
+  query: |
+    SELECT DISTINCT ?item WHERE {
+      ?item ?label "{{ item.Name }}"@de.
+    }
+
   # [optional] the wikidata representation of an item should have these
   # properties. This is either an array or a multi-line string with a property
   # each line. Uses TwigJS syntax (see below for available variables).
