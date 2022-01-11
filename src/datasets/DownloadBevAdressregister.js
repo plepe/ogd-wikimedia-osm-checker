@@ -16,9 +16,17 @@ module.exports = function downloadBevAdressregister (callback) {
             downloaded = true
           }
 
-          done(err)
+          if (err && err.errno != -2) {
+            console.error('DownloadBevAdressregister:', err)
+            return done(err)
+          }
+
+          done()
         }
       )
+    },
+    (done) => {
+      fs.mkdir('tmp/', {recursive: true}, (err) => done(err))
     },
     (done) => {
       if (downloaded) {
