@@ -1,4 +1,5 @@
 const async = require('async')
+const queryString = require('query-string')
 
 const Cache = require('./Cache')
 const cache = new Cache()
@@ -12,7 +13,7 @@ module.exports = {
           return done(null, data)
         }
 
-        global.fetch('wikidata.cgi?key=' + query.key + '&id=' + query.id)
+        global.fetch('wikidata.cgi?' + queryString.stringify(query))
           .then(res => res.json())
           .then(result => {
             cache.add(query, result[0])
