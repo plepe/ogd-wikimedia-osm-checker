@@ -281,6 +281,6 @@ function check (id, options = {}) {
   const listEntry = document.getElementById(dataset.id + '-' + ob.id)
   if (listEntry) {
     listEntry.classList.add('active')
-    listEntry.scrollIntoView({behavior: 'smooth', block: 'center'})
+    listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 }

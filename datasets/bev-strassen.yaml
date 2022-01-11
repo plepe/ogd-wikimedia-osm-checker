@@ -1,0 +1,54 @@
+title: Österreichische Straßen
+operator: Bundesamt für Eich- und Vermessungswesen
+ogdInfo: Österreichisches Adressregister
+file:
+  format: csv
+  formatOptions:
+    delimiter: ';'
+refData:
+  idField: SKZ
+  listFieldTitle: STRASSENNAME
+  listFieldAddress:
+  placeFilterField: ZUSTELLORT
+  showFields:
+    STRASSENNAME:
+      title: Straßenname
+    STRASSENNAMENZUSATZ:
+      title: Straßennamenzusatz
+    SZUSADRBEST:
+      title: Zusatz Bestandteil des Straßennamens
+      format: |
+        {% if item.STRASSENNAMENZUSATZ %}
+        {{ item.SZUSADRBEST }}
+        {% endif %}
+    GKZ:
+      title: Gemeindekennziffer
+    ZUSTELLORT:
+      title: Ort
+geocoder:
+  query:
+    street: |
+      {{ item.STRASSENNAME }}
+    city: |
+      {{ item.ZUSTELLORT }}
+wikidata:
+  refProperty: P10198
+  query: |
+    SELECT distinct ?item ?itemLabel ?itemDescription ?cityLabel WHERE{  
+      ?item wdt:P131 ?city.
+      ?city ?label "{{ item.ZUSTELLORT }}"@de.
+      ?item wdt:P31 wd:Q79007.
+      {
+        ?item ?label "{{ item.STRASSENNAME }}"@de.
+      }
+      union
+      {
+        ?item skos:altLabel ?altLabel.
+        FILTER (contains(?altLabel, "{{ item.STRASSENNAME }}"@de))
+      }
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "de". }    
+    }
+osm:
+  refDataNameField: STRASSENNAME
+  query:
+    - nwr[highway]

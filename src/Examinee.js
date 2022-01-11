@@ -5,12 +5,14 @@ const checks = require('./checks/index')
 const wikidataSimplify = require('./wikidataSimplify')
 const loader = {
   commons: require('./loader-commons.js'),
+  geocoder: require('./loader-geocoder.js'),
   osm: require('./loader-osm.js'),
   wikidata: require('./loader-wikidata.js'),
   wikipedia: require('./loader-wikipedia.js')
 }
 
 const modules = {
+  geocoder: 'Geocoder (OpenStreetMap Nominatim)',
   wikipedia: 'Wikipedia',
   wikidata: 'Wikidata',
   commons: 'Wikimedia Commons',
@@ -31,24 +33,19 @@ module.exports = class Examinee extends EventEmitter {
   }
 
   initMessages (dom) {
-    this.messagesUl = {}
+    this.messagesDiv = {}
 
     forEach(modules, (title, id) => {
       const div = document.createElement('div')
       dom.appendChild(div)
 
-      div.innerHTML = '<h2>' + title + '</h2>'
-
-      const ul = document.createElement('ul')
-      ul.className = 'check'
-      div.appendChild(ul)
-      this.messagesUl[id] = ul
+      this.messagesDiv[id] = div
     })
   }
 
   clearMessages () {
-    forEach(this.messagesUl,
-      ul => { ul.innerHTML = '' }
+    forEach(this.messagesDiv,
+      div => { div.innerHTML = '' }
     )
   }
 
@@ -78,6 +75,18 @@ module.exports = class Examinee extends EventEmitter {
     return false
   }
 
+  /**
+   * Like load(), but returns an actual result
+   * @return undefined or the actual result
+   */
+  loadResult (module, query) {
+    if (this.load(module, query)) {
+      return loader[module].cached(query)
+    }
+
+    return undefined
+  }
+
   message (module, status, message) {
     const li = document.createElement('li')
     if (typeof message === 'string') {
@@ -86,7 +95,18 @@ module.exports = class Examinee extends EventEmitter {
       li.appendChild(message)
     }
     li.className = status
-    this.messagesUl[module].appendChild(li)
+
+    if (this.messagesDiv[module].innerHTML === '') {
+      const div = this.messagesDiv[module]
+      div.innerHTML = '<h2>' + modules[module] + '</h2>'
+
+      const ul = document.createElement('ul')
+      ul.className = 'check'
+      div.appendChild(ul)
+    }
+
+    const ul = this.messagesDiv[module].querySelector('ul')
+    ul.appendChild(li)
 
     return true
   }

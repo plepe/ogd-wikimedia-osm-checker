@@ -6,24 +6,23 @@ const cache = new Cache()
 
 module.exports = {
   load (queries, options, callback) {
-    async.map(queries,
+    async.concat(queries,
       (query, done) => {
         const data = cache.get(query, options)
         if (data !== undefined) {
           return done(null, data)
         }
 
-        global.fetch('wikidata.cgi?' + queryString.stringify(query))
+        global.fetch('geocoder.cgi?' + queryString.stringify(query))
           .then(res => res.json())
-          .then(result => {
-            cache.add(query, result[0])
-            done(null, result[0])
+          .then(body => {
+            cache.add(query, body)
+            done(null, body)
           })
           .catch(e => done(e))
       },
-      (err, results) => {
-        results = results.filter(r => !!r)
-        async.setImmediate(() => callback(err, results))
+      (err, result) => {
+        async.setImmediate(() => callback(err, result))
       }
     )
   },
@@ -33,6 +32,6 @@ module.exports = {
   },
 
   includes (arr, el) {
-    return !!arr.filter(e => e.id === el.id).length
+    return !!arr.filter(e => e.query === el.query).length
   }
 }

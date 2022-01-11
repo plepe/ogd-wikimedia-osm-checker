@@ -14,19 +14,18 @@ class FixIDStream extends stream.Transform {
 }
 const fixIDStream = new FixIDStream()
 
-
 module.exports = function downloadDenkmallisteBerlin (callback) {
   fetch('https://www.berlin.de/landesdenkmalamt/_assets/pdf-und-zip/denkmale/liste-karte-datenbank/denkmalliste_berlin.csv')
     .then(response => {
       const converter = iconv.decodeStream('iso-8859-1')
       const writer = fs.createWriteStream('data/denkmalliste-berlin.csv')
-      const stream = response.body.pipe(converter).pipe(fixIDStream).pipe(writer)
+      response.body.pipe(converter).pipe(fixIDStream).pipe(writer)
 
       writer.on('finish', () => {
         callback(null)
       })
       writer.on('error', err => {
-        console.error(dataset.id, err)
+        console.error('DownloadDenkmallisteBerlin:', err)
       })
     })
 }
