@@ -21,7 +21,7 @@ module.exports = function (options, callback) {
   queries[id] = [callback]
 
   options.format = 'json'
-  url = 'https://nominatim.openstreetmap.org/search?' + queryString.stringify(options)
+  const url = 'https://nominatim.openstreetmap.org/search?' + queryString.stringify(options)
 
   fetch(url, {
     headers: {

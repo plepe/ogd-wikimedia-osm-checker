@@ -1,6 +1,5 @@
 const twigRender = require('../twigRender')
 
-const STATUS = require('../status.js')
 const Check = require('../Check.js')
 
 class CheckWikidataLoadViaQuery extends Check {
@@ -12,15 +11,9 @@ class CheckWikidataLoadViaQuery extends Check {
       return true
     }
 
-    const id = ob.id
-
     const query = twigRender(dataset.wikidata.query, ob.templateData())
 
-    if (!ob.load('wikidata', { query })) {
-      return false
-    }
-
-    return true
+    return ob.load('wikidata', { query })
   }
 }
 

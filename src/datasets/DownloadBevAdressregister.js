@@ -16,7 +16,7 @@ module.exports = function downloadBevAdressregister (callback) {
             downloaded = true
           }
 
-          done()
+          done(err)
         }
       )
     },
@@ -48,7 +48,7 @@ module.exports = function downloadBevAdressregister (callback) {
             done(null)
           })
           writer.on('error', err => {
-            console.error(dataset.id, err)
+            console.error('DownloadBevAdressregister:', err)
             done(err)
           })
         })

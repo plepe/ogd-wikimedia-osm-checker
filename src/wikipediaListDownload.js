@@ -37,6 +37,8 @@ module.exports = function wikipediaListDownload (dataset, callback) {
     async.each(dataset.source.pages,
       (page, done) => {
         list.getPageItems(page, options, (err, data) => {
+          if (err) { return callback(err) }
+
           data = modify(data, dataset)
           result = result.concat(data)
           done()
