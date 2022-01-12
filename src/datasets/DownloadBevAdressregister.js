@@ -5,6 +5,7 @@ const fetch = require('node-fetch')
 const JSDOM = require('jsdom').JSDOM
 
 let downloaded = false
+let date = null
 
 module.exports = function downloadBevAdressregister (callback) {
   async.waterfall([
@@ -13,6 +14,7 @@ module.exports = function downloadBevAdressregister (callback) {
       fs.stat('tmp/bev-adressregister.zip',
         (err, result) => {
           if (result) {
+            date = new Date(result.mtime)
             downloaded = true
           }
 
@@ -39,6 +41,11 @@ module.exports = function downloadBevAdressregister (callback) {
           const dom = new JSDOM(result)
           const link = dom.window.document.querySelector('table tr td a')
 
+          const m = link.textContent.match(/Stichtagsdaten ([0-9]{2})\.([0-9]{2})\.([0-9]{4})\.zip/)
+          if (m) {
+            date = new Date(m[3] + '-' + m[2] + '-' + m[1] + 'T12:00:00Z')
+          }
+
           done(null, 'https://www.bev.gv.at' + link.getAttribute('href'))
         })
     },
@@ -53,7 +60,7 @@ module.exports = function downloadBevAdressregister (callback) {
           response.body.pipe(writer)
 
           writer.on('finish', () => {
-            done(null)
+            fs.utimes('tmp/bev-adressregister.zip', date, date, done)
           })
           writer.on('error', err => {
             console.error('DownloadBevAdressregister:', err)
@@ -67,7 +74,10 @@ module.exports = function downloadBevAdressregister (callback) {
       zip.on('error', err => console.error(err))
 
       zip.on('ready', () => {
-        zip.extract('STRASSE.csv', 'data/bev-strassen.csv', done)
+        zip.extract('STRASSE.csv', 'data/bev-strassen.csv', (err) => {
+          if (err) { return done(err) }
+          fs.utimes('data/bev-strassen.csv', date, date, done)
+        })
       })
     }
   ], callback)
