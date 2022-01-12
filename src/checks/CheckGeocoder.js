@@ -24,9 +24,11 @@ class CheckGeocoder extends Check {
 
     if (!result.length) {
       ob.message('geocoder', STATUS.ERROR, 'Adresse konnte nicht gefunden werden.')
+      return true
     } else if (result.length === 1) {
       ob.message('geocoder', STATUS.SUCCESS, 'Adresse konnte gefunden werden: ' + createGeoLink({ latitude: result[0].lat, longitude: result[0].lon }))
       ob.data.geocoderSelected = result[0]
+      return true
     }
 
     const div = document.createElement('span')
