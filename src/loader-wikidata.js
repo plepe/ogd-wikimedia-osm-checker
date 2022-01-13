@@ -6,7 +6,9 @@ const cache = new Cache()
 
 module.exports = {
   load (queries, options, callback) {
-    async.map(queries,
+    const results = {}
+
+    async.each(queries,
       (query, done) => {
         const data = cache.get(query, options)
         if (data !== undefined) {
@@ -16,14 +18,14 @@ module.exports = {
         global.fetch('wikidata.cgi?' + queryString.stringify(query))
           .then(res => res.json())
           .then(result => {
-            cache.add(query, result[0])
-            done(null, result[0])
+            cache.add(query, result)
+            result.forEach(r => results[r.id] = r)
+            done(null)
           })
           .catch(e => done(e))
       },
-      (err, results) => {
-        results = results.filter(r => !!r)
-        async.setImmediate(() => callback(err, results))
+      (err) => {
+        async.setImmediate(() => callback(err, Object.values(results)))
       }
     )
   },
