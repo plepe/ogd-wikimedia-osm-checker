@@ -14,6 +14,7 @@ const modules = [
 ]
 
 let dataset
+let place
 
 let info
 
@@ -92,6 +93,7 @@ function updateDataset () {
   }
 
   dataset = datasets[selectDataset.value]
+  place = null
 
   let text = '<h1>' + (dataset.titleLong || dataset.title) + '</h1>'
 
@@ -185,8 +187,11 @@ function choose (path) {
 
 function update () {
   const select = document.getElementById('placeFilter')
-  const place = select.value
+  if (select.value === place) {
+    return
+  }
 
+  place = select.value
   const content = document.getElementById('content')
   while (content.firstChild) {
     content.removeChild(content.firstChild)
