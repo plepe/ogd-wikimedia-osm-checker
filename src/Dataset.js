@@ -221,6 +221,19 @@ class Dataset {
     return renderTemplate(ob.dataset.wikidata.recommendProperties, ob.templateData())
   }
 
+  getValues (key, callback) {
+    this.load((err) => {
+      if (err) { return callback(err) }
+
+      const result = {}
+      Object.values(this._data).forEach(item => {
+        result[item[key]] = null
+      })
+
+      callback(null, Object.keys(result).sort(), this.fileStat)
+    })
+  }
+
   getItems (options = {}, callback) {
     this.load((err) => callback(err, Object.values(this._data), this.fileStat))
   }
