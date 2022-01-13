@@ -7,6 +7,7 @@ const Dataset = require('./Dataset.js')
 const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
+const loadingIndicator = require('./loadingIndicator')
 
 const datasets = {} // deprecated
 const modules = [
@@ -20,10 +21,10 @@ let ob
 let info
 
 window.onload = () => {
-  document.body.classList.add('loading')
+  loadingIndicator.start()
 
   async.each(modules, (module, done) => module.init(done), (err) => {
-    document.body.classList.remove('loading')
+    loadingIndicator.end()
 
     if (err) {
       return global.alert(err)
@@ -115,11 +116,11 @@ function updateDataset () {
   }
   select.onchange = update
 
-  document.body.classList.add('loading')
+  loadingIndicator.start()
 
   if (dataset.refData.placeFilterField) {
     dataset.getValues(dataset.refData.placeFilterField, (err, values) => {
-      document.body.classList.remove('loading')
+      loadingIndicator.end()
 
       if (err) { return global.alert(err) }
 
@@ -132,7 +133,7 @@ function updateDataset () {
       updateDataset2()
     })
   } else {
-    document.body.classList.remove('loading')
+    loadingIndicator.end()
 
     const option = document.createElement('option')
     option.appendChild(document.createTextNode('alle'))
@@ -269,7 +270,7 @@ function check (id, options = {}) {
     }
     div.appendChild(reload)
 
-    document.body.classList.add('loading')
+    loadingIndicator.start()
 
     const format = dataset.showFormat(entry)
     if (typeof format === 'string') {
@@ -291,7 +292,7 @@ function check (id, options = {}) {
     ob.runChecks(dataset, options, (err, result) => {
       if (err) { global.alert(err) }
 
-      document.body.classList.remove('loading')
+      loadingIndicator.end()
     })
 
     document.title = dataset.title + '/' + ob.id + ' - ogd-wikimedia-osm-checker'
