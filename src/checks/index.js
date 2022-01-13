@@ -1,4 +1,5 @@
 module.exports = [
+  require('./CheckGeocoder')(),
   require('./CheckWikidataAutoselect')(),
   require('./CheckWikidataSelect')(),
   require('./CheckCommonsLoadFromWikidata')(),
@@ -10,6 +11,7 @@ module.exports = [
   require('./CheckWikidataShow')(),
   require('./CheckWikidataIsA')(),
   require('./CheckWikidataLoadViaRef')(),
+  require('./CheckWikidataLoadViaQuery')(),
   require('./CheckWikidataCoords')(),
   require('./CheckWikidataImage')(),
   require('./CheckWikidataLoadFromCommons')(),

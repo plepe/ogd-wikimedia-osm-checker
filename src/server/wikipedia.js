@@ -1,6 +1,4 @@
-const fs = require('fs')
 const WikipediaListExtractor = require('wikipedia-list-extractor')
-const yaml = require('yaml')
 
 const lists = {}
 const extractorOptions = { loadRendered: false }

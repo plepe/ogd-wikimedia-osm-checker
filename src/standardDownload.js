@@ -19,7 +19,12 @@ module.exports = function standardDownload (dataset, callback) {
       response.body.pipe(writer)
 
       writer.on('finish', () => {
-        callback(null)
+        if (response.headers.has('last-modified')) {
+          const date = new Date(response.headers.get('last-modified'))
+          fs.utimes('data/' + dataset.file.name, date, date, callback)
+        } else {
+          callback(null)
+        }
       })
       writer.on('error', err => {
         console.error(dataset.id, err)

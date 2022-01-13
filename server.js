@@ -1,6 +1,7 @@
 // compatibilty NodeJS < 11.0
 require('array.prototype.flat').shim()
 
+const async = require('async')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
@@ -77,17 +78,26 @@ const requestListener = function (req, res) {
     return
   }
 
-  fs.readFile(path.join(__dirname, file), (err, contents) => {
-    if (err) {
-      res.writeHead(500)
-      res.end()
-      return console.error(err)
-    }
+  const fileName = path.join(__dirname, file)
+  async.parallel(
+    {
+      contents: (done) => fs.readFile(fileName, done),
+      stat: (done) => fs.stat(fileName, done)
+    },
+    (err, { contents, stat }) => {
+      if (err) {
+        res.writeHead(500)
+        res.end()
+        return console.error(err)
+      }
 
-    res.setHeader('Content-Type', ext in contentTypes ? contentTypes[ext] : 'text/plain')
-    res.writeHead(200)
-    res.end(contents)
-  })
+      res.setHeader('Content-Type', ext in contentTypes ? contentTypes[ext] : 'text/plain')
+      res.setHeader('Last-Modified', new Date(stat.mtime).toUTCString())
+      res.setHeader('X-Download-Date', new Date(stat.ctime).toUTCString())
+      res.writeHead(200)
+      res.end(contents)
+    }
+  )
 }
 
 const server = http.createServer(requestListener)

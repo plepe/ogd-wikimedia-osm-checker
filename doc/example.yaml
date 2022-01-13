@@ -128,6 +128,17 @@ wikipediaList:
     - Type
     - Description
 
+# [optional] if the dataset does not contain coordinates, you can use the 'Nominatim' geocoder for getting a coordinate pair from an address
+geocoder:
+  # [optional] query to nominatim; find documentation about possible parameters
+  # here: https://nominatim.org/release-docs/develop/api/Search/
+  # each of the values is a twig template:
+  query:
+    street: '{{ item.STREET }}'
+    city: |
+      {{ item.CITY }}
+    country: Austria
+
 # [optional] Configuration of the item in Wikidata
 wikidata:
   # [optional] which property holds the reference to this dataset
@@ -139,6 +150,13 @@ wikidata:
   # [optional] if the reference id has to modified from the value in the reference data.
   # Uses TwigJS syntax (see below for available variables).
   refFormat: "{{ item.ID }}"
+
+  # [optional] a special query for searching matching items via SPARQL on query.wikidata.org
+  # Uses TwigJS syntax (see below for available variables).
+  query: |
+    SELECT DISTINCT ?item WHERE {
+      ?item ?label "{{ item.Name }}"@de.
+    }
 
   # [optional] the wikidata representation of an item should have these
   # properties. This is either an array or a multi-line string with a property

@@ -7,7 +7,7 @@ function modify (data, dataset) {
     const row = d[dataset.source.parser]
     delete d[dataset.source.parser]
 
-    for (let k in row) {
+    for (const k in row) {
       d[k] = row[k]
     }
   })
@@ -32,11 +32,13 @@ module.exports = function wikipediaListDownload (dataset, callback) {
     dataset.source.parser = 'raw'
     options.loadRendered = false
   }
-  
+
   if (dataset.source.pages) {
     async.each(dataset.source.pages,
       (page, done) => {
         list.getPageItems(page, options, (err, data) => {
+          if (err) { return callback(err) }
+
           data = modify(data, dataset)
           result = result.concat(data)
           done()

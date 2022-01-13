@@ -1,0 +1,55 @@
+title: Österreichische Straßen
+operator: Bundesamt für Eich- und Vermessungswesen
+ogdInfo: Österreichisches Adressregister
+file:
+  format: csv
+  formatOptions:
+    delimiter: ';'
+refData:
+  idField: SKZ
+  listFieldTitle: STRASSENNAME
+  listFieldAddress:
+  placeFilterField: ZUSTELLORT
+  showFields:
+    STRASSENNAME:
+      title: Straßenname
+    STRASSENNAMENZUSATZ:
+      title: Straßennamenzusatz
+    SZUSADRBEST:
+      title: Zusatz Bestandteil des Straßennamens
+      format: |
+        {% if item.STRASSENNAMENZUSATZ %}
+        {{ item.SZUSADRBEST }}
+        {% endif %}
+    GKZ:
+      title: Gemeindekennziffer
+    ZUSTELLORT:
+      title: Ort
+geocoder:
+  query:
+    street: |
+      {{ item.STRASSENNAME }}
+    city: |
+      {{ item.ZUSTELLORT }}
+wikidata:
+  refProperty: P10198
+  query: |
+    SELECT distinct ?item ?itemLabel ?itemDescription ?cityLabel WHERE{  
+      VALUES ?roadPlaceTypes { wd:Q79007 wd:Q174782 wd:Q12280 wd:Q44377 wd:Q12511 wd:Q22698 wd:Q486972 wd:Q3257686 wd:Q21000333 wd:Q2168991 wd:Q532 wd:Q814289 }
+      ?item wdt:P131 ?city.
+      ?city ?label "{{ item.ZUSTELLORT }}"@de.
+      ?item wdt:P31 ?roadPlaceTypes.
+      {
+        ?item ?label "{{ item.STRASSENNAME }}"@de.
+      }
+      union
+      {
+        ?item skos:altLabel ?altLabel.
+        FILTER (contains(?altLabel, "{{ item.STRASSENNAME }}"@de))
+      }
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "de". }    
+    }
+osm:
+  refDataNameField: STRASSENNAME
+  query:
+    - nwr[highway]
