@@ -3,7 +3,7 @@ const natsort = require('natsort').default
 const twig = require('twig').twig
 
 const createGeoLink = require('./createGeoLink')
-const load = require('./load')
+const get = require('./get')
 const renderTemplate = require('./renderTemplate')
 const loadFile = require('./loadFile')
 const datasetsList = require('./datasetsList')
@@ -19,25 +19,6 @@ class Dataset {
     for (const k in data) {
       this[k] = data[k]
     }
-  }
-
-  load (callback) {
-    if (this._data) {
-      return callback(null)
-    }
-
-    this._data = {}
-    load(this, (err, json, stat) => {
-      if (err) { return callback(err) }
-
-      json.forEach((entry, index) => {
-        this._data[this.refData.idField ? entry[this.refData.idField] : index] = entry
-      })
-
-      this.fileStat = stat
-
-      callback(null)
-    })
   }
 
   listFormat (item, index) {
@@ -212,24 +193,17 @@ class Dataset {
   }
 
   getValues (key, callback) {
-    this.load((err) => {
-      if (err) { return callback(err) }
-
-      const result = {}
-      Object.values(this._data).forEach(item => {
-        result[item[key]] = null
-      })
-
-      callback(null, Object.keys(result).sort(), this.fileStat)
-    })
+    get.values(this, key, (err, values) => callback(err, values, this.fileStat))
   }
 
   getItems (options = {}, callback) {
-    this.load((err) => callback(err, Object.values(this._data), this.fileStat))
+    get.items(this, options, (err, data) => callback(err, data, this.fileStat))
   }
 
   getItem (id, callback) {
-    this.load((err) => callback(err, this._data[id], this.fileStat))
+    get.item(this, id, (err, item, stat) => {
+      callback(err, item, stat)
+    })
   }
 }
 
