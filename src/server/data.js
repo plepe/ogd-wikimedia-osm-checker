@@ -2,12 +2,11 @@ const async = require('async')
 const yaml = require('yaml')
 
 const Dataset = require('../Dataset')
-const load = require('../load')
 
 module.exports = function (options, callback) {
   Dataset.get(options.dataset,
     (err, dataset) => {
-      load(dataset, (err, data, stat) => {
+      dataset.getItems(options, (err, data, stat) => {
         if (err) { return callback(err) }
 
         const header = {}

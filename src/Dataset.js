@@ -29,8 +29,10 @@ class Dataset {
     const placeFilter = {}
     this._data = {}
 
-    load(this, (err, json) => {
+    load(this, (err, json, stat) => {
       if (err) { return callback(err) }
+
+      this.fileStat = stat
 
       json.forEach((entry, index) => {
         this._data[this.refData.idField ? entry[this.refData.idField] : index] = entry
@@ -220,11 +222,11 @@ class Dataset {
   }
 
   getItems (options = {}, callback) {
-    this.load((err) => callback(err, Object.values(this._data)))
+    this.load((err) => callback(err, Object.values(this._data), this.fileStat))
   }
 
   getItem (id, callback) {
-    this.load((err) => callback(err, this._data[id]))
+    this.load((err) => callback(err, this._data[id], this.fileStat))
   }
 }
 
