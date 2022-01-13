@@ -5,6 +5,13 @@ function serverLoad (dataset, options, callback) {
 
   let url = 'data.cgi?dataset=' + encodeURIComponent(dataset.id)
   if (options) {
+    options = JSON.parse(JSON.stringify(options))
+    if (options.filter) {
+      for (let k in options.filter) {
+        options['filter.' + k] = options.filter[k]
+      }
+      delete options.filter
+    }
     url += '&' + queryString.stringify(options)
   }
 

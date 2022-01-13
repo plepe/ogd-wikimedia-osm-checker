@@ -53,7 +53,21 @@ const requestListener = function (req, res) {
     file = m[1]
     proc = m[2]
     ext = m[3]
-    param = queryString.parse(m[4])
+    const _param = queryString.parse(m[4])
+    param = {}
+
+    for (let k in _param) {
+      let m = k.split('.')
+      if (m.length === 2) {
+        if (!(m[0] in param)) {
+          param[m[0]] = {}
+        }
+
+        param[m[0]][m[1]] = _param[k]
+      } else {
+        param[k] = _param[k]
+      }
+    }
   }
 
   if (ext === 'cgi') {
