@@ -21,6 +21,8 @@ class CheckWikidataRecommendations extends Check {
       recommendations = recommendations.concat(dataset.wikidataRecommendProperties(ob))
     }
 
+    // trim strings
+    recommendations = recommendations.map(r => r.trim())
     // unique
     recommendations = [...new Set(recommendations)]
     // filter all recommendations which are already set
