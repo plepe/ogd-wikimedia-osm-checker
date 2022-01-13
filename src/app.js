@@ -170,7 +170,9 @@ function choose (path) {
     return null
   }
 
+  loadingIndicator.start()
   dataset.getItem(id, (err, item) => {
+    loadingIndicator.end()
     if (err) { return global.alert(id + ' nicht gefunden!') }
 
     httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
@@ -218,7 +220,9 @@ function update () {
     options.filter[dataset.refData.placeFilterField] = place
   }
 
+  loadingIndicator.start()
   dataset.getItems(options, (err, items) => {
+    loadingIndicator.end()
     if (err) { return global.alert(err) }
 
     items.forEach((item, index) => {
@@ -249,7 +253,9 @@ function update () {
 }
 
 function check (id, options = {}) {
+  loadingIndicator.start()
   dataset.getItem(id, (err, entry) => {
+    loadingIndicator.end()
     if (err) { return global.alert(err) }
 
     const div = document.getElementById('details')

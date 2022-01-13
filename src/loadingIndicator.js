@@ -10,5 +10,10 @@ module.exports = {
     if (--count <= 0) {
       document.body.classList.remove('loading')
     }
+  },
+
+  reset () {
+    count = 0
+    document.body.classList.remove('loading')
   }
 }
