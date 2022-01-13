@@ -204,32 +204,36 @@ function update () {
 
   const dom = document.getElementById('data')
 
-  dataset.getItems({}, (err, items) => {
+  const options = {}
+  if (dataset.refData.placeFilterField) {
+    options.filter = {}
+    options.filter[dataset.refData.placeFilterField] = place
+  }
+
+  dataset.getItems(options, (err, items) => {
     if (err) { return global.alert(err) }
 
     items.forEach((item, index) => {
       const id = dataset.refData.idField ? item[dataset.refData.idField] : index
 
-      if (!dataset.refData.placeFilterField || ('' + item[dataset.refData.placeFilterField]) === place) {
-        const text = dataset.listFormat(item, index)
+      const text = dataset.listFormat(item, index)
 
-        const tr = document.createElement('tr')
-        tr.id = dataset.id + '-' + id
+      const tr = document.createElement('tr')
+      tr.id = dataset.id + '-' + id
 
-        const td = document.createElement('td')
-        tr.appendChild(td)
+      const td = document.createElement('td')
+      tr.appendChild(td)
 
-        const a = document.createElement('a')
-        if (typeof text === 'string') {
-          a.innerHTML = text
-        } else {
-          a.appendChild(text)
-        }
-        a.href = '#' + dataset.id + '/' + id
-
-        td.appendChild(a)
-        dom.appendChild(tr)
+      const a = document.createElement('a')
+      if (typeof text === 'string') {
+        a.innerHTML = text
+      } else {
+        a.appendChild(text)
       }
+      a.href = '#' + dataset.id + '/' + id
+
+      td.appendChild(a)
+      dom.appendChild(tr)
     })
   })
 }

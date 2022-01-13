@@ -6,26 +6,25 @@ const Dataset = require('../Dataset')
 module.exports = function (options, callback) {
   Dataset.get(options.dataset,
     (err, dataset) => {
-      dataset.getItems(options, (err, data, stat) => {
-        if (err) { return callback(err) }
-
-        const header = {}
-        if (stat) {
-          header['Last-Modified'] = new Date(stat.mtime).toUTCString()
-          header['X-Download-Date'] = new Date(stat.ctime).toUTCString()
-        }
-
-        if ('id' in options) {
-          if (dataset.refData.idField) {
-            const filtered = data.filter(item => '' + item[dataset.refData.idField] === options.id)
-            callback(null, filtered[0], header)
-          } else {
-            callback(null, data[options.id], header)
-          }
-        } else {
-          callback(null, data, header)
-        }
-      })
+      if (options.id) {
+        dataset.getItem(options.id, (err, data, stat) => reply(err, dataset, data, stat, callback))
+      } else if (options.values) {
+        dataset.getValues(options.values, (err, data, stat) => reply(err, dataset, data, stat, callback))
+      } else {
+        dataset.getItems(options, (err, data, stat) => reply(err, dataset, data, stat, callback))
+      }
     }
   )
+}
+
+function reply (err, dataset, data, stat, callback) {
+  if (err) { return callback(err) }
+
+  const header = {}
+  if (stat) {
+    header['Last-Modified'] = new Date(stat.mtime).toUTCString()
+    header['X-Download-Date'] = new Date(stat.ctime).toUTCString()
+  }
+
+  callback(null, data, header)
 }

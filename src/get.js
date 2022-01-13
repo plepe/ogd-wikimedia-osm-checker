@@ -21,6 +21,17 @@ const get = {
       }
 
       callback(null, result)
+    } else if ('filter' in options) {
+      const result = dataset._data.filter(item => {
+        for (let k in options.filter) {
+          if (item[k] != options.filter[k]) {
+            return false
+          }
+        }
+        return true
+      })
+
+      callback(null, result)
     } else {
       callback(null, dataset._data)
     }
