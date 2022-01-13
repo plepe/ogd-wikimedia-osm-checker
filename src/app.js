@@ -15,6 +15,7 @@ const modules = [
 
 let dataset
 let place
+let ob
 
 let info
 
@@ -94,6 +95,7 @@ function updateDataset () {
 
   dataset = datasets[selectDataset.value]
   place = null
+  ob = null
 
   let text = '<h1>' + (dataset.titleLong || dataset.title) + '</h1>'
 
@@ -240,6 +242,8 @@ function update () {
       td.appendChild(a)
       dom.appendChild(tr)
     })
+
+    selectCurrent()
   })
 }
 
@@ -282,7 +286,7 @@ function check (id, options = {}) {
       }
     })
 
-    const ob = new Examinee(id, entry, dataset)
+    ob = new Examinee(id, entry, dataset)
     ob.initMessages(div)
     ob.runChecks(dataset, options, (err, result) => {
       if (err) { global.alert(err) }
@@ -292,13 +296,21 @@ function check (id, options = {}) {
 
     document.title = dataset.title + '/' + ob.id + ' - ogd-wikimedia-osm-checker'
 
-    const table = document.getElementById('data')
-    Array.from(table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
-
-    const listEntry = document.getElementById(dataset.id + '-' + ob.id)
-    if (listEntry) {
-      listEntry.classList.add('active')
-      listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
+    selectCurrent()
   })
+}
+
+function selectCurrent () {
+  const table = document.getElementById('data')
+  Array.from(table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
+
+  if (!dataset || !ob) {
+    return
+  }
+
+  const listEntry = document.getElementById(dataset.id + '-' + ob.id)
+  if (listEntry) {
+    listEntry.classList.add('active')
+    listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
 }
