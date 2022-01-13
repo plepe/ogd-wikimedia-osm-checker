@@ -1,5 +1,7 @@
+const async = require('async')
 const iconv = require('iconv-lite')
 const csvtojson = require('csvtojson')
+const fs = require('fs')
 
 const loadFile = require('./loadFile')
 
@@ -15,15 +17,23 @@ module.exports = function load (dataset, callback) {
     dataset.file.name = dataset.id + '.' + dataset.file.format
   }
 
-  switch (dataset.file.format) {
-    case 'csv':
-      loadCSV(dataset, callback)
-      break
-    case 'geojson':
-    case 'json':
-    default:
-      loadJSON(dataset, callback)
-  }
+  async.parallel(
+    {
+      stat: (done) => fs.stat('data/' + dataset.file.name, done),
+      contents: (done) => {
+        switch (dataset.file.format) {
+          case 'csv':
+            loadCSV(dataset, done)
+            break
+          case 'geojson':
+          case 'json':
+          default:
+            loadJSON(dataset, done)
+        }
+      }
+    },
+    (err, { contents, stat }) => callback(err, contents, stat)
+  )
 }
 
 function loadCSV (dataset, callback) {

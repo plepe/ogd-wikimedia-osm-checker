@@ -63,7 +63,11 @@ const requestListener = function (req, res) {
       return console.error('Process ' + proc + ' not found')
     }
 
-    cgi[proc](param, (err, result) => {
+    cgi[proc](param, (err, result, header = null) => {
+      if (header) {
+        Object.keys(header).forEach(k => res.setHeader(k, header[k]))
+      }
+
       if (err) {
         res.writeHead(500)
         res.end()
