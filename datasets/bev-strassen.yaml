@@ -58,6 +58,12 @@ wikidata:
       }
       SERVICE wikibase:label { bd:serviceParam wikibase:language "de". }    
     }
+  recommendProperties: |
+    P138
+    P571
+    {% if item.ZUSTELLORT == 'Wien' %}
+      P7842
+    {% endif %}
 osm:
   refDataNameField: STRASSENNAME
   query:
