@@ -26,25 +26,15 @@ class Dataset {
       return callback(null)
     }
 
-    const placeFilter = {}
     this._data = {}
-
     load(this, (err, json, stat) => {
       if (err) { return callback(err) }
 
-      this.fileStat = stat
-
       json.forEach((entry, index) => {
         this._data[this.refData.idField ? entry[this.refData.idField] : index] = entry
-        placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
       })
 
-      if (this.refData.placeFilterField) {
-        this.placeFilter = Object.keys(placeFilter)
-        this.placeFilter = this.placeFilter.sort(natsort({ insensitive: true }))
-      } else {
-        this.placeFilter = ['alle']
-      }
+      this.fileStat = stat
 
       callback(null)
     })

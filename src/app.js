@@ -109,25 +109,41 @@ function updateDataset () {
   while (select.firstChild.nextSibling) {
     select.removeChild(select.firstChild.nextSibling)
   }
+  select.onchange = update
 
   document.body.classList.add('loading')
-  dataset.load((err) => {
-    document.body.classList.remove('loading')
-    if (err) { global.alert(err) }
 
-    dataset.placeFilter.forEach(place => {
-      const option = document.createElement('option')
-      option.appendChild(document.createTextNode(place))
-      select.appendChild(option)
+  if (dataset.refData.placeFilterField) {
+    dataset.getValues(dataset.refData.placeFilterField, (err, values) => {
+      document.body.classList.remove('loading')
+
+      if (err) { return global.alert(err) }
+
+      values.forEach(place => {
+        const option = document.createElement('option')
+        option.appendChild(document.createTextNode(place))
+        select.appendChild(option)
+      })
+
+      updateDataset2()
     })
+  } else {
+    document.body.classList.remove('loading')
 
-    select.onchange = update
-    if (global.location.hash) {
-      choose(global.location.hash.substr(1))
-    } else {
-      update()
-    }
-  })
+    const option = document.createElement('option')
+    option.appendChild(document.createTextNode('alle'))
+    select.appendChild(option)
+
+    updateDataset2()
+  }
+}
+
+function updateDataset2 () {
+  if (global.location.hash) {
+    choose(global.location.hash.substr(1))
+  } else {
+    update()
+  }
 }
 
 function choose (path) {
