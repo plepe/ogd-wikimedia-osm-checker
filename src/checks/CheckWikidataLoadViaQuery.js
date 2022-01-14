@@ -11,6 +11,24 @@ class CheckWikidataLoadViaQuery extends Check {
       return true
     }
 
+    if (dataset.wikidata.refProperty && !ob.isDone('CheckWikidataLoadViaRef')) {
+      // wait for the 'LoadViaRef' loader to finish
+      return false
+    }
+
+    if (dataset.wikidata.refProperty && ob.data.wikidataSelected) {
+      const entry = ob.data.wikidataSelected
+      const found =
+        !!entry.claims[dataset.wikidata.refProperty] &&
+        entry.claims[dataset.wikidata.refProperty].filter(
+          claim => claim.mainsnak.datavalue.value === ob.id
+        ).length
+      // selected wikidata object has correct ref - no need to query
+      if (found) {
+        return true
+      }
+    }
+
     const query = twigRender(dataset.wikidata.query, ob.templateData())
 
     return ob.load('wikidata', { query })
