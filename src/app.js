@@ -8,6 +8,7 @@ const Dataset = require('./Dataset.js')
 const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
+const showLast = require('./showLast')
 
 const datasets = {}
 const modules = [
@@ -77,6 +78,7 @@ function init () {
   })
 
   info = document.getElementById('content').innerHTML
+  showLast()
 
   selectDataset.onchange = chooseDataset
 
@@ -102,6 +104,7 @@ function updateDataset () {
 
   if (!selectDataset.value) {
     content.innerHTML = info
+    showLast()
     return
   }
 
@@ -150,6 +153,7 @@ function choose (path) {
   if (!_dataset && !id) {
     const content = document.getElementById('content')
     content.innerHTML = info
+    showLast()
     document.title = 'ogd-wikimedia-osm-checker'
   }
 
@@ -192,6 +196,7 @@ function update () {
 
   if (place === '') {
     content.innerHTML = info
+    showLast()
     return
   }
 

@@ -126,3 +126,9 @@ body.loading > #loadingIndicator:before {
     margin-left: 100%;
   }
 }
+
+ul#last > li > .ts {
+  float: right;
+  font-size: 0.8em;
+  padding-right: 40px;
+}
