@@ -242,6 +242,20 @@ class Dataset {
 
     return renderTemplate(ob.dataset.wikidata.recommendProperties, ob.templateData())
   }
+
+  showInfo (content) {
+    let text = '<h1>' + (this.titleLong || this.title) + '</h1>'
+
+    if (this.ogdInfo) {
+      text += '<p>' + this.ogdInfo + '</p>'
+    }
+
+    if (this.ogdURL) {
+      text += '<p><a target="_blank" href="' + escHTML(this.ogdURL) + '">Info</a></p>'
+    }
+
+    content.innerHTML = text
+  }
 }
 
 module.exports = Dataset

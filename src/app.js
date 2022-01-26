@@ -110,17 +110,7 @@ function updateDataset () {
 
   dataset = datasets[selectDataset.value]
 
-  let text = '<h1>' + (dataset.titleLong || dataset.title) + '</h1>'
-
-  if (dataset.ogdInfo) {
-    text += '<p>' + dataset.ogdInfo + '</p>'
-  }
-
-  if (dataset.ogdURL) {
-    text += '<p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
-  }
-
-  content.innerHTML = text
+  dataset.showInfo(content)
 
   const select = document.getElementById('placeFilter')
   while (select.firstChild.nextSibling) {
