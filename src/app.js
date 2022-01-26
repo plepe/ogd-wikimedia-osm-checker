@@ -154,6 +154,8 @@ function choose (path) {
   }
 
   if (!id) {
+    const content = document.getElementById('content')
+    dataset.showInfo(content)
     return null
   }
 
