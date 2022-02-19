@@ -38,6 +38,7 @@ wikidata:
   - P571
   - P1619
   - P7842
+  - P361=Q1740731
 osm:
   addTags:
   - "start_date={{ item.Baujahr }}"
