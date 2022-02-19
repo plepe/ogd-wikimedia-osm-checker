@@ -165,6 +165,7 @@ wikidata:
     P571 # date of inception
     P625 # coordinates
     {% if item.TYPE == 'foo' %}P31{% endif %} # is a
+    P361=Q42 # Property P361 should have a value Q42
 
 # [optional] Configuration of the item in Wikimedia Commons
 commons:
