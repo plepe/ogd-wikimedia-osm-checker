@@ -24,6 +24,11 @@ refData:
     Beschreibung:
       format: "{{ item.Beschreibung|raw }}"
 wikidata:
+  query: |
+    select ?item WHERE {
+      ?item wdt:P361 wd:Q1740731.
+      ?item ?label "{{ item.Name }}"@de.
+    }
   recommendProperties:
   - P84
   - P138
