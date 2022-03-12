@@ -2,6 +2,7 @@ const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const forEach = require('foreach')
 const async = require('async')
+const modulekitTabs = require('modulekit-tabs')
 
 const Dataset = require('./Dataset.js')
 const Examinee = require('./Examinee.js')
@@ -20,8 +21,13 @@ let ob
 
 let info
 
+let tabs
+let infoTab
+
 window.onload = () => {
   loadingIndicator.start()
+
+  tabs = new modulekitTabs.Tabs(document.getElementById('tabs'))
 
   async.each(modules, (module, done) => module.init(done), (err) => {
     loadingIndicator.end()
@@ -87,7 +93,15 @@ function chooseDataset () {
 
 function updateDataset () {
   const content = document.getElementById('content')
+  while (content.lastChild) {
+    content.removeChild(content.lastChild)
+  }
+
   const selectDataset = document.getElementById('Dataset')
+
+  if (infoTab) {
+    tabs.remove(infoTab)
+  }
 
   if (!selectDataset.value) {
     content.innerHTML = info
@@ -108,7 +122,12 @@ function updateDataset () {
     text += '<p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
   }
 
-  content.innerHTML = text
+  infoTab = new modulekitTabs.Tab({ id: 'info', weight: 0 })
+  tabs.add(infoTab)
+  infoTab.select()
+
+  infoTab.header.innerHTML = 'Info'
+  infoTab.content.innerHTML = text
 
   const select = document.getElementById('placeFilter')
   while (select.firstChild.nextSibling) {
@@ -144,10 +163,10 @@ function updateDataset () {
 }
 
 function updateDataset2 () {
+    update()
   if (global.location.hash) {
     choose(global.location.hash.substr(1))
   } else {
-    update()
   }
 }
 
@@ -192,6 +211,11 @@ function choose (path) {
 
 function update () {
   const select = document.getElementById('placeFilter')
+
+  if (!select.value) {
+    select.value = select.firstChild.nextSibling.value
+  }
+
   if (select.value === place) {
     return
   }
@@ -200,11 +224,6 @@ function update () {
   const content = document.getElementById('content')
   while (content.firstChild) {
     content.removeChild(content.firstChild)
-  }
-
-  if (place === '') {
-    content.innerHTML = info
-    return
   }
 
   const table = document.createElement('table')

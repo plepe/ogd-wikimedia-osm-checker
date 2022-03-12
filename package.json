@@ -4,8 +4,8 @@
   "description": "Vergleiche die Einträge verschiedener OGD Datensätze mit Wikidata, Wikipedia, Wikimedia Commons und OpenStreetMap.",
   "main": "index.js",
   "scripts": {
-    "build": "mkdir -p dist && browserify -p esmify src/app.js -o dist/app.js",
-    "watch": "mkdir -p dist && watchify -p esmify --debug src/app.js -o dist/app.js -v",
+    "build": "mkdir -p dist && browserify -g browserify-css -p esmify src/app.js -o dist/app.js",
+    "watch": "mkdir -p dist && watchify -g browserify-css -p esmify --debug src/app.js -o dist/app.js -v",
     "download": "mkdir -p data && node download.js",
     "lint": "standard --fix download.js server.js src/*.js src/*/*.js test/*.js",
     "prepare": "npm run build",
@@ -32,6 +32,7 @@
     "html-escape": "^2.0.0",
     "iconv-lite": "^0.6.3",
     "jsdom": "^16.7.0",
+    "modulekit-tabs": "git+https://github.com/plepe/modulekit-tabs.git",
     "natsort": "^2.0.3",
     "node-fetch": "^2.6.5",
     "node-stream-zip": "^1.15.0",
