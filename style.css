@@ -126,3 +126,14 @@ body.loading > #loadingIndicator:before {
     margin-left: 100%;
   }
 }
+
+#tabs {
+  margin: 0.25em 0.25em;
+}
+.tabs-section {
+  padding: 0 0.25em;
+}
+.tabs-section > h1:first-of-type {
+  padding-top: 0.25em;
+  margin-top: 0;
+}
