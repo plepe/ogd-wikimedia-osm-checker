@@ -23,6 +23,7 @@ let info
 
 let tabs
 let infoTab
+let filterTab
 
 window.onload = () => {
   loadingIndicator.start()
@@ -102,6 +103,9 @@ function updateDataset () {
   if (infoTab) {
     tabs.remove(infoTab)
   }
+  if (filterTab) {
+    tabs.remove(filterTab)
+  }
 
   if (!selectDataset.value) {
     content.innerHTML = info
@@ -130,11 +134,24 @@ function updateDataset () {
   infoTab.header.title = "Info"
   infoTab.content.innerHTML = text
 
-  const select = document.getElementById('placeFilter')
-  while (select.firstChild.nextSibling) {
-    select.removeChild(select.firstChild.nextSibling)
+  filterTab = new modulekitTabs.Tab({ id: 'filter', weight: 1 })
+  tabs.add(filterTab)
+
+  const select = document.createElement('select')
+  select.id = 'placeFilter'
+  while (select.firstChild) {
+    select.removeChild(select.firstChild)
   }
   select.onchange = update
+
+  const option = document.createElement('option')
+  option.value = ''
+  option.appendChild(document.createTextNode('Wähle Ort ...'))
+  select.appendChild(option)
+
+  filterTab.header.innerHTML = '<i class="fa-solid fa-filter"></i>'
+  filterTab.header.title = "Filter"
+  filterTab.content.appendChild(select)
 
   loadingIndicator.start()
 

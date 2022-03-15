@@ -13,8 +13,8 @@ a .address {
   width: calc(50% - 1px);
   border-right: 1px solid black;
 }
-#selector > div > select {
-  width: 49%;
+#selector select#Dataset {
+  width: 100%;
   box-sizing: border-box;
   display: inline-block;
 }
