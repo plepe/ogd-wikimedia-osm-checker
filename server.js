@@ -43,7 +43,7 @@ const requestListener = function (req, res) {
     })
     return
   } else {
-    const m = req.url.match(/^(\/([/[0-9A-Z-_]+)\.([A-Z]+))(\?.*|)$/i)
+    const m = req.url.match(/^(\/([/[\/@0-9A-Z-_\.]+)\.([A-Z]+))(\?.*|)$/i)
     if (!m) {
       res.writeHead(500)
       res.end('Invalid request')
