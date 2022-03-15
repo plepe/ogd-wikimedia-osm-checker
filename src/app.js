@@ -126,7 +126,8 @@ function updateDataset () {
   tabs.add(infoTab)
   infoTab.select()
 
-  infoTab.header.innerHTML = 'Info'
+  infoTab.header.innerHTML = '<i class="fa-solid fa-circle-info"></i>'
+  infoTab.header.title = "Info"
   infoTab.content.innerHTML = text
 
   const select = document.getElementById('placeFilter')

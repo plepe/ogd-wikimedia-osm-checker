@@ -130,6 +130,9 @@ body.loading > #loadingIndicator:before {
 #tabs {
   margin: 0.25em 0.25em;
 }
+.tabs > .tabs-list > li {
+  font-size: 1.5em;
+}
 .tabs-section {
   padding: 0 0.25em;
 }
