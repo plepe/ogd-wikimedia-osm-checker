@@ -155,29 +155,19 @@ function updateDataset () {
 
   loadingIndicator.start()
 
-  if (dataset.refData.placeFilterField) {
-    dataset.getValues(dataset.refData.placeFilterField, (err, values) => {
-      loadingIndicator.end()
+  const filterDom = document.getElementById('filterDom')
+  while (filterDom.lastChild) {
+    filterDom.removeChild(filterDom.lastChild)
+  }
 
-      if (err) { return global.alert(err) }
-
-      values.forEach(place => {
-        const option = document.createElement('option')
-        option.appendChild(document.createTextNode(place))
-        select.appendChild(option)
-      })
-
-      updateDataset2()
-    })
-  } else {
+  dataset.getFilter((err, datasetFilter) => {
     loadingIndicator.end()
 
-    const option = document.createElement('option')
-    option.appendChild(document.createTextNode('alle'))
-    select.appendChild(option)
+    if (err) { return global.alert(err) }
 
-    updateDataset2()
-  }
+    datasetFilter.show(filterDom)
+    datasetFilter.on('change', update)
+  })
 }
 
 function updateDataset2 () {
@@ -228,6 +218,10 @@ function choose (path) {
 }
 
 function update () {
+  const datasetFilter = dataset.getFilter()
+  const filter = datasetFilter.get()
+  console.log(filter)
+
   const select = document.getElementById('placeFilter')
 
   if (!select.value) {

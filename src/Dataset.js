@@ -7,6 +7,7 @@ const get = require('./get')
 const renderTemplate = require('./renderTemplate')
 const loadFile = require('./loadFile')
 const datasetsList = require('./datasetsList')
+const Filter = require('./Filter')
 
 const datasets = {}
 
@@ -16,9 +17,28 @@ class Dataset {
     datasets[id] = this
 
     this.refData = {}
+    this.filter = {}
     for (const k in data) {
       this[k] = data[k]
     }
+  }
+
+  loadFilter (callback) {
+    if (!this.refData.placeFilterField) {
+      return callback()
+    }
+
+    this.getValues(this.refData.placeFilterField, (err, values) => {
+      if (err) { return callback(err) }
+
+      this.filter.place = {
+        type: 'select',
+        name: 'Wähle Ort ...',
+        values
+      }
+
+      callback()
+    })
   }
 
   listFormat (item, index) {
@@ -204,6 +224,14 @@ class Dataset {
     get.item(this, id, (err, item, stat) => {
       callback(err, item, stat)
     })
+  }
+
+  getFilter () {
+    if (!this._filter) {
+      this._filter = new Filter(this.filter)
+    }
+
+    return this._filter
   }
 }
 
