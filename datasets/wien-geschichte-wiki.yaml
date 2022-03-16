@@ -1,0 +1,101 @@
+# A minimal template for a useful dataset
+
+# Short title of the dataset
+title: Wien Geschichte Wiki
+
+# Who provides the dataset?
+operator: Stadt Wien
+
+# Describe file where the reference data is saved (in the data-directory). It
+# should be called 'id'.'format', e.g. 'foobar.geojson'.
+file:
+  # [optional] either 'json' (default), 'geojson' or 'csv'.
+  format: geojson
+
+# source of the dataset (it will be downloaded from there by the 'npm run download')
+source:
+  # URL of the dataset
+  url: https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:KULTURWIKIOGD%20&srsName=EPSG:4326&outputFormat=json
+
+# describe reference data (the dataset)
+refData:
+  # [optional] this field holds the identificator of each item; if omitted, the
+  # items will be automatically numbered in order of appearance
+  idField: PAGEID
+  listFieldTitle: SEITENNAME
+  listFieldAddress: "{{ item.ART_DES_OBJEKTS|default(item.item.ART_DES_EREIGNISSES)|default(item.ART_DES_BAUWERKS)|default(item.ART_DER_ORGANISATION) }} | {{ item.ADRESSE }}"
+  placeFilterField: BEZIRK
+  urlFormat: "https://www.geschichtewiki.wien.gv.at/{{ item.SEITENNAME|replace({ ' ': '_' }) }}"
+  showFields:
+    SEITENNAME:
+      title: Name
+    FRUEHERE_BEZEICHNUNG:
+      title: Frühere Bezeichnung(en)
+    ADRESSE:
+      title: Adresse
+    BENANNT_NACH:
+      title: benannt nach
+      format: "{{ item.BENANNT_NACH }}{% if item.NAME_SEIT %} (seit {{ item.NAME_SEIT }}){% endif %}"
+    DATUM:
+      title: Datum
+      format: "{{ item.DATUM_VON }} - {{ item.DATUM_BIS }}"
+    KATEGORIE_TXT:
+    TYPE:
+      title: Typ
+      format: |
+        {% set class = item.ART_DES_OBJEKTS ? 'Objekt' : item.item.ART_DES_EREIGNISSES ? 'Ereignis' : item.ART_DES_BAUWERKS ? 'Bauwerk' : item.ART_DER_ORGANISATION ? 'Organisation' : 'Unbekannt' %}
+        {% set type = item.ART_DES_OBJEKTS|default(item.item.ART_DES_EREIGNISSES)|default(item.ART_DES_BAUWERKS)|default(item.ART_DER_ORGANISATION) %}
+        {{ class }} / {{ type }}
+
+# [optional] Configuration of the item in Wikidata
+wikidata:
+  # [optional] which property holds the reference to this dataset
+  refProperty: P7842
+
+# [optional] Configuration of the item in OpenStreetMap
+osm:
+  # [optional] A query which searches for OSM objects. It uses Overpass QL
+  # language. This is multi-line string, with a query each line. 
+  # It uses TwigJS syntax (see below for available variables).
+  # By default, it searches for objects in 30m distance of possible coordinates
+  # (e.g. dataset, wikipediaList, wikidata), optionally you can specify a
+  # different distance with '(distance:1234)
+  refDataNameField: SEITENNAME
+
+  query: |
+    {% set class = item.ART_DES_OBJEKTS ? 'Objekt' : item.item.ART_DES_EREIGNISSES ? 'Ereignis' : item.ART_DES_BAUWERKS ? 'Bauwerk' : item.ART_DER_ORGANISATION ? 'Organisation' : 'Unbekannt' %}
+    {% set type = item.ART_DES_OBJEKTS|default(item.item.ART_DES_EREIGNISSES)|default(item.ART_DES_BAUWERKS)|default(item.ART_DER_ORGANISATION) %}
+    {% if class == 'Bauwerk' %}
+      {% if type == 'Brücke' %}
+      (nwr[bridge];nwr[man_made=bridge];)
+      {% elseif type == 'Denkmal' %}
+      nwr[historic]
+      {% elseif type == 'Sakralbau' %}
+      nwr[amenity=place_of_worship]
+      {% else %}
+      nwr[building]
+      {% endif %}
+    {% elseif class == 'Objekt' %}
+      {% if type == 'Verkehrsfläche' %}
+      nwr[highway]
+      {% elseif type in ['Grünfläche', 'Park'] %}
+      nwr[leisure~"^(park|garden|common)$"]
+      {% elseif type in ['Grätzel', 'Katastralgemeinde', 'Ort', 'Siedlung', 'Vorstadt', 'Bezirk', 'Vorort'] %}
+      nwr[place]
+      {% elseif type in ['Gewässer'] %}
+      nwr[natural=water]
+      {% elseif type in ['Friedhof'] %}
+      (nwr[amenity=grave_yard];nwr[landuse=cemetery];)
+      {% elseif type in ['Berg'] %}
+      nwr[natural=peak]
+      {% elseif type in ['Markt'] %}
+      nwr[amenity=marketplace]
+      {% elseif type in ['Wald'] %}
+      (nwr[landuse=forest];nwr[natural=wood];)
+      {% elseif type in ['Werd'] %}
+      nwr[place~'^(island|islet)$']
+      {% elseif type in ['Passagen'] %}
+      nwr[highway=footway]
+      {% elseif type in ['Herrschaft', 'Sonstiges Topografisches Objekt', 'Zielgebiet Stadtentwicklung'] %}
+      {% endif %}
+    {% endif %}
