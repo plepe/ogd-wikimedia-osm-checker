@@ -37,9 +37,15 @@ module.exports = function downloadBevAdressregister (callback) {
         .then(response => response.text())
         .then(result => {
           const dom = new JSDOM(result)
-          const link = dom.window.document.querySelector('table tr td a')
 
-          done(null, 'https://www.bev.gv.at' + link.getAttribute('href'))
+          let links = dom.window.document.querySelectorAll('table tr td a')
+          links = Array.from(links).filter(link => link.getAttribute('href').match(/^\/pls\/portal/))
+
+          if (!links.length) {
+            return done('Could not parse valid link from list')
+          }
+
+          done(null, 'https://www.bev.gv.at' + links[0].getAttribute('href'))
         })
     },
     (url, done) => {
