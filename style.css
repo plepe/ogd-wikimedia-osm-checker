@@ -75,6 +75,11 @@ li.warning:before {
   content: "✘";
   color: orange;
 }
+li.question:before {
+  content: "?";
+  font-weight: bold;
+  color: orange;
+}
 
 ul.attrList {
   font-size: 0.8em;
