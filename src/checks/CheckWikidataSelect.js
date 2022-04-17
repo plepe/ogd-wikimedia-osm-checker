@@ -21,6 +21,7 @@ class CheckWikidataSelect extends Check {
       ob.doneLoading.commons = []
 
       ob.data.wikidataSelected = null
+      ob.data.wikidataStatus = null
       ob.data.wikidata.forEach(item => {
         if (select.value === item.id) {
           ob.data.wikidataSelected = item
@@ -37,11 +38,16 @@ class CheckWikidataSelect extends Check {
     if (ob.data.wikidata.length === 0) {
       select.appendChild(optionOther)
 
-      ob.message('wikidata', STATUS.SUCCESS, div)
+      ob.message('wikidata', STATUS.WARNING, div)
       return true
     }
 
     const selectedId = ob.data.wikidataSelected ? ob.data.wikidataSelected.id : null
+
+    let status = STATUS.QUESTION
+    if (ob.data.wikidataStatus) {
+      status = ob.data.wikidataStatus
+    }
 
     ob.data.wikidata.forEach(item => {
       const option = document.createElement('option')
@@ -57,7 +63,7 @@ class CheckWikidataSelect extends Check {
       optionOther.selected = true
     }
     select.appendChild(optionOther)
-    ob.message('wikidata', null, div)
+    ob.message('wikidata', status, div)
   }
 }
 

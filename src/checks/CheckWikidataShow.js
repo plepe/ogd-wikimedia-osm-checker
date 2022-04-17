@@ -17,7 +17,7 @@ class CheckWikidataShow extends Check {
     }
 
     const el = ob.data.wikidataSelected
-    return ob.message('wikidata', STATUS.SUCCESS, 'Wikidata Objekt gefunden: <a target="_blank" href="https://wikidata.org/wiki/' + el.id + '">' + el.id + '</a>:\n' + wikidataFormat(el))
+    return ob.message('wikidata', null, 'Wikidata Objekt gefunden: <a target="_blank" href="https://wikidata.org/wiki/' + el.id + '">' + el.id + '</a>:\n' + wikidataFormat(el))
   }
 }
 
