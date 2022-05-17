@@ -79,7 +79,11 @@ const requestListener = function (req, res) {
 
   fs.readFile(path.join(__dirname, file), (err, contents) => {
     if (err) {
-      res.writeHead(500)
+      if (err.code === 'ENOENT') {
+        res.writeHead(404)
+      } else {
+        res.writeHead(500)
+      }
       res.end()
       return console.error(err)
     }
