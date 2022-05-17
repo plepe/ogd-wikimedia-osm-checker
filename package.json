@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "mkdir -p dist && browserify -p esmify src/app.js -o dist/app.js",
+    "build-news": "marked -i NEWS.md -o dist/NEWS.html",
     "watch": "mkdir -p dist && watchify -p esmify --debug src/app.js -o dist/app.js -v",
     "download": "mkdir -p data && node download.js",
     "lint": "standard --fix download.js server.js src/*.js src/*/*.js test/*.js",
-    "prepare": "npm run build",
+    "prepare": "npm run build && npm run build-news",
     "start": "node server.js",
     "test": "mocha --bail"
   },
@@ -32,6 +33,7 @@
     "html-escape": "^2.0.0",
     "iconv-lite": "^0.6.3",
     "jsdom": "^16.7.0",
+    "marked": "^4.0.16",
     "moment": "^2.29.2",
     "natsort": "^2.0.3",
     "node-fetch": "^2.6.7",

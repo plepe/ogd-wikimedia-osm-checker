@@ -12,6 +12,7 @@ const showLast = require('./showLast')
 
 const datasets = {}
 const modules = [
+  require('./news.js'),
   require('./wikidataToOsm.js')
 ]
 
