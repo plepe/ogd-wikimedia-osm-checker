@@ -32,6 +32,8 @@ docker run -p 8080:8080 -d skunk/ogd-wikimedia-osm-checker
 Browse to http://localhost:8080
 
 ## Create an additional dataset
+There's a (German) screencast here: https://www.youtube.com/watch?v=4PKUCjS2HL8
+
 ### Dataset
 Create a file `foobar.yaml` in the `datasets/` directory. You can use
 [minimal.yaml](doc/minimal.yaml) as basis or [example.yaml](doc/example.yaml)
