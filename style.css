@@ -75,6 +75,11 @@ li.warning:before {
   content: "✘";
   color: orange;
 }
+li.question:before {
+  content: "?";
+  font-weight: bold;
+  color: orange;
+}
 
 ul.attrList {
   font-size: 0.8em;
@@ -125,4 +130,10 @@ body.loading > #loadingIndicator:before {
   100% {
     margin-left: 100%;
   }
+}
+
+ul#last > li > .ts {
+  float: right;
+  font-size: 0.8em;
+  padding-right: 40px;
 }

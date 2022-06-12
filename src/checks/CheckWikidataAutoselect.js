@@ -11,6 +11,7 @@ class CheckWikidataSelect extends Check {
 
     if (ob.data.wikidataSelected === undefined) {
       ob.data.wikidataSelected = ob.data.wikidata[0]
+      ob.data.wikidataStatus = null
     }
   }
 }

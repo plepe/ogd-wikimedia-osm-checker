@@ -8,9 +8,11 @@ const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
+const showLast = require('./showLast')
 
 const datasets = {} // deprecated
 const modules = [
+  require('./news.js'),
   require('./wikidataToOsm.js')
 ]
 
@@ -66,6 +68,7 @@ function init () {
 
 function init2 () {
   const selectDataset = document.getElementById('Dataset')
+  showLast()
 
   selectDataset.onchange = chooseDataset
 
@@ -91,6 +94,7 @@ function updateDataset () {
 
   if (!selectDataset.value) {
     content.innerHTML = info
+    showLast()
     return
   }
 
@@ -98,17 +102,7 @@ function updateDataset () {
   place = null
   ob = null
 
-  let text = '<h1>' + (dataset.titleLong || dataset.title) + '</h1>'
-
-  if (dataset.ogdInfo) {
-    text += '<p>' + dataset.ogdInfo + '</p>'
-  }
-
-  if (dataset.ogdURL) {
-    text += '<p><a target="_blank" href="' + escHTML(dataset.ogdURL) + '">Info</a></p>'
-  }
-
-  content.innerHTML = text
+  dataset.showInfo(content)
 
   const select = document.getElementById('placeFilter')
   while (select.firstChild.nextSibling) {
@@ -157,6 +151,7 @@ function choose (path) {
   if (!_dataset && !id) {
     const content = document.getElementById('content')
     content.innerHTML = info
+    showLast()
     document.title = 'ogd-wikimedia-osm-checker'
   }
 
@@ -167,6 +162,8 @@ function choose (path) {
   }
 
   if (!id) {
+    const content = document.getElementById('content')
+    dataset.showInfo(content)
     return null
   }
 
@@ -204,6 +201,7 @@ function update () {
 
   if (place === '') {
     content.innerHTML = info
+    showLast()
     return
   }
 

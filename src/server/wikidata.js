@@ -114,7 +114,7 @@ function _request (options, callback) {
   if (options.query) {
     return loadByQuery(options,
       (err, result) => {
-        callback(err, [result])
+        callback(err, result)
         next(options)
       }
     )
@@ -154,7 +154,7 @@ function loadByQuery (options, callback) {
     .then(result => {
       next(options)
 
-      const list = []
+      const list = {}
       result.results.bindings.forEach(item => {
         const id = item.item.value.match(/(Q[0-9]+)$/)[1]
         list[id] = null
@@ -163,10 +163,7 @@ function loadByQuery (options, callback) {
       const _options = JSON.parse(JSON.stringify(options))
       delete _options.query
 
-      processResults([list], _options, (err, result) => {
-        if (err) { return callback(err) }
-        callback(null, result[0])
-      })
+      processResults([list], _options, callback)
     })
     .catch(err => {
       next(options)

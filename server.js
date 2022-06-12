@@ -104,7 +104,11 @@ const requestListener = function (req, res) {
     },
     (err, { contents, stat }) => {
       if (err) {
-        res.writeHead(500)
+        if (err.code === 'ENOENT') {
+          res.writeHead(404)
+        } else {
+          res.writeHead(500)
+        }
         res.end()
         return console.error(err)
       }

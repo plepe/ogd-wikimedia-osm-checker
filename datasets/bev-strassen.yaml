@@ -36,9 +36,18 @@ wikidata:
   query: |
     SELECT distinct ?item ?itemLabel ?itemDescription ?cityLabel WHERE{  
       VALUES ?roadPlaceTypes { wd:Q79007 wd:Q174782 wd:Q12280 wd:Q44377 wd:Q12511 wd:Q22698 wd:Q486972 wd:Q3257686 wd:Q21000333 wd:Q2168991 wd:Q532 wd:Q814289 }
-      ?item wdt:P131 ?city.
-      ?city ?label "{{ item.ZUSTELLORT }}"@de.
       ?item wdt:P31 ?roadPlaceTypes.
+
+      ?city ?label "{{ item.ZUSTELLORT }}"@de.
+      {
+        ?item wdt:P131 ?city.
+      }
+      union
+      {
+        ?bezirk wdt:P131 ?city.
+        ?item wdt:P131 ?bezirk.
+      }
+
       {
         ?item ?label "{{ item.STRASSENNAME }}"@de.
       }
@@ -49,6 +58,12 @@ wikidata:
       }
       SERVICE wikibase:label { bd:serviceParam wikibase:language "de". }    
     }
+  recommendProperties: |
+    P138
+    P571
+    {% if item.ZUSTELLORT == 'Wien' %}
+      P7842
+    {% endif %}
 osm:
   refDataNameField: STRASSENNAME
   query:

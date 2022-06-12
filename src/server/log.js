@@ -9,5 +9,24 @@ fs.mkdir(path, (err) => {
 })
 
 module.exports = function (options, callback) {
-  fs.appendFile(path + '/access.log', new Date().toISOString() + ' ' + options.path + '\n', callback)
+  if (options.last) {
+    fs.readFile(path + '/access.log', (err, result) => {
+      if (err) { return callback(err) }
+
+      result = result
+        .toString()
+        .trimEnd()
+        .split(/\n/g)
+        .slice(-options.last)
+        .map(e => {
+          e = e.split(/ /)
+          return { ts: e[0], path: e[1] }
+        })
+
+      callback(null, result)
+    })
+  }
+  else {
+    fs.appendFile(path + '/access.log', new Date().toISOString() + ' ' + options.path + '\n', callback)
+  }
 }

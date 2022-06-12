@@ -6,13 +6,15 @@ const fetch = require('node-fetch')
 const JSDOM = require('jsdom').JSDOM
 
 module.exports = function downloadBda (callback) {
-  fetch('https://bda.gv.at/denkmalverzeichnis/')
+  fetch('https://bda.gv.at/service/denkmalverzeichnis/denkmalliste-gemaess-3-dmsg.html')
     .then(response => response.text())
     .then(result => {
       const dom = new JSDOM(result)
-      let list = dom.window.document.querySelectorAll('#download-als-csv li a')
+      let list = dom.window.document.querySelectorAll('.card-collapse li a')
       list = Array.from(list)
-      list = list.map(entry => entry.getAttribute('href'))
+      list = list
+        .map(entry => 'https://www.bda.gv.at' + entry.getAttribute('href'))
+        .filter(href => href.match(/\.csv$/))
 
       downloadBdaFiles(list, callback)
     })

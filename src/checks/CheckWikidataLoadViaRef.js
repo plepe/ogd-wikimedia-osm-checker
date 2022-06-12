@@ -39,6 +39,7 @@ class CheckWikidataLoadViaRef extends Check {
 
     if (found) {
       ob.message('wikidata', STATUS.SUCCESS, 'Eintrag hat Attribut <i>' + (dataset.wikidata.refPropertyTitle ? dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')' : dataset.wikidata.refProperty) + '</i> mit Wert <i>' + id + '</i>.')
+      ob.data.wikidataStatus = STATUS.SUCCESS
     } else {
       ob.message('wikidata', STATUS.ERROR, 'Eintrag hat kein Attribut <i>' + (dataset.wikidata.refPropertyTitle ? dataset.wikidata.refPropertyTitle + ' (' + dataset.wikidata.refProperty + ')' : dataset.wikidata.refProperty) + '</i> mit Wert <i>' + id + '</i>.')
     }
