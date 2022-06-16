@@ -12,6 +12,7 @@ const showLast = require('./showLast')
 
 const datasets = {} // deprecated
 const modules = [
+  require('./map'),
   require('./news.js'),
   require('./wikidataToOsm.js')
 ]
