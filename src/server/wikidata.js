@@ -7,10 +7,15 @@ const findWikidataItems = require('find-wikidata-items')
 
 const active = []
 const pending = []
+const cacheById = {}
 const maxActive = 1
 let interval
 
 function loadById (id, callback) {
+  if (id in cacheById) {
+    return callback(null, cacheById[id])
+  }
+
   async.parallel([
     done => {
       httpRequest('https://www.wikidata.org/wiki/Special:EntityData/' + id + '.json',
@@ -59,6 +64,7 @@ function loadById (id, callback) {
       })
     })
 
+    cacheById[id] = result
     callback(null, result)
   })
 }
