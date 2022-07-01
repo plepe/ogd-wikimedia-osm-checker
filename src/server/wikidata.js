@@ -55,6 +55,16 @@ function loadById (id, callback) {
       let text = prop.querySelectorAll('.wikibase-statementview-mainsnak > .wikibase-snakview > .wikibase-snakview-value-container > .wikibase-snakview-body > .wikibase-snakview-value')
       text = Array.from(text)
       text.forEach((v, i) => {
+        console.log(id, i)
+        if (!(id in result.claims)) {
+          result.claims[id] = []
+        }
+
+        if (!(i in result.claims[id])) {
+          result.claims[id][i] = {}
+        }
+
+
         result.claims[id][i].text = v.textContent
       })
     })
