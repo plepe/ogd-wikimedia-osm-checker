@@ -1,5 +1,8 @@
 const escHTML = require('html-escape')
+const BoundingBox = require('boundingbox')
+
 const map = require('./map')
+const getCoords = require('./getCoords')
 
 module.exports = class ViewTable {
   constructor (dataset) {
@@ -9,11 +12,43 @@ module.exports = class ViewTable {
     selector.className = 'viewmode-map'
 
     map.resize()
+
+    this.features = []
   }
 
   show (items) {
+    let boundingbox
+
+    this.clear()
+
     items.forEach((item, index) => {
+      const coord = getCoords(item, this.dataset.refData.coordField)
+
+      if (coord) {
+        if (!boundingbox) {
+          boundingbox = new BoundingBox(coord)
+        } else {
+          boundingbox.extend(coord)
+        }
+
+        const feature = L.circleMarker([coord.latitude, coord.longitude])
+        feature.addTo(map.map)
+
+        this.features.push(feature)
+      }
     })
+
+    if (boundingbox) {
+      map.map.fitBounds(boundingbox.toLeaflet())
+    }
+  }
+
+  clear () {
+    this.features.forEach(feature => {
+      feature.removeFrom(map.map)
+    })
+
+    this.features = []
   }
 
   select (item) {

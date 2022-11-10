@@ -7,10 +7,8 @@ module.exports = class ViewTable {
     const selector = document.getElementById('selector')
     selector.className = 'viewmode-table'
 
+    this.clear()
     const content = document.getElementById('content')
-    while (content.firstChild) {
-      content.removeChild(content.firstChild)
-    }
 
     this.table = document.createElement('table')
     this.table.id = 'data'
@@ -50,6 +48,13 @@ module.exports = class ViewTable {
     if (listEntry) {
       listEntry.classList.add('active')
       listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }
+
+  clear () {
+    const content = document.getElementById('content')
+    while (content.firstChild) {
+      content.removeChild(content.firstChild)
     }
   }
 }

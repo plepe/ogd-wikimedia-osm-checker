@@ -202,6 +202,10 @@ function update () {
     return
   }
 
+  if (currentView) {
+    currentView.clear()
+  }
+
   currentView = new ViewMode(dataset)
 
   place = select.value
