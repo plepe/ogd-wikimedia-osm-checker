@@ -3,56 +3,22 @@ const natsort = require('natsort').default
 const twig = require('twig').twig
 
 const createGeoLink = require('./createGeoLink')
-const load = require('./load')
+const get = require('./get')
 const renderTemplate = require('./renderTemplate')
+const loadFile = require('./loadFile')
+const datasetsList = require('./datasetsList')
+
+const datasets = {}
 
 class Dataset {
-  constructor (data = {}) {
-    this.refData = {}
+  constructor (id, data = {}) {
+    this.id = id
+    datasets[id] = this
 
+    this.refData = {}
     for (const k in data) {
       this[k] = data[k]
     }
-  }
-
-  load (callback) {
-    if (this.data) {
-      return callback(null)
-    }
-
-    if (!this.file) {
-      this.file = {}
-    }
-    if (!this.file.format) {
-      this.file.format = 'json'
-    }
-
-    if (!this.file.name) {
-      this.file.name = this.id + '.' + this.file.format
-    }
-
-    const placeFilter = {}
-    this.data = {}
-
-    load(this, (err, json) => {
-      if (err) { return callback(err) }
-
-      json = this.convertData(json)
-
-      json.forEach((entry, index) => {
-        this.data[this.refData.idField ? entry[this.refData.idField] : index] = entry
-        placeFilter[entry[this.refData.placeFilterField] || 'alle'] = true
-      })
-
-      if (this.refData.placeFilterField) {
-        this.placeFilter = Object.keys(placeFilter)
-        this.placeFilter = this.placeFilter.sort(natsort({ insensitive: true }))
-      } else {
-        this.placeFilter = ['alle']
-      }
-
-      callback(null)
-    })
   }
 
   listFormat (item, index) {
@@ -155,23 +121,6 @@ class Dataset {
     return result
   }
 
-  convertData (data) {
-    if (this.file.format === 'geojson') {
-      this.refData.coordField = {
-        id: '_geometry',
-        type: 'geojson'
-      }
-
-      return data.features.map(item => {
-        const d = item.properties
-        d._geometry = item.geometry
-        return d
-      })
-    }
-
-    return data
-  }
-
   compileOverpassQuery (ob) {
     if (!ob.dataset.osm || !ob.dataset.osm.query) {
       return null
@@ -243,6 +192,20 @@ class Dataset {
     return renderTemplate(ob.dataset.wikidata.recommendProperties, ob.templateData())
   }
 
+  getValues (key, callback) {
+    get.values(this, key, (err, values) => callback(err, values, this.fileStat))
+  }
+
+  getItems (options = {}, callback) {
+    get.items(this, options, (err, data) => callback(err, data, this.fileStat))
+  }
+
+  getItem (id, callback) {
+    get.item(this, id, (err, item, stat) => {
+      callback(err, item, stat)
+    })
+  }
+
   showInfo (content) {
     let text = '<h1>' + (this.titleLong || this.title) + '</h1>'
 
@@ -256,6 +219,43 @@ class Dataset {
 
     content.innerHTML = text
   }
+}
+
+Dataset.get = function (id, callback) {
+  if (id in datasets) {
+    return callback(null, datasets[id])
+  }
+
+  datasetsList({id},
+    (err, def) => {
+      // do not load dataset, if it already has been loaded in the meantime ...
+      if (!(id in datasets)) {
+        new Dataset(id, def)
+      }
+
+      callback(null, datasets[id])
+    }
+  )
+}
+
+let list
+Dataset.list = function (callback) {
+  if (list) {
+    return callback(null, list)
+  }
+
+  datasetsList({withContent: true}, (err, _list) => {
+    if (err) { return callback(err) }
+
+    list = _list.map(d => {
+      if (!(d.id in datasets)) {
+        new Dataset(d.id, d)
+      }
+
+      return d.id
+    })
+    callback(null, list)
+  })
 }
 
 module.exports = Dataset

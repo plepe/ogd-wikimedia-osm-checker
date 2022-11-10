@@ -55,6 +55,12 @@
     "standard": "^16.0.4",
     "watchify": "^4.0.0"
   },
+  "browser": {
+    "./src/load.js": "./src/load-browser.js",
+    "./src/get.js": "./src/get-browser.js",
+    "./src/loadFile.js": "./src/loadFile-browser.js",
+    "./src/datasetsList.js": "./src/datasetsList-browser.js"
+  },
   "standard": {
     "parser": "babel-eslint"
   }

@@ -1,6 +1,7 @@
 // compatibilty NodeJS < 11.0
 require('array.prototype.flat').shim()
 
+const async = require('async')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
@@ -28,7 +29,7 @@ const requestListener = function (req, res) {
 
   if (req.url === '/') {
     file = '/index.html'
-  } else if (req.url === '/datasets/') {
+  } else if (req.url === '/datasets/') { // deprecated, replaced by datasets.cgi
     datasetsList({}, (err, datasets) => {
       if (err) {
         res.writeHead(500)
@@ -52,7 +53,21 @@ const requestListener = function (req, res) {
     file = m[1]
     proc = m[2]
     ext = m[3]
-    param = queryString.parse(m[4])
+    const _param = queryString.parse(m[4])
+    param = {}
+
+    for (let k in _param) {
+      let m = k.split('.')
+      if (m.length === 2) {
+        if (!(m[0] in param)) {
+          param[m[0]] = {}
+        }
+
+        param[m[0]][m[1]] = _param[k]
+      } else {
+        param[k] = _param[k]
+      }
+    }
   }
 
   if (ext === 'cgi') {
@@ -62,7 +77,11 @@ const requestListener = function (req, res) {
       return console.error('Process ' + proc + ' not found')
     }
 
-    cgi[proc](param, (err, result) => {
+    cgi[proc](param, (err, result, header = null) => {
+      if (header) {
+        Object.keys(header).forEach(k => res.setHeader(k, header[k]))
+      }
+
       if (err) {
         res.writeHead(500)
         res.end()
@@ -77,21 +96,30 @@ const requestListener = function (req, res) {
     return
   }
 
-  fs.readFile(path.join(__dirname, file), (err, contents) => {
-    if (err) {
-      if (err.code === 'ENOENT') {
-        res.writeHead(404)
-      } else {
-        res.writeHead(500)
+  const fileName = path.join(__dirname, file)
+  async.parallel(
+    {
+      contents: (done) => fs.readFile(fileName, done),
+      stat: (done) => fs.stat(fileName, done)
+    },
+    (err, { contents, stat }) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          res.writeHead(404)
+        } else {
+          res.writeHead(500)
+        }
+        res.end()
+        return console.error(err)
       }
-      res.end()
-      return console.error(err)
-    }
 
-    res.setHeader('Content-Type', ext in contentTypes ? contentTypes[ext] : 'text/plain')
-    res.writeHead(200)
-    res.end(contents)
-  })
+      res.setHeader('Content-Type', ext in contentTypes ? contentTypes[ext] : 'text/plain')
+      res.setHeader('Last-Modified', new Date(stat.mtime).toUTCString())
+      res.setHeader('X-Download-Date', new Date(stat.ctime).toUTCString())
+      res.writeHead(200)
+      res.end(contents)
+    }
+  )
 }
 
 const server = http.createServer(requestListener)

@@ -2,55 +2,31 @@ const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const forEach = require('foreach')
 const async = require('async')
-const yaml = require('yaml')
 
 const Dataset = require('./Dataset.js')
 const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
+const loadingIndicator = require('./loadingIndicator')
 const showLast = require('./showLast')
 
-const datasets = {}
+const datasets = {} // deprecated
 const modules = [
   require('./news.js'),
   require('./wikidataToOsm.js')
 ]
 
 let dataset
+let place
+let ob
 
 let info
 
-const datasetLoader = {
-  init (callback) {
-    global.fetch('datasets/')
-      .then(res => res.json())
-      .then(list => {
-        list = list.map(entry => entry.id)
-        datasetLoader.load(list, callback)
-      })
-  },
-
-  load (_datasets, callback) {
-    async.each(_datasets, (id, done) => {
-      global.fetch('datasets/' + id + '.yaml')
-        .then(res => res.text())
-        .then(body => {
-          const d = yaml.parse(body)
-          datasets[id] = new Dataset(d)
-          datasets[id].id = id
-          done()
-        })
-    }, callback)
-  }
-}
-
 window.onload = () => {
-  document.body.classList.add('loading')
-
-  modules.push(datasetLoader)
+  loadingIndicator.start()
 
   async.each(modules, (module, done) => module.init(done), (err) => {
-    document.body.classList.remove('loading')
+    loadingIndicator.end()
 
     if (err) {
       return global.alert(err)
@@ -64,21 +40,34 @@ function init () {
   const selectDataset = document.getElementById('Dataset')
   const listDatasets = document.getElementById('datasets')
 
-  forEach(datasets, (_dataset, id) => {
-    const option = document.createElement('option')
-    option.value = id
-    option.appendChild(document.createTextNode(_dataset.title))
-    selectDataset.appendChild(option)
+  Dataset.list((err, list) => {
+    async.each(list, (id, done) => {
+      Dataset.get(id, (err, dataset) => {
+        datasets[id] = dataset // deprecated
+        const option = document.createElement('option')
+        option.value = id
+        option.appendChild(document.createTextNode(dataset.title))
+        selectDataset.appendChild(option)
 
-    const li = document.createElement('li')
-    const a = document.createElement('a')
-    a.href = '#' + id
-    a.appendChild(document.createTextNode(_dataset.titleLong || _dataset.title))
-    li.appendChild(a)
-    listDatasets.appendChild(li)
+        const li = document.createElement('li')
+        const a = document.createElement('a')
+        a.href = '#' + id
+        a.appendChild(document.createTextNode(dataset.titleLong || dataset.title))
+        li.appendChild(a)
+        listDatasets.appendChild(li)
+
+        done()
+      })
+    },
+    () => {
+      info = document.getElementById('content').innerHTML
+      init2()
+    })
   })
+}
 
-  info = document.getElementById('content').innerHTML
+function init2 () {
+  const selectDataset = document.getElementById('Dataset')
   showLast()
 
   selectDataset.onchange = chooseDataset
@@ -110,6 +99,8 @@ function updateDataset () {
   }
 
   dataset = datasets[selectDataset.value]
+  place = null
+  ob = null
 
   dataset.showInfo(content)
 
@@ -117,25 +108,41 @@ function updateDataset () {
   while (select.firstChild.nextSibling) {
     select.removeChild(select.firstChild.nextSibling)
   }
+  select.onchange = update
 
-  document.body.classList.add('loading')
-  dataset.load((err) => {
-    document.body.classList.remove('loading')
-    if (err) { global.alert(err) }
+  loadingIndicator.start()
 
-    dataset.placeFilter.forEach(place => {
-      const option = document.createElement('option')
-      option.appendChild(document.createTextNode(place))
-      select.appendChild(option)
+  if (dataset.refData.placeFilterField) {
+    dataset.getValues(dataset.refData.placeFilterField, (err, values) => {
+      loadingIndicator.end()
+
+      if (err) { return global.alert(err) }
+
+      values.forEach(place => {
+        const option = document.createElement('option')
+        option.appendChild(document.createTextNode(place))
+        select.appendChild(option)
+      })
+
+      updateDataset2()
     })
+  } else {
+    loadingIndicator.end()
 
-    select.onchange = update
-    if (global.location.hash) {
-      choose(global.location.hash.substr(1))
-    } else {
-      update()
-    }
-  })
+    const option = document.createElement('option')
+    option.appendChild(document.createTextNode('alle'))
+    select.appendChild(option)
+
+    updateDataset2()
+  }
+}
+
+function updateDataset2 () {
+  if (global.location.hash) {
+    choose(global.location.hash.substr(1))
+  } else {
+    update()
+  }
 }
 
 function choose (path) {
@@ -160,28 +167,33 @@ function choose (path) {
     return null
   }
 
-  if (!(id in dataset.data)) {
-    return global.alert(id + ' nicht gefunden!')
-  }
+  loadingIndicator.start()
+  dataset.getItem(id, (err, item) => {
+    loadingIndicator.end()
+    if (err) { return global.alert(id + ' nicht gefunden!') }
 
-  httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
+    httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
-  const select = document.getElementById('placeFilter')
-  if (dataset.refData.placeFilterField) {
-    const place = dataset.data[id][dataset.refData.placeFilterField]
-    select.value = place
-  } else {
-    select.value = 'alle'
-  }
-  update()
+    const select = document.getElementById('placeFilter')
+    if (dataset.refData.placeFilterField) {
+      const place = item[dataset.refData.placeFilterField]
+      select.value = place
+    } else {
+      select.value = 'alle'
+    }
+    update()
 
-  check(id)
+    check(id)
+  })
 }
 
 function update () {
   const select = document.getElementById('placeFilter')
-  const place = select.value
+  if (select.value === place) {
+    return
+  }
 
+  place = select.value
   const content = document.getElementById('content')
   while (content.firstChild) {
     content.removeChild(content.firstChild)
@@ -200,10 +212,20 @@ function update () {
 
   const dom = document.getElementById('data')
 
-  Object.keys(dataset.data).forEach((id, index) => {
-    const item = dataset.data[id]
+  const options = {}
+  if (dataset.refData.placeFilterField) {
+    options.filter = {}
+    options.filter[dataset.refData.placeFilterField] = place
+  }
 
-    if (!dataset.refData.placeFilterField || ('' + item[dataset.refData.placeFilterField]) === place) {
+  loadingIndicator.start()
+  dataset.getItems(options, (err, items) => {
+    loadingIndicator.end()
+    if (err) { return global.alert(err) }
+
+    items.forEach((item, index) => {
+      const id = dataset.refData.idField ? item[dataset.refData.idField] : index
+
       const text = dataset.listFormat(item, index)
 
       const tr = document.createElement('tr')
@@ -222,59 +244,74 @@ function update () {
 
       td.appendChild(a)
       dom.appendChild(tr)
-    }
+    })
+
+    selectCurrent()
   })
 }
 
 function check (id, options = {}) {
-  const entry = dataset.data[id]
-  const div = document.getElementById('details')
+  loadingIndicator.start()
+  dataset.getItem(id, (err, entry) => {
+    loadingIndicator.end()
+    if (err) { return global.alert(err) }
 
-  while (div.firstChild) {
-    div.removeChild(div.firstChild)
-  }
+    const div = document.getElementById('details')
 
-  const reload = document.createElement('a')
-  reload.href = '#'
-  reload.className = 'reload'
-  reload.innerHTML = '↻'
-  reload.title = 'Nochmal prüfen'
-  reload.onclick = () => {
-    options.reload = timestamp()
-    check(id, options)
-    return false
-  }
-  div.appendChild(reload)
-
-  document.body.classList.add('loading')
-
-  const format = dataset.showFormat(entry)
-  if (typeof format === 'string') {
-    const dom = document.createElement('div')
-    dom.innerHTML = format
-    div.appendChild(dom)
-  } else {
-    div.appendChild(format)
-  }
-
-  Array.from(div.getElementsByTagName('a')).forEach(a => {
-    if (!a.target) {
-      a.target = '_blank'
+    while (div.firstChild) {
+      div.removeChild(div.firstChild)
     }
+
+    const reload = document.createElement('a')
+    reload.href = '#'
+    reload.className = 'reload'
+    reload.innerHTML = '↻'
+    reload.title = 'Nochmal prüfen'
+    reload.onclick = () => {
+      options.reload = timestamp()
+      check(id, options)
+      return false
+    }
+    div.appendChild(reload)
+
+    loadingIndicator.start()
+
+    const format = dataset.showFormat(entry)
+    if (typeof format === 'string') {
+      const dom = document.createElement('div')
+      dom.innerHTML = format
+      div.appendChild(dom)
+    } else {
+      div.appendChild(format)
+    }
+
+    Array.from(div.getElementsByTagName('a')).forEach(a => {
+      if (!a.target) {
+        a.target = '_blank'
+      }
+    })
+
+    ob = new Examinee(id, entry, dataset)
+    ob.initMessages(div)
+    ob.runChecks(dataset, options, (err, result) => {
+      if (err) { global.alert(err) }
+
+      loadingIndicator.end()
+    })
+
+    document.title = dataset.title + '/' + ob.id + ' - ogd-wikimedia-osm-checker'
+
+    selectCurrent()
   })
+}
 
-  const ob = new Examinee(id, entry, dataset)
-  ob.initMessages(div)
-  ob.runChecks(dataset, options, (err, result) => {
-    if (err) { global.alert(err) }
-
-    document.body.classList.remove('loading')
-  })
-
-  document.title = dataset.title + '/' + ob.id + ' - ogd-wikimedia-osm-checker'
-
+function selectCurrent () {
   const table = document.getElementById('data')
   Array.from(table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
+
+  if (!dataset || !ob) {
+    return
+  }
 
   const listEntry = document.getElementById(dataset.id + '-' + ob.id)
   if (listEntry) {
