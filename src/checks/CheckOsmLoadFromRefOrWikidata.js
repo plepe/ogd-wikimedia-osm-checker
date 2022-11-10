@@ -42,10 +42,10 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
       return
     }
 
-    if (!ob.isDone(/^CheckWikidataLoad/)) {
-      // wait for all wikidata loaders to finish
-      return
-    }
+//    if (!ob.isDone(/^CheckWikidataLoad/)) {
+//      // wait for all wikidata loaders to finish
+//      return
+//    }
 
     const loadingWikidata = ob.data.wikidata ? ob.data.wikidata.filter(entry => !ob.load('osm', 'nwr[wikidata="' + entry.id + '"];')) : []
 
