@@ -34,6 +34,12 @@ module.exports = class ViewTable {
         const feature = L.circleMarker([coord.latitude, coord.longitude])
         feature.addTo(map.map)
 
+        feature.on('click', () => {
+          const id = this.dataset.refData.idField ? item[this.dataset.refData.idField] : index
+          const path = this.dataset.id + '/' + id
+          global.location.hash = path
+        })
+
         this.features.push(feature)
       }
     })
