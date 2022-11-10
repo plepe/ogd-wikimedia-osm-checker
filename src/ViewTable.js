@@ -39,4 +39,14 @@ module.exports = class ViewTable {
       this.table.appendChild(tr)
     })
   }
+
+  select (item) {
+    Array.from(this.table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
+
+    const listEntry = document.getElementById(this.dataset.id + '-' + item.id)
+    if (listEntry) {
+      listEntry.classList.add('active')
+      listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }
 }

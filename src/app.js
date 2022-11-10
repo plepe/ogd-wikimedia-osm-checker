@@ -22,6 +22,7 @@ let place
 let ob
 
 let info
+let currentView
 
 window.onload = () => {
   loadingIndicator.start()
@@ -194,7 +195,7 @@ function update () {
     return
   }
 
-  const currentView = new ViewTable(dataset)
+  currentView = new ViewTable(dataset)
 
   place = select.value
 
@@ -278,16 +279,9 @@ function check (id, options = {}) {
 }
 
 function selectCurrent () {
-  const table = document.getElementById('data')
-  Array.from(table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
+  currentView.select(ob)
 
   if (!dataset || !ob) {
     return
-  }
-
-  const listEntry = document.getElementById(dataset.id + '-' + ob.id)
-  if (listEntry) {
-    listEntry.classList.add('active')
-    listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 }
