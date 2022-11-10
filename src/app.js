@@ -1,5 +1,4 @@
 const hash = require('sheet-router/hash')
-const escHTML = require('html-escape')
 const forEach = require('foreach')
 const async = require('async')
 
@@ -9,6 +8,7 @@ const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
 const showLast = require('./showLast')
+const ViewTable = require('./ViewTable')
 
 const datasets = {} // deprecated
 const modules = [
@@ -194,24 +194,16 @@ function update () {
     return
   }
 
+  const currentView = new ViewTable(dataset)
+
   place = select.value
-  const content = document.getElementById('content')
-  while (content.firstChild) {
-    content.removeChild(content.firstChild)
-  }
 
   if (place === '') {
+    const content = document.getElementById('content')
     content.innerHTML = info
     showLast()
     return
   }
-
-  const table = document.createElement('table')
-  table.id = 'data'
-  table.innerHTML = '<tr><th>' + escHTML(dataset.title) + '</th></tr>'
-  content.appendChild(table)
-
-  const dom = document.getElementById('data')
 
   const options = {}
   if (dataset.refData.placeFilterField) {
@@ -224,28 +216,7 @@ function update () {
     loadingIndicator.end()
     if (err) { return global.alert(err) }
 
-    items.forEach((item, index) => {
-      const id = dataset.refData.idField ? item[dataset.refData.idField] : index
-
-      const text = dataset.listFormat(item, index)
-
-      const tr = document.createElement('tr')
-      tr.id = dataset.id + '-' + id
-
-      const td = document.createElement('td')
-      tr.appendChild(td)
-
-      const a = document.createElement('a')
-      if (typeof text === 'string') {
-        a.innerHTML = text
-      } else {
-        a.appendChild(text)
-      }
-      a.href = '#' + dataset.id + '/' + id
-
-      td.appendChild(a)
-      dom.appendChild(tr)
-    })
+    currentView.show(items)
 
     selectCurrent()
   })
