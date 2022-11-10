@@ -9,7 +9,8 @@ const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
 const showLast = require('./showLast')
 const viewModes = {
-  table: require('./ViewTable')
+  table: require('./ViewTable'),
+  map: require('./ViewMap')
 }
 
 const datasets = {} // deprecated

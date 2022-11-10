@@ -24,6 +24,19 @@ a .address {
 #selector.viewmode-table > #content {
   display: block;
 }
+#selector.viewmode-map {
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+}
+#selector.viewmode-map > #map {
+  flex: 1 0;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 .hasMap #selector {
   bottom: 401px;
 }
