@@ -8,7 +8,9 @@ const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
 const showLast = require('./showLast')
-const ViewTable = require('./ViewTable')
+const viewModes = {
+  table: require('./ViewTable')
+}
 
 const datasets = {} // deprecated
 const modules = [
@@ -73,6 +75,7 @@ function init2 () {
   showLast()
 
   selectDataset.onchange = chooseDataset
+  document.getElementById('viewMode').onchange = update
 
   if (global.location.hash) {
     choose(global.location.hash.substr(1))
@@ -190,16 +193,22 @@ function choose (path) {
 }
 
 function update () {
+  const viewMode = document.getElementById('viewMode').value
+  const ViewMode = viewModes[viewMode]
+
   const select = document.getElementById('placeFilter')
-  if (select.value === place) {
+  if (select.value === place && currentView instanceof ViewMode) {
     return
   }
 
-  currentView = new ViewTable(dataset)
+  currentView = new ViewMode(dataset)
 
   place = select.value
 
   if (place === '') {
+    const selector = document.getElementById('selector')
+    selector.className = 'viewmode-info'
+
     const content = document.getElementById('content')
     content.innerHTML = info
     showLast()

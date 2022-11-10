@@ -4,6 +4,9 @@ module.exports = class ViewTable {
   constructor (dataset) {
     this.dataset = dataset
 
+    const selector = document.getElementById('selector')
+    selector.className = 'viewmode-table'
+
     const content = document.getElementById('content')
     while (content.firstChild) {
       content.removeChild(content.firstChild)

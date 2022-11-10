@@ -13,8 +13,16 @@ a .address {
   width: calc(50% - 1px);
   border-right: 1px solid black;
 }
-#map {
+#selector > div {
   display: none;
+}
+#selector > #filter {
+  display: block;
+  flex: 0 1 auto;
+}
+#selector.viewmode-info > #content,
+#selector.viewmode-table > #content {
+  display: block;
 }
 .hasMap #selector {
   bottom: 401px;
