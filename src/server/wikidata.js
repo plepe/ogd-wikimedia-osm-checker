@@ -11,7 +11,7 @@ const cacheById = {}
 const maxActive = 1
 let interval
 
-function loadById (id, callback) {
+function loadById (id, options, callback) {
   if (id in cacheById) {
     return callback(null, cacheById[id])
   }
@@ -110,6 +110,7 @@ function _request (options, callback) {
   // console.log('start', JSON.stringify(options))
   if (options.key === 'id') {
     return loadById(options.id,
+      options,
       (err, result) => {
         callback(err, [result])
         next(options)

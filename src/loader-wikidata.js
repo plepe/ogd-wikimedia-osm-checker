@@ -15,7 +15,7 @@ module.exports = {
           return done(null, data)
         }
 
-        global.fetch('wikidata.cgi?' + queryString.stringify(query))
+        global.fetch('wikidata.cgi?' + queryString.stringify(query) + '&' + queryString.stringify(options))
           .then(res => res.json())
           .then(result => {
             cache.add(query, result)
