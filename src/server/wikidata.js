@@ -1,19 +1,21 @@
 const async = require('async')
 const JSDOM = require('jsdom').JSDOM
 const fetch = require('node-fetch')
+const findWikidataItems = require('find-wikidata-items')
 
 const httpRequest = require('../httpRequest.js')
-const findWikidataItems = require('find-wikidata-items')
+const Cache = require('../Cache')
 
 const active = []
 const pending = []
-const cacheById = {}
+const cacheById = new Cache()
 const maxActive = 1
 let interval
 
 function loadById (id, options, callback) {
-  if (id in cacheById) {
-    return callback(null, cacheById[id])
+  const data = cacheById.get(id, options)
+  if (data !== undefined) {
+    return callback(null, data)
   }
 
   async.parallel([
@@ -64,7 +66,7 @@ function loadById (id, options, callback) {
       })
     })
 
-    cacheById[id] = result
+    cacheById.add(id, result)
     callback(null, result)
   })
 }
