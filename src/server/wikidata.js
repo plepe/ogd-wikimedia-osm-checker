@@ -1,16 +1,23 @@
 const async = require('async')
 const JSDOM = require('jsdom').JSDOM
 const fetch = require('node-fetch')
+const findWikidataItems = require('find-wikidata-items')
 
 const httpRequest = require('../httpRequest.js')
-const findWikidataItems = require('find-wikidata-items')
+const Cache = require('../Cache')
 
 const active = []
 const pending = []
+const cacheById = new Cache()
 const maxActive = 1
 let interval
 
-function loadById (id, callback) {
+function loadById (id, options, callback) {
+  const data = cacheById.get(id, options)
+  if (data !== undefined) {
+    return callback(null, data)
+  }
+
   async.parallel([
     done => {
       httpRequest('https://www.wikidata.org/wiki/Special:EntityData/' + id + '.json',
@@ -69,6 +76,7 @@ function loadById (id, callback) {
       })
     })
 
+    cacheById.add(id, result)
     callback(null, result)
   })
 }
@@ -114,6 +122,7 @@ function _request (options, callback) {
   // console.log('start', JSON.stringify(options))
   if (options.key === 'id') {
     return loadById(options.id,
+      options,
       (err, result) => {
         callback(err, [result])
         next(options)
