@@ -2,6 +2,7 @@ const escHTML = require('html-escape')
 const natsort = require('natsort').default
 const twig = require('twig').twig
 
+const Examinee = require('./Examinee')
 const createGeoLink = require('./createGeoLink')
 const get = require('./get')
 const renderTemplate = require('./renderTemplate')
@@ -19,41 +20,8 @@ class Dataset {
     for (const k in data) {
       this[k] = data[k]
     }
-  }
 
-  listFormat (item, index) {
-    let result = ''
-
-    let value = null
-    if (!this.refData.listFieldTitle) {
-      value = escHTML(this.refData.idField ? item[this.refData.idField] : index)
-    } else if (this.refData.listFieldTitle.match(/\{/)) {
-      if (!this.listFieldTitleTemplate) {
-        this.listFieldTitleTemplate = twig({ data: this.refData.listFieldTitle, autoescape: true })
-      }
-      value = this.listFieldTitleTemplate.render({ item })
-    } else {
-      value = escHTML(item[this.refData.listFieldTitle])
-    }
-
-    result += '<span class="title">' + value + '</span>'
-
-    if (!this.refData.listFieldAddress) {
-      value = null
-    } else if (this.refData.listFieldAddress.match(/\{/)) {
-      if (!this.listFieldAddressTemplate) {
-        this.listFieldAddressTemplate = twig({ data: this.refData.listFieldAddress, autoescape: true })
-      }
-      value = this.listFieldAddressTemplate.render({ item })
-    } else {
-      value = escHTML(item[this.refData.listFieldAddress])
-    }
-
-    if (value) {
-      result += '<span class="address">' + value + '</span>'
-    }
-
-    return result
+    this.examinees = {}
   }
 
   showFormat (item) {
@@ -198,6 +166,25 @@ class Dataset {
 
   getItems (options = {}, callback) {
     get.items(this, options, (err, data) => callback(err, data, this.fileStat))
+  }
+
+  getExaminees (options = {}, callback) {
+    this.getItems(options, (err, items) => {
+      if (err) { return callback(err) }
+
+      const list = items.map((item, index) => {
+        const id = this.refData.idField ? item[this.refData.idField] : index
+
+        if (id in this.examinees) {
+          return this.examinees[id]
+        }
+
+        this.examinees[id] = new Examinee(id, item, this)
+        return this.examinees[id]
+      })
+
+      callback(null, list)
+    })
   }
 
   getItem (id, callback) {
