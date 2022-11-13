@@ -3,6 +3,7 @@ const forEach = require('foreach')
 
 const checks = require('./checks/index')
 const wikidataSimplify = require('./wikidataSimplify')
+const getCoords = require('./getCoords')
 const loader = {
   commons: require('./loader-commons.js'),
   geocoder: require('./loader-geocoder.js'),
@@ -30,6 +31,10 @@ module.exports = class Examinee extends EventEmitter {
     this.loading = {}
     this.doneLoading = {}
     this.checksStatus = {}
+  }
+
+  geometry () {
+    return getCoords(this.refData, this.dataset.refData.coordField)
   }
 
   initMessages (dom) {

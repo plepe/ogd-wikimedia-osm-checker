@@ -227,11 +227,11 @@ function update () {
   }
 
   loadingIndicator.start()
-  dataset.getItems(options, (err, items) => {
+  dataset.getExaminees(options, (err, examinees) => {
     loadingIndicator.end()
     if (err) { return global.alert(err) }
 
-    currentView.show(items)
+    currentView.show(examinees)
 
     selectCurrent()
   })

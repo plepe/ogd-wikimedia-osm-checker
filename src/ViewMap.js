@@ -2,7 +2,6 @@ const escHTML = require('html-escape')
 const BoundingBox = require('boundingbox')
 
 const map = require('./map')
-const getCoords = require('./getCoords')
 
 module.exports = class ViewTable {
   constructor (dataset) {
@@ -13,16 +12,16 @@ module.exports = class ViewTable {
 
     map.resize()
 
-    this.features = []
+    this.features = {}
   }
 
-  show (items) {
+  show (examinees) {
     let boundingbox
 
     this.clear()
 
-    items.forEach((item, index) => {
-      const coord = getCoords(item, this.dataset.refData.coordField)
+    examinees.forEach(examinee => {
+      const coord = examinee.geometry()
 
       if (coord) {
         if (!boundingbox) {
@@ -35,12 +34,11 @@ module.exports = class ViewTable {
         feature.addTo(map.map)
 
         feature.on('click', () => {
-          const id = this.dataset.refData.idField ? item[this.dataset.refData.idField] : index
-          const path = this.dataset.id + '/' + id
+          const path = this.dataset.id + '/' + examinee.id
           global.location.hash = path
         })
 
-        this.features.push(feature)
+        this.features[examinee.id] = feature
       }
     })
 
@@ -50,14 +48,22 @@ module.exports = class ViewTable {
   }
 
   clear () {
-    this.features.forEach(feature => {
+    Object.values(this.features).forEach(feature => {
       feature.removeFrom(map.map)
     })
 
-    this.features = []
+    this.features = {}
   }
 
-  select (item) {
-    console.log(item)
+  select (examinee) {
+    if (!examinee) {
+      return
+    }
+
+    const feature = this.features[examinee.id]
+
+    feature.setStyle({
+      color: 'red'
+    })
   }
 }
