@@ -1,3 +1,5 @@
+const escHTML = require('html-escape')
+const twig = require('twig').twig
 const EventEmitter = require('events')
 const forEach = require('foreach')
 
@@ -36,6 +38,42 @@ module.exports = class Examinee extends EventEmitter {
   geometry () {
     return getCoords(this.refData, this.dataset.refData.coordField)
   }
+
+  listFormat () {
+    let result = ''
+
+    let value = null
+    if (!this.dataset.refData.listFieldTitle) {
+      value = escHTML(this.id)
+    } else if (this.dataset.refData.listFieldTitle.match(/\{/)) {
+      if (!this.dataset.listFieldTitleTemplate) {
+        this.dataset.listFieldTitleTemplate = twig({ data: this.dataset.refData.listFieldTitle, autoescape: true })
+      }
+      value = this.listFieldTitleTemplate.render({ item: this.refData })
+    } else {
+      value = escHTML(this.refData[this.dataset.refData.listFieldTitle])
+    }
+
+    result += '<span class="title">' + value + '</span>'
+
+    if (!this.dataset.refData.listFieldAddress) {
+      value = null
+    } else if (this.dataset.refData.listFieldAddress.match(/\{/)) {
+      if (!this.listFieldAddressTemplate) {
+        this.listFieldAddressTemplate = twig({ data: this.dataset.refData.listFieldAddress, autoescape: true })
+      }
+      value = this.listFieldAddressTemplate.render({ item: this.refData })
+    } else {
+      value = escHTML(this.refData[this.dataset.refData.listFieldAddress])
+    }
+
+    if (value) {
+      result += '<span class="address">' + value + '</span>'
+    }
+
+    return result
+  }
+
 
   initMessages (dom) {
     this.messagesDiv = {}

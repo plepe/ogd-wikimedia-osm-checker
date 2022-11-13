@@ -16,14 +16,12 @@ module.exports = class ViewTable {
     content.appendChild(this.table)
   }
 
-  show (items) {
-    items.forEach((item, index) => {
-      const id = this.dataset.refData.idField ? item[this.dataset.refData.idField] : index
-
-      const text = this.dataset.listFormat(item, index)
+  show (examinees) {
+    examinees.forEach((examinee, index) => {
+      const text = examinee.listFormat()
 
       const tr = document.createElement('tr')
-      tr.id = this.dataset.id + '-' + id
+      tr.id = this.dataset.id + '-' + examinee.id
 
       const td = document.createElement('td')
       tr.appendChild(td)
@@ -34,17 +32,21 @@ module.exports = class ViewTable {
       } else {
         a.appendChild(text)
       }
-      a.href = '#' + this.dataset.id + '/' + id
+      a.href = '#' + this.dataset.id + '/' + examinee.id
 
       td.appendChild(a)
       this.table.appendChild(tr)
     })
   }
 
-  select (item) {
+  select (examinee) {
     Array.from(this.table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
 
-    const listEntry = document.getElementById(this.dataset.id + '-' + item.id)
+    if (!examinee) {
+      return
+    }
+
+    const listEntry = document.getElementById(this.dataset.id + '-' + examinee.id)
     if (listEntry) {
       listEntry.classList.add('active')
       listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
