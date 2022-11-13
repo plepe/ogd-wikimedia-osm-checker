@@ -6,6 +6,7 @@ const forEach = require('foreach')
 const checks = require('./checks/index')
 const wikidataSimplify = require('./wikidataSimplify')
 const getCoords = require('./getCoords')
+const createGeoLink = require('./createGeoLink')
 const loader = {
   commons: require('./loader-commons.js'),
   geocoder: require('./loader-geocoder.js'),
@@ -60,6 +61,71 @@ module.exports = class Examinee extends EventEmitter {
     if (value) {
       result += '<span class="address">' + value + '</span>'
     }
+
+    return result
+  }
+
+  showFormat () {
+    let template
+    let result = '<h2>' + escHTML(this.dataset.operator) + '</h2>'
+
+    result += '<ul>'
+
+    if (this.dataset.refData.idField || this.dataset.refData.urlFormat) {
+      result += '<li class="field-id">'
+      if (this.dataset.refData.idField) {
+        result += '<span class="label">ID</span>: '
+        result += '<span class="value">' + escHTML(this.id) + '</span>'
+      }
+
+      template = this.dataset.template('urlFormat')
+      if (template) {
+        const url = this.dataset.template(this.templateData())
+
+        const urlText = '<a target="_blank" href="' + url + '">Website</a>'
+        if (this.dataset.refData.idField) {
+          result += ' <span class="url">(' + urlText + ')</span>'
+        } else {
+          result += '<span class="url">' + urlText + '</span>'
+        }
+      }
+
+      result += '</li>'
+    }
+
+    const showFields = this.dataset.refData.showFields || Object.fromEntries(Object.keys(this.refData).filter(k => !k.match(/^_/)).map(k => [k, {}]))
+
+    Object.keys(showFields).forEach(fieldId => {
+      const field = showFields[fieldId] || {}
+      let value = this.refData[fieldId]
+      if (field.format) {
+        if (!field.template) {
+          field.template = twig({ data: field.format, autoescape: true })
+        }
+
+        value = field.template.render(this.templateData())
+      } else {
+        value = escHTML(value)
+      }
+
+      if (value) {
+        result += '<li class="field-' + fieldId + '">'
+        result += '<span class="label">' + escHTML(field.title || fieldId) + '</span>: '
+        result += '<span class="value">' + value + '</span>'
+        result += '</li>'
+      }
+    })
+
+    if (this.dataset.refData.coordField) {
+      let text = '<li class="field-coords">'
+      text += '<span class="label">Koordinaten</span>: '
+      text += '<span class="value">' + createGeoLink(this.refData, this.dataset.refData.coordField) + '</span>'
+      text += '</li>'
+
+      result += text
+    }
+
+    result += '</ul>'
 
     return result
   }

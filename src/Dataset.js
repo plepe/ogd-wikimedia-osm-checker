@@ -3,7 +3,6 @@ const natsort = require('natsort').default
 const twig = require('twig').twig
 
 const Examinee = require('./Examinee')
-const createGeoLink = require('./createGeoLink')
 const get = require('./get')
 const renderTemplate = require('./renderTemplate')
 const loadFile = require('./loadFile')
@@ -27,71 +26,6 @@ class Dataset {
 
     this.templates = {}
     this.examinees = {}
-  }
-
-  showFormat (item) {
-    let result = '<h2>' + escHTML(this.operator) + '</h2>'
-
-    result += '<ul>'
-
-    if (this.refData.idField || this.refData.urlFormat) {
-      result += '<li class="field-id">'
-      if (this.refData.idField) {
-        result += '<span class="label">ID</span>: '
-        result += '<span class="value">' + escHTML(item[this.refData.idField]) + '</span>'
-      }
-
-      if (this.refData.urlFormat) {
-        if (!this.urlTemplate) {
-          this.urlTemplate = twig({ data: this.refData.urlFormat, autoescape: true })
-        }
-
-        const urlText = '<a target="_blank" href="' + this.urlTemplate.render({ item }) + '">Website</a>'
-        if (this.refData.idField) {
-          result += ' <span class="url">(' + urlText + ')</span>'
-        } else {
-          result += '<span class="url">' + urlText + '</span>'
-        }
-      }
-
-      result += '</li>'
-    }
-
-    const showFields = this.refData.showFields || Object.fromEntries(Object.keys(item).filter(k => !k.match(/^_/)).map(k => [k, {}]))
-
-    Object.keys(showFields).forEach(fieldId => {
-      const field = showFields[fieldId] || {}
-      let value = item[fieldId]
-      if (field.format) {
-        if (!field.template) {
-          field.template = twig({ data: field.format, autoescape: true })
-        }
-
-        value = field.template.render({ item })
-      } else {
-        value = escHTML(value)
-      }
-
-      if (value) {
-        result += '<li class="field-' + fieldId + '">'
-        result += '<span class="label">' + escHTML(field.title || fieldId) + '</span>: '
-        result += '<span class="value">' + value + '</span>'
-        result += '</li>'
-      }
-    })
-
-    if (this.refData.coordField) {
-      let text = '<li class="field-coords">'
-      text += '<span class="label">Koordinaten</span>: '
-      text += '<span class="value">' + createGeoLink(item, this.refData.coordField) + '</span>'
-      text += '</li>'
-
-      result += text
-    }
-
-    result += '</ul>'
-
-    return result
   }
 
   compileOverpassQuery (ob) {

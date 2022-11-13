@@ -239,7 +239,7 @@ function update () {
 
 function check (id, options = {}) {
   loadingIndicator.start()
-  dataset.getItem(id, (err, entry) => {
+  dataset.getExaminee(id, (err, examinee) => {
     loadingIndicator.end()
     if (err) { return global.alert(err) }
 
@@ -263,7 +263,7 @@ function check (id, options = {}) {
 
     loadingIndicator.start()
 
-    const format = dataset.showFormat(entry)
+    const format = examinee.showFormat()
     if (typeof format === 'string') {
       const dom = document.createElement('div')
       dom.innerHTML = format
@@ -278,15 +278,14 @@ function check (id, options = {}) {
       }
     })
 
-    ob = new Examinee(id, entry, dataset)
-    ob.initMessages(div)
-    ob.runChecks(dataset, options, (err, result) => {
+    examinee.initMessages(div)
+    examinee.runChecks(dataset, options, (err, result) => {
       if (err) { global.alert(err) }
 
       loadingIndicator.end()
     })
 
-    document.title = dataset.title + '/' + ob.id + ' - ogd-wikimedia-osm-checker'
+    document.title = dataset.title + '/' + examinee.id + ' - ogd-wikimedia-osm-checker'
 
     selectCurrent()
   })
