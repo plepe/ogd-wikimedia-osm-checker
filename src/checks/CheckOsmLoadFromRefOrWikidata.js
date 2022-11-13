@@ -51,7 +51,7 @@ class CheckOsmLoadFromRefOrWikidata extends Check {
 
     let loadingRef = false
     if (id !== null) {
-      loadingRef = !ob.load('osm', 'nwr["' + osmRefField + '"=' + id + '];')
+      loadingRef = !ob.load('osm', 'nwr["' + osmRefField + '"="' + id + '"];')
     }
 
     if (loadingWikidata.length || loadingRef) {
