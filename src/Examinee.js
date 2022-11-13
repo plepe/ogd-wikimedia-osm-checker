@@ -41,30 +41,20 @@ module.exports = class Examinee extends EventEmitter {
 
   listFormat () {
     let result = ''
+    let template
+    let value
 
-    let value = null
-    if (!this.dataset.refData.listFieldTitle) {
-      value = escHTML(this.id)
-    } else if (this.dataset.refData.listFieldTitle.match(/\{/)) {
-      if (!this.dataset.listFieldTitleTemplate) {
-        this.dataset.listFieldTitleTemplate = twig({ data: this.dataset.refData.listFieldTitle, autoescape: true })
-      }
-      value = this.listFieldTitleTemplate.render({ item: this.refData })
-    } else {
-      value = escHTML(this.refData[this.dataset.refData.listFieldTitle])
+    template = this.dataset.template('listFieldTitle')
+    if (template) {
+      value = template.render(this.templateData())
     }
 
     result += '<span class="title">' + value + '</span>'
 
-    if (!this.dataset.refData.listFieldAddress) {
-      value = null
-    } else if (this.dataset.refData.listFieldAddress.match(/\{/)) {
-      if (!this.listFieldAddressTemplate) {
-        this.listFieldAddressTemplate = twig({ data: this.dataset.refData.listFieldAddress, autoescape: true })
-      }
-      value = this.listFieldAddressTemplate.render({ item: this.refData })
-    } else {
-      value = escHTML(this.refData[this.dataset.refData.listFieldAddress])
+    value = null
+    template = this.dataset.template('listFieldAddress')
+    if (template) {
+      value = template.render(this.templateData())
     }
 
     if (value) {
@@ -255,6 +245,7 @@ module.exports = class Examinee extends EventEmitter {
 
   templateData () {
     const result = {
+      id: this.id,
       item: this.refData
     }
 

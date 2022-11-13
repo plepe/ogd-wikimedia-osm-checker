@@ -11,6 +11,10 @@ const datasetsList = require('./datasetsList')
 
 const datasets = {}
 
+const defaultsTemplates = {
+  listFieldTitle: '{{ id }}'
+}
+
 class Dataset {
   constructor (id, data = {}) {
     this.id = id
@@ -21,6 +25,7 @@ class Dataset {
       this[k] = data[k]
     }
 
+    this.templates = {}
     this.examinees = {}
   }
 
@@ -205,6 +210,20 @@ class Dataset {
     }
 
     content.innerHTML = text
+  }
+
+  template (id) {
+    if (!(id in this.templates)) {
+      let data = defaultsTemplates[id]
+
+      if (id in this.refData) {
+        data = (this.refData[id] && this.refData[id].match(/\{/)) ? this.refData[id] : ('{{ item.' + this.refData[id] + ' }}')
+      }
+
+      this.templates[id] = twig({ data, autoescape: true })
+    }
+
+    return this.templates[id]
   }
 }
 
