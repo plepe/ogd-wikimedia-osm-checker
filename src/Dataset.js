@@ -198,6 +198,19 @@ class Dataset {
     })
   }
 
+  getExaminee (id, callback) {
+    if (id in this.examinees) {
+      return callback(null, this.examinees[id])
+    }
+
+    this.getItem(id, (err, item) => {
+      if (err) { return callback(err) }
+
+      this.examinees[id] = new Examinee(id, item, this)
+      callback(null, this.examinees[id])
+    })
+  }
+
   showInfo (content) {
     let text = '<h1>' + (this.titleLong || this.title) + '</h1>'
 
