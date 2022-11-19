@@ -255,25 +255,36 @@ module.exports = class Examinee extends EventEmitter {
             }
           })
 
+          this._runChecks()
           this.emit('load')
         }
       )
     }
   }
 
-  runChecks (options, callback, init = false) {
-    if (!init) {
-      checks.forEach(check => {
-        this.checksStatus[check.id] = false
-      })
+  runChecks (options, callback) {
+    this.checkOptions = options
+    this.checkCallback = callback
 
-      this.on('load', () => this.runChecks(options, callback, true))
-      this.on('loadError', (err) => {
-        this.removeAllListeners()
-        callback(err)
-      })
-    }
+    this.data = {}
+    this.toLoad = {}
+    this.loading = {}
+    this.doneLoading = {}
 
+    checks.forEach(check => {
+      this.checksStatus[check.id] = false
+    })
+
+    this.on('loadError', (err) => {
+      this.removeAllListeners()
+      callback(err)
+    })
+
+    this._runChecks()
+  }
+
+  _runChecks () {
+    const options = this.checkOptions
     this.clearMessages()
 
     checks.forEach(check => {
@@ -284,7 +295,9 @@ module.exports = class Examinee extends EventEmitter {
       this._load(options)
     } else {
       this.removeAllListeners()
-      callback(null)
+      const cb = this.checkCallback
+      this.checkCallback = null
+      cb(null)
     }
   }
 
