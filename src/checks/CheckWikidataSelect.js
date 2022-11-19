@@ -27,7 +27,7 @@ class CheckWikidataSelect extends Check {
           ob.data.wikidataSelected = item
         }
       })
-      ob.runChecks(ob.dataset, {}, () => {})
+      ob.runChecks({}, () => {})
     }
     div.appendChild(select)
 

@@ -42,7 +42,7 @@ class CheckGeocoder extends Check {
           ob.data.geocoderSelected = item
         }
       })
-      ob.runChecks(ob.dataset, {}, () => {})
+      ob.runChecks({}, () => {})
     }
     div.appendChild(select)
 

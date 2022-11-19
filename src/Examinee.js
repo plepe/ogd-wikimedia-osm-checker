@@ -261,13 +261,13 @@ module.exports = class Examinee extends EventEmitter {
     }
   }
 
-  runChecks (dataset, options, callback, init = false) {
+  runChecks (options, callback, init = false) {
     if (!init) {
       checks.forEach(check => {
         this.checksStatus[check.id] = false
       })
 
-      this.on('load', () => this.runChecks(dataset, options, callback, true))
+      this.on('load', () => this.runChecks(options, callback, true))
       this.on('loadError', (err) => {
         this.removeAllListeners()
         callback(err)
@@ -277,7 +277,7 @@ module.exports = class Examinee extends EventEmitter {
     this.clearMessages()
 
     checks.forEach(check => {
-      this.checksStatus[check.id] = check.check(this, dataset)
+      this.checksStatus[check.id] = check.check(this, this.dataset)
     })
 
     if (this.needLoad()) {

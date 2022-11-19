@@ -279,7 +279,7 @@ function check (id, options = {}) {
     })
 
     examinee.initMessages(div)
-    examinee.runChecks(dataset, options, (err, result) => {
+    examinee.runChecks(options, (err, result) => {
       if (err) { global.alert(err) }
 
       loadingIndicator.end()
