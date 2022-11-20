@@ -62,7 +62,16 @@ refData:
     id: SHAPE
     type: wkt
 
-  # [optional] add a place filter in the menu. use this field for filtering:
+  # [optional] add filters
+  filter:
+    place:
+      name: Place
+      type: select
+      # populate the selector with all possibles values for 'PLACE'
+      valuesField: PLACE
+
+  # [deprecated] add a place filter in the menu (use 'filter' instead). use
+  # this field for filtering:
   placeFilterField: PLACE
 
   # [optional] in the list, which field to show as title field; if omitted,

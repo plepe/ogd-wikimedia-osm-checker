@@ -1,6 +1,7 @@
 const escHTML = require('html-escape')
 const natsort = require('natsort').default
 const twig = require('twig').twig
+const async = require('async')
 
 const createGeoLink = require('./createGeoLink')
 const get = require('./get')
@@ -218,6 +219,43 @@ class Dataset {
     }
 
     content.innerHTML = text
+  }
+
+  getFilter (callback) {
+    let def = {}
+
+    if (this.refData.filter) {
+      def = this.refData.filter
+    }
+
+    if (this.refData.placeFilterField) {
+      def = {
+        place: {
+          type: 'select',
+          name: this.refData.placeFilterField,
+          valuesField: this.refData.placeFilterField
+        }
+      }
+    }
+
+    async.each(
+      def,
+      (d, done) => {
+        if (!d.valuesField) {
+          return done()
+        }
+
+        this.getValues(d.valuesField, (err, values) => {
+          d.values = values
+          delete d.valuesField
+
+          done()
+        })
+      },
+      (err) => {
+        callback(err, def)
+      }
+    )
   }
 }
 
