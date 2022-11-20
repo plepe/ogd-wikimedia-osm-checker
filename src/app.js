@@ -155,7 +155,9 @@ function choose (path) {
 
   if (!id) {
     const content = document.getElementById('info')
-    dataset.showInfo(content)
+    if (content) {
+      dataset.showInfo(content)
+    }
     return update()
   }
 
