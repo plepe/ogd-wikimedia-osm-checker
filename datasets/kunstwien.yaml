@@ -30,9 +30,17 @@ refData:
   coordField:
     type: wkt
     id: SHAPE
-  placeFilterField: PLZ
   listFieldTitle: OBJEKTTITEL
   listFieldAddress: "{{ item.PLZ }} {{ item.ORT }}, {{ item.STRASSE }}"
+  filter:
+    PLZ:
+      name: PLZ
+      type: select
+      valuesField: PLZ
+    TYP:
+      name: Typ
+      type: select
+      valuesField: TYP
   showFields:
     OBJEKTTITEL:
       title: Titel
