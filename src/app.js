@@ -2,6 +2,7 @@ const hash = require('sheet-router/hash')
 const escHTML = require('html-escape')
 const forEach = require('foreach')
 const async = require('async')
+const Events = require('eventemitter2')
 
 const Dataset = require('./Dataset.js')
 const Examinee = require('./Examinee.js')
@@ -24,9 +25,11 @@ let ob
 
 let info
 
-class App {
+class App extends Events {
   constructor () {
     loadingIndicator.start()
+    super()
+
     async.each(modules, (module, done) => module.init(this, done), (err) => {
       loadingIndicator.end()
 

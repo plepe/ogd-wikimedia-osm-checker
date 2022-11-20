@@ -29,6 +29,7 @@
     "babel-eslint": "^10.1.0",
     "boundingbox": "^1.4.0",
     "csvtojson": "^2.0.10",
+    "eventemitter2": "^6.4.9",
     "find-wikidata-items": "^0.2.1",
     "foreach": "^2.0.6",
     "html-escape": "^2.0.0",
