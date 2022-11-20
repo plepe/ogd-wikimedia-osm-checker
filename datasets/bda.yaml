@@ -17,7 +17,6 @@ file:
   name: bda.json
 refData:
   idField: HERIS-ID
-  placeFilterField: Gemeinde
   listFieldTitle: Katalogtitel
   listFieldAddress: Adresse
   showFields:
@@ -30,6 +29,11 @@ refData:
       title: Grundstücknr.
     Denkmalschutzstatus:
       title: Status
+  filter:
+    Gemeinde:
+      type: select
+      name: Gemeinde
+      valuesField: Gemeinde
 wikipediaList:
   list: AT-BDA
   idPrefix: id-

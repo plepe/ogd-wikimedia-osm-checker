@@ -226,15 +226,11 @@ class Dataset {
 
     if (this.refData.filter) {
       def = this.refData.filter
-    }
-
-    if (this.refData.placeFilterField) {
-      def = {
-        place: {
-          type: 'select',
-          name: this.refData.placeFilterField,
-          valuesField: this.refData.placeFilterField
-        }
+    } else if (this.refData.placeFilterField) {
+      def[this.refData.placeFilterField] = {
+        type: 'select',
+        name: 'Ort',
+        valuesField: this.refData.placeFilterField
       }
     }
 
