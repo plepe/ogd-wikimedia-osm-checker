@@ -1,5 +1,5 @@
 module.exports = {
-  init (callback) {
+  init (_app, callback) {
     fetch('dist/NEWS.html')
       .then(res => res.text())
       .then(body => {

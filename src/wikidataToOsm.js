@@ -4,7 +4,7 @@ const forEach = require('foreach')
 const wikidataToOsm = require('./wikidataToOsm.json')
 
 module.exports = {
-  init (callback) {
+  init (_app, callback) {
     async.eachOf(wikidataToOsm, (d, property, done) => {
       if (d.file) {
         global.fetch('data/' + d.file)

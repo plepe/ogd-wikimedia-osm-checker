@@ -24,18 +24,23 @@ let ob
 
 let info
 
+class App {
+  constructor () {
+    loadingIndicator.start()
+    async.each(modules, (module, done) => module.init(this, done), (err) => {
+      loadingIndicator.end()
+
+      if (err) {
+        return global.alert(err)
+      }
+
+      init()
+    })
+  }
+}
+
 window.onload = () => {
-  loadingIndicator.start()
-
-  async.each(modules, (module, done) => module.init(done), (err) => {
-    loadingIndicator.end()
-
-    if (err) {
-      return global.alert(err)
-    }
-
-    init()
-  })
+  app = new App()
 }
 
 function init () {
