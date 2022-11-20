@@ -35,6 +35,7 @@
     "iconv-lite": "^0.6.3",
     "jsdom": "^16.7.0",
     "marked": "^4.0.17",
+    "modulekit-form": "github:plepe/modulekit-form#browserify",
     "modulekit-lang": "github:plepe/modulekit-lang#browserify",
     "moment": "^2.29.3",
     "natsort": "^2.0.3",

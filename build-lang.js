@@ -5,6 +5,7 @@ const languages = ['en', 'de']
 const paths = [
   'lang',
   'node_modules/modulekit-lang/lang',
+  'node_modules/modulekit-form/lang'
 ]
 
 async.each(languages,
