@@ -10,17 +10,16 @@ const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
 const showLast = require('./showLast')
-const ModulekitForm = require('modulekit-form')
 
 const datasets = {} // deprecated
 const modules = [
   require('./news.js'),
   require('./lang.js'),
+  require('./filter.js'),
   require('./wikidataToOsm.js')
 ]
 
 let dataset
-let filter
 let ob
 
 let info
@@ -39,6 +38,10 @@ class App extends Events {
 
       init()
     })
+  }
+
+  update () {
+    update()
   }
 }
 
@@ -101,8 +104,6 @@ function chooseDataset () {
 function updateDataset () {
   const content = document.getElementById('content')
   const selectDataset = document.getElementById('Dataset')
-  const domFilter = document.getElementById('filter1')
-  domFilter.innerHTML = ''
 
   if (!selectDataset.value) {
     content.innerHTML = info
@@ -117,24 +118,8 @@ function updateDataset () {
 
   loadingIndicator.start()
 
-  dataset.getFilter((err, def) => {
+  app.emitAsync('set-dataset', dataset).then(() => {
     loadingIndicator.end()
-
-    if (err) { return global.alert(err) }
-
-    filter = new ModulekitForm(
-      null,
-      def,
-      {
-        change_on_input: true,
-        type: 'form_chooser',
-        'button:add_element': 'Filter hinzufügen',
-        order: false
-      }
-    )
-
-    filter.show(domFilter)
-    filter.onchange = update
 
     updateDataset2()
   })
@@ -174,16 +159,21 @@ function choose (path) {
 
   loadingIndicator.start()
   dataset.getItem(id, (err, item) => {
-    loadingIndicator.end()
-    if (err) { return global.alert(id + ' nicht gefunden!') }
+    if (err) {
+      loadingIndicator.end()
+
+      return global.alert(id + ' nicht gefunden!')
+    }
 
     httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
-    filter.set_data(item)
+    app.emitAsync('set-item', item).then(() => {
+      update()
 
-    update()
+      loadingIndicator.end()
 
-    check(id)
+      check(id)
+    })
   })
 }
 
@@ -193,20 +183,19 @@ function update () {
     content.removeChild(content.firstChild)
   }
 
+  const options = {}
+  app.emitAsync('get-items-options', options).then(() => {
+    update2(options)
+  })
+}
+
+function update2 (options) {
   const table = document.createElement('table')
   table.id = 'data'
   table.innerHTML = '<tr><th>' + escHTML(dataset.title) + '</th></tr>'
   content.appendChild(table)
 
   const dom = document.getElementById('data')
-
-  const options = {}
-  options.filter = filter.get_data()
-  for (const k in options.filter) {
-    if (options.filter[k] === null) {
-      delete options.filter[k]
-    }
-  }
 
   loadingIndicator.start()
   dataset.getItems(options, (err, items) => {
