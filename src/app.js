@@ -115,15 +115,18 @@ function updateDataset () {
     if (err) { return global.alert(err) }
 
     filter = new ModulekitForm(
-      'filter',
+      null,
       def,
-      { change_on_input: true }
+      {
+        change_on_input: true,
+        type: 'form_chooser',
+        'button:add_element': 'Filter hinzufügen',
+        order: false
+      }
     )
 
     filter.show(domFilter)
-    filter.onchange = () => {
-      update()
-    }
+    filter.onchange = update
 
     updateDataset2()
   })
