@@ -123,7 +123,6 @@ function updateDataset () {
     filter.show(domFilter)
     filter.onchange = () => {
       update()
-      console.log(filter.get_data())
     }
 
     updateDataset2()
@@ -166,6 +165,8 @@ function choose (path) {
     if (err) { return global.alert(id + ' nicht gefunden!') }
 
     httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
+
+    filter.set_data(item)
 
     update()
 
