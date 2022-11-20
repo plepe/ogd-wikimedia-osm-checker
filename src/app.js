@@ -9,6 +9,7 @@ const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
 const showLast = require('./showLast')
+const ModulekitForm = require('modulekit-form')
 
 const datasets = {} // deprecated
 const modules = [
@@ -19,6 +20,7 @@ const modules = [
 
 let dataset
 let place
+let filter
 let ob
 
 let info
@@ -92,6 +94,8 @@ function chooseDataset () {
 function updateDataset () {
   const content = document.getElementById('content')
   const selectDataset = document.getElementById('Dataset')
+  const domFilter = document.getElementById('filter1')
+  domFilter.innerHTML = ''
 
   if (!selectDataset.value) {
     content.innerHTML = info
@@ -105,37 +109,27 @@ function updateDataset () {
 
   dataset.showInfo(document.getElementById('info'))
 
-  const select = document.getElementById('placeFilter')
-  while (select.firstChild.nextSibling) {
-    select.removeChild(select.firstChild.nextSibling)
-  }
-  select.onchange = update
-
   loadingIndicator.start()
 
-  if (dataset.refData.placeFilterField) {
-    dataset.getValues(dataset.refData.placeFilterField, (err, values) => {
-      loadingIndicator.end()
-
-      if (err) { return global.alert(err) }
-
-      values.forEach(place => {
-        const option = document.createElement('option')
-        option.appendChild(document.createTextNode(place))
-        select.appendChild(option)
-      })
-    })
-
-    updateDataset2()
-  } else {
+  dataset.getFilter((err, def) => {
     loadingIndicator.end()
 
-    const option = document.createElement('option')
-    option.appendChild(document.createTextNode('alle'))
-    select.appendChild(option)
+    if (err) { return global.alert(err) }
+
+    filter = new ModulekitForm(
+      'filter',
+      def,
+      { change_on_input: true }
+    )
+
+    filter.show(domFilter)
+    filter.onchange = () => {
+      update()
+      console.log(filter.get_data())
+    }
 
     updateDataset2()
-  }
+  })
 }
 
 function updateDataset2 () {
@@ -175,13 +169,13 @@ function choose (path) {
 
     httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
-    const select = document.getElementById('placeFilter')
-    if (dataset.refData.placeFilterField) {
-      const place = item[dataset.refData.placeFilterField]
-      select.value = place
-    } else {
-      select.value = 'alle'
-    }
+//    const select = document.getElementById('placeFilter')
+//    if (dataset.refData.placeFilterField) {
+//      const place = item[dataset.refData.placeFilterField]
+//      select.value = place
+//    } else {
+//      select.value = 'alle'
+//    }
     update()
 
     check(id)
@@ -189,12 +183,12 @@ function choose (path) {
 }
 
 function update () {
-  const select = document.getElementById('placeFilter')
-  if (select.value === place) {
-    return
-  }
+//  const select = document.getElementById('placeFilter')
+//  if (select.value === place) {
+//    return
+//  }
 
-  place = select.value
+//  place = select.value
   const content = document.getElementById('content')
   while (content.firstChild) {
     content.removeChild(content.firstChild)
@@ -208,9 +202,11 @@ function update () {
   const dom = document.getElementById('data')
 
   const options = {}
-  if (false && dataset.refData.placeFilterField) {
-    options.filter = {}
-    options.filter[dataset.refData.placeFilterField] = place
+  options.filter = filter.get_data()
+  for (const k in options.filter) {
+    if (options.filter[k] === null) {
+      delete options.filter[k]
+    }
   }
 
   loadingIndicator.start()
