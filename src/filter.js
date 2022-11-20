@@ -47,7 +47,15 @@ function getItemsOptions (options) {
 }
 
 function setItem (item) {
-  filter.set_data(item)
+  const data = {}
+
+  for (const k in filter.elements) {
+    if (k in item) {
+      data[k] = item[k]
+    }
+  }
+
+  filter.set_data(data)
 }
 
 module.exports = {
