@@ -19,7 +19,6 @@ const modules = [
 ]
 
 let dataset
-let place
 let filter
 let ob
 
@@ -104,7 +103,6 @@ function updateDataset () {
   }
 
   dataset = datasets[selectDataset.value]
-  place = null
   ob = null
 
   dataset.showInfo(document.getElementById('info'))
@@ -169,13 +167,6 @@ function choose (path) {
 
     httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
-//    const select = document.getElementById('placeFilter')
-//    if (dataset.refData.placeFilterField) {
-//      const place = item[dataset.refData.placeFilterField]
-//      select.value = place
-//    } else {
-//      select.value = 'alle'
-//    }
     update()
 
     check(id)
@@ -183,12 +174,6 @@ function choose (path) {
 }
 
 function update () {
-//  const select = document.getElementById('placeFilter')
-//  if (select.value === place) {
-//    return
-//  }
-
-//  place = select.value
   const content = document.getElementById('content')
   while (content.firstChild) {
     content.removeChild(content.firstChild)
