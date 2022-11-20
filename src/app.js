@@ -103,7 +103,7 @@ function updateDataset () {
   place = null
   ob = null
 
-  dataset.showInfo(content)
+  dataset.showInfo(document.getElementById('info'))
 
   const select = document.getElementById('placeFilter')
   while (select.firstChild.nextSibling) {
@@ -163,7 +163,7 @@ function choose (path) {
   }
 
   if (!id) {
-    const content = document.getElementById('content')
+    const content = document.getElementById('info')
     dataset.showInfo(content)
     return null
   }
