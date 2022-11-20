@@ -118,11 +118,14 @@ function updateDataset () {
 
   loadingIndicator.start()
 
-  app.emitAsync('set-dataset', dataset).then(() => {
-    loadingIndicator.end()
+  app.emitAsync('set-dataset', dataset).then(
+    () => {
+      loadingIndicator.end()
 
-    updateDataset2()
-  })
+      updateDataset2()
+    },
+    (err) => global.alert(err)
+  )
 }
 
 function updateDataset2 () {
@@ -167,13 +170,16 @@ function choose (path) {
 
     httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
-    app.emitAsync('set-item', item).then(() => {
-      update()
+    app.emitAsync('set-item', item).then(
+      () => {
+        update()
 
-      loadingIndicator.end()
+        loadingIndicator.end()
 
-      check(id)
-    })
+        check(id)
+      },
+      (err) => global.alert(err)
+    )
   })
 }
 
@@ -184,9 +190,12 @@ function update () {
   }
 
   const options = {}
-  app.emitAsync('get-items-options', options).then(() => {
-    update2(options)
-  })
+  app.emitAsync('get-items-options', options).then(
+    () => {
+      update2(options)
+    },
+    (err) => global.alert(err)
+  )
 }
 
 function update2 (options) {

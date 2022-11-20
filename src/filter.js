@@ -12,9 +12,9 @@ function setDataset (_dataset) {
   const domFilter = document.getElementById('filter1')
   dataset = _dataset
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     dataset.getFilter((err, def) => {
-      if (err) { return resolve.fail() }
+      if (err) { return reject(err) }
 
       filter = new ModulekitForm(
         null,
