@@ -124,9 +124,9 @@ function updateDataset () {
         option.appendChild(document.createTextNode(place))
         select.appendChild(option)
       })
-
-      updateDataset2()
     })
+
+    updateDataset2()
   } else {
     loadingIndicator.end()
 
@@ -165,7 +165,7 @@ function choose (path) {
   if (!id) {
     const content = document.getElementById('info')
     dataset.showInfo(content)
-    return null
+    return update()
   }
 
   loadingIndicator.start()
@@ -200,12 +200,6 @@ function update () {
     content.removeChild(content.firstChild)
   }
 
-  if (place === '') {
-    content.innerHTML = info
-    showLast()
-    return
-  }
-
   const table = document.createElement('table')
   table.id = 'data'
   table.innerHTML = '<tr><th>' + escHTML(dataset.title) + '</th></tr>'
@@ -214,7 +208,7 @@ function update () {
   const dom = document.getElementById('data')
 
   const options = {}
-  if (dataset.refData.placeFilterField) {
+  if (false && dataset.refData.placeFilterField) {
     options.filter = {}
     options.filter[dataset.refData.placeFilterField] = place
   }
