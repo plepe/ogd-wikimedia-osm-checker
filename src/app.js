@@ -190,12 +190,12 @@ function update () {
 }
 
 function update2 (options) {
+  const content = document.getElementById('content')
+
   const table = document.createElement('table')
   table.id = 'data'
   table.innerHTML = '<tr><th>' + escHTML(dataset.title) + '</th></tr>'
   content.appendChild(table)
-
-  const dom = document.getElementById('data')
 
   loadingIndicator.start()
   dataset.getItems(options, (err, items) => {
@@ -222,7 +222,7 @@ function update2 (options) {
       a.href = '#' + dataset.id + '/' + id
 
       td.appendChild(a)
-      dom.appendChild(tr)
+      table.appendChild(tr)
     })
 
     selectCurrent()
