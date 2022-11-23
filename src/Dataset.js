@@ -3,13 +3,17 @@ const natsort = require('natsort').default
 const twig = require('twig').twig
 const async = require('async')
 
-const createGeoLink = require('./createGeoLink')
+const Examinee = require('./Examinee')
 const get = require('./get')
 const renderTemplate = require('./renderTemplate')
 const loadFile = require('./loadFile')
 const datasetsList = require('./datasetsList')
 
 const datasets = {}
+
+const defaultsTemplates = {
+  listFieldTitle: '{{ id }}'
+}
 
 class Dataset {
   constructor (id, data = {}) {
@@ -20,106 +24,9 @@ class Dataset {
     for (const k in data) {
       this[k] = data[k]
     }
-  }
 
-  listFormat (item, index) {
-    let result = ''
-
-    let value = null
-    if (!this.refData.listFieldTitle) {
-      value = escHTML(this.refData.idField ? item[this.refData.idField] : index)
-    } else if (this.refData.listFieldTitle.match(/\{/)) {
-      if (!this.listFieldTitleTemplate) {
-        this.listFieldTitleTemplate = twig({ data: this.refData.listFieldTitle, autoescape: true })
-      }
-      value = this.listFieldTitleTemplate.render({ item })
-    } else {
-      value = escHTML(item[this.refData.listFieldTitle])
-    }
-
-    result += '<span class="title">' + value + '</span>'
-
-    if (!this.refData.listFieldAddress) {
-      value = null
-    } else if (this.refData.listFieldAddress.match(/\{/)) {
-      if (!this.listFieldAddressTemplate) {
-        this.listFieldAddressTemplate = twig({ data: this.refData.listFieldAddress, autoescape: true })
-      }
-      value = this.listFieldAddressTemplate.render({ item })
-    } else {
-      value = escHTML(item[this.refData.listFieldAddress])
-    }
-
-    if (value) {
-      result += '<span class="address">' + value + '</span>'
-    }
-
-    return result
-  }
-
-  showFormat (item) {
-    let result = '<h2>' + escHTML(this.operator) + '</h2>'
-
-    result += '<ul>'
-
-    if (this.refData.idField || this.refData.urlFormat) {
-      result += '<li class="field-id">'
-      if (this.refData.idField) {
-        result += '<span class="label">ID</span>: '
-        result += '<span class="value">' + escHTML(item[this.refData.idField]) + '</span>'
-      }
-
-      if (this.refData.urlFormat) {
-        if (!this.urlTemplate) {
-          this.urlTemplate = twig({ data: this.refData.urlFormat, autoescape: true })
-        }
-
-        const urlText = '<a target="_blank" href="' + this.urlTemplate.render({ item }) + '">Website</a>'
-        if (this.refData.idField) {
-          result += ' <span class="url">(' + urlText + ')</span>'
-        } else {
-          result += '<span class="url">' + urlText + '</span>'
-        }
-      }
-
-      result += '</li>'
-    }
-
-    const showFields = this.refData.showFields || Object.fromEntries(Object.keys(item).filter(k => !k.match(/^_/)).map(k => [k, {}]))
-
-    Object.keys(showFields).forEach(fieldId => {
-      const field = showFields[fieldId] || {}
-      let value = item[fieldId]
-      if (field.format) {
-        if (!field.template) {
-          field.template = twig({ data: field.format, autoescape: true })
-        }
-
-        value = field.template.render({ item })
-      } else {
-        value = escHTML(value)
-      }
-
-      if (value) {
-        result += '<li class="field-' + fieldId + '">'
-        result += '<span class="label">' + escHTML(field.title || fieldId) + '</span>: '
-        result += '<span class="value">' + value + '</span>'
-        result += '</li>'
-      }
-    })
-
-    if (this.refData.coordField) {
-      let text = '<li class="field-coords">'
-      text += '<span class="label">Koordinaten</span>: '
-      text += '<span class="value">' + createGeoLink(item, this.refData.coordField) + '</span>'
-      text += '</li>'
-
-      result += text
-    }
-
-    result += '</ul>'
-
-    return result
+    this.templates = {}
+    this.examinees = {}
   }
 
   compileOverpassQuery (ob) {
@@ -201,9 +108,41 @@ class Dataset {
     get.items(this, options, (err, data) => callback(err, data, this.fileStat))
   }
 
+  getExaminees (options = {}, callback) {
+    this.getItems(options, (err, items) => {
+      if (err) { return callback(err) }
+
+      const list = items.map((item, index) => {
+        const id = this.refData.idField ? item[this.refData.idField] : index
+
+        if (id in this.examinees) {
+          return this.examinees[id]
+        }
+
+        this.examinees[id] = new Examinee(id, item, this)
+        return this.examinees[id]
+      })
+
+      callback(null, list)
+    })
+  }
+
   getItem (id, callback) {
     get.item(this, id, (err, item, stat) => {
       callback(err, item, stat)
+    })
+  }
+
+  getExaminee (id, callback) {
+    if (id in this.examinees) {
+      return callback(null, this.examinees[id])
+    }
+
+    this.getItem(id, (err, item) => {
+      if (err) { return callback(err) }
+
+      this.examinees[id] = new Examinee(id, item, this)
+      callback(null, this.examinees[id])
     })
   }
 
@@ -252,6 +191,20 @@ class Dataset {
         callback(err, def)
       }
     )
+  }
+
+  template (id) {
+    if (!(id in this.templates)) {
+      let data = defaultsTemplates[id]
+
+      if (id in this.refData) {
+        data = (this.refData[id] && this.refData[id].match(/\{/)) ? this.refData[id] : ('{{ item.' + this.refData[id] + ' }}')
+      }
+
+      this.templates[id] = twig({ data, autoescape: true })
+    }
+
+    return this.templates[id]
   }
 }
 

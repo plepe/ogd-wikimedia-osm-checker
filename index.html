@@ -5,6 +5,7 @@
   <title>ogd-wikimedia-osm-checker</title>
   <script src="dist/app.js"></script>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
 </head>
 <body>
 <div id="loadingIndicator"></div>
@@ -12,6 +13,10 @@
 <div id="filter">
 <select id="Dataset"><option value="">Wähle Datensatz ...</option></select>
 <form id="filter1"></form>
+<select id="viewMode">
+  <option value="table">Tabelle</option>
+  <option value="map">Karte</option>
+</select>
 </div>
 <div id="content">
 <h1>ogd-wikimedia-osm-checker</h1>
@@ -35,6 +40,7 @@ Ich freue mich über Verbesserungsvorschläge und Pull Requests!
 <h2>Autor</h2>
 <a href='https://plepe.at'>Stephan Bösch-Plepelits</a>
 </div>
+<div id="map"></div>
 </div>
 <div id='details'>
 <div id='news'></div>

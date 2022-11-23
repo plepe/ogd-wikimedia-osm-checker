@@ -13,6 +13,44 @@ a .address {
   width: calc(50% - 1px);
   border-right: 1px solid black;
 }
+#selector > div {
+  display: none;
+}
+#selector > #filter {
+  display: block;
+  flex: 0 1 auto;
+}
+#selector.viewmode-info > #content,
+#selector.viewmode-table > #content {
+  display: block;
+}
+#selector.viewmode-map {
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+}
+#selector.viewmode-map > #map {
+  flex: 1 0;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.hasMap #selector {
+  bottom: 401px;
+}
+.hasMap #map {
+  position: absolute;
+  display: block;
+  height: 400px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  width: calc(50% - 1px);
+  border-right: 1px solid black;
+  border-top: 1px solid black;
+}
 #selector > div > select {
   width: 49%;
   box-sizing: border-box;

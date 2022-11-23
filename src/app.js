@@ -1,5 +1,4 @@
 const hash = require('sheet-router/hash')
-const escHTML = require('html-escape')
 const forEach = require('foreach')
 const async = require('async')
 const Events = require('eventemitter2')
@@ -10,9 +9,14 @@ const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
 const showLast = require('./showLast')
+const viewModes = {
+  table: require('./ViewTable'),
+  map: require('./ViewMap')
+}
 
 const datasets = {} // deprecated
 const modules = [
+  require('./map'),
   require('./news.js'),
   require('./lang.js'),
   require('./filter.js'),
@@ -23,6 +27,7 @@ let dataset
 let ob
 
 let info
+let currentView
 
 class App extends Events {
   constructor () {
@@ -84,6 +89,7 @@ function init2 () {
   showLast()
 
   selectDataset.onchange = chooseDataset
+  document.getElementById('viewMode').onchange = update
 
   if (global.location.hash) {
     choose(global.location.hash.substr(1))
@@ -184,11 +190,6 @@ function choose (path) {
 }
 
 function update () {
-  const content = document.getElementById('content')
-  while (content.firstChild) {
-    content.removeChild(content.firstChild)
-  }
-
   const options = {}
   app.emitAsync('get-items-options', options).then(
     () => {
@@ -199,40 +200,21 @@ function update () {
 }
 
 function update2 (options) {
-  const content = document.getElementById('content')
+  const viewMode = document.getElementById('viewMode').value
+  const ViewMode = viewModes[viewMode]
 
-  const table = document.createElement('table')
-  table.id = 'data'
-  table.innerHTML = '<tr><th>' + escHTML(dataset.title) + '</th></tr>'
-  content.appendChild(table)
+  if (currentView) {
+    currentView.clear()
+  }
+
+  currentView = new ViewMode(dataset)
 
   loadingIndicator.start()
-  dataset.getItems(options, (err, items) => {
+  dataset.getExaminees(options, (err, examinees) => {
     loadingIndicator.end()
     if (err) { return global.alert(err) }
 
-    items.forEach((item, index) => {
-      const id = dataset.refData.idField ? item[dataset.refData.idField] : index
-
-      const text = dataset.listFormat(item, index)
-
-      const tr = document.createElement('tr')
-      tr.id = dataset.id + '-' + id
-
-      const td = document.createElement('td')
-      tr.appendChild(td)
-
-      const a = document.createElement('a')
-      if (typeof text === 'string') {
-        a.innerHTML = text
-      } else {
-        a.appendChild(text)
-      }
-      a.href = '#' + dataset.id + '/' + id
-
-      td.appendChild(a)
-      table.appendChild(tr)
-    })
+    currentView.show(examinees)
 
     selectCurrent()
   })
@@ -240,7 +222,7 @@ function update2 (options) {
 
 function check (id, options = {}) {
   loadingIndicator.start()
-  dataset.getItem(id, (err, entry) => {
+  dataset.getExaminee(id, (err, examinee) => {
     loadingIndicator.end()
     if (err) { return global.alert(err) }
 
@@ -264,7 +246,7 @@ function check (id, options = {}) {
 
     loadingIndicator.start()
 
-    const format = dataset.showFormat(entry)
+    const format = examinee.showFormat()
     if (typeof format === 'string') {
       const dom = document.createElement('div')
       dom.innerHTML = format
@@ -279,31 +261,23 @@ function check (id, options = {}) {
       }
     })
 
-    ob = new Examinee(id, entry, dataset)
-    ob.initMessages(div)
-    ob.runChecks(dataset, options, (err, result) => {
+    examinee.initMessages(div)
+    examinee.runChecks(dataset, options, (err, result) => {
       if (err) { global.alert(err) }
 
       loadingIndicator.end()
     })
 
-    document.title = dataset.title + '/' + ob.id + ' - ogd-wikimedia-osm-checker'
+    document.title = dataset.title + '/' + examinee.id + ' - ogd-wikimedia-osm-checker'
 
     selectCurrent()
   })
 }
 
 function selectCurrent () {
-  const table = document.getElementById('data')
-  Array.from(table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
+  currentView.select(ob)
 
   if (!dataset || !ob) {
     return
-  }
-
-  const listEntry = document.getElementById(dataset.id + '-' + ob.id)
-  if (listEntry) {
-    listEntry.classList.add('active')
-    listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 }
