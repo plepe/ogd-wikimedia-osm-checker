@@ -89,7 +89,8 @@ function init2 () {
   showLast()
 
   selectDataset.onchange = chooseDataset
-  document.getElementById('viewMode').onchange = update
+  document.getElementById('viewMode').onchange = chooseViewMode
+  chooseViewMode()
 
   if (global.location.hash) {
     choose(global.location.hash.substr(1))
@@ -98,6 +99,23 @@ function init2 () {
   hash(loc => {
     choose(loc.substr(1))
   })
+}
+
+function chooseViewMode () {
+  const viewMode = document.getElementById('viewMode').value
+  const ViewMode = viewModes[viewMode]
+
+  if (currentView) {
+    currentView.clear()
+  }
+
+  currentView = new ViewMode()
+
+  if (dataset) {
+    currentView.setDataset(dataset)
+  }
+
+  update()
 }
 
 function chooseDataset () {
@@ -119,6 +137,8 @@ function updateDataset () {
 
   dataset = datasets[selectDataset.value]
   ob = null
+
+  currentView.setDataset(dataset)
 
   dataset.showInfo(document.getElementById('info'))
 
@@ -190,6 +210,10 @@ function choose (path) {
 }
 
 function update () {
+  if (!dataset) {
+    return
+  }
+
   const options = {}
   app.emitAsync('get-items-options', options).then(
     () => {
@@ -200,15 +224,6 @@ function update () {
 }
 
 function update2 (options) {
-  const viewMode = document.getElementById('viewMode').value
-  const ViewMode = viewModes[viewMode]
-
-  if (currentView) {
-    currentView.clear()
-  }
-
-  currentView = new ViewMode(dataset)
-
   loadingIndicator.start()
   dataset.getExaminees(options, (err, examinees) => {
     loadingIndicator.end()

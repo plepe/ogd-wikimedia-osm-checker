@@ -1,22 +1,24 @@
 const escHTML = require('html-escape')
 
 module.exports = class ViewTable {
-  constructor (dataset) {
-    this.dataset = dataset
-
+  constructor () {
     const selector = document.getElementById('selector')
     selector.className = 'viewmode-table'
 
     this.clear()
+  }
+
+  setDataset (dataset) {
+    this.dataset = dataset
+  }
+
+  show (examinees) {
     const content = document.getElementById('content')
 
     this.table = document.createElement('table')
     this.table.id = 'data'
     this.table.innerHTML = '<tr><th>' + escHTML(this.dataset.title) + '</th></tr>'
     content.appendChild(this.table)
-  }
-
-  show (examinees) {
     examinees.forEach((examinee, index) => {
       const text = examinee.listFormat()
 

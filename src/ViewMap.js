@@ -4,15 +4,17 @@ const BoundingBox = require('boundingbox')
 const map = require('./map')
 
 module.exports = class ViewTable {
-  constructor (dataset) {
-    this.dataset = dataset
-
+  constructor () {
     const selector = document.getElementById('selector')
     selector.className = 'viewmode-map'
 
     map.resize()
 
     this.features = {}
+  }
+
+  setDataset (dataset) {
+    this.dataset = dataset
   }
 
   show (examinees) {
