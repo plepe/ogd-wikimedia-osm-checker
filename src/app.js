@@ -109,7 +109,7 @@ function chooseViewMode () {
     currentView.clear()
   }
 
-  currentView = new ViewMode()
+  currentView = new ViewMode(app)
 
   if (dataset) {
     currentView.setDataset(dataset)
@@ -225,14 +225,13 @@ function update () {
 
 function update2 (options) {
   loadingIndicator.start()
-  dataset.getExaminees(options, (err, examinees) => {
-    loadingIndicator.end()
-    if (err) { return global.alert(err) }
-
-    currentView.show(examinees)
-
-    selectCurrent()
-  })
+  app.emitAsync('update-options', options).then(
+    () => {
+      loadingIndicator.end()
+      selectCurrent()
+    },
+    (err) => global.alert(err)
+  )
 }
 
 function check (id, options = {}) {
