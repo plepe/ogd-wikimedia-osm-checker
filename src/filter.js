@@ -48,15 +48,24 @@ function getItemsOptions (options) {
 
 function setItem (item) {
   const data = {}
+  const currentData = filter.get_data()
+  let change = false
 
   for (const k in filter.element.elements) {
     if (k in item) {
       data[k] = item[k]
+
+      if (item[k] != currentData[k]) {
+        change = true
+      }
     }
   }
 
-  filter.set_data(data)
-  app.updateOptions()
+  if (change) {
+    console.log('filter change')
+    filter.set_data(data)
+    app.updateOptions()
+  }
 }
 
 module.exports = {
