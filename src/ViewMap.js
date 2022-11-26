@@ -7,9 +7,6 @@ module.exports = class ViewTable extends ViewBase {
   constructor (app) {
     super(app)
 
-    const selector = document.getElementById('selector')
-    selector.className = 'viewmode-map'
-
     map.resize()
 
     this.features = {}
@@ -21,6 +18,9 @@ module.exports = class ViewTable extends ViewBase {
 
   _show (examinees) {
     let boundingbox
+
+    const selector = document.getElementById('selector')
+    selector.className = 'viewmode-map'
 
     this.clear()
 

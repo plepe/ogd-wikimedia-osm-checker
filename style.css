@@ -20,10 +20,6 @@ a .address {
   display: block;
   flex: 0 1 auto;
 }
-#selector.viewmode-info > #content,
-#selector.viewmode-table > #content {
-  display: block;
-}
 #selector.viewmode-map {
   display: flex;
   flex-direction: column;
@@ -40,7 +36,9 @@ a .address {
 #main-page {
   display: none;
 }
-.viewmode-main-page #main-page {
+#selector.viewmode-info > #content,
+#selector.viewmode-table > #view-table ,
+#selector.viewmode-main-page > #main-page {
   display: block;
 }
 .hasMap #selector {

@@ -5,13 +5,13 @@ module.exports = class ViewTable extends ViewBase  {
   constructor (app) {
     super(app)
 
-    const selector = document.getElementById('selector')
-    selector.className = 'viewmode-table'
-
     this.clear()
   }
 
   _show (examinees) {
+    const selector = document.getElementById('selector')
+    selector.className = 'viewmode-table'
+
     this.clear()
     const content = document.getElementById('view-table')
 
