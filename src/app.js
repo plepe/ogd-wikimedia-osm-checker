@@ -85,12 +85,14 @@ function init () {
         option.appendChild(document.createTextNode(dataset.title))
         selectDataset.appendChild(option)
 
-        const li = document.createElement('li')
-        const a = document.createElement('a')
-        a.href = '#' + id
-        a.appendChild(document.createTextNode(dataset.titleLong || dataset.title))
-        li.appendChild(a)
-        listDatasets.appendChild(li)
+        if (listDatasets) {
+          const li = document.createElement('li')
+          const a = document.createElement('a')
+          a.href = '#' + id
+          a.appendChild(document.createTextNode(dataset.titleLong || dataset.title))
+          li.appendChild(a)
+          listDatasets.appendChild(li)
+        }
 
         done()
       })
@@ -151,7 +153,7 @@ function updateDataset () {
   ob = null
 
 
-  dataset.showInfo(document.getElementById('info'))
+  //dataset.showInfo(document.getElementById('info'))
 
   loadingIndicator.start()
 
