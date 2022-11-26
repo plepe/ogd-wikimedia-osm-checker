@@ -13,7 +13,7 @@ module.exports = class ViewBase {
   remove () {
     this.clear()
 
-    this.listeners.forEach(l => this.app.off(l))
+    this.listeners.forEach(l => l.off())
   }
 
   show () {
