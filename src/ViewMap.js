@@ -3,6 +3,21 @@ const BoundingBox = require('boundingbox')
 const ViewBase = require('./ViewBase')
 const map = require('./map')
 
+const defaultStyle = {
+  color: '#000000',
+  weight: 3,
+  radius: 5,
+  fill: true,
+  fillOpacity: 0
+}
+const selectedStyle = {
+  color: '#ff0000',
+  weight: 3,
+  radius: 5,
+  fill: true,
+  fillOpacity: 0
+}
+
 module.exports = class ViewTable extends ViewBase {
   constructor (app) {
     super(app)
@@ -33,7 +48,7 @@ module.exports = class ViewTable extends ViewBase {
           boundingbox.extend(coord)
         }
 
-        const feature = L.circleMarker([coord.latitude, coord.longitude])
+        const feature = L.circleMarker([coord.latitude, coord.longitude], defaultStyle)
         feature.addTo(map.map)
 
         feature.on('click', () => {
@@ -64,16 +79,12 @@ module.exports = class ViewTable extends ViewBase {
     }
 
     if (this.currentFeature) {
-      this.currentFeature.setStyle({
-        color: 'blue'
-      })
+      this.currentFeature.setStyle(defaultStyle)
     }
 
     this.currentFeature = this.features[this.app.examinee.id]
     if (this.currentFeature) {
-      this.currentFeature.setStyle({
-        color: 'red'
-      })
+      this.currentFeature.setStyle(selectedStyle)
     }
   }
 }
