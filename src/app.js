@@ -114,16 +114,8 @@ function updateDataset () {
   const content = document.getElementById('content')
   const selectDataset = document.getElementById('Dataset')
 
-  if (!selectDataset.value) {
-    content.innerHTML = info
-    return
-  }
-
   app.dataset = datasets[selectDataset.value]
   ob = null
-
-
-  //dataset.showInfo(document.getElementById('info'))
 
   loadingIndicator.start()
 
@@ -138,6 +130,10 @@ function updateDataset () {
 }
 
 function updateDataset2 () {
+  if (!app.dataset) {
+    return
+  }
+
   if (global.location.hash) {
     choose(global.location.hash.substr(1))
   } else {

@@ -12,6 +12,12 @@ function setDataset (_dataset) {
   const domFilter = document.getElementById('filter1')
   dataset = _dataset
 
+  clear()
+  if (!dataset) {
+    filter = null
+    return
+  }
+
   return new Promise((resolve, reject) => {
     dataset.getFilter((err, def) => {
       if (err) { return reject(err) }
