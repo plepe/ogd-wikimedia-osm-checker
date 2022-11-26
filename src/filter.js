@@ -46,16 +46,16 @@ function getItemsOptions (options) {
   }
 }
 
-function setItem (item) {
+function setExaminee (examinee) {
   const data = {}
   const currentData = filter.get_data()
   let change = false
 
   for (const k in filter.element.elements) {
-    if (k in item) {
-      data[k] = item[k]
+    if (k in examinee.refData) {
+      data[k] = examinee.refData[k]
 
-      if (item[k] != currentData[k]) {
+      if (examinee.refData[k] != currentData[k]) {
         change = true
       }
     }
@@ -73,7 +73,7 @@ module.exports = {
     callback()
 
     app.on('set-dataset', setDataset, { promisify: true })
-    app.on('set-item', setItem)
+    app.on('set-examinee', setExaminee)
     app.on('get-items-options', getItemsOptions)
   }
 }

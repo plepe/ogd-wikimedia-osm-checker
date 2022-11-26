@@ -200,7 +200,7 @@ function choose (path) {
   }
 
   loadingIndicator.start()
-  app.dataset.getItem(id, (err, item) => {
+  app.dataset.getExaminee(id, (err, examinee) => {
     if (err) {
       loadingIndicator.end()
 
@@ -209,7 +209,7 @@ function choose (path) {
 
     httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
-    app.emitAsync('set-item', item).then(
+    app.emitAsync('set-examinee', examinee).then(
       () => {
 
         loadingIndicator.end()
