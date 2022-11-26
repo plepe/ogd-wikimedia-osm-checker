@@ -9,10 +9,6 @@ const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
 const showLast = require('./showLast')
-const viewModes = {
-  table: require('./ViewTable'),
-  map: require('./ViewMap')
-}
 
 const datasets = {} // deprecated
 const modules = [
@@ -20,13 +16,13 @@ const modules = [
   require('./news.js'),
   require('./lang.js'),
   require('./filter.js'),
+  require('./view.js'),
   require('./wikidataToOsm.js')
 ]
 
 let ob
 
 let info
-let currentView
 
 class App extends Events {
   constructor () {
@@ -105,12 +101,10 @@ function init () {
 }
 
 function init2 () {
-  const selectDataset = document.getElementById('Dataset')
   showLast()
 
+  const selectDataset = document.getElementById('Dataset')
   selectDataset.onchange = chooseDataset
-  document.getElementById('viewMode').onchange = chooseViewMode
-  chooseViewMode()
 
   if (global.location.hash) {
     choose(global.location.hash.substr(1))
@@ -119,17 +113,6 @@ function init2 () {
   hash(loc => {
     choose(loc.substr(1))
   })
-}
-
-function chooseViewMode () {
-  const viewMode = document.getElementById('viewMode').value
-  const ViewMode = viewModes[viewMode]
-
-  if (currentView) {
-    currentView.remove()
-  }
-
-  currentView = new ViewMode(app)
 }
 
 function chooseDataset () {
