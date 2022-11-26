@@ -9,11 +9,13 @@ module.exports = class ViewBase {
 
   setDataset (dataset) {
     this.dataset = dataset
+
+    this.show()
   }
 
-  show (options) {
+  show () {
     return new Promise((resolve, reject) => {
-      this.dataset.getExaminees(options, (err, examinees) => {
+      this.dataset.getExaminees(app.options, (err, examinees) => {
         if (err) { return reject(err) }
 
         this._show(examinees)

@@ -48,6 +48,26 @@ class App extends Events {
   update () {
     update()
   }
+
+  updateOptions () {
+    if (!dataset) {
+      return
+    }
+
+    loadingIndicator.start()
+
+    this.options = {}
+    app.emitAsync('get-items-options', this.options).then(
+      () => app.emitAsync('update-options', this.options).then(
+        () => {
+          loadingIndicator.end()
+          selectCurrent()
+        },
+        (err) => global.alert(err)
+      ),
+      (err) => global.alert(err)
+    )
+  }
 }
 
 window.onload = () => {
@@ -158,7 +178,7 @@ function updateDataset2 () {
   if (global.location.hash) {
     choose(global.location.hash.substr(1))
   } else {
-    update()
+    app.updateOptions()
   }
 }
 
@@ -198,7 +218,6 @@ function choose (path) {
 
     app.emitAsync('set-item', item).then(
       () => {
-        update()
 
         loadingIndicator.end()
 
@@ -210,28 +229,7 @@ function choose (path) {
 }
 
 function update () {
-  if (!dataset) {
-    return
-  }
-
-  const options = {}
-  app.emitAsync('get-items-options', options).then(
-    () => {
-      update2(options)
-    },
-    (err) => global.alert(err)
-  )
-}
-
-function update2 (options) {
-  loadingIndicator.start()
-  app.emitAsync('update-options', options).then(
-    () => {
-      loadingIndicator.end()
-      selectCurrent()
-    },
-    (err) => global.alert(err)
-  )
+  console.log('update')
 }
 
 function check (id, options = {}) {

@@ -28,7 +28,7 @@ function setDataset (_dataset) {
       )
 
       filter.show(domFilter)
-      filter.onchange = () => app.update()
+      filter.onchange = () => app.updateOptions()
 
       resolve()
     })
