@@ -3,9 +3,9 @@ module.exports = class ViewBase {
     this.app = app
 
     this.listeners = [
-      this.app.on('update-options', () => this.show()),
-      this.app.on('set-dataset', () => this.show()),
-      this.app.on('set-examinee', (examinee) => this.select(examinee))
+      this.app.on('update-options', () => this.show(), {objectify: true}),
+      this.app.on('set-dataset', () => this.show(), {objectify: true}),
+      this.app.on('set-examinee', (examinee) => this.select(examinee), {objectify: true})
     ]
 
     this.show()
