@@ -64,10 +64,17 @@ module.exports = class ViewTable extends ViewBase {
       return
     }
 
-    const feature = this.features[examinee.id]
+    if (this.currentFeature) {
+      this.currentFeature.setStyle({
+        color: 'blue'
+      })
+    }
 
-    feature.setStyle({
-      color: 'red'
-    })
+    this.currentFeature = this.features[examinee.id]
+    if (this.currentFeature) {
+      this.currentFeature.setStyle({
+        color: 'red'
+      })
+    }
   }
 }

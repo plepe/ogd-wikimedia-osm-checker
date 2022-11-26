@@ -60,7 +60,6 @@ class App extends Events {
       () => app.emitAsync('update-options', this.options).then(
         () => {
           loadingIndicator.end()
-          selectCurrent()
         },
         (err) => global.alert(err)
       ),
@@ -274,15 +273,5 @@ function check (id, options = {}) {
     })
 
     document.title = app.dataset.title + '/' + examinee.id + ' - ogd-wikimedia-osm-checker'
-
-    selectCurrent()
   })
-}
-
-function selectCurrent () {
-  currentView.select(ob)
-
-  if (!app.dataset || !ob) {
-    return
-  }
 }
