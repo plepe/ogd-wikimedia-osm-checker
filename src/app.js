@@ -8,7 +8,6 @@ const Examinee = require('./Examinee.js')
 const httpRequest = require('./httpRequest.js')
 const timestamp = require('./timestamp')
 const loadingIndicator = require('./loadingIndicator')
-const showLast = require('./showLast')
 
 const datasets = {} // deprecated
 const modules = [
@@ -92,8 +91,6 @@ function init () {
 }
 
 function init2 () {
-  showLast()
-
   const selectDataset = document.getElementById('Dataset')
   selectDataset.onchange = chooseDataset
 
@@ -119,7 +116,6 @@ function updateDataset () {
 
   if (!selectDataset.value) {
     content.innerHTML = info
-    showLast()
     return
   }
 
@@ -155,7 +151,6 @@ function choose (path) {
   if (!_dataset && !id) {
     const content = document.getElementById('content')
     content.innerHTML = info
-    showLast()
     document.title = 'ogd-wikimedia-osm-checker'
   }
 

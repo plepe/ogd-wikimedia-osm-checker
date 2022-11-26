@@ -1,9 +1,12 @@
 const async = require('async')
 const Dataset = require('./Dataset.js')
+const showLast = require('./showLast')
 
 function show () {
   const selector = document.getElementById('selector')
   selector.className = 'viewmode-main-page'
+
+  showLast()
 }
 
 function init () {
