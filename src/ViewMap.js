@@ -7,8 +7,6 @@ module.exports = class ViewTable extends ViewBase {
   constructor (app) {
     super(app)
 
-    map.resize()
-
     this.features = {}
   }
 
@@ -21,6 +19,7 @@ module.exports = class ViewTable extends ViewBase {
 
     const selector = document.getElementById('selector')
     selector.className = 'viewmode-map'
+    map.resize()
 
     this.clear()
 
