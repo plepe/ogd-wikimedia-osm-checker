@@ -23,7 +23,6 @@ const modules = [
   require('./wikidataToOsm.js')
 ]
 
-let dataset
 let ob
 
 let info
@@ -50,7 +49,7 @@ class App extends Events {
   }
 
   updateOptions () {
-    if (!dataset) {
+    if (!this.dataset) {
       return
     }
 
@@ -131,10 +130,6 @@ function chooseViewMode () {
 
   currentView = new ViewMode(app)
 
-  if (dataset) {
-    currentView.setDataset(dataset)
-  }
-
   update()
 }
 
@@ -155,16 +150,15 @@ function updateDataset () {
     return
   }
 
-  dataset = datasets[selectDataset.value]
+  app.dataset = datasets[selectDataset.value]
   ob = null
 
-  currentView.setDataset(dataset)
 
   dataset.showInfo(document.getElementById('info'))
 
   loadingIndicator.start()
 
-  app.emitAsync('set-dataset', dataset).then(
+  app.emitAsync('set-dataset', app.dataset).then(
     () => {
       loadingIndicator.end()
 
@@ -192,7 +186,7 @@ function choose (path) {
     document.title = 'ogd-wikimedia-osm-checker'
   }
 
-  if (!dataset || (_dataset !== dataset.id)) {
+  if (!app.dataset || (_dataset !== app.dataset.id)) {
     const selectDataset = document.getElementById('Dataset')
     selectDataset.value = _dataset
     return updateDataset()
@@ -201,13 +195,14 @@ function choose (path) {
   if (!id) {
     const content = document.getElementById('info')
     if (content) {
-      dataset.showInfo(content)
+      app.dataset.showInfo(content)
     }
+    console.log('here')
     return update()
   }
 
   loadingIndicator.start()
-  dataset.getItem(id, (err, item) => {
+  app.dataset.getItem(id, (err, item) => {
     if (err) {
       loadingIndicator.end()
 
@@ -234,7 +229,7 @@ function update () {
 
 function check (id, options = {}) {
   loadingIndicator.start()
-  dataset.getExaminee(id, (err, examinee) => {
+  app.dataset.getExaminee(id, (err, examinee) => {
     loadingIndicator.end()
     if (err) { return global.alert(err) }
 
@@ -274,13 +269,13 @@ function check (id, options = {}) {
     })
 
     examinee.initMessages(div)
-    examinee.runChecks(dataset, options, (err, result) => {
+    examinee.runChecks(app.dataset, options, (err, result) => {
       if (err) { global.alert(err) }
 
       loadingIndicator.end()
     })
 
-    document.title = dataset.title + '/' + examinee.id + ' - ogd-wikimedia-osm-checker'
+    document.title = app.dataset.title + '/' + examinee.id + ' - ogd-wikimedia-osm-checker'
 
     selectCurrent()
   })
@@ -289,7 +284,7 @@ function check (id, options = {}) {
 function selectCurrent () {
   currentView.select(ob)
 
-  if (!dataset || !ob) {
+  if (!app.dataset || !ob) {
     return
   }
 }

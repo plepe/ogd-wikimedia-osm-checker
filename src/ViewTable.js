@@ -12,17 +12,18 @@ module.exports = class ViewTable extends ViewBase  {
   }
 
   _show (examinees) {
+    this.clear()
     const content = document.getElementById('content')
 
     this.table = document.createElement('table')
     this.table.id = 'data'
-    this.table.innerHTML = '<tr><th>' + escHTML(this.dataset.title) + '</th></tr>'
+    this.table.innerHTML = '<tr><th>' + escHTML(app.dataset.title) + '</th></tr>'
     content.appendChild(this.table)
     examinees.forEach((examinee, index) => {
       const text = examinee.listFormat()
 
       const tr = document.createElement('tr')
-      tr.id = this.dataset.id + '-' + examinee.id
+      tr.id = app.dataset.id + '-' + examinee.id
 
       const td = document.createElement('td')
       tr.appendChild(td)
@@ -33,7 +34,7 @@ module.exports = class ViewTable extends ViewBase  {
       } else {
         a.appendChild(text)
       }
-      a.href = '#' + this.dataset.id + '/' + examinee.id
+      a.href = '#' + app.dataset.id + '/' + examinee.id
 
       td.appendChild(a)
       this.table.appendChild(tr)
@@ -47,7 +48,7 @@ module.exports = class ViewTable extends ViewBase  {
       return
     }
 
-    const listEntry = document.getElementById(this.dataset.id + '-' + examinee.id)
+    const listEntry = document.getElementById(app.dataset.id + '-' + examinee.id)
     if (listEntry) {
       listEntry.classList.add('active')
       listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })

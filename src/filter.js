@@ -49,13 +49,14 @@ function getItemsOptions (options) {
 function setItem (item) {
   const data = {}
 
-  for (const k in filter.elements) {
+  for (const k in filter.element.elements) {
     if (k in item) {
       data[k] = item[k]
     }
   }
 
   filter.set_data(data)
+  app.updateOptions()
 }
 
 module.exports = {

@@ -3,19 +3,20 @@ module.exports = class ViewBase {
     this.app = app
 
     this.listeners = [
-      this.app.on('update-options', (options) => this.show(options))
+      this.app.on('update-options', () => this.show()),
+      this.app.on('set-dataset', () => this.show())
     ]
-  }
-
-  setDataset (dataset) {
-    this.dataset = dataset
 
     this.show()
   }
 
   show () {
+    if (!this.app.dataset) {
+      return
+    }
+
     return new Promise((resolve, reject) => {
-      this.dataset.getExaminees(app.options, (err, examinees) => {
+      this.app.dataset.getExaminees(this.app.options, (err, examinees) => {
         if (err) { return reject(err) }
 
         this._show(examinees)

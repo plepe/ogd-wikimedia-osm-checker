@@ -38,7 +38,7 @@ module.exports = class ViewTable extends ViewBase {
         feature.addTo(map.map)
 
         feature.on('click', () => {
-          const path = this.dataset.id + '/' + examinee.id
+          const path = app.dataset.id + '/' + examinee.id
           global.location.hash = path
         })
 
