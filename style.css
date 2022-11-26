@@ -19,6 +19,31 @@ a .address {
 #selector > #filter {
   display: block;
   flex: 0 1 auto;
+  position: relative;
+  margin-bottom: 0.25em;
+}
+#selector > #filter .form_element_form_chooser_actions {
+  position: absolute;
+  right: 25%;
+  width: 25%;
+  top: 0;
+  box-sizing: border-box;
+  padding-right: 0.25em;
+}
+#selector > #filter .form_element_form_chooser_actions > select {
+  width: 100%;
+}
+#selector > #filter > #viewMode {
+  position: absolute;
+  right: 0.25em;
+  top: 0;
+  width: calc(25% - 0.25em);
+}
+#selector > #filter > #Dataset {
+  width: calc(50% - 0.5em);
+  margin-left: 0.25em;
+  box-sizing: border-box;
+  display: inline-block;
 }
 #selector.viewmode-map {
   display: flex;
@@ -54,11 +79,6 @@ a .address {
   width: calc(50% - 1px);
   border-right: 1px solid black;
   border-top: 1px solid black;
-}
-#selector > div > select {
-  width: 49%;
-  box-sizing: border-box;
-  display: inline-block;
 }
 table#data {
   width: 100%;
