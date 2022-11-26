@@ -17,6 +17,7 @@ const modules = [
   require('./lang.js'),
   require('./filter.js'),
   require('./view.js'),
+  require('./main-page.js'),
   require('./wikidataToOsm.js')
 ]
 
@@ -70,7 +71,6 @@ window.onload = () => {
 
 function init () {
   const selectDataset = document.getElementById('Dataset')
-  const listDatasets = document.getElementById('datasets')
 
   Dataset.list((err, list) => {
     async.each(list, (id, done) => {
@@ -80,15 +80,6 @@ function init () {
         option.value = id
         option.appendChild(document.createTextNode(dataset.title))
         selectDataset.appendChild(option)
-
-        if (listDatasets) {
-          const li = document.createElement('li')
-          const a = document.createElement('a')
-          a.href = '#' + id
-          a.appendChild(document.createTextNode(dataset.titleLong || dataset.title))
-          li.appendChild(a)
-          listDatasets.appendChild(li)
-        }
 
         done()
       })

@@ -13,7 +13,7 @@ module.exports = class ViewTable extends ViewBase  {
 
   _show (examinees) {
     this.clear()
-    const content = document.getElementById('content')
+    const content = document.getElementById('view-table')
 
     this.table = document.createElement('table')
     this.table.id = 'data'
@@ -56,7 +56,7 @@ module.exports = class ViewTable extends ViewBase  {
   }
 
   clear () {
-    const content = document.getElementById('content')
+    const content = document.getElementById('view-table')
     while (content.firstChild) {
       content.removeChild(content.firstChild)
     }

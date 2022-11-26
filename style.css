@@ -37,6 +37,12 @@ a .address {
   left: 0;
   right: 0;
 }
+#main-page {
+  display: none;
+}
+.viewmode-main-page #main-page {
+  display: block;
+}
 .hasMap #selector {
   bottom: 401px;
 }
