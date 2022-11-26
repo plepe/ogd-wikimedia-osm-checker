@@ -125,12 +125,10 @@ function chooseViewMode () {
   const ViewMode = viewModes[viewMode]
 
   if (currentView) {
-    currentView.clear()
+    currentView.remove()
   }
 
   currentView = new ViewMode(app)
-
-  update()
 }
 
 function chooseDataset () {

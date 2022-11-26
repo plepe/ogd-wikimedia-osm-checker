@@ -10,6 +10,12 @@ module.exports = class ViewBase {
     this.show()
   }
 
+  remove () {
+    this.clear()
+
+    this.listeners.forEach(l => this.app.off(l))
+  }
+
   show () {
     if (!this.app.dataset) {
       return
