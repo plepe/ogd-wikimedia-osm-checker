@@ -20,8 +20,6 @@ const modules = [
   require('./wikidataToOsm.js')
 ]
 
-let ob
-
 let info
 
 class App extends Events {
@@ -115,7 +113,7 @@ function updateDataset () {
   const selectDataset = document.getElementById('Dataset')
 
   app.dataset = datasets[selectDataset.value]
-  ob = null
+  app.examinee = null
 
   loadingIndicator.start()
 
@@ -175,6 +173,7 @@ function choose (path) {
 
     httpRequest('log.cgi?path=' + encodeURIComponent(path), {}, () => {})
 
+    app.examinee = examinee
     app.emitAsync('set-examinee', examinee).then(
       () => {
 

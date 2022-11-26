@@ -58,8 +58,8 @@ module.exports = class ViewTable extends ViewBase {
     this.features = {}
   }
 
-  select (examinee) {
-    if (!examinee) {
+  select () {
+    if (!this.app.examinee) {
       return
     }
 
@@ -69,7 +69,7 @@ module.exports = class ViewTable extends ViewBase {
       })
     }
 
-    this.currentFeature = this.features[examinee.id]
+    this.currentFeature = this.features[this.app.examinee.id]
     if (this.currentFeature) {
       this.currentFeature.setStyle({
         color: 'red'

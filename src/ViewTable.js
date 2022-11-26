@@ -41,14 +41,14 @@ module.exports = class ViewTable extends ViewBase  {
     })
   }
 
-  select (examinee) {
+  select () {
     Array.from(this.table.getElementsByClassName('active')).forEach(d => d.classList.remove('active'))
 
-    if (!examinee) {
+    if (!this.app.examinee) {
       return
     }
 
-    const listEntry = document.getElementById(this.app.dataset.id + '-' + examinee.id)
+    const listEntry = document.getElementById(this.app.dataset.id + '-' + this.app.examinee.id)
     if (listEntry) {
       listEntry.classList.add('active')
       listEntry.scrollIntoView({ behavior: 'smooth', block: 'center' })
