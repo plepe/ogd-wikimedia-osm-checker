@@ -6,6 +6,47 @@ module.exports = class ViewTable extends ViewBase  {
     super(app)
 
     this.clear()
+
+    this.listeners.push(this.app.on('set-dataset', () => this.reloadCount()))
+    this.listeners.push(this.app.on('update-options', () => this.reloadCount()))
+    this.loadCount()
+  }
+
+  loadCount (callback) {
+    if (!callback) { callback = () => {} }
+
+    if (this.count !== undefined) {
+      return callback(null, this.count)
+    }
+
+    if (!this.app.dataset) {
+      this.count = undefined
+      return callback(null, undefined)
+    }
+
+    if (this.loadCountCallbacks) {
+      return this.loadCountCallbacks.push(callback)
+    }
+
+    this.loadCountCallbacks = [callback]
+
+    const opt = {}
+    if (this.app.options && this.app.options.filter) {
+      opt.filter = this.app.options.filter
+    }
+    this.app.dataset.getCount(opt, (err, c) => {
+      this.count = c
+      console.log(c)
+
+      const cbs = this.loadCountCallbacks
+      delete this.loadCountCallbacks
+      cbs.forEach(cb => cb(err, c))
+    })
+  }
+
+  reloadCount (callback) {
+    this.count = undefined
+    this.loadCount(callback)
   }
 
   _show (examinees) {
