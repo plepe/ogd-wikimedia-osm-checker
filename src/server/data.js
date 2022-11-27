@@ -10,6 +10,13 @@ module.exports = function (options, callback) {
         dataset.getItem(options.id, (err, data, stat) => reply(err, dataset, data, stat, callback))
       } else if (options.values) {
         dataset.getValues(options.values, (err, data, stat) => reply(err, dataset, data, stat, callback))
+      } else if ('info' in options) {
+        dataset.getItems(options, (err, data, stat) => reply(err, dataset, {
+          count: data.length,
+          ctime: stat.ctime,
+          mtime: stat.mtime,
+          size: stat.size
+        }, stat, callback))
       } else {
         dataset.getItems(options, (err, data, stat) => reply(err, dataset, data, stat, callback))
       }
