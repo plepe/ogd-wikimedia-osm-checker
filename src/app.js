@@ -42,9 +42,11 @@ class App extends Events {
     update()
   }
 
-  updateOptions () {
+  updateOptions (callback) {
+    if (!callback) { callback = () => {} }
+
     if (!this.dataset) {
-      return
+      return callback(null)
     }
 
     loadingIndicator.start()
@@ -54,10 +56,17 @@ class App extends Events {
       () => app.emitAsync('update-options', this.options).then(
         () => {
           loadingIndicator.end()
+          callback(null)
         },
-        (err) => global.alert(err)
+        (err) => {
+          callback(err)
+          global.alert(err)
+        }
       ),
-      (err) => global.alert(err)
+      (err) => {
+        callback(err)
+        global.alert(err)
+      }
     )
   }
 }
@@ -132,11 +141,11 @@ function updateDataset2 () {
     return
   }
 
-  if (global.location.hash) {
-    choose(global.location.hash.substr(1))
-  } else {
-    app.updateOptions()
-  }
+  app.updateOptions(() => {
+    if (global.location.hash) {
+      choose(global.location.hash.substr(1))
+    }
+  })
 }
 
 function choose (path) {
