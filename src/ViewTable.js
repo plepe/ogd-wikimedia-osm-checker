@@ -15,20 +15,14 @@ module.exports = class ViewTable extends ViewBase  {
   loadCount (callback) {
     if (!callback) { callback = () => {} }
 
-    if (this.count !== undefined) {
-      return callback(null, this.count)
-    }
-
     if (!this.app.dataset) {
       this.count = undefined
       return callback(null, undefined)
     }
 
-    if (this.loadCountCallbacks) {
-      return this.loadCountCallbacks.push(callback)
+    if (this.count !== undefined) {
+      return callback(null, this.count)
     }
-
-    this.loadCountCallbacks = [callback]
 
     const opt = {}
     if (this.app.options && this.app.options.filter) {
@@ -36,11 +30,7 @@ module.exports = class ViewTable extends ViewBase  {
     }
     this.app.dataset.getCount(opt, (err, c) => {
       this.count = c
-      console.log(c)
-
-      const cbs = this.loadCountCallbacks
-      delete this.loadCountCallbacks
-      cbs.forEach(cb => cb(err, c))
+      callback(err, c)
     })
   }
 
