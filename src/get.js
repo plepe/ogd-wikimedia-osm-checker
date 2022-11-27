@@ -68,6 +68,21 @@ const get = {
 
       callback(null, Object.keys(result).sort(), this.fileStat)
     })
+  },
+
+  info (dataset, options, callback) {
+    get.items(dataset, options, (err, data, stat) => {
+      if (err) { return callback(err) }
+
+      result = {
+        count: data.length,
+        ctime: stat.ctime,
+        mtime: stat.mtime,
+        size: stat.size
+      }
+
+      callback(null, result, stat)
+    })
   }
 }
 

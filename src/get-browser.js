@@ -40,6 +40,10 @@ const get = {
 
   values (dataset, key, callback) {
     serverLoad(dataset, { values: key }, callback)
+  },
+
+  info (dataset, options, callback) {
+    serverLoad(dataset, {...options, ...{info:''}}, callback)
   }
 }
 
