@@ -5,10 +5,19 @@ module.exports = class ViewTable extends ViewBase  {
   constructor (app) {
     super(app)
 
+    this.pageCount = 10
+
     this.clear()
 
-    this.listeners.push(this.app.on('set-dataset', () => this.reloadCount()))
+    this.listeners.push(this.app.on('set-dataset', () => {
+      this.reloadCount()
+      this.offset = 0
+    }))
     this.listeners.push(this.app.on('update-options', () => this.reloadCount()))
+    this.listeners.push(this.app.on('get-items-options', (options) => {
+      options.count = this.pageCount
+      options.offset = this.offset
+    }))
     this.loadCount()
   }
 
@@ -75,7 +84,7 @@ module.exports = class ViewTable extends ViewBase  {
     div.className = 'statistics'
     content.appendChild(div)
     this.loadCount((err, count) => {
-      div.innerHTML = 'Gezeigt 1 - ' + count + ' / ' + count
+      div.innerHTML = 'Gezeigt ' + (this.offset + 1) + ' - ' + (Math.min(count, this.offset + this.pageCount)) + ' / ' + count
     })
   }
 
