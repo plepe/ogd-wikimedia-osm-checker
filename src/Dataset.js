@@ -108,6 +108,10 @@ class Dataset {
     get.items(this, options, (err, data) => callback(err, data, this.fileStat))
   }
 
+  getCount (options = {}, callback) {
+    get.info(this, options, (err, info) => callback(err, info.count, this.fileStat))
+  }
+
   getExaminees (options = {}, callback) {
     this.getItems(options, (err, items) => {
       if (err) { return callback(err) }
