@@ -22,7 +22,7 @@ const get = {
 
       callback(null, result)
     } else if ('filter' in options) {
-      const result = dataset._data.filter(item => {
+      let result = dataset._data.filter(item => {
         for (let k in options.filter) {
           if (item[k] != options.filter[k]) {
             return false
@@ -31,9 +31,23 @@ const get = {
         return true
       })
 
+      if (options.count) {
+        const offset = parseInt(options.offset || 0)
+        const count = parseInt(options.count)
+        result = result.slice(offset, offset + count)
+      }
+
       callback(null, result)
     } else {
-      callback(null, dataset._data)
+      let result = dataset._data
+
+      if (options.count) {
+        const offset = parseInt(options.offset || 0)
+        const count = parseInt(options.count)
+        result = result.slice(offset, offset + count)
+      }
+
+      callback(null, result)
     }
   },
 
