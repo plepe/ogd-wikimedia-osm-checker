@@ -80,6 +80,13 @@ module.exports = class ViewTable extends ViewBase  {
       td.appendChild(a)
       this.table.appendChild(tr)
     })
+
+    const div = document.createElement('div')
+    div.className = 'statistics'
+    content.appendChild(div)
+    this.loadCount((err, count) => {
+      div.innerHTML = 'Gezeigt 1 - ' + count + ' / ' + count
+    })
   }
 
   select () {
