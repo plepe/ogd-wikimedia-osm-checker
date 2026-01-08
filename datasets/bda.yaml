@@ -18,10 +18,10 @@ file:
 refData:
   idField: HERIS-ID
   placeFilterField: Gemeinde
-  listFieldTitle: Katalogtitel
+  listFieldTitle: Objekttitel
   listFieldAddress: Adresse
   showFields:
-    Katalogtitel: {}
+    Objekttitel: {}
     Gemeinde: {}
     KG:
       title: Kat.gemeinde
@@ -68,7 +68,7 @@ osm:
   refField: ref:at:bda
   refValue:
     wikidataProperty: P2951
-  refDataNameField: Katalogtitel
+  refDataNameField: Objekttitel
   query: |
     nwr[building]
     nwr["building:part"]
