@@ -6,7 +6,7 @@ const fetch = require('node-fetch')
 const JSDOM = require('jsdom').JSDOM
 
 module.exports = function downloadBda (callback) {
-  fetch('https://bda.gv.at/service/denkmalverzeichnis/denkmalliste-gemaess-3-dmsg.html')
+  fetch('https://www.bda.gv.at/service/unterschutzstellung/denkmalverzeichnis/denkmalliste-gemaess-3-dmsg.html')
     .then(response => response.text())
     .then(result => {
       const dom = new JSDOM(result)
