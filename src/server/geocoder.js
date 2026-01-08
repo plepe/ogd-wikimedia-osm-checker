@@ -1,6 +1,7 @@
 const queryString = require('query-string')
 const fetch = require('node-fetch')
 
+const getUserAgent = require('../getUserAgent.js')
 const Cache = require('../Cache')
 const cache = new Cache()
 
@@ -25,7 +26,7 @@ module.exports = function (options, callback) {
 
   fetch(url, {
     headers: {
-      'User-Agent': 'ogd-wikimedia-osm-checker'
+      'User-Agent': getUserAgent(),
     }
   })
     .then(res => res.json())

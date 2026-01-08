@@ -9,6 +9,7 @@ const downloads = require('./src/datasets/downloads')
 const standardDownload = require('./src/standardDownload')
 const datasetsList = require('./src/datasetsList')
 const wikipediaListDownload = require('./src/wikipediaListDownload')
+const getUserAgent = require('./src/getUserAgent.js')
 
 function downloadWikidataLists (callback) {
   async.parallel([
@@ -19,7 +20,7 @@ function downloadWikidataLists (callback) {
           body: 'select ?item ?osmTag ?itemLabel where { ?item wdt:P31 wd:Q32880.  ?item wdt:P1282 ?osmTag.  SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". } }',
           headers: {
             'Content-Type': 'application/sparql-query',
-            'User-Agent': 'ogd-wikimedia-osm-checker',
+            'User-Agent': getUserAgent(),
             Accept: 'application/json'
           }
         }

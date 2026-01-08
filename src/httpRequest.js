@@ -1,3 +1,5 @@
+const getUserAgent = require('./getUserAgent.js')
+
 /**
  * @param {string} url - The URL of the request
  * @param {Object} options - Options
@@ -65,6 +67,8 @@ function httpRequest (url, options, callback, redirects = []) {
   function direct () {
     xhr = new global.XMLHttpRequest()
     xhr.open(options.method || 'GET', url, true)
+
+    xhr.setRequestHeader('user-agent', getUserAgent())
 
     if (options.headers) {
       for (const k in options.headers) {
